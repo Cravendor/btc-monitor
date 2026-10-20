@@ -85,6 +85,32 @@ def main():
     destination.mkdir(parents=True, exist_ok=True)
     path = destination / (started.strftime('%Y%m%dT%H%M%S%fZ') + f'-{run}-{attempt}.json')
     path.write_text(json.dumps(record, indent=2, allow_nan=False) + '\n')
+    # Fixed public URL with recent snapshots; dated files remain the archive.
+    recent_paths = sorted(Path('data').glob('????/??/??/*.json'), reverse=True)
+    measurements = []
+    for recent_path in recent_paths:
+        try:
+            item = json.loads(recent_path.read_text())
+        except (OSError, ValueError):
+            continue
+        if (item.get('schema_version') == 2 and item.get('exchange') == 'bitget'
+                and item.get('market') == 'USDT-FUTURES' and item.get('symbol') == 'BTCUSDT'):
+            measurements.append(item)
+        if len(measurements) == 14:
+            break
+    feed = {
+        'feed_schema_version': 1,
+        'updated_at': utcnow().isoformat(),
+        'exchange': 'bitget',
+        'market': 'USDT-FUTURES',
+        'symbol': 'BTCUSDT',
+        'order': 'newest_first',
+        'measurements': measurements,
+    }
+    feed_path = Path('data/latest.json')
+    temporary = feed_path.with_suffix('.tmp')
+    temporary.write_text(json.dumps(feed, indent=2, allow_nan=False) + '\n')
+    temporary.replace(feed_path)
     summary = os.environ.get('GITHUB_STEP_SUMMARY')
     if summary:
         with open(summary, 'a') as handle:
