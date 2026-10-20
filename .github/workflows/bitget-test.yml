@@ -1,0 +1,65 @@
+name: Test Bitget access
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Test public BTCUSDT endpoint
+        shell: python
+        run: |
+          import json
+          import os
+          import sys
+          from datetime import datetime, timezone
+          from decimal import Decimal, InvalidOperation
+          from urllib.request import Request, urlopen
+          from urllib.error import HTTPError, URLError
+
+          url = 'https://api.bitget.com/api/v2/mix/market/ticker?symbol=BTCUSDT&productType=USDT-FUTURES'
+          result = {
+              'observed_at': datetime.now(timezone.utc).isoformat(),
+              'url': url,
+              'status': 'error',
+              'http_status': None,
+              'data': None,
+          }
+          try:
+              request = Request(url, headers={'User-Agent': 'btc-public-monitor-test/1.0'})
+              with urlopen(request, timeout=20) as response:
+                  result['http_status'] = response.status
+                  payload = json.load(response)
+              if not isinstance(payload, dict):
+                  raise ValueError('Unexpected response format')
+              result['api_code'] = payload.get('code')
+              if payload.get('code') != '00000':
+                  raise ValueError('Bitget returned an API error')
+              rows = payload.get('data', [])
+              row = next((r for r in rows if r.get('symbol') == 'BTCUSDT'), None)
+              if row is None:
+                  raise ValueError('BTCUSDT missing from response')
+              fields = ['lastPr', 'holdingAmount', 'fundingRate', 'ts']
+              missing = [key for key in fields if row.get(key) in (None, '')]
+              if missing:
+                  result.update(status='missing_data', missing_fields=missing)
+              else:
+                  for key in fields:
+                      value = Decimal(str(row[key]))
+                      if not value.is_finite() or (key != 'fundingRate' and value < 0):
+                          raise ValueError('Invalid field: ' + key)
+                  result.update(status='ok', data={key: row[key] for key in ['symbol'] + fields})
+          except HTTPError as exc:
+              result.update(http_status=exc.code, error='HTTP request rejected')
+          except (URLError, OSError, ValueError, InvalidOperation, TypeError, AttributeError) as exc:
+              result['error'] = type(exc).__name__
+
+          report = json.dumps(result, indent=2, allow_nan=False)
+          print(report)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as handle:
+              handle.write('## Bitget access test\n\n```json\n' + report + '\n```\n')
+          sys.exit(0 if result['status'] == 'ok' else 1)
