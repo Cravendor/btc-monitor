@@ -1,4 +1,4 @@
-"""Public Binance snapshots. Python standard library only; no credentials."""
+"""Public Bitget USDT futures snapshots. Python standard library only; no credentials."""
 import json
 import os
 import socket
@@ -9,10 +9,11 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
+URL = 'https://api.bitget.com/api/v2/mix/market/ticker?symbol=BTCUSDT&productType=USDT-FUTURES'
 ENDPOINTS = {
-    'spot_price': ('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT', ['price'], []),
-    'open_interest': ('https://fapi.binance.com/fapi/v1/openInterest?symbol=BTCUSDT', ['openInterest'], ['time']),
-    'funding': ('https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT', ['lastFundingRate', 'markPrice'], ['time', 'nextFundingTime']),
+    'futures_price': (URL, ['lastPr'], ['ts']),
+    'open_interest': (URL, ['holdingAmount'], ['ts']),
+    'funding': (URL, ['fundingRate'], ['ts']),
 }
 
 
@@ -27,18 +28,28 @@ def fetch(url, numbers, timestamps, opener=urlopen, sleep=time.sleep):
         try:
             with opener(Request(url, headers={'User-Agent': 'btc-public-monitor/1.0'}), timeout=20) as response:
                 payload = json.load(response)
-            if not isinstance(payload, dict) or payload.get('symbol') != 'BTCUSDT':
-                raise ValueError('Unexpected response or wrong symbol')
-            missing = [k for k in numbers + timestamps if payload.get(k) is None]
+            if not isinstance(payload, dict):
+                raise ValueError('Unexpected response format')
+            if payload.get('code') != '00000':
+                result['error'] = {'kind': 'api', 'code': payload.get('code')}
+                return result
+            rows = payload.get('data')
+            if not isinstance(rows, list):
+                raise ValueError('Expected ticker list')
+            payload = next((row for row in rows if isinstance(row, dict) and row.get('symbol') == 'BTCUSDT'), None)
+            if payload is None:
+                result.update(status='missing_data', error={'kind': 'missing_symbol'})
+                return result
+            missing = [k for k in numbers + timestamps if payload.get(k) in (None, '')]
             if missing:
                 result.update(status='missing_data', error={'kind': 'missing_fields', 'fields': missing})
                 return result
             for key in numbers:
                 value = Decimal(str(payload[key]))
-                if not value.is_finite() or (key != 'lastFundingRate' and value < 0):
+                if not value.is_finite() or (key != 'fundingRate' and value < 0):
                     raise ValueError('Invalid numeric field: ' + key)
             for key in timestamps:
-                if type(payload[key]) is not int or payload[key] <= 0:
+                if not str(payload[key]).isdigit() or int(payload[key]) <= 0:
                     raise ValueError('Invalid timestamp: ' + key)
             result.update(status='ok', data=payload, error=None)
             return result
@@ -63,7 +74,7 @@ def main():
     successes = sum(item['status'] == 'ok' for item in metrics.values())
     status = 'ok' if successes == len(metrics) else ('partial' if successes else 'error')
     record = {
-        'schema_version': 1, 'symbol': 'BTCUSDT', 'started_at': started.isoformat(),
+        'schema_version': 2, 'exchange': 'bitget', 'market': 'USDT-FUTURES', 'symbol': 'BTCUSDT', 'started_at': started.isoformat(),
         'finished_at': utcnow().isoformat(), 'status': status, 'metrics': metrics,
         'cvd_4h': {'status': 'not_collected', 'value': None,
                    'reason': 'Requires complete trade coverage of the full 4h interval; five aggTrades are insufficient.'},
@@ -77,7 +88,7 @@ def main():
     summary = os.environ.get('GITHUB_STEP_SUMMARY')
     if summary:
         with open(summary, 'a') as handle:
-            handle.write(f'BTCUSDT: **{status}**\n\n')
+            handle.write(f'Bitget BTCUSDT futures: **{status}**\n\n')
             for name, metric in metrics.items():
                 handle.write(f'- {name}: {metric["status"]}\n')
     output = os.environ.get('GITHUB_OUTPUT')
