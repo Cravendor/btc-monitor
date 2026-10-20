@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "symbol": "BTCUSDT",
+  "started_at": "2026-10-20T12:22:11.759252+00:00",
+  "finished_at": "2026-10-20T12:22:12.120359+00:00",
+  "status": "error",
+  "metrics": {
+    "spot_price": {
+      "url": "https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT",
+      "status": "error",
+      "data": null,
+      "error": {
+        "kind": "http",
+        "http_status": 451
+      },
+      "attempts": 1,
+      "observed_at": "2026-10-20T12:22:11.759260+00:00"
+    },
+    "open_interest": {
+      "url": "https://fapi.binance.com/fapi/v1/openInterest?symbol=BTCUSDT",
+      "status": "error",
+      "data": null,
+      "error": {
+        "kind": "http",
+        "http_status": 451
+      },
+      "attempts": 1,
+      "observed_at": "2026-10-20T12:22:11.986586+00:00"
+    },
+    "funding": {
+      "url": "https://fapi.binance.com/fapi/v1/premiumIndex?symbol=BTCUSDT",
+      "status": "error",
+      "data": null,
+      "error": {
+        "kind": "http",
+        "http_status": 451
+      },
+      "attempts": 1,
+      "observed_at": "2026-10-20T12:22:12.035683+00:00"
+    }
+  },
+  "cvd_4h": {
+    "status": "not_collected",
+    "value": null,
+    "reason": "Requires complete trade coverage of the full 4h interval; five aggTrades are insufficient."
+  }
+}
