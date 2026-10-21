@@ -1,0 +1,38 @@
+name: Archive BTC bias report
+on:
+  workflow_dispatch:
+    inputs:
+      report_json:
+        description: 'Validated report JSON (up to 20000 characters). No secrets.'
+        required: true
+        type: string
+permissions: {}
+concurrency:
+  group: btc-bias-archive
+  cancel-in-progress: false
+jobs:
+  archive:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: true
+      - name: Validate and archive supplied report
+        env:
+          REPORT_JSON: ${{ inputs.report_json }}
+        run: python3 scripts/archive_report.py
+      - name: Commit archived report
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- reports/
+          git commit -m 'Archive verified BTC bias report'
+          git pull --rebase origin "$DEFAULT_BRANCH"
+          git push origin "HEAD:$DEFAULT_BRANCH"
