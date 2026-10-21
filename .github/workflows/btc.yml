@@ -17,6 +17,8 @@ jobs:
     if: github.event.repository.private == false
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
     permissions:
       contents: write # Only to save public market snapshots in this repository.
     steps:
