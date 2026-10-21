@@ -8,6 +8,10 @@ from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
+try:
+    from .enrich import collect_extra
+except ImportError:
+    from enrich import collect_extra
 
 URL = 'https://api.bitget.com/api/v2/mix/market/ticker?symbol=BTCUSDT&productType=USDT-FUTURES'
 ENDPOINTS = {
@@ -71,6 +75,7 @@ def fetch(url, numbers, timestamps, opener=urlopen, sleep=time.sleep):
 def main():
     started = utcnow()
     metrics = {name: fetch(*spec) for name, spec in ENDPOINTS.items()}
+    metrics.update(collect_extra(metrics))
     successes = sum(item['status'] == 'ok' for item in metrics.values())
     status = 'ok' if successes == len(metrics) else ('partial' if successes else 'error')
     record = {

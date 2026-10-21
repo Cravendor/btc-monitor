@@ -7,11 +7,11 @@ from scripts.collect import fetch
 
 class FetchTests(unittest.TestCase):
     def response(self, payload):
-        return lambda *a, **kw: io.StringIO(json.dumps(payload))
+        return lambda *a, **kw: io.StringIO(json.dumps({'code': '00000', 'data': [payload]}))
 
     def test_valid_and_negative_funding(self):
-        result = fetch('https://example.test', ['lastFundingRate'], [],
-                       self.response({'symbol': 'BTCUSDT', 'lastFundingRate': '-0.0001'}))
+        result = fetch('https://example.test', ['fundingRate'], [],
+                       self.response({'symbol': 'BTCUSDT', 'fundingRate': '-0.0001'}))
         self.assertEqual(result['status'], 'ok')
 
     def test_missing_is_not_zero(self):
