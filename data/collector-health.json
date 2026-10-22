@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-22T20:32:43.027766+00:00",
+  "last_snapshot_at": "2026-10-22T20:32:10.891827+00:00",
+  "age_seconds": 32,
+  "max_age_seconds": 3600,
+  "status": "current"
+}
