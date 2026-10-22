@@ -25,8 +25,10 @@ class MultiTimeframeTests(unittest.TestCase):
         period = INTERVAL_MS[tf]
         now = datetime.fromtimestamp(124 * period / 1000, timezone.utc).isoformat()
         candles = self.candles(tf, last=100)
+        for i in range(17):
+            candles[i]["close"] = 90
         for i in range(17, 23):
-            candles[i]["close"] = 108
+            candles[i]["close"] = 105
         result = assess(candles, tf, now)
         self.assertEqual(result["grade"], "neutral")
         self.assertFalse(result["evidence"]["directional_agreement"])
