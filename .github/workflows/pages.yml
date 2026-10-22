@@ -10,6 +10,7 @@ on:
       - scripts/context_trend_dashboard.py
       - scripts/multi_timeframe_dashboard.py
       - scripts/timeframe_history_dashboard.py
+      - data/collector-health.json
       - data/latest.json
       - data/history/timeframe_signals.jsonl
       - .github/workflows/pages.yml
@@ -59,7 +60,7 @@ jobs:
                 datetime.now(timezone.utc).isoformat())
           PY
           python -m scripts.multi_timeframe_dashboard data/latest.json _site/btc-timeframes.html
-          python -m scripts.timeframe_history_dashboard data/history/timeframe_signals.jsonl _site/btc-signal-history.html
+          python -m scripts.timeframe_history_dashboard data/history/timeframe_signals.jsonl _site/btc-signal-history.html data/collector-health.json
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
