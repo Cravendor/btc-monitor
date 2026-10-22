@@ -27,7 +27,13 @@ def run(snapshot, archive, now=None):
     if (assessment.get("status") != "provisional"
             or assessment.get("derivatives_status") != "context_only"):
         return {"status": "skipped", "reason": assessment.get("reason", "ineligible assessment")}
-    changed = append_context(assessment, archive)
+    try:
+        changed = append_context(assessment, archive)
+    except ValueError as exc:
+        if str(exc) == "conflicting observation for existing closed 4H candle":
+            return {"status": "skipped", "reason": "conflicting_existing_candle",
+                    "observed_at": assessment["observed_at"]}
+        raise
     return {"status": "archived" if changed else "unchanged",
             "observed_at": assessment["observed_at"],
             "grade": assessment["grade"], "quality": "provisional_price_only"}
