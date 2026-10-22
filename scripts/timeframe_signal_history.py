@@ -1,6 +1,5 @@
 """Append-only read-only signal snapshots for longitudinal comparisons."""
 import json
-from datetime import datetime
 from math import isfinite
 from pathlib import Path
 
