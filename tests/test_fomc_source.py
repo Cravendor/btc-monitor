@@ -7,7 +7,7 @@ class FomcSourceTests(unittest.TestCase):
         snapshot = source_snapshot("<html><body>FOMC calendar</body></html>",
                                    "2026-10-22T12:00:00+00:00")
         self.assertEqual(snapshot["events"], [])
-        self.assertEqual(snapshot["status"], "source_observed_unparsed")
+        self.assertEqual(snapshot["status"], "parsed_unconfirmed")
 
     def test_unexpected_page_rejected(self):
         with self.assertRaises(ValueError):
