@@ -8,9 +8,10 @@ from datetime import datetime, timezone
 from math import isfinite
 
 GRANULARITIES = {"5m": "5m", "15m": "15m", "30m": "30m",
-                 "1h": "1H", "4h": "4H", "1d": "1D"}
+                 "1h": "1H", "4h": "4H", "1d": "1Dutc", "1w": "1Wutc"}
 PERIOD_MS = {"5m": 300000, "15m": 900000, "30m": 1800000,
-             "1h": 3600000, "4h": 14400000, "1d": 86400000}
+             "1h": 3600000, "4h": 14400000, "1d": 86400000,
+             "1w": 604800000}
 
 
 def validate_rows(rows, timeframe, as_of):
@@ -20,7 +21,9 @@ def validate_rows(rows, timeframe, as_of):
     if now.tzinfo is None:
         raise ValueError("timezone required")
     period = PERIOD_MS[timeframe]
-    boundary = int(now.timestamp() * 1000) // period * period
+    # Unix weeks begin Thursday; Bitget UTC weekly candles begin Monday.
+    offset = 4 * 86400000 if timeframe == "1w" else 0
+    boundary = ((int(now.timestamp() * 1000) - offset) // period) * period + offset
     if not isinstance(rows, list):
         raise ValueError("expected candle list")
     parsed = {}
@@ -32,7 +35,7 @@ def validate_rows(rows, timeframe, as_of):
             o, h, l, c, volume, quote = map(float, row[1:7])
         except (ValueError, TypeError):
             raise ValueError("invalid candle field") from None
-        if (ts % period or not all(isfinite(v) for v in (o, h, l, c, volume, quote))
+        if ((ts - offset) % period or not all(isfinite(v) for v in (o, h, l, c, volume, quote))
                 or min(o, h, l, c) <= 0 or min(volume, quote) < 0
                 or l > min(o, c) or h < max(o, c)):
             raise ValueError("invalid candle geometry")
