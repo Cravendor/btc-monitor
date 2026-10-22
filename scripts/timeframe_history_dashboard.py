@@ -64,6 +64,64 @@ def summary_html(records):
     return "".join(sections)
 
 
+
+SCORES = {"bearish": -2, "slightly_bearish": -1, "neutral": 0,
+          "slightly_bullish": 1, "bullish": 2}
+COLORS = {"5m": "#f97316", "15m": "#eab308", "30m": "#22c55e",
+          "1h": "#06b6d4", "4h": "#818cf8", "1d": "#e879f9", "1w": "#f43f5e"}
+
+
+def chart_html(records):
+    """SVG with actual timestamp spacing; missing grades break lines."""
+    points = []
+    for row in records:
+        try:
+            t = datetime.fromisoformat(row["updated_at"].replace("Z", "+00:00"))
+            if t.tzinfo is None:
+                continue
+            points.append((t.timestamp(), row))
+        except (KeyError, TypeError, ValueError, AttributeError):
+            continue
+    points = sorted(points, key=lambda pair: pair[0])[-100:]
+    if len(points) < 2 or points[-1][0] <= points[0][0]:
+        return "<p>Grafiek ONTBREEKT — minimaal twee verschillende meettijden nodig.</p>"
+    width, height, left, top = 940, 280, 65, 30
+    plot_w, plot_h = 850, 210
+    t0, t1 = points[0][0], points[-1][0]
+    x = lambda t: left + (t - t0) / (t1 - t0) * plot_w
+    y = lambda score: top + (2 - score) / 4 * plot_h
+    parts = ['<svg viewBox="0 0 940 280" role="img" aria-label="Historische BTC signaalscores van min twee bearish tot plus twee bullish" style="width:100%;height:auto">']
+    for score in range(-2, 3):
+        yy = y(score)
+        parts.append(f'<line x1="{left}" y1="{yy:.1f}" x2="{left + plot_w}" y2="{yy:.1f}" stroke="#44536d"/>')
+        parts.append(f'<text x="10" y="{yy + 5:.1f}" fill="#cbd5e1" font-size="13">{score:+d}</text>')
+    for tf in TIMEFRAMES:
+        segments, current = [], []
+        for t, row in points:
+            signal = (row.get("signals") or {}).get(tf) or {}
+            grade = signal.get("grade") if signal.get("status") == "ok" else None
+            if grade not in SCORES:
+                if current:
+                    segments.append(current)
+                    current = []
+                continue
+            current.append((x(t), y(SCORES[grade])))
+        if current:
+            segments.append(current)
+        for segment in segments:
+            if len(segment) > 1:
+                coordinates = " ".join(f"{px:.1f},{py:.1f}" for px, py in segment)
+                parts.append(f'<polyline points="{coordinates}" fill="none" stroke="{COLORS[tf]}" stroke-width="2.5"/>')
+            for px, py in segment:
+                parts.append(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="3.5" fill="{COLORS[tf]}"/>')
+    for stamp, px in ((points[0][0], left), (points[-1][0], left + plot_w)):
+        label = datetime.fromtimestamp(stamp, timezone.utc).strftime("%d-%m %H:%M UTC")
+        parts.append(f'<text x="{px:.1f}" y="270" fill="#cbd5e1" font-size="12" text-anchor="{"start" if px == left else "end"}">{label}</text>')
+    parts.append("</svg>")
+    legend = " ".join(f'<span style="color:{COLORS[tf]};margin-right:1rem">{tf.upper()}</span>' for tf in TIMEFRAMES)
+    return "<h2>Signaaltrend (−2 bearish tot +2 bullish)</h2><p>Elke stip is een opgeslagen meting; ontbrekende scores worden niet doorgetrokken. Lijnen tonen geen koersverloop.</p><main>" + "".join(parts) + "<p>" + legend + "</p></main>"
+
+
 def render(records):
     rows = []
     for item in sorted(records, key=lambda r: r.get("updated_at", ""), reverse=True)[:100]:
@@ -89,7 +147,7 @@ td,th{padding:.65rem;text-align:left;border-bottom:1px solid #44536d}
 p{color:#bac8da}</style><h1>BTC — Historische signaaltijdlijn</h1>
 <p>Laatste 100 opgeslagen snapshots, nieuwste bovenaan. Alle signalen zijn voorlopig;
 dit is geen backtest. Tijdstempels zijn UTC. Ontbrekende gegevens blijven ONTBREEKT.</p>
-""" + summary_html(records) + """<main><table><thead><tr><th>Meting (UTC)</th>""" + head + "</tr></thead><tbody>" + body + "</tbody></table></main></html>"
+""" + chart_html(records) + summary_html(records) + """<main><table><thead><tr><th>Meting (UTC)</th>""" + head + "</tr></thead><tbody>" + body + "</tbody></table></main></html>"
 
 
 def build(source, output):
