@@ -18,7 +18,18 @@ class ScoringTests(unittest.TestCase):
 
     def test_bullish(self):
         result = aggregate([item("price", 2), item("volume", 1)])
-        self.assertEqual(result["label"], "strong_bull")
+        self.assertEqual(result["label"], "bullish")
+
+    def test_seven_grades(self):
+        expected = {
+            -3: "strongly_bearish", -2: "bearish",
+            -1: "slightly_bearish", 0: "neutral",
+            1: "slightly_bullish", 2: "bullish",
+            3: "strongly_bullish",
+        }
+        for score, label in expected.items():
+            with self.subTest(score=score):
+                self.assertEqual(aggregate([item("price", score)])["label"], label)
 
     def test_unverified_excluded(self):
         result = aggregate([item("price", -2), item("cvd", 2, "unverified")])
