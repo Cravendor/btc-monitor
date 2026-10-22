@@ -10,8 +10,10 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 try:
     from .enrich import collect_extra
+    from .cvd import collect_cvd
 except ImportError:
     from enrich import collect_extra
+    from cvd import collect_cvd
 
 URL = 'https://api.bitget.com/api/v2/mix/market/ticker?symbol=BTCUSDT&productType=USDT-FUTURES'
 ENDPOINTS = {
@@ -76,13 +78,13 @@ def main():
     started = utcnow()
     metrics = {name: fetch(*spec) for name, spec in ENDPOINTS.items()}
     metrics.update(collect_extra(metrics))
+    metrics['cvd_4h'] = collect_cvd(metrics['candles_4h'])
     successes = sum(item['status'] == 'ok' for item in metrics.values())
     status = 'ok' if successes == len(metrics) else ('partial' if successes else 'error')
     record = {
         'schema_version': 2, 'exchange': 'bitget', 'market': 'USDT-FUTURES', 'symbol': 'BTCUSDT', 'started_at': started.isoformat(),
         'finished_at': utcnow().isoformat(), 'status': status, 'metrics': metrics,
-        'cvd_4h': {'status': 'not_collected', 'value': None,
-                   'reason': 'Requires complete trade coverage of the full 4h interval; five aggTrades are insufficient.'},
+        'cvd_4h': metrics['cvd_4h'],
     }
     run = os.environ.get('GITHUB_RUN_ID', 'local')
     attempt = os.environ.get('GITHUB_RUN_ATTEMPT', '1')
