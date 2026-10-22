@@ -40,8 +40,4 @@ def collect_native_timeframes(now=None, requester=request):
             metric["signal"] = {"status": "unavailable", "timeframe": tf,
                                 "reason": "native candle source unavailable"}
         output[tf] = metric
-    output["1w"] = {
-        "status": "not_collected", "data": None,
-        "signal": {"status": "unavailable", "timeframe": "1w",
-                   "reason": "weekly exchange candle boundary not yet validated"}}
     return output
