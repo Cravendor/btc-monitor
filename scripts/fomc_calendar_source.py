@@ -9,6 +9,7 @@ from urllib.request import Request, urlopen
 from datetime import datetime, timezone
 import json
 import re
+from scripts.fomc_calendar_parser import parse_meetings
 
 SOURCE = "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
 
@@ -37,8 +38,8 @@ def source_snapshot(html, fetched_at=None):
     if "FOMC" not in text and "Federal Open Market Committee" not in text:
         raise ValueError("unexpected official calendar response")
     return {"source_url": SOURCE, "retrieved_at": stamp,
-            "status": "source_observed_unparsed",
-            "events": [], "raw_text_excerpt": text[:20000]}
+            "status": "parsed_unconfirmed",
+            "events": parse_meetings(html), "raw_text_excerpt": text[:20000]}
 
 if __name__ == "__main__":
     print(json.dumps(source_snapshot(fetch_official_page()), ensure_ascii=False, indent=2))
