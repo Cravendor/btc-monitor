@@ -1,0 +1,41 @@
+name: Signal Performance Report Preview
+
+on:
+  push:
+    branches:
+      - feature/market-intelligence-engine
+    paths:
+      - 'scripts/signal_performance_report.py'
+      - 'tests/test_signal_performance_report.py'
+      - 'data/history/signals.json'
+      - '.github/workflows/signal-performance-preview.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run report unit tests
+        run: python -m unittest discover -s tests -p 'test_signal_performance_report.py' -v
+      - name: Generate report from real archived signals, or explicit no-data state
+        run: |
+          mkdir -p output
+          if [ -f data/history/signals.json ]; then
+            python scripts/signal_performance_report.py data/history/signals.json output/signal-performance.html
+          else
+            printf '%s\n' '<!doctype html><html lang="nl"><meta charset="utf-8"><title>BTC Signal Performance</title><h1>BTC Signal Performance</h1><p>ONTBREEKT: nog geen gevalideerde historische signalendataset beschikbaar.</p></html>' > output/signal-performance.html
+          fi
+      - name: Upload preview (not public Pages)
+        uses: actions/upload-artifact@v4
+        with:
+          name: signal-performance-preview
+          path: output/signal-performance.html
+          retention-days: 30
