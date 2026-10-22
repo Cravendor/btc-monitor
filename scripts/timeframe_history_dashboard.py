@@ -2,11 +2,66 @@
 import html
 import json
 from pathlib import Path
+from datetime import datetime, timezone, timedelta
 
 TIMEFRAMES = ("5m", "15m", "30m", "1h", "4h", "1d", "1w")
 LABELS = {"bearish": "Bearish", "slightly_bearish": "Licht bearish",
           "neutral": "Neutraal", "slightly_bullish": "Licht bullish",
           "bullish": "Bullish"}
+
+
+
+def summarize(records, hours):
+    """Summarize observed snapshots only; no inference for missing intervals."""
+    valid = []
+    for entry in records:
+        try:
+            stamp = datetime.fromisoformat(entry["updated_at"].replace("Z", "+00:00"))
+            if stamp.tzinfo is not None:
+                valid.append((stamp.astimezone(timezone.utc), entry))
+        except (KeyError, TypeError, ValueError, AttributeError):
+            continue
+    if not valid:
+        return None
+    end = max(t for t, _ in valid)
+    start = end - timedelta(hours=hours)
+    # Require coverage across the requested window, not just two nearby snapshots.
+    window = sorted(((t, r) for t, r in valid if start <= t <= end), key=lambda x: x[0])
+    if len(window) < 2 or window[0][0] > start + timedelta(hours=min(hours / 4, 4)):
+        return None
+    output = {}
+    for tf in TIMEFRAMES:
+        observed = []
+        for _, row in window:
+            signal = (row.get("signals") or {}).get(tf) or {}
+            grade = signal.get("grade") if signal.get("status") == "ok" else None
+            if grade in LABELS:
+                observed.append(grade)
+        changes = sum(a != b for a, b in zip(observed, observed[1:]))
+        output[tf] = {"observations": len(observed), "changes": changes,
+                      "bullish": sum(g in ("bullish", "slightly_bullish") for g in observed),
+                      "bearish": sum(g in ("bearish", "slightly_bearish") for g in observed),
+                      "neutral": observed.count("neutral")}
+    return output
+
+
+def summary_html(records):
+    sections = []
+    for label, hours in (("24 uur", 24), ("7 dagen", 168), ("30 dagen", 720)):
+        stats = summarize(records, hours)
+        if stats is None:
+            sections.append("<h2>" + label + "</h2><p>ONTBREEKT — onvoldoende historische dekking.</p>")
+            continue
+        rows = []
+        for tf, item in stats.items():
+            rows.append("<tr><th>" + tf.upper() + "</th><td>" + str(item["observations"]) +
+                        "</td><td>" + str(item["bullish"]) + "</td><td>" +
+                        str(item["neutral"]) + "</td><td>" + str(item["bearish"]) +
+                        "</td><td>" + str(item["changes"]) + "</td></tr>")
+        sections.append("<h2>" + label + "</h2><p>Aantallen snapshots, geen tijdgewogen percentages.</p>" +
+                        "<main><table><tr><th>TF</th><th>Metingen</th><th>Bull</th><th>Neutraal</th><th>Bear</th><th>Wissels</th></tr>" +
+                        "".join(rows) + "</table></main>")
+    return "".join(sections)
 
 
 def render(records):
@@ -34,7 +89,7 @@ td,th{padding:.65rem;text-align:left;border-bottom:1px solid #44536d}
 p{color:#bac8da}</style><h1>BTC — Historische signaaltijdlijn</h1>
 <p>Laatste 100 opgeslagen snapshots, nieuwste bovenaan. Alle signalen zijn voorlopig;
 dit is geen backtest. Tijdstempels zijn UTC. Ontbrekende gegevens blijven ONTBREEKT.</p>
-<main><table><thead><tr><th>Meting (UTC)</th>""" + head + "</tr></thead><tbody>" + body + "</tbody></table></main></html>"
+""" + summary_html(records) + """<main><table><thead><tr><th>Meting (UTC)</th>""" + head + "</tr></thead><tbody>" + body + "</tbody></table></main></html>"
 
 
 def build(source, output):
