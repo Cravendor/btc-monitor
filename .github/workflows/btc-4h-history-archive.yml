@@ -1,0 +1,59 @@
+name: Archive BTC 4H provisional history
+
+# Release candidate only: this workflow is inactive on the default branch
+# until this pull request is reviewed and merged.
+on:
+  schedule:
+    - cron: '47 */4 * * *'
+  workflow_dispatch:
+
+permissions: {}
+concurrency:
+  group: btc-market-collector
+  cancel-in-progress: false
+
+jobs:
+  archive:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: Checkout default branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: true
+      - name: Archive only a fresh validated observation
+        id: archive
+        shell: bash
+        run: |
+          mkdir -p data/history
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from scripts.archive_fresh_4h import run
+          result = run('data/latest.json', 'data/history/bitget_4h_context.jsonl')
+          print(json.dumps(result, sort_keys=True))
+          with open(__import__('os').environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write('status=' + result['status'] + '\n')
+          PY
+      - name: Commit only changed historical records
+        if: steps.archive.outputs.status == 'archived'
+        shell: bash
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- data/history/bitget_4h_context.jsonl
+          if git diff --cached --quiet; then
+            echo 'No history change to commit'
+            exit 0
+          fi
+          git commit -m 'Archive provisional BTC 4H observation'
+          git pull --rebase origin "$DEFAULT_BRANCH"
+          git push origin "HEAD:$DEFAULT_BRANCH"
