@@ -20,6 +20,26 @@ class MultiTimeframeTests(unittest.TestCase):
                 self.assertEqual(result["status"], "provisional")
                 self.assertEqual(result["confidence"], "low")
 
+    def test_disagreement_is_neutral(self):
+        tf = "1h"
+        period = INTERVAL_MS[tf]
+        now = datetime.fromtimestamp(124 * period / 1000, timezone.utc).isoformat()
+        candles = self.candles(tf, last=100)
+        for i in range(17, 23):
+            candles[i]["close"] = 108
+        result = assess(candles, tf, now)
+        self.assertEqual(result["grade"], "neutral")
+        self.assertFalse(result["evidence"]["directional_agreement"])
+
+    def test_strong_label_requires_volume(self):
+        tf = "1h"
+        period = INTERVAL_MS[tf]
+        now = datetime.fromtimestamp(124 * period / 1000, timezone.utc).isoformat()
+        candles = self.candles(tf, last=108)
+        self.assertEqual(assess(candles, tf, now)["grade"], "slightly_bullish")
+        candles[-1]["base_volume_btc"] = 20
+        self.assertEqual(assess(candles, tf, now)["grade"], "bullish")
+
     def test_missing_candle_unavailable(self):
         period = INTERVAL_MS["15m"]
         now = datetime.fromtimestamp(124 * period / 1000, timezone.utc).isoformat()
