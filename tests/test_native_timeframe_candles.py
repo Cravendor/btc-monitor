@@ -7,9 +7,10 @@ class NativeTimeframeCandlesTests(unittest.TestCase):
     def test_all_supported_intervals(self):
         for tf, p in PERIOD_MS.items():
             with self.subTest(tf=tf):
-                rows = [[str(p*i), "100", "102", "98", "101", "10", "1000"]
+                offset = 4*86400000 if tf == "1w" else 0
+                rows = [[str(offset+p*i), "100", "102", "98", "101", "10", "1000"]
                         for i in range(100, 124)]
-                now = datetime.fromtimestamp(p*124/1000, timezone.utc).isoformat()
+                now = datetime.fromtimestamp((offset+p*124)/1000, timezone.utc).isoformat()
                 result = validate_rows(rows, tf, now)
                 self.assertEqual(len(result["candles"]), 24)
                 self.assertTrue(result["closed_only"])
