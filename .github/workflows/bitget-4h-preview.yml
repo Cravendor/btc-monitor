@@ -1,0 +1,59 @@
+name: Bitget 4H Assessment Preview
+
+on:
+  push:
+    branches:
+      - feature/market-intelligence-engine
+    paths:
+      - 'scripts/bitget_*.py'
+      - 'scripts/price_structure_strategy.py'
+      - 'scripts/evaluate_bitget_snapshot.py'
+      - 'tests/test_bitget_*.py'
+      - 'tests/test_price_structure_strategy.py'
+      - 'tests/test_evaluate_bitget_snapshot.py'
+      - '.github/workflows/bitget-4h-preview.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run bridge and scoring tests
+        run: |
+          python -m unittest discover -s tests -p 'test_bitget_*.py' -v
+          python -m unittest discover -s tests -p 'test_price_structure_strategy.py' -v
+          python -m unittest discover -s tests -p 'test_evaluate_bitget_snapshot.py' -v
+      - name: Evaluate checked-in Bitget snapshot at snapshot collection time
+        run: |
+          mkdir -p output
+          if [ -f data/latest.json ]; then
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          from scripts.bitget_4h_assessment import assess_latest_4h
+          feed=json.loads(Path('data/latest.json').read_text())
+          timestamp=feed.get('updated_at')
+          if timestamp:
+              result=assess_latest_4h(feed, timestamp)
+          else:
+              result={'status':'unavailable','grade':None,'reason':'missing updated_at'}
+          result['evaluation_mode']='historical_snapshot_at_collection_time'
+          Path('output/bitget-4h-assessment.json').write_text(json.dumps(result,indent=2)+'\n')
+          PY
+          else
+            printf '%s\n' '{"status":"unavailable","grade":null,"reason":"missing data/latest.json"}' > output/bitget-4h-assessment.json
+          fi
+      - name: Upload assessment preview only
+        uses: actions/upload-artifact@v4
+        with:
+          name: bitget-4h-assessment-preview
+          path: output/bitget-4h-assessment.json
+          retention-days: 30
