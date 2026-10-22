@@ -147,6 +147,8 @@ def main():
             'grade': signal.get('grade') if signal.get('status') == 'provisional' else None,
             'confidence': signal.get('confidence') if signal.get('status') == 'provisional' else None,
             'evidence_state': (signal.get('evidence') or {}).get('state') if signal.get('status') == 'provisional' else None,
+            'model_version': signal.get('model_version') if signal.get('status') == 'provisional' else None,
+            'candle_close_price': (candles[-1].get('close') if candles and signal.get('status') == 'provisional' else None),
             'closed_candles': len(candles) if isinstance(candles, list) else None,
             'observed_at': signal.get('observed_at') or metric.get('observed_at'),
             'error': metric.get('error') or signal.get('reason'),
