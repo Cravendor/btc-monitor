@@ -37,7 +37,19 @@ def consume(inst, path):
                 {"instType": inst, "channel": "trade", "instId": "BTCUSDT"}]}))
             retry = 0
             last_frame = time.monotonic()
-            last_ping = last_frame
+            ping_stop = threading.Event()
+            send_lock = threading.Lock()
+            def keepalive():
+                # Bitget requires application-level ping even during busy feeds.
+                while not ping_stop.wait(25) and not STOP.is_set():
+                    try:
+                        with send_lock:
+                            ws.send("ping")
+                    except Exception as exc:
+                        logging.warning("%s ping failed: %s", market, str(exc)[:120])
+                        break
+            ping_thread = threading.Thread(target=keepalive, daemon=True)
+            ping_thread.start()
             logging.info("%s connected", market)
             while not STOP.is_set():
                 try:
@@ -45,9 +57,6 @@ def consume(inst, path):
                 except websocket.WebSocketTimeoutException:
                     if time.monotonic() - last_frame > 35:
                         raise TimeoutError("no inbound frames")
-                    if time.monotonic() - last_ping > 20:
-                        ws.send("ping")
-                        last_ping = time.monotonic()
                     continue
                 last_frame = time.monotonic()
                 if raw == "pong":
@@ -77,6 +86,10 @@ def consume(inst, path):
         except Exception as exc:
             logging.warning("%s disconnected: %s", market, str(exc)[:180])
         finally:
+            if "ping_stop" in locals():
+                ping_stop.set()
+                ping_thread.join(timeout=2)
+                del ping_stop
             if ws:
                 try:
                     ws.close()
