@@ -1,14 +1,14 @@
 # DS415+ — zero-subscription CVD preparation
 
 **State: storage/journal and tests only. NOT a working Bitget stream collector.**
-Confirmed from user's DSM screen: DS415+ runs DSM 7.1.1-42962 Update 9. Python 3 availability, DSM version,
+Confirmed on NAS: DS415+ runs DSM 7.1.1-42962 Update 9 and Python 3.8.12 at /usr/bin/python3 (not /usr/local/bin/python3). Python 3 availability, DSM version,
 TLS certificates and WebSocket library compatibility must be checked on the
 actual NAS before choosing a runtime. Do not assume Docker/Container Manager
 is available on this model.
 
 ## Safe deployment approach
 
-1. On the DS415+, inspect Python 3 availability and free disk
+1. On the DS415+, confirm Python 3.8.12 and inspect free disk
    space in Package Center/Control Panel. Do not expose SSH to the internet.
 2. Make a shared folder such as `btc-cvd` on an existing volume. Keep the
    SQLite database there so restarts do not erase trades.
