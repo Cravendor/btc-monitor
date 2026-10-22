@@ -122,6 +122,52 @@ def chart_html(records):
     return "<h2>Signaaltrend (−2 bearish tot +2 bullish)</h2><p>Elke stip is een opgeslagen meting; ontbrekende scores worden niet doorgetrokken. Lijnen tonen geen koersverloop.</p><main>" + "".join(parts) + "<p>" + legend + "</p></main>"
 
 
+
+def freshness_html(records):
+    """Browser recomputes freshness on view; never claim build-time status is live."""
+    valid = []
+    for entry in records:
+        try:
+            stamp = datetime.fromisoformat(entry["updated_at"].replace("Z", "+00:00"))
+            if stamp.tzinfo is not None and isinstance(entry.get("signals"), dict):
+                valid.append((stamp.astimezone(timezone.utc), entry))
+        except (KeyError, TypeError, ValueError, AttributeError):
+            continue
+    valid.sort(key=lambda pair: pair[0], reverse=True)
+    if not valid:
+        return '<section><h2>Datakwaliteit</h2><p>ONTBREEKT — geen geldige meting beschikbaar.</p></section>'
+    stamp, entry = valid[0]
+    stamp_text = html.escape(stamp.isoformat())
+    status = []
+    for tf in TIMEFRAMES:
+        signal = entry["signals"].get(tf) or {}
+        ok = signal.get("status") == "ok" and signal.get("grade") in LABELS
+        status.append(f'<li>{tf.upper()}: {"beschikbaar" if ok else "ONTBREEKT"}</li>')
+    return ('<section><h2>Datakwaliteit</h2><p id="freshness" data-updated="' +
+            stamp_text + '">Controleren… (laatste meting: ' + stamp_text +
+            ')</p><p>ACTUEEL ≤60 minuten; VEROUDERD >60 minuten. ' +
+            'ONTBREEKT betekent dat geen geldige meting beschikbaar is.</p><ul>' +
+            "".join(status) + '</ul></section>')
+
+
+FRESHNESS_SCRIPT = """<script>
+(function () {
+  const el = document.getElementById("freshness");
+  if (!el) return;
+  function refresh() {
+    const last = Date.parse(el.dataset.updated);
+    const age = (Date.now() - last) / 60000;
+    const state = !Number.isFinite(age) || age < -5 ? "ONTBREEKT — ongeldige tijd" :
+      age > 60 ? "VEROUDERD" : "ACTUEEL";
+    el.textContent = state + " — laatste meting " + el.dataset.updated +
+      (Number.isFinite(age) ? " (" + Math.max(0, Math.floor(age)) + " minuten geleden)" : "");
+  }
+  refresh();
+  setInterval(refresh, 60000);
+})();
+</script>"""
+
+
 def render(records):
     rows = []
     for item in sorted(records, key=lambda r: r.get("updated_at", ""), reverse=True)[:100]:
@@ -147,7 +193,7 @@ td,th{padding:.65rem;text-align:left;border-bottom:1px solid #44536d}
 p{color:#bac8da}</style><h1>BTC — Historische signaaltijdlijn</h1>
 <p>Laatste 100 opgeslagen snapshots, nieuwste bovenaan. Alle signalen zijn voorlopig;
 dit is geen backtest. Tijdstempels zijn UTC. Ontbrekende gegevens blijven ONTBREEKT.</p>
-""" + chart_html(records) + summary_html(records) + """<main><table><thead><tr><th>Meting (UTC)</th>""" + head + "</tr></thead><tbody>" + body + "</tbody></table></main></html>"
+""" + freshness_html(records) + chart_html(records) + summary_html(records) + """<main><table><thead><tr><th>Meting (UTC)</th>""" + head + "</tr></thead><tbody>" + body + "</tbody></table></main>" + FRESHNESS_SCRIPT + "</html>"
 
 
 def build(source, output):
