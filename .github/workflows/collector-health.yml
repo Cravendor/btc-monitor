@@ -1,7 +1,7 @@
 name: BTC collector health check
 on:
   schedule:
-    - cron: '7,37 * * * *'
+    - cron: '13,43 * * * *'
   workflow_dispatch:
 permissions: {}
 concurrency:
