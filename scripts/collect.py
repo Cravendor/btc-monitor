@@ -76,6 +76,17 @@ def main():
     started = utcnow()
     metrics = {name: fetch(*spec) for name, spec in ENDPOINTS.items()}
     metrics.update(collect_extra(metrics))
+    # Native timeframes are optional context; per-timeframe failures stay explicit.
+    try:
+        from scripts.multi_timeframe_collector import collect_native_timeframes
+    except ImportError:
+        from multi_timeframe_collector import collect_native_timeframes
+    native = collect_native_timeframes()
+    metrics['multi_timeframe'] = {
+        'status': 'ok', 'data': native,
+        'observed_at': utcnow().isoformat(),
+        'scope': 'Individual timeframe statuses are authoritative; 1w not collected.'}
+
     successes = sum(item['status'] == 'ok' for item in metrics.values())
     status = 'ok' if successes == len(metrics) else ('partial' if successes else 'error')
     record = {
