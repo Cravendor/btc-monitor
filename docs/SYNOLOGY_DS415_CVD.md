@@ -44,3 +44,7 @@ still have real costs. This preparation does not change the running monitor.
 ## Live connectivity probe confirmed — 2026-10-22 08:05 UTC
 
 User ran `scripts/bitget_ws_probe.py` on DS415+ with Python 3.8.12 and websocket-client 1.8.0. Both `SPOT` and `USDT-FUTURES` subscribed to BTCUSDT successfully. Each returned a 50-trade `snapshot` followed by an `update`. Observed trade object keys: `price`, `side`, `size`, `tradeId`, `ts`. This verifies connectivity and schema only, NOT continuous coverage, aggressor-side interpretation, unit equivalence, or 4H CVD completeness. Do not treat initial snapshots as continuous backfill or as proof of a gap-free interval.
+
+## Multi-timeframe architecture decision
+
+Collect the raw Bitget Spot and USDT-Futures BTCUSDT trade streams once, continuously. Maintain UTC-aligned 1-minute buckets per market (taker-buy BTC, taker-sell BTC, signed delta, trade count, first/last timestamp, coverage state), then derive 5m, 15m, 30m, 1h, 4h, 1d and 1w buckets from **complete** minute buckets only. Week begins Monday 00:00 UTC. Do not confuse timeframe delta (sum within window) with cumulative CVD (sum since explicit baseline). A missing/incomplete minute invalidates the containing higher-timeframe coverage. Preserve separate Spot and USDT-Futures measures and expose timestamps and provenance. Do not mark a window complete merely because WebSocket stayed connected: independently verify coverage and handle reconnect/backfill. The existing 4H monitor remains unchanged until tested integration.
