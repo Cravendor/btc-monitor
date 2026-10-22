@@ -1,0 +1,58 @@
+name: Bitget Combined Market Context Preview
+
+on:
+  push:
+    branches:
+      - feature/market-intelligence-engine
+    paths:
+      - 'scripts/bitget_market_context.py'
+      - 'scripts/derivatives_context.py'
+      - 'scripts/market_context_report.py'
+      - 'tests/test_bitget_market_context.py'
+      - 'tests/test_derivatives_context.py'
+      - 'tests/test_market_context_report.py'
+      - '.github/workflows/bitget-market-context-preview.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test combined context
+        run: |
+          python -m unittest discover -s tests -p 'test_bitget_market_context.py' -v
+          python -m unittest discover -s tests -p 'test_derivatives_context.py' -v
+          python -m unittest discover -s tests -p 'test_market_context_report.py' -v
+      - name: Analyze checked-in snapshot only
+        run: |
+          mkdir -p output
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scripts.bitget_market_context import assess_market_context
+          path = Path('data/latest.json')
+          if path.exists():
+              feed = json.loads(path.read_text())
+              now = feed.get('updated_at')
+              result = assess_market_context(feed, now) if now else {
+                  'status':'unavailable','grade':None,'reason':'missing updated_at'}
+          else:
+              result = {'status':'unavailable','grade':None,'reason':'missing snapshot'}
+          result['evaluation_mode'] = 'historical_snapshot_at_collection_time'
+          Path('output/bitget-market-context.json').write_text(
+              json.dumps(result, indent=2, allow_nan=False)+'\n')
+          PY
+      - name: Upload read-only preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: bitget-market-context-preview
+          path: output/bitget-market-context.json
+          retention-days: 30
