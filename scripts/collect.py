@@ -152,6 +152,11 @@ def main():
         }
     health_path = Path('data/timeframe-health.json')
     health_path.write_text(json.dumps(health, indent=2, allow_nan=False) + '\n')
+    try:
+        from scripts.timeframe_signal_history import record_health
+    except ImportError:
+        from timeframe_signal_history import record_health
+    record_health(health)
     summary = os.environ.get('GITHUB_STEP_SUMMARY')
     if summary:
         with open(summary, 'a') as handle:

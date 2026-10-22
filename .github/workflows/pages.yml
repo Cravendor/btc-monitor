@@ -10,6 +10,7 @@ on:
       - scripts/context_trend_dashboard.py
       - scripts/multi_timeframe_dashboard.py
       - data/latest.json
+      - data/history/timeframe_signals.jsonl
       - .github/workflows/pages.yml
   workflow_dispatch:
   workflow_run:
