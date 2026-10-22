@@ -1,0 +1,47 @@
+name: BTC collector health check
+on:
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+permissions: {}
+concurrency:
+  group: btc-collector-health
+  cancel-in-progress: false
+jobs:
+  check:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - name: Validate health checker
+        run: python3 -m unittest discover -s tests -p 'test_collector_health.py'
+      - name: Check persisted snapshot freshness
+        run: python3 -m scripts.collector_health
+      - name: Save health report even if stale
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- data/collector-health.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Update BTC collector health'
+            git pull --rebase origin "$DEFAULT_BRANCH"
+            git push origin "HEAD:$DEFAULT_BRANCH"
+          fi
+      - name: Flag stale or missing snapshots
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          health = json.loads(Path("data/collector-health.json").read_text())
+          print("Collector status:", health["status"])
+          if health["status"] != "current":
+              raise SystemExit("BTC snapshots stale or missing; see data/collector-health.json")
+          PY
