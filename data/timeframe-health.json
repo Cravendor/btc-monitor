@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-22T20:40:46.825241+00:00",
+  "updated_at": "2026-10-22T20:44:54.660130+00:00",
   "exchange": "bitget",
   "market": "USDT-FUTURES",
   "symbol": "BTCUSDT",
@@ -12,6 +12,8 @@
       "grade": "neutral",
       "confidence": "low",
       "evidence_state": "no_direction",
+      "model_version": "multi_tf_evidence_v0.2",
+      "candle_close_price": 81306.6,
       "closed_candles": 99,
       "observed_at": "2026-10-22T20:40:00+00:00",
       "error": null
@@ -22,6 +24,8 @@
       "grade": "neutral",
       "confidence": "low",
       "evidence_state": "no_direction",
+      "model_version": "multi_tf_evidence_v0.2",
+      "candle_close_price": 81333.2,
       "closed_candles": 99,
       "observed_at": "2026-10-22T20:30:00+00:00",
       "error": null
@@ -32,6 +36,8 @@
       "grade": "neutral",
       "confidence": "low",
       "evidence_state": "no_direction",
+      "model_version": "multi_tf_evidence_v0.2",
+      "candle_close_price": 81333.2,
       "closed_candles": 99,
       "observed_at": "2026-10-22T20:30:00+00:00",
       "error": null
@@ -42,6 +48,8 @@
       "grade": "neutral",
       "confidence": "low",
       "evidence_state": "partial_direction",
+      "model_version": "multi_tf_evidence_v0.2",
+      "candle_close_price": 81467.5,
       "closed_candles": 99,
       "observed_at": "2026-10-22T20:00:00+00:00",
       "error": null
@@ -52,6 +60,8 @@
       "grade": "slightly_bearish",
       "confidence": "low",
       "evidence_state": "aligned",
+      "model_version": "multi_tf_evidence_v0.2",
+      "candle_close_price": 81467.5,
       "closed_candles": 99,
       "observed_at": "2026-10-22T20:00:00+00:00",
       "error": null
@@ -62,6 +72,8 @@
       "grade": "slightly_bullish",
       "confidence": "low",
       "evidence_state": "aligned",
+      "model_version": "multi_tf_evidence_v0.2",
+      "candle_close_price": 84054.9,
       "closed_candles": 89,
       "observed_at": "2026-10-22T00:00:00+00:00",
       "error": null
@@ -72,6 +84,8 @@
       "grade": "slightly_bullish",
       "confidence": "low",
       "evidence_state": "aligned",
+      "model_version": "multi_tf_evidence_v0.2",
+      "candle_close_price": 82066.0,
       "closed_candles": 36,
       "observed_at": "2026-10-19T00:00:00+00:00",
       "error": null
