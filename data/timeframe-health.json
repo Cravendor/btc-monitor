@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-22T20:32:10.891827+00:00",
+  "updated_at": "2026-10-22T20:35:28.796568+00:00",
   "exchange": "bitget",
   "market": "USDT-FUTURES",
   "symbol": "BTCUSDT",
@@ -12,7 +12,7 @@
       "grade": "neutral",
       "confidence": "low",
       "closed_candles": 99,
-      "observed_at": "2026-10-22T20:30:00+00:00",
+      "observed_at": "2026-10-22T20:35:00+00:00",
       "error": null
     },
     "15m": {
