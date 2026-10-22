@@ -16,8 +16,16 @@ class MultiTimeframeCollectorTests(unittest.TestCase):
             p = PERIOD_MS[tf]
             offset = 4*86400000 if tf == "1w" else 0
             boundary = (int(now.timestamp()*1000)-offset)//p*p+offset
-            rows = [[str(boundary - p*(24-i)), "100", "102", "98", "101", "10", "1000"]
-                    for i in range(24)]
+            if tf == "1w":
+                from urllib.parse import parse_qs, urlsplit
+                params = parse_qs(urlsplit(url).query)
+                start = int(params["startTime"][0])
+                end = int(params["endTime"][0])
+                rows = [[str(t), "100", "102", "98", "101", "10", "1000"]
+                        for t in range(start, end, p)]
+            else:
+                rows = [[str(boundary - p*(24-i)), "100", "102", "98", "101", "10", "1000"]
+                        for i in range(24)]
             return {"status": "ok", "data": transform(rows)}
         result = collect_native_timeframes(now, requester)
         for tf in PERIOD_MS:

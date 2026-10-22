@@ -48,8 +48,10 @@ def validate_rows(rows, timeframe, as_of):
             raise ValueError("conflicting duplicate candle")
         parsed[ts] = entry
     ordered = [parsed[t] for t in sorted(parsed)]
-    if len(ordered) < 24 or ordered[-1]["open_time_ms"] != boundary - period:
-        raise ValueError("missing latest closed candle or insufficient coverage")
+    if len(ordered) < 24:
+        raise ValueError(f"insufficient closed {timeframe} candles: {len(ordered)}/24; historical pagination required")
+    if ordered[-1]["open_time_ms"] != boundary - period:
+        raise ValueError(f"latest closed {timeframe} candle missing: expected {boundary - period}, got {ordered[-1]['open_time_ms']}")
     if any(b["open_time_ms"] - a["open_time_ms"] != period
            for a, b in zip(ordered[-24:], ordered[-23:])):
         raise ValueError("non-contiguous recent candles")
