@@ -85,7 +85,7 @@ def main():
     metrics['multi_timeframe'] = {
         'status': 'ok', 'data': native,
         'observed_at': utcnow().isoformat(),
-        'scope': 'Individual timeframe statuses are authoritative; 1w not collected.'}
+        'scope': 'Individual timeframe statuses are authoritative.'}
 
     successes = sum(item['status'] == 'ok' for item in metrics.values())
     status = 'ok' if successes == len(metrics) else ('partial' if successes else 'error')
@@ -127,6 +127,31 @@ def main():
     temporary = feed_path.with_suffix('.tmp')
     temporary.write_text(json.dumps(feed, indent=2, allow_nan=False) + '\n')
     temporary.replace(feed_path)
+    # Compact machine-readable health report, avoiding large latest.json fetches.
+    health = {
+        'schema_version': 1,
+        'updated_at': feed['updated_at'],
+        'exchange': 'bitget',
+        'market': 'USDT-FUTURES',
+        'symbol': 'BTCUSDT',
+        'snapshot_status': status,
+        'timeframes': {},
+    }
+    for tf, metric in native.items():
+        signal = metric.get('signal') or {}
+        candle_data = metric.get('data')
+        candles = candle_data.get('candles') if isinstance(candle_data, dict) else None
+        health['timeframes'][tf] = {
+            'status': metric.get('status', 'missing_data'),
+            'signal_status': signal.get('status', 'unavailable'),
+            'grade': signal.get('grade') if signal.get('status') == 'provisional' else None,
+            'confidence': signal.get('confidence') if signal.get('status') == 'provisional' else None,
+            'closed_candles': len(candles) if isinstance(candles, list) else None,
+            'observed_at': signal.get('observed_at') or metric.get('observed_at'),
+            'error': metric.get('error') or signal.get('reason'),
+        }
+    health_path = Path('data/timeframe-health.json')
+    health_path.write_text(json.dumps(health, indent=2, allow_nan=False) + '\n')
     summary = os.environ.get('GITHUB_STEP_SUMMARY')
     if summary:
         with open(summary, 'a') as handle:
