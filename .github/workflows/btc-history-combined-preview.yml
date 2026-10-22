@@ -1,0 +1,66 @@
+name: BTC 4H Combined History and Dashboard Preview
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/market-intelligence-engine
+    paths:
+      - '.github/workflows/btc-history-combined-preview.yml'
+      - 'scripts/context_trend_dashboard.py'
+      - 'scripts/provisional_context_archive.py'
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test archive and trend modules
+        run: |
+          python -m unittest discover -s tests -p 'test_provisional_context_archive.py' -v
+          python -m unittest discover -s tests -p 'test_context_trends.py' -v
+          python -m unittest discover -s tests -p 'test_context_trend_dashboard.py' -v
+      - name: Build combined read-only preview from actual snapshot
+        run: |
+          mkdir -p output
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scripts.bitget_market_context import assess_market_context
+          from scripts.provisional_context_archive import append_context
+          from scripts.context_trend_dashboard import build
+          from datetime import datetime, timezone
+          snapshot = Path('data/latest.json')
+          now = datetime.now(timezone.utc).isoformat()
+          archive = Path('output/bitget_4h_context.jsonl')
+          existing = Path('data/history/bitget_4h_context.jsonl')
+          if existing.exists():
+              archive.write_bytes(existing.read_bytes())
+          result = {'status': 'unavailable', 'reason': 'missing snapshot'}
+          if snapshot.exists():
+              feed = json.loads(snapshot.read_text(encoding='utf-8'))
+              observed = feed.get('updated_at')
+              if observed:
+                  assessment = assess_market_context(feed, observed)
+                  if assessment.get('status') == 'provisional' and assessment.get('derivatives_status') == 'context_only':
+                      added = append_context(assessment, archive)
+                      result = {'status': 'preview_only', 'new_record': added,
+                                'observed_at': assessment['observed_at']}
+                  else:
+                      result = {'status': 'unavailable', 'reason': assessment.get('reason', 'ineligible')}
+          build(archive, 'output/btc-4h-history.html', now)
+          Path('output/status.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(result))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: btc-history-combined-readonly-preview
+          path: output/
+          retention-days: 30
