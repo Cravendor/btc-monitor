@@ -57,6 +57,14 @@ def assess(candles, timeframe, as_of):
     trend_vote = 1 if delta > 0.5 else -1 if delta < -0.5 else 0
     momentum_vote = 1 if momentum_6_pct > 0.5 else -1 if momentum_6_pct < -0.5 else 0
     agreement = trend_vote != 0 and trend_vote == momentum_vote
+    if agreement:
+        evidence_state = "aligned"
+    elif trend_vote != 0 and momentum_vote != 0:
+        evidence_state = "conflicting"
+    elif trend_vote == 0 and momentum_vote == 0:
+        evidence_state = "no_direction"
+    else:
+        evidence_state = "partial_direction"
     # Two agreeing directional measures are needed for a directional label.
     # Strong labels require a large price displacement AND elevated volume.
     if agreement:
@@ -72,7 +80,7 @@ def assess(candles, timeframe, as_of):
             "momentum_6_pct": round(momentum_6_pct, 4),
             "volume_ratio": round(volume_ratio, 4) if volume_ratio is not None else None,
             "evidence": {"trend_vote": trend_vote, "momentum_vote": momentum_vote,
-                         "directional_agreement": agreement, "elevated_volume": bool(volume_ratio is not None and volume_ratio >= 1.2)},
+                         "directional_agreement": agreement, "state": evidence_state, "elevated_volume": bool(volume_ratio is not None and volume_ratio >= 1.2)},
             "confidence": "low", "quality": "provisional_price_volume_only",
             "cvd_status": "unavailable", "model_version": "multi_tf_evidence_v0.2",
             "note": "Heuristic uncalibrated labels; no CVD, orderflow or backtested confidence"}
