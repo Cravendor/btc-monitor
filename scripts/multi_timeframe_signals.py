@@ -22,6 +22,7 @@ def assess(candles, timeframe, as_of):
     now = datetime.fromisoformat(as_of.replace("Z", "+00:00"))
     if now.tzinfo is None:
         raise ValueError("timezone required")
+    offset = 4 * 86400000 if timeframe == "1w" else 0
     parsed = []
     for candle in candles:
         try:
@@ -32,7 +33,7 @@ def assess(candles, timeframe, as_of):
             return {"status": "unavailable", "reason": "invalid candle"}
         if (not all(isfinite(n) for n in (o, h, l, c, v))
                 or min(o, h, l, c) <= 0 or v < 0 or
-                h < max(o, c) or l > min(o, c) or t % period != 0):
+                h < max(o, c) or l > min(o, c) or (t - offset) % period != 0):
             return {"status": "unavailable", "reason": "invalid candle geometry"}
         if t + period <= now.timestamp() * 1000:
             parsed.append((t, c, v))

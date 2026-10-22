@@ -6,7 +6,7 @@ from scripts.multi_timeframe_signals import assess, INTERVAL_MS
 class MultiTimeframeTests(unittest.TestCase):
     def candles(self, tf, last=102):
         period = INTERVAL_MS[tf]
-        start = 100 * period
+        start = 100 * period + (4 * 86400000 if tf == "1w" else 0)
         return [{"open_time_ms": start + i * period,
                  "open": 100, "high": 110, "low": 90,
                  "close": last if i == 23 else 100,
@@ -15,7 +15,7 @@ class MultiTimeframeTests(unittest.TestCase):
     def test_supported_timeframes(self):
         for tf, period in INTERVAL_MS.items():
             with self.subTest(tf=tf):
-                now = datetime.fromtimestamp((124 * period) / 1000, timezone.utc).isoformat()
+                now = datetime.fromtimestamp((124 * period + (4 * 86400000 if tf == "1w" else 0)) / 1000, timezone.utc).isoformat()
                 result = assess(self.candles(tf), tf, now)
                 self.assertEqual(result["status"], "provisional")
                 self.assertEqual(result["confidence"], "low")

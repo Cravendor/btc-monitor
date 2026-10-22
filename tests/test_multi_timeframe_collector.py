@@ -12,16 +12,17 @@ class MultiTimeframeCollectorTests(unittest.TestCase):
             self.assertIn("granularity=", url)
             tf = next(t for t, g in {
                 "5m":"5m", "15m":"15m", "30m":"30m", "1h":"1H",
-                "4h":"4H", "1d":"1D"}.items() if "granularity="+g in url)
+                "4h":"4H", "1d":"1Dutc", "1w":"1Wutc"}.items() if "granularity="+g in url)
             p = PERIOD_MS[tf]
-            boundary = int(now.timestamp()*1000)//p*p
+            offset = 4*86400000 if tf == "1w" else 0
+            boundary = (int(now.timestamp()*1000)-offset)//p*p+offset
             rows = [[str(boundary - p*(24-i)), "100", "102", "98", "101", "10", "1000"]
                     for i in range(24)]
             return {"status": "ok", "data": transform(rows)}
         result = collect_native_timeframes(now, requester)
         for tf in PERIOD_MS:
             self.assertEqual(result[tf]["signal"]["status"], "provisional")
-        self.assertEqual(result["1w"]["status"], "not_collected")
+        self.assertEqual(result["1w"]["signal"]["status"], "provisional")
 
     def test_failed_api_is_unavailable(self):
         def failed(url, transform, bitget):
