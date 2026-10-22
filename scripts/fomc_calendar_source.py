@@ -9,7 +9,10 @@ from urllib.request import Request, urlopen
 from datetime import datetime, timezone
 import json
 import re
-from scripts.fomc_calendar_parser import parse_meetings
+try:
+    from scripts.fomc_calendar_parser import parse_meetings
+except ModuleNotFoundError:
+    from fomc_calendar_parser import parse_meetings
 
 SOURCE = "https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm"
 
