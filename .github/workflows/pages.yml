@@ -22,6 +22,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Validate collector and CVD contracts
+        run: python3 -m unittest discover -s tests
       - name: Stage public dashboard
         run: |
           mkdir _site
