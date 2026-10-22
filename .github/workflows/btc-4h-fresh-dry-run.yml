@@ -1,0 +1,44 @@
+name: BTC 4H Fresh Snapshot Archive Dry Run
+
+on:
+  push:
+    branches:
+      - release/btc-4h-history
+    paths:
+      - 'scripts/archive_fresh_4h.py'
+      - '.github/workflows/btc-4h-fresh-dry-run.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dry-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate fresh snapshot and prepare temporary history
+        run: |
+          mkdir -p output
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from datetime import datetime, timezone
+          from scripts.archive_fresh_4h import run
+          from scripts.context_trend_dashboard import build
+          archive = Path('output/provisional_4h_history.jsonl')
+          result = run('data/latest.json', archive)
+          Path('output/dry_run_status.json').write_text(json.dumps(result, indent=2))
+          build(archive, 'output/btc-4h-history.html',
+                datetime.now(timezone.utc).isoformat())
+          print(json.dumps(result))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: btc-4h-fresh-archive-dry-run
+          path: output/
+          retention-days: 30

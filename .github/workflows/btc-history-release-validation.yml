@@ -1,0 +1,44 @@
+name: BTC 4H History Release Validation
+
+on:
+  push:
+    branches:
+      - release/btc-4h-history
+  pull_request:
+    paths:
+      - 'scripts/**'
+      - 'tests/**'
+      - '.github/workflows/btc-history-release-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile source
+        run: python -m compileall -q scripts tests
+      - name: Run isolated release tests
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Generate read-only HTML from existing archive
+        run: |
+          mkdir -p output
+          python - <<'PY'
+          from datetime import datetime, timezone
+          from scripts.context_trend_dashboard import build
+          build('data/history/bitget_4h_context.jsonl',
+                'output/btc-4h-history.html',
+                datetime.now(timezone.utc).isoformat())
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: btc-history-release-preview
+          path: output/btc-4h-history.html
+          retention-days: 30
