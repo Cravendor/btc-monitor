@@ -3,6 +3,9 @@ on:
   schedule:
   - cron: '23,53 * * * *'
   workflow_dispatch:
+  workflow_run:
+    workflows: ['Archive BTC 4H provisional history']
+    types: [completed]
   push:
     branches: [main]
     paths: [scripts/**, tests/**, .github/workflows/btc.yml]
@@ -14,7 +17,7 @@ concurrency:
 
 jobs:
   collect:
-    if: github.event.repository.private == false
+    if: github.event.repository.private == false && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
