@@ -8,6 +8,8 @@ on:
       - data/history/bitget_4h_context.jsonl
       - scripts/context_trends.py
       - scripts/context_trend_dashboard.py
+      - scripts/multi_timeframe_dashboard.py
+      - data/latest.json
       - .github/workflows/pages.yml
   workflow_dispatch:
 permissions: {}
@@ -42,6 +44,7 @@ jobs:
                 '_site/btc-4h-history.html',
                 datetime.now(timezone.utc).isoformat())
           PY
+          python -m scripts.multi_timeframe_dashboard data/latest.json _site/btc-timeframes.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
