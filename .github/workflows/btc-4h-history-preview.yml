@@ -1,0 +1,65 @@
+name: BTC 4H History Read-Only Preview
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/market-intelligence-engine
+    paths:
+      - '.github/workflows/btc-4h-history-preview.yml'
+      - 'scripts/provisional_context_archive.py'
+      - 'tests/test_provisional_context_archive.py'
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate archive logic
+        run: python -m unittest discover -s tests -p 'test_provisional_context_archive.py' -v
+      - name: Build read-only archive preview
+        run: |
+          mkdir -p output
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scripts.bitget_market_context import assess_market_context
+          from scripts.provisional_context_archive import append_context
+          source = Path('data/latest.json')
+          report = {'status': 'unavailable', 'reason': 'missing data/latest.json'}
+          if source.exists():
+              feed = json.loads(source.read_text(encoding='utf-8'))
+              observed = feed.get('updated_at')
+              if observed:
+                  result = assess_market_context(feed, observed)
+                  if result.get('status') == 'provisional' and result.get('derivatives_status') == 'context_only':
+                      target = Path('output/bitget_4h_context.jsonl')
+                      existing = Path('data/history/bitget_4h_context.jsonl')
+                      if existing.exists():
+                          target.write_bytes(existing.read_bytes())
+                      added = append_context(result, target)
+                      report = {'status': 'preview_only', 'new_record': added,
+                                'grade': result['grade'], 'observed_at': result['observed_at'],
+                                'archive_file': str(target)}
+                  else:
+                      report = {'status': 'unavailable',
+                                'reason': result.get('reason', 'not eligible')}
+              else:
+                  report = {'status': 'unavailable', 'reason': 'missing updated_at'}
+          Path('output/archive-preview-status.json').write_text(
+              json.dumps(report, indent=2, allow_nan=False) + '\n', encoding='utf-8')
+          print(json.dumps(report))
+          PY
+      - name: Upload preview artifact only
+        uses: actions/upload-artifact@v4
+        with:
+          name: btc-4h-history-readonly-preview
+          path: output/
+          retention-days: 30

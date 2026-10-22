@@ -1,0 +1,39 @@
+name: Market Intelligence Tests
+
+on:
+  push:
+    branches:
+      - feature/market-intelligence-engine
+    paths:
+      - 'scripts/market_*.py'
+      - 'scripts/macro_events.py'
+      - 'scripts/price_levels.py'
+      - 'tests/test_market_*.py'
+      - 'tests/test_macro_scenarios.py'
+      - '.github/workflows/market-intelligence-tests.yml'
+  pull_request:
+    paths:
+      - 'scripts/market_*.py'
+      - 'scripts/macro_events.py'
+      - 'scripts/price_levels.py'
+      - 'tests/test_market_*.py'
+      - 'tests/test_macro_scenarios.py'
+      - '.github/workflows/market-intelligence-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run isolated unit tests (no external dependencies)
+        run: |
+          python -m unittest discover -s tests -p 'test_market_*.py' -v
+          python -m unittest discover -s tests -p 'test_macro_scenarios.py' -v

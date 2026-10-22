@@ -1,0 +1,52 @@
+name: BTC Historical Trend Dashboard Preview
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/market-intelligence-engine
+    paths:
+      - 'scripts/context_trends.py'
+      - 'scripts/context_trend_dashboard.py'
+      - 'tests/test_context_trend_dashboard.py'
+      - '.github/workflows/btc-trend-dashboard-preview.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run historical dashboard tests
+        run: |
+          python -m unittest discover -s tests -p 'test_context_trends.py' -v
+          python -m unittest discover -s tests -p 'test_context_trend_dashboard.py' -v
+      - name: Generate HTML preview without repository writes
+        run: |
+          mkdir -p output
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scripts.context_trend_dashboard import build
+          archive = Path('data/history/bitget_4h_context.jsonl')
+          snapshot = Path('data/latest.json')
+          as_of = None
+          if snapshot.exists():
+              as_of = json.loads(snapshot.read_text(encoding='utf-8')).get('updated_at')
+          if not as_of:
+              from datetime import datetime, timezone
+              as_of = datetime.now(timezone.utc).isoformat()
+          build(archive, 'output/btc-4h-history.html', as_of)
+          PY
+      - name: Upload read-only HTML preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: btc-4h-history-dashboard-preview
+          path: output/btc-4h-history.html
+          retention-days: 30

@@ -1,0 +1,33 @@
+name: BTC Market Intelligence Full Test Suite
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/market-intelligence-engine
+    paths:
+      - 'scripts/**'
+      - 'tests/**'
+      - '.github/workflows/btc-full-tests.yml'
+  pull_request:
+    paths:
+      - 'scripts/**'
+      - 'tests/**'
+      - '.github/workflows/btc-full-tests.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile Python source
+        run: python -m compileall -q scripts tests
+      - name: Run full test suite
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
