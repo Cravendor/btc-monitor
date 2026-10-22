@@ -168,7 +168,51 @@ FRESHNESS_SCRIPT = """<script>
 </script>"""
 
 
-def render(records):
+
+def collector_health_html(health):
+    """Show persisted watchdog result separately from the snapshot freshness indicator."""
+    if not isinstance(health, dict):
+        return '<section><h2>Collectorbewaking</h2><p>ONTBREEKT — geen health-rapport beschikbaar.</p></section>'
+    stamp = str(health.get("checked_at") or "")
+    latest = str(health.get("last_snapshot_at") or "")
+    status = health.get("status")
+    if status not in ("current", "stale", "missing"):
+        status = "missing"
+    label = {"current": "ACTUEEL", "stale": "VEROUDERD", "missing": "ONTBREEKT"}[status]
+    try:
+        parsed = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            raise ValueError("naive timestamp")
+        stamp = parsed.astimezone(timezone.utc).isoformat()
+    except (ValueError, TypeError):
+        stamp = ""
+    if not stamp:
+        return '<section><h2>Collectorbewaking</h2><p>ONTBREEKT — ongeldige controletijd.</p></section>'
+    return ('<section><h2>Collectorbewaking</h2><p id="collector-watchdog" data-checked="' +
+            html.escape(stamp, quote=True) + '" data-status="' + status +
+            '">Laatste watchdog-resultaat: ' + label + '</p><p>Laatste BTC-meting volgens watchdog: ' +
+            html.escape(latest) + '</p><p>De onafhankelijke watchdog is niet continu; ' +
+            'deze status kan verouderd zijn wanneer de controleworkflow niet draait.</p></section>')
+
+
+WATCHDOG_SCRIPT = """<script>
+(function () {
+  const el = document.getElementById("collector-watchdog");
+  if (!el) return;
+  function refresh() {
+    const age = (Date.now() - Date.parse(el.dataset.checked)) / 60000;
+    const stale = !Number.isFinite(age) || age > 65 || age < -5;
+    const labels = {current:"ACTUEEL", stale:"VEROUDERD", missing:"ONTBREEKT"};
+    el.textContent = (stale ? "CONTROLE VEROUDERD" : labels[el.dataset.status] || "ONTBREEKT") +
+      " — laatste watchdog-controle: " + el.dataset.checked;
+  }
+  refresh();
+  setInterval(refresh, 60000);
+})();
+</script>"""
+
+
+def render(records, health=None):
     rows = []
     for item in sorted(records, key=lambda r: r.get("updated_at", ""), reverse=True)[:100]:
         when = html.escape(str(item.get("updated_at", "ONTBREEKT")))
@@ -193,10 +237,10 @@ td,th{padding:.65rem;text-align:left;border-bottom:1px solid #44536d}
 p{color:#bac8da}</style><h1>BTC — Historische signaaltijdlijn</h1>
 <p>Laatste 100 opgeslagen snapshots, nieuwste bovenaan. Alle signalen zijn voorlopig;
 dit is geen backtest. Tijdstempels zijn UTC. Ontbrekende gegevens blijven ONTBREEKT.</p>
-""" + freshness_html(records) + chart_html(records) + summary_html(records) + """<main><table><thead><tr><th>Meting (UTC)</th>""" + head + "</tr></thead><tbody>" + body + "</tbody></table></main>" + FRESHNESS_SCRIPT + "</html>"
+""" + collector_health_html(health) + freshness_html(records) + chart_html(records) + summary_html(records) + """<main><table><thead><tr><th>Meting (UTC)</th>""" + head + "</tr></thead><tbody>" + body + "</tbody></table></main>" + FRESHNESS_SCRIPT + WATCHDOG_SCRIPT + "</html>"
 
 
-def build(source, output):
+def build(source, output, health_source=None):
     records = []
     path = Path(source)
     if path.exists():
@@ -207,11 +251,17 @@ def build(source, output):
                     records.append(entry)
             except ValueError:
                 continue
+    health = None
+    if health_source is not None:
+        try:
+            health = json.loads(Path(health_source).read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            pass
     target = Path(output)
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(render(records), encoding="utf-8")
+    target.write_text(render(records, health), encoding="utf-8")
 
 
 if __name__ == "__main__":
     import sys
-    build(sys.argv[1], sys.argv[2])
+    build(sys.argv[1], sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else None)
