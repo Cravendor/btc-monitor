@@ -1,18 +1,18 @@
 # DS415+ — zero-subscription CVD preparation
 
 **State: storage/journal and tests only. NOT a working Bitget stream collector.**
-The DS415+ is an older x86 Synology. Python 3 availability, DSM version,
+Confirmed from user's DSM screen: DS415+ runs DSM 7.1.1-42962 Update 9. Python 3 availability, DSM version,
 TLS certificates and WebSocket library compatibility must be checked on the
 actual NAS before choosing a runtime. Do not assume Docker/Container Manager
 is available on this model.
 
 ## Safe deployment approach
 
-1. On the DS415+, inspect DSM version, Python 3 availability and free disk
+1. On the DS415+, inspect Python 3 availability and free disk
    space in Package Center/Control Panel. Do not expose SSH to the internet.
 2. Make a shared folder such as `btc-cvd` on an existing volume. Keep the
    SQLite database there so restarts do not erase trades.
-3. This branch currently provides `scripts/cvd_store.py`, which uses only
+3. Prefer a lightweight Python + SQLite service rather than assuming Docker support. This branch currently provides `scripts/cvd_store.py`, which uses only
    the Python standard library for SQLite storage and atomic health export.
    A supported WebSocket client/runtime has **not** been installed.
 4. Future collection requires two distinct Bitget public trade feeds:
