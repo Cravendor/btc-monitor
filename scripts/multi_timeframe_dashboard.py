@@ -33,7 +33,7 @@ max-width:960px;margin:2rem auto;padding:1rem}
 section{background:#1c2940;padding:1.4rem;border-radius:16px;overflow:auto}
 table{width:100%;border-collapse:collapse}th,td{padding:.8rem;
 text-align:left;border-bottom:1px solid #44536d}p{color:#bac8da}</style>
-<h1>BTC — Multi-timeframe marktrichting</h1>
+<h1>BTC — Multi-timeframe marktrichting</h1>\n<p><a href="btc-signal-history.html" style="color:#93c5fd">Bekijk historische signaaltijdlijn →</a></p>
 <section><table><thead><tr><th>Timeframe</th><th>Signaal</th>
 <th>Betrouwbaarheid</th><th>Afgesloten candle (UTC)</th></tr></thead>
 <tbody>""" + "".join(rows) + """</tbody></table></section>
