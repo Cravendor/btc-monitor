@@ -10,6 +10,10 @@ LABELS = {"slightly_bearish": "Licht bearish", "bearish": "Bearish",
           "strongly_bearish": "Sterk bearish"}
 
 
+EVIDENCE = {"aligned": "Trend en momentum eens", "conflicting": "Trend en momentum tegengesteld",
+            "partial_direction": "Slechts één richtinggevend", "no_direction": "Geen duidelijke richting"}
+
+
 def render(feed):
     measurement = (feed.get("measurements") or [{}])[0]
     metrics = measurement.get("metrics") or {}
@@ -22,8 +26,9 @@ def render(feed):
         grade = LABELS.get(signal.get("grade"), "ONTBREEKT") if valid else "ONTBREEKT"
         confidence = "Laag (prijs-only)" if valid else "Geen"
         observed = signal.get("observed_at") if valid else "—"
+        evidence = EVIDENCE.get((signal.get("evidence") or {}).get("state"), "ONTBREEKT") if valid else "ONTBREEKT"
         rows.append("<tr><th>" + html.escape(tf.upper()) + "</th><td>" +
-                    html.escape(grade) + "</td><td>" + html.escape(confidence) +
+                    html.escape(grade) + "</td><td>" + html.escape(evidence) + "</td><td>" + html.escape(confidence) +
                     "</td><td>" + html.escape(str(observed)) + "</td></tr>")
     return """<!doctype html><html lang="nl"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -35,9 +40,9 @@ table{width:100%;border-collapse:collapse}th,td{padding:.8rem;
 text-align:left;border-bottom:1px solid #44536d}p{color:#bac8da}</style>
 <h1>BTC — Multi-timeframe marktrichting</h1>\n<p><a href="btc-signal-history.html" style="color:#93c5fd">Bekijk historische signaaltijdlijn →</a></p>
 <section><table><thead><tr><th>Timeframe</th><th>Signaal</th>
-<th>Betrouwbaarheid</th><th>Afgesloten candle (UTC)</th></tr></thead>
+<th>Onderbouwing</th><th>Betrouwbaarheid</th><th>Afgesloten candle (UTC)</th></tr></thead>
 <tbody>""" + "".join(rows) + """</tbody></table></section>
-<p>Alle scores zijn voorlopig, uitsluitend op prijsstructuur gebaseerd.
+<p>Alle scores zijn voorlopig en gebaseerd op prijs en volume. Een neutrale score kan ook tegenstrijdig bewijs betekenen.
 Volume is context, geen richtingsbevestiging. Ontbrekende candles, CVD of
 timeframes worden niet ingevuld. Geen handelsadvies.</p></html>"""
 
