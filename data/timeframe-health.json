@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-10-22T16:56:50.888805+00:00",
+  "exchange": "bitget",
+  "market": "USDT-FUTURES",
+  "symbol": "BTCUSDT",
+  "snapshot_status": "ok",
+  "timeframes": {
+    "5m": {
+      "status": "ok",
+      "signal_status": "provisional",
+      "grade": "slightly_bearish",
+      "confidence": "low",
+      "closed_candles": 99,
+      "observed_at": "2026-10-22T16:55:00+00:00",
+      "error": null
+    },
+    "15m": {
+      "status": "ok",
+      "signal_status": "provisional",
+      "grade": "neutral",
+      "confidence": "low",
+      "closed_candles": 99,
+      "observed_at": "2026-10-22T16:45:00+00:00",
+      "error": null
+    },
+    "30m": {
+      "status": "ok",
+      "signal_status": "provisional",
+      "grade": "neutral",
+      "confidence": "low",
+      "closed_candles": 99,
+      "observed_at": "2026-10-22T16:30:00+00:00",
+      "error": null
+    },
+    "1h": {
+      "status": "ok",
+      "signal_status": "provisional",
+      "grade": "slightly_bearish",
+      "confidence": "low",
+      "closed_candles": 99,
+      "observed_at": "2026-10-22T16:00:00+00:00",
+      "error": null
+    },
+    "4h": {
+      "status": "ok",
+      "signal_status": "provisional",
+      "grade": "slightly_bearish",
+      "confidence": "low",
+      "closed_candles": 99,
+      "observed_at": "2026-10-22T16:00:00+00:00",
+      "error": null
+    },
+    "1d": {
+      "status": "ok",
+      "signal_status": "provisional",
+      "grade": "slightly_bullish",
+      "confidence": "low",
+      "closed_candles": 89,
+      "observed_at": "2026-10-22T00:00:00+00:00",
+      "error": null
+    },
+    "1w": {
+      "status": "ok",
+      "signal_status": "provisional",
+      "grade": "bullish",
+      "confidence": "low",
+      "closed_candles": 36,
+      "observed_at": "2026-10-19T00:00:00+00:00",
+      "error": null
+    }
+  }
+}
