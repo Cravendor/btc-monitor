@@ -7,8 +7,8 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Optional, Sequence
 
-LABELS = {-2: "strong_bear", -1: "slight_bear", 0: "neutral",
-           1: "slight_bull", 2: "strong_bull"}
+LABELS = {-3: "strongly_bearish", -2: "bearish", -1: "slightly_bearish",
+           0: "neutral", 1: "slightly_bullish", 2: "bullish", 3: "strongly_bullish"}
 QUALITY = {"verified", "partial", "unverified", "missing", "stale"}
 TIMEFRAMES = {"5m", "15m", "30m", "1h", "4h", "1d", "1w", "1M"}
 
@@ -29,7 +29,7 @@ class Indicator:
         if self.quality not in QUALITY:
             raise ValueError("invalid quality")
         if self.score is not None and (type(self.score) is not int or self.score not in LABELS):
-            raise ValueError("score must be integer -2..2 or None")
+            raise ValueError("score must be integer -3..3 or None")
         if self.weight <= 0 or self.weight != self.weight or self.weight == float("inf"):
             raise ValueError("weight must be finite positive")
         if not self.source or not self.explanation:
@@ -65,16 +65,20 @@ def aggregate(indicators: Sequence[Indicator], min_coverage: float = 0.75):
                 "included": [i.name for i in valid], "excluded": excluded,
                 "reason": "insufficient verified coverage"}
     score = sum(i.score * i.weight for i in valid) / sum(i.weight for i in valid)
-    if score <= -1.5:
-        label = "strong_bear"
-    elif score < -0.25:
-        label = "slight_bear"
-    elif score <= 0.25:
+    if score <= -2.5:
+        label = "strongly_bearish"
+    elif score <= -1.5:
+        label = "bearish"
+    elif score < -0.5:
+        label = "slightly_bearish"
+    elif score <= 0.5:
         label = "neutral"
     elif score < 1.5:
-        label = "slight_bull"
+        label = "slightly_bullish"
+    elif score < 2.5:
+        label = "bullish"
     else:
-        label = "strong_bull"
+        label = "strongly_bullish"
     return {"label": label, "score": round(score, 4),
             "coverage": round(coverage, 4),
             "included": [i.name for i in valid], "excluded": excluded,
