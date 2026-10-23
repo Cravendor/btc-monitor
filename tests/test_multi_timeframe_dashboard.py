@@ -6,6 +6,7 @@ class MultiTimeframeDashboardTests(unittest.TestCase):
     def test_missing_is_not_neutral(self):
         page = render({"measurements": [{"metrics": {}}]})
         self.assertEqual(page.count("<td>ONTBREEKT</td>"), 14)
+        self.assertEqual(page.count("<td>GEEN CANDLE</td>"), 7)
         self.assertNotIn("<td>Neutraal</td>", page)
 
     def test_valid_signal(self):
@@ -16,6 +17,9 @@ class MultiTimeframeDashboardTests(unittest.TestCase):
         page = render(feed)
         self.assertIn("Licht bullish", page)
         self.assertEqual(page.count("<td>ONTBREEKT</td>"), 13)
+        self.assertIn('data-period-min="5"', page)
+        self.assertIn('data-closed="2026-10-22T12:00:00+00:00"', page)
+        self.assertEqual(page.count("<td>GEEN CANDLE</td>"), 6)
 
 
 if __name__ == "__main__":
