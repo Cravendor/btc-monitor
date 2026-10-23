@@ -1,8 +1,17 @@
 {
-  "schema_version": 1,
-  "checked_at": "2026-10-23T04:51:15.305489+00:00",
-  "last_snapshot_at": "2026-10-23T00:00:33.347676+00:00",
-  "age_seconds": 17442,
+  "schema_version": 2,
+  "coverage_24h": {
+    "window_start": "2026-10-22T05:21:05.191884+00:00",
+    "window_end": "2026-10-23T05:21:05.191884+00:00",
+    "expected_snapshots": 48,
+    "observed_snapshots": 17,
+    "coverage_percent": 35.4,
+    "max_observed_gap_seconds": 18014,
+    "status": "gaps_detected"
+  },
+  "checked_at": "2026-10-23T05:21:05.191884+00:00",
+  "last_snapshot_at": "2026-10-23T05:19:09.616986+00:00",
+  "age_seconds": 116,
   "max_age_seconds": 3600,
-  "status": "stale"
+  "status": "current"
 }
