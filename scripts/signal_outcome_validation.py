@@ -93,3 +93,33 @@ def evaluate(records, horizon_hours=24, tolerance_minutes=30):
                       "pending_forward_price": pending, "excluded": excluded,
                       "evaluated": matched + opposed}
     return result
+
+
+def evaluate_horizons(records, horizons=(1, 4, 24, 168)):
+    """Group directional outcomes by timeframe, horizon and original grade."""
+    return {hours: evaluate_by_grade(records, hours) for hours in horizons}
+
+
+def evaluate_by_grade(records, horizon_hours):
+    """Reuse the conservative evaluator on grade-filtered signals.
+
+    Preserve all valid candles as possible future prices, while selecting
+    only one original grade for outcome counting.
+    """
+    from copy import deepcopy
+    grades = tuple(DIRECTIONS)
+    result = {}
+    for grade in grades:
+        filtered = []
+        for record in records:
+            if not isinstance(record, dict):
+                continue
+            item = deepcopy(record)
+            for signal in (item.get("signals") or {}).values():
+                if isinstance(signal, dict) and signal.get("grade") in DIRECTIONS and signal.get("grade") != grade:
+                    signal["grade"] = "neutral"
+            filtered.append(item)
+        outcome = evaluate(filtered, horizon_hours=horizon_hours)
+        for tf, stats in outcome.items():
+            result.setdefault(tf, {})[grade] = stats
+    return result
