@@ -9,6 +9,12 @@ EXPECTED_INTERVAL_SECONDS = 1800
 COVERAGE_WINDOW_HOURS = 24
 
 
+def recovery_required(report, event):
+    """One fallback on scheduled/manual checks; never chain a collector retry."""
+    return (event in ("schedule", "workflow_dispatch") and
+            report.get("status") in ("stale", "missing"))
+
+
 def check(records, now):
     if now.tzinfo is None:
         raise ValueError("now must be timezone-aware")

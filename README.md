@@ -21,7 +21,7 @@ Voor CVD: zie [voorbereiding](docs/CVD.md). Er is geen 24/7 host geactiveerd en 
 
 ## Planning en beperkingen
 
-De planning is 00:17, 04:17, 08:17, 12:17, 16:17 en 20:17 **UTC**, onafhankelijk van Nederlandse zomer-/wintertijd. GitHub kan runs vertragen of overslaan. Openbare repositories kunnen na 60 dagen zonder repositoryactiviteit hun planning verliezen; controleer Actions als er geen nieuwe bestanden verschijnen. Een geheel niet gestarte run kan zelf geen foutbestand schrijven. Controleer dus ook gaten tussen tijdstempels. Er wordt niet achteraf aangevuld.
+De collector is gepland op minuut 23 en 53 van elk uur, het 4H-archief op minuut 17 en 47 en de watchdog op minuut 13 en 43 (**UTC**, onafhankelijk van Nederlandse zomer-/wintertijd). GitHub kan runs vertragen of overslaan. Openbare repositories kunnen na 60 dagen zonder repositoryactiviteit hun planning verliezen; controleer Actions als er geen nieuwe bestanden verschijnen. Een geheel niet gestarte run kan zelf geen foutbestand schrijven. Controleer dus ook gaten tussen tijdstempels. Er wordt niet achteraf aangevuld.
 
 Een beurs kan GitHub-runner-IP's of regio's blokkeren (bijvoorbeeld HTTP 451/403). De eerste handmatige run moet bevestigen welke bronnen bereikbaar zijn. De workflow probeert zulke beperkingen niet te omzeilen. De verzameling draait pas nadat je de bestanden op GitHub hebt gezet.
 
@@ -253,3 +253,25 @@ onbekende waarden, reset, intacte overige URL-onderdelen en ongewijzigde
 gegevenscellen. Dit vervangt geen visuele browser-, touch- of toegankelijkheids-
 controle; die blijft apart nodig. De bestaande GitHub-runner heeft Node; zonder
 Node slaat de lokale Python-testsuite alleen deze client-side rooktest over.
+
+
+## Eenmalige watchdog-herstelmeting (PR #38)
+
+Bij een geplande of handmatige watchdogcontrole wordt één extra collector gestart
+als de laatste opgeslagen meting meer dan 60 minuten oud is of ontbreekt.
+Een actuele meting (ook een opgeslagen foutmeting) wordt niet opnieuw verzameld.
+Controles na een collectorrun of codewijziging starten nooit herstel; er is geen
+herhaallus bij API-fouten. Alle collectortests moeten eerst slagen.
+
+Collector, 4H-archief en watchdog delen dezelfde concurrency-groep. De checkout
+gebeurt na het verkrijgen van die groep, zodat een inmiddels opgeslagen meting
+wordt meegewogen. GitHub kan nog steeds wachtende runs vervangen of schedules
+overslaan; dit is een extra herstelkans, geen halfuurgarantie of externe scheduler.
+
+Na herstel worden de ouderdom opnieuw berekend en alle geproduceerde snapshots,
+bronfouten en het watchdograpport opgeslagen. Het rapport vermeldt of herstel is
+geprobeerd, de stapuitkomst, bronstatus en activeringssoort. Een onvolledige
+herstelmeting blijft een rode run, ook als het archief weer recent is. Pages kan
+die waarschuwing publiceren via de bestaande watchdog-trigger. Tijdslimiet:
+maximaal drie minuten voor de herstelstap binnen de bestaande vijf minuten.
+Geen historische gaten worden opgevuld en er komen geen diensten of rechten bij.

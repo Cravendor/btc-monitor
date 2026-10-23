@@ -187,10 +187,15 @@ def collector_health_html(health):
     if not stamp:
         return '<section><h2>Collectorbewaking</h2><p>ONTBREEKT — ongeldige controletijd.</p></section>'
     coverage_text = coverage_html(health.get("coverage_24h"))
+    recovery = health.get("recovery")
+    recovery_text = ''
+    if isinstance(recovery, dict) and recovery.get('attempted') is True:
+        complete = recovery.get('outcome') == 'success' and recovery.get('collection_status') == 'ok'
+        recovery_text = '<p>Watchdog-herstelmeting: ' + ('GESLAAGD' if complete else 'ONVOLLEDIG / MISLUKT') + '. Bronstatus: ' + html.escape(str(recovery.get('collection_status') or 'ONTBREEKT')) + '.</p>'
     return ('<section><h2>Collectorbewaking</h2><p id="collector-watchdog" data-checked="' +
             html.escape(stamp, quote=True) + '" data-status="' + status +
             '">Laatste watchdog-resultaat: ' + label + '</p><p>Laatste BTC-meting volgens watchdog: ' +
-            html.escape(latest) + '</p><h3>24-uursdekking</h3>' + coverage_text + '<p>De onafhankelijke watchdog is niet continu; ' +
+            html.escape(latest) + '</p>' + recovery_text + '<h3>24-uursdekking</h3>' + coverage_text + '<p>De onafhankelijke watchdog is niet continu; ' +
             'deze status kan verouderd zijn wanneer de controleworkflow niet draait.</p></section>')
 
 

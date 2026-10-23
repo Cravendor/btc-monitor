@@ -15,7 +15,7 @@ on:
     branches: [main]
 permissions: {}
 concurrency:
-  group: btc-collector-health
+  group: btc-market-collector
   cancel-in-progress: false
 jobs:
   check:
@@ -35,25 +35,67 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ${{ github.event.repository.default_branch }}
-      - name: Validate health checker
+      - name: Validate collector and health checker
+        id: validate
         run: |
-          python3 -m unittest discover -s tests -p 'test_collector_health*.py'
-          python3 -m unittest discover -s tests -p 'test_history_coverage.py'
+          python3 -m unittest discover -s tests
       - name: Check persisted snapshot freshness
-        run: python3 -m scripts.collector_health
-      - name: Save health report even if stale
+        id: health
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          python3 - <<'PYCODE'
+          import os
+          from scripts.collector_health import run, recovery_required
+          report = run()
+          needed = recovery_required(report, os.environ['EVENT_NAME'])
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('recover=' + str(needed).lower() + '\n')
+          PYCODE
+      - name: Attempt one fallback collection
+        id: recover
+        if: steps.health.outputs.recover == 'true'
+        timeout-minutes: 3
+        run: python3 scripts/collect.py
+      - name: Recheck freshness after fallback
+        if: always() && steps.health.outcome == 'success'
+        env:
+          RECOVERY_NEEDED: ${{ steps.health.outputs.recover }}
+          RECOVERY_OUTCOME: ${{ steps.recover.outcome }}
+          COLLECTION_STATUS: ${{ steps.recover.outputs.status }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          python3 - <<'PYCODE'
+          import json, os
+          from pathlib import Path
+          from scripts.collector_health import run
+          report = run()
+          report['recovery'] = {
+              'attempted': os.environ['RECOVERY_NEEDED'] == 'true',
+              'outcome': os.environ['RECOVERY_OUTCOME'],
+              'collection_status': os.environ['COLLECTION_STATUS'] or None,
+              'event': os.environ['EVENT_NAME'],
+          }
+          Path('data/collector-health.json').write_text(json.dumps(report, indent=2) + '\n')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              summary.write('\nCollector freshness: **' + report['status'] + '**\n')
+              summary.write('\nFallback: ' + json.dumps(report['recovery']) + '\n')
+          PYCODE
+      - name: Save report and fallback snapshots even if incomplete
+        if: always() && steps.health.outcome == 'success'
         env:
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- data/collector-health.json
+          git add -- data
           if ! git diff --cached --quiet; then
-            git commit -m 'Update BTC collector health'
+            git commit -m 'Update BTC collector health and fallback data'
             git pull --rebase origin "$DEFAULT_BRANCH"
             git push origin "HEAD:$DEFAULT_BRANCH"
           fi
-      - name: Flag stale or missing snapshots
+      - name: Flag stale or incomplete collection
+        if: always() && steps.health.outcome == 'success'
         run: |
           python3 - <<'PY'
           import json
@@ -62,4 +104,7 @@ jobs:
           print("Collector status:", health["status"])
           if health["status"] != "current":
               raise SystemExit("BTC snapshots stale or missing; see data/collector-health.json")
+          recovery = health.get('recovery', {})
+          if recovery.get('attempted') and (recovery.get('outcome') != 'success' or recovery.get('collection_status') != 'ok'):
+              raise SystemExit('Fallback incomplete; saved source errors remain visible')
           PY
