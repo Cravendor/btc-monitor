@@ -52,7 +52,24 @@ def model_versions(records):
     return sorted(versions)
 
 
-def evaluate(records, horizon_hours=24, tolerance_minutes=30, *, selected_grade=None, selected_model=None):
+def non_overlapping_keys(keys, horizon, tolerance):
+    """Greedy chronological selection per model, before grade/outcome inspection.
+
+    Reserve the closed interval [signal candle close, horizon + tolerance].
+    Boundary-touching intervals are skipped. Missing prices and conflicts still
+    reserve their period; selecting successful/evaluable outcomes would bias it.
+    """
+    selected = set()
+    reserved_until = {}
+    for stamp, model in sorted(keys):
+        if model in reserved_until and stamp <= reserved_until[model]:
+            continue
+        selected.add((stamp, model))
+        reserved_until[model] = stamp + horizon + tolerance
+    return selected
+
+
+def evaluate(records, horizon_hours=24, tolerance_minutes=30, *, selected_grade=None, selected_model=None, sample_policy="all"):
     """Count unique signals and mutually exclusive evaluation readiness states.
 
     The archive's latest aware observation time is the cutoff, never wall-clock
@@ -62,6 +79,8 @@ def evaluate(records, horizon_hours=24, tolerance_minutes=30, *, selected_grade=
     """
     if horizon_hours <= 0 or tolerance_minutes < 0:
         raise ValueError("invalid evaluation horizon")
+    if sample_policy not in ("all", "non_overlapping"):
+        raise ValueError("unknown sample policy")
     horizon = timedelta(hours=horizon_hours)
     tolerance = timedelta(minutes=tolerance_minutes)
     candles = {tf: {} for tf in TIMEFRAMES}
@@ -98,16 +117,23 @@ def evaluate(records, horizon_hours=24, tolerance_minutes=30, *, selected_grade=
         counts = {key: 0 for key in (
             "confirmed_direction", "opposite_direction", "awaiting_horizon",
             "awaiting_price_window", "missing_forward_price", "unknown_observation_time",
-            "missing_initial_price", "unsupported_horizon", "excluded", "total_signals")}
+            "missing_initial_price", "unsupported_horizon", "excluded", "total_signals",
+            "candidate_signals", "overlap_skipped")}
         # A same-timeframe candle cannot resolve a shorter, misaligned horizon
         # unless the next close falls within the explicitly allowed tolerance.
         remainder = horizon.total_seconds() % periods[tf]
         unsupported = bool(remainder and periods[tf] - remainder > tolerance.total_seconds())
+        selected_keys = (non_overlapping_keys(signals[tf], horizon, tolerance)
+                         if sample_policy == "non_overlapping" else set(signals[tf]))
         for (stamp, model), candidate in signals[tf].items():
             if selected_model is not None and model != selected_model:
                 continue
             grades, values = candidate["grades"], candidate["prices"]
             if selected_grade is not None and selected_grade not in grades:
+                continue
+            counts["candidate_signals"] += 1
+            if (stamp, model) not in selected_keys:
+                counts["overlap_skipped"] += 1
                 continue
             counts["total_signals"] += 1
             if len(grades) != 1 or len(values) > 1 or len(candles[tf].get(stamp, ())) > 1:
@@ -145,12 +171,12 @@ def evaluate(records, horizon_hours=24, tolerance_minutes=30, *, selected_grade=
     return result
 
 
-def evaluate_horizons(records, horizons=(1, 4, 24, 168), *, selected_model=None):
+def evaluate_horizons(records, horizons=(1, 4, 24, 168), *, selected_model=None, sample_policy="all"):
     """Group directional outcomes by timeframe, horizon and original grade."""
-    return {hours: evaluate_by_grade(records, hours, selected_model=selected_model) for hours in horizons}
+    return {hours: evaluate_by_grade(records, hours, selected_model=selected_model, sample_policy=sample_policy) for hours in horizons}
 
 
-def evaluate_by_grade(records, horizon_hours, *, selected_model=None):
+def evaluate_by_grade(records, horizon_hours, *, selected_model=None, sample_policy="all"):
     """Filter candidates after conflict detection, retaining all forward prices.
 
     A conflicting signal contributes an exclusion to every affected original
@@ -158,13 +184,13 @@ def evaluate_by_grade(records, horizon_hours, *, selected_model=None):
     """
     result = {}
     for grade in DIRECTIONS:
-        outcome = evaluate(records, horizon_hours=horizon_hours, selected_grade=grade, selected_model=selected_model)
+        outcome = evaluate(records, horizon_hours=horizon_hours, selected_grade=grade, selected_model=selected_model, sample_policy=sample_policy)
         for tf, stats in outcome.items():
             result.setdefault(tf, {})[grade] = stats
     return result
 
 
-def evaluate_models(records, horizons=(1, 4, 24, 168)):
+def evaluate_models(records, horizons=(1, 4, 24, 168), *, sample_policy="all"):
     """Isolated model sample groups, preserving candles and conflicts globally."""
-    return {model: evaluate_horizons(records, horizons, selected_model=model)
+    return {model: evaluate_horizons(records, horizons, selected_model=model, sample_policy=sample_policy)
             for model in model_versions(records)}
