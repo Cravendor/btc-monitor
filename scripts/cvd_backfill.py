@@ -7,12 +7,14 @@ import argparse
 from decimal import Decimal, InvalidOperation, localcontext
 import hashlib
 import json
+import socket
+import ssl
 import os
 from pathlib import Path
 import sqlite3
 import sys
 import time
-from urllib.error import URLError
+from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 import uuid
 
@@ -30,6 +32,8 @@ CREATE TABLE IF NOT EXISTS cvd_backfill_trades(
  run_id TEXT NOT NULL,trade_id TEXT NOT NULL,ts_ms INTEGER NOT NULL,
  price TEXT NOT NULL,size_btc TEXT NOT NULL,side TEXT NOT NULL,page_no INTEGER NOT NULL,
  PRIMARY KEY(run_id,trade_id));
+CREATE INDEX IF NOT EXISTS cvd_backfill_page_rows
+ ON cvd_backfill_trades(run_id,page_no);
 '''
 
 
@@ -105,9 +109,101 @@ def open_store(output, journal):
     return db
 
 
+def parse_rows(rows, run_id, page_no, cursor, start, end):
+    if not isinstance(rows, list) or len(rows) > 1000:
+        raise AuditError('oversized_or_invalid_page')
+    parsed = []
+    previous_id = integer(cursor) if cursor is not None else None
+    for row in rows:
+        if not isinstance(row, dict) or row.get('symbol') != 'BTCUSDT':
+            raise AuditError('wrong_trade_identity')
+        ident = row.get('tradeId')
+        if not isinstance(ident, str) or str(integer(ident)) != ident:
+            raise AuditError('invalid_trade_id')
+        if previous_id is not None and integer(ident) >= previous_id:
+            raise AuditError('cursor_or_order_violation')
+        previous_id = integer(ident)
+        ts = integer(row.get('ts'))
+        if not start <= ts < end:
+            raise AuditError('trade_outside_interval')
+        side = row.get('side')
+        if not isinstance(side, str) or side.lower() not in ('buy', 'sell'):
+            raise AuditError('invalid_trade_side')
+        decimal(row.get('price'))
+        decimal(row.get('size'))
+        parsed.append((run_id, ident, ts, row['price'], row['size'], side.lower(), page_no))
+    return parsed
+
+
+def resume_checkpoint(db, run_id, start, end):
+    """Derive progress from durable page transactions, never from report counters."""
+    cursor, count, pages, exhausted = None, 0, 0, False
+    for number, old_cursor, next_cursor, row_count, digest, payload in db.execute(
+            'SELECT page_no,cursor,next_cursor,row_count,response_sha256,payload_json '
+            'FROM cvd_backfill_pages WHERE run_id=? ORDER BY page_no', (run_id,)):
+        if exhausted or number != pages + 1 or old_cursor != cursor:
+            raise AuditError('resume_page_chain_invalid')
+        if hashlib.sha256(payload.encode()).hexdigest() != digest:
+            raise AuditError('resume_payload_hash_mismatch')
+        obj = json.loads(payload)
+        if not isinstance(obj, dict) or obj.get('code') != '00000':
+            raise AuditError('resume_payload_invalid')
+        parsed = parse_rows(obj.get('data'), run_id, number, cursor, start, end)
+        expected_cursor = parsed[-1][1] if parsed else None
+        if row_count != len(parsed) or next_cursor != expected_cursor:
+            raise AuditError('resume_page_metadata_mismatch')
+        saved = db.execute('SELECT * FROM cvd_backfill_trades WHERE run_id=? AND page_no=? '
+                           'ORDER BY trade_id', (run_id, number)).fetchall()
+        if saved != sorted(parsed, key=lambda r: r[1]):
+            raise AuditError('resume_trade_payload_mismatch')
+        cursor, pages, count = next_cursor, number, count + len(parsed)
+        exhausted = not parsed
+    actual = db.execute('SELECT COUNT(*) FROM cvd_backfill_trades WHERE run_id=?',
+                        (run_id,)).fetchone()[0]
+    if count != actual:
+        raise AuditError('resume_orphan_trade_rows')
+    return cursor, pages, count, exhausted
+
+
+def failure_reason(exc):
+    if isinstance(exc, AuditError):
+        return str(exc)
+    if isinstance(exc, HTTPError):
+        return 'http_' + str(exc.code)
+    reason = exc.reason if isinstance(exc, URLError) else exc
+    if isinstance(reason, ssl.SSLCertVerificationError):
+        return 'tls_verification_failed'
+    if isinstance(reason, (socket.timeout, TimeoutError)):
+        return 'network_timeout'
+    if isinstance(exc, sqlite3.Error):
+        return 'sqlite_' + type(exc).__name__
+    if isinstance(exc, (URLError, ConnectionError)):
+        return 'network_error'
+    if isinstance(exc, OSError):
+        return 'storage_or_os_error'
+    return 'invalid_response_' + type(exc).__name__
+
+
+def transient(exc):
+    if isinstance(exc, HTTPError):
+        return exc.code in (500, 502, 503, 504)
+    reason = exc.reason if isinstance(exc, URLError) else exc
+    return isinstance(reason, (socket.timeout, TimeoutError, ConnectionError))
+
+
 def audit(db, market, end_ms=None, now_ms=None, max_pages=400, seconds=180,
-          fetch=request, clock=time.monotonic, pause=time.sleep):
+          fetch=request, clock=time.monotonic, pause=time.sleep, resume=None):
     now_ms = int(time.time() * 1000) if now_ms is None else now_ms
+    old_report = None
+    if resume is not None:
+        old = db.execute('SELECT market,start_ms,end_ms,report_json FROM cvd_backfill_runs '
+                         'WHERE run_id=?', (resume,)).fetchone()
+        if old is None or old[0] != market or (end_ms is not None and end_ms != old[2]):
+            raise AuditError('resume_market_or_interval_mismatch')
+        old_report = json.loads(old[3])
+        if old_report.get('status') != 'incomplete' or old[1] != old[2] - WINDOW:
+            raise AuditError('resume_requires_incomplete_run')
+        end_ms = old[2]
     end_ms = now_ms // WINDOW * WINDOW if end_ms is None else end_ms
     if (market not in PATHS or type(now_ms) is not int or type(end_ms) is not int or
             end_ms % WINDOW or end_ms < WINDOW or end_ms > now_ms - 60000 or
@@ -115,13 +211,20 @@ def audit(db, market, end_ms=None, now_ms=None, max_pages=400, seconds=180,
             not 1 <= seconds <= 600):
         raise AuditError('invalid_closed_interval_or_budget')
     start = end_ms - WINDOW
-    run_id = uuid.uuid4().hex
+    run_id = resume or uuid.uuid4().hex
     report = dict(run_id=run_id, market=market, exchange='bitget', symbol='BTCUSDT',
                   start_ms=start, end_ms=end_ms, status='incomplete', reason='in_progress',
                   coverage_verified=False, value=None, candidate_delta_btc=None,
                   pages=0, recovered_trades=0, pagination_exhausted=False,
                   candle_match=False, journal_missing=None, journal_extra=None,
-                  journal_conflicts=None, timestamp_rounding_matches=0)
+                  journal_conflicts=None, timestamp_rounding_matches=0,
+                  request_attempts=0, transient_retries=0,
+                  resume_count=(old_report.get('resume_count', 0) + 1) if old_report else 0)
+
+    cursor = None
+    if resume is not None:
+        cursor, pages, count, exhausted = resume_checkpoint(db, run_id, start, end_ms)
+        report.update(pages=pages, recovered_trades=count, pagination_exhausted=exhausted)
 
     def save():
         with db:
@@ -130,52 +233,45 @@ def audit(db, market, end_ms=None, now_ms=None, max_pages=400, seconds=180,
 
     save()
     deadline = clock() + seconds
-    cursor = None
     params = dict(symbol='BTCUSDT', startTime=str(start), endTime=str(end_ms - 1), limit='1000')
     extra = {'productType': 'USDT-FUTURES'} if market == 'usdt_futures' else {}
     params.update(extra)
 
     def get(suffix, query):
         # Pace both trade and candle requests below the documented 10 requests/s.
-        pause(0.2)
-        remaining = deadline - clock()
-        if remaining <= 0:
-            raise AuditError('time_budget_exhausted')
-        result = fetch(PATHS[market] + suffix, dict(query), min(10, remaining))
-        if clock() > deadline:
-            raise AuditError('time_budget_exhausted')
-        if not isinstance(result, dict) or result.get('code') != '00000' or not isinstance(result.get('data'), list):
-            raise AuditError('invalid_api_response')
-        return result
+        for attempt in range(3):
+            pause(0.2 if attempt == 0 else attempt)
+            remaining = deadline - clock()
+            if remaining <= 0:
+                raise AuditError('time_budget_exhausted')
+            report['request_attempts'] += 1
+            try:
+                result = fetch(PATHS[market] + suffix, dict(query), min(10, remaining))
+            except (URLError, OSError) as exc:
+                # Never retry 429, access blocks, TLS errors or malformed data.
+                retry = transient(exc)
+                if isinstance(exc, HTTPError) and exc.fp is not None:
+                    exc.close()
+                if not retry or attempt == 2:
+                    raise
+                report['transient_retries'] += 1
+                continue
+            if clock() > deadline:
+                raise AuditError('time_budget_exhausted')
+            if not isinstance(result, dict) or result.get('code') != '00000' or not isinstance(result.get('data'), list):
+                raise AuditError('invalid_api_response')
+            return result
 
     try:
-        for page_no in range(1, max_pages + 1):
+        first_page = report['pages'] + 1
+        for page_no in range(first_page, first_page + max_pages):
+            if report['pagination_exhausted']:
+                break
             if cursor is not None:
                 params['idLessThan'] = cursor
             response = get('fills-history', params)
             rows = response['data']
-            if len(rows) > 1000:
-                raise AuditError('oversized_page')
-            parsed = []
-            previous_id = integer(cursor) if cursor is not None else None
-            for row in rows:
-                if not isinstance(row, dict) or row.get('symbol') != 'BTCUSDT':
-                    raise AuditError('wrong_trade_identity')
-                ident = row.get('tradeId')
-                if not isinstance(ident, str) or str(integer(ident)) != ident:
-                    raise AuditError('invalid_trade_id')
-                if previous_id is not None and integer(ident) >= previous_id:
-                    raise AuditError('cursor_or_order_violation')
-                previous_id = integer(ident)
-                ts = integer(row.get('ts'))
-                if not start <= ts < end_ms:
-                    raise AuditError('trade_outside_interval')
-                side = row.get('side')
-                if not isinstance(side, str) or side.lower() not in ('buy', 'sell'):
-                    raise AuditError('invalid_trade_side')
-                decimal(row.get('price'))
-                decimal(row.get('size'))
-                parsed.append((run_id, ident, ts, row['price'], row['size'], side.lower(), page_no))
+            parsed = parse_rows(rows, run_id, page_no, cursor, start, end_ms)
             next_cursor = rows[-1]['tradeId'] if rows else None
             payload = json.dumps(response, sort_keys=True, separators=(',', ':'))
             with db:
@@ -258,8 +354,7 @@ def audit(db, market, end_ms=None, now_ms=None, max_pages=400, seconds=180,
                       candidate_delta_btc=delta)
     except (AuditError, OSError, URLError, sqlite3.Error, ValueError, TypeError, KeyError) as exc:
         db.rollback()
-        report.update(status='incomplete', reason=str(exc) if isinstance(exc, AuditError)
-                      else 'network_storage_or_response_failure')
+        report.update(status='incomplete', reason=failure_reason(exc))
     save()
     return report
 
@@ -272,14 +367,20 @@ def main():
     p.add_argument('--end-ms', type=int)
     p.add_argument('--max-pages', type=int, default=400)
     p.add_argument('--seconds', type=int, default=180)
+    p.add_argument('--resume', help='Continue an incomplete run in the candidate store')
     args = p.parse_args()
     os.umask(0o077)
-    db = open_store(args.store, args.journal)
-    try:
-        report = audit(db, args.market, args.end_ms,
-                       max_pages=args.max_pages, seconds=args.seconds)
-    finally:
-        db.close()
+    import fcntl
+    lock_path = Path(args.store).resolve().with_suffix('.lock')
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    with lock_path.open('a') as lock:
+        fcntl.flock(lock.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        db = open_store(args.store, args.journal)
+        try:
+            report = audit(db, args.market, args.end_ms,
+                           max_pages=args.max_pages, seconds=args.seconds, resume=args.resume)
+        finally:
+            db.close()
     # Aggregate summary only; full candle evidence remains in the private store.
     print(json.dumps({k: v for k, v in report.items() if k != 'candle_row'}, indent=2))
     return 0 if report['status'] == 'provider_consistent' else 1

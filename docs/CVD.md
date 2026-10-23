@@ -114,9 +114,14 @@ De standaardlimieten zijn 400 pagina's en een zachte tijdsbegroting van 180 seco
 met maximaal 1000 trades per pagina, maximaal 1 MiB per antwoord en 0,2 seconden
 pauze tussen verzoeken. De begroting wordt vóór en na elk verzoek gecontroleerd;
 dit is geen harde procesdeadline voor langzame socketreads of SQLite-werk.
-Geen automatische retries, achtergrondtaken of installatie. Een mislukte run
-bewaart de reeds gevalideerde pagina's voor inspectie; een nieuwe run begint
-opnieuw en vervangt de oude run niet.
+Er zijn maximaal drie pogingen per idempotent verzoek bij timeouts,
+verbindingsfouten en HTTP 500/502/503/504, met 1 en 2 seconden backoff binnen
+dezelfde tijdsbegroting. Geen retry bij HTTP 429, toegangsblokkades, TLS-controlefouten
+of ongeldige data. Foutredenen onderscheiden netwerk-timeout, HTTP-status,
+TLS-validatie, SQLite, OS/opslag en antwoordverwerking, zonder fouttekst of
+private URL's in het rapport op te nemen. Geen achtergrondtaken of installatie.
+Een mislukte run bewaart reeds gevalideerde pagina's voor inspectie. Een nieuwe
+run begint opnieuw; --resume vervolgt expliciet een bestaande incomplete run.
 
 Trade-ID's moeten strikt aflopen en lager zijn dan de vorige cursor; ID's hoeven
 niet opeenvolgend te zijn. Symbool, richting, positieve Decimal-prijs/hoeveelheid
@@ -167,6 +172,41 @@ Gebruik daarna --market usdt_futures voor futures. --end-ms kan een expliciete
 afgesloten UTC-4H-grens vastzetten zodat beide runs hetzelfde interval gebruiken.
 Exit 0 is uitsluitend provider_consistent; incomplete geeft exit 1. Bewaar en
 inspecteer het JSON-resultaat; publiceer de private kandidaatdatabase niet.
+
+### Hervatten zonder opnieuw te downloaden
+
+Een echte spotrun heeft 51.547 trades over het gesloten interval
+1792756800000–1792771200000 opgehaald, met exacte BTC- en quote-volumeovereenkomst
+en nul ontbrekende/extra/conflicterende journal-IDs. De daaropvolgende futuresrun
+is na 249 pagina's / 249.000 trades afgebroken met de oude algemene foutmelding.
+Die oude melding bewijst niet of netwerk, opslag of antwoordverwerking de oorzaak
+was. De bewaarde data kunnen met de nieuwe hervatroute worden vervolgd:
+
+```sh
+/volume1/btc-cvd/venv/bin/python -m scripts.cvd_backfill \
+  --journal /volume1/btc-cvd/trades.sqlite3 \
+  --store /volume1/btc-cvd/backfill/candidates.sqlite3 \
+  --market usdt_futures --resume 118b420de68341fd842e00ae273fad0a
+```
+
+Hervatten houdt run-ID, markt en interval vast. Een expliciete andere eindtijd,
+verkeerde markt, onbekende run of al geslaagde run wordt geweigerd. Alle bewaarde
+pagina's worden opnieuw gecontroleerd op opeenvolgende paginanummers, cursor-keten,
+payload-hash, geldige trade-inhoud en exacte overeenstemming tussen payload en
+kandidaatrijen. Voortgang wordt afgeleid uit duurzaam opgeslagen paginatransacties,
+ook als het rapport door een crash nog oudere tellers bevat. Een al opgeslagen
+lege eindpagina wordt niet opnieuw gedownload: dan volgen alleen de candle- en
+journalcontroles. Losse kandidaatrijen of veranderde pagina's blokkeren hervatten.
+
+De pagina- en tijdslimieten gelden per aanroep; bij --resume zijn maximaal
+--max-pages extra pagina's toegestaan. request_attempts en transient_retries
+tellen alleen de huidige aanroep; resume_count telt voortzettingen.
+De CLI gebruikt een exclusieve, niet-blokkerende lock naast de kandidaatdatabase,
+zodat twee herstelopdrachten die database niet tegelijk wijzigen. Dit is een
+afzonderlijke lock en raakt de live collector.lock of publish.lock niet.
+De SHA-controle is een lokale integriteitscontrole, geen cryptografisch bewijs
+van authenticiteit van de provider. coverage_verified en value blijven ongewijzigd
+false/null totdat de afzonderlijke dekkingsvalidatie en integratie klaar zijn.
 
 Primaire bronnen, geraadpleegd 23 oktober 2026:
 - [Bitget Classic Spot Market API](https://www.bitget.com/docs/catalog/classic-spot-market/classic-spot-market)

@@ -4,10 +4,12 @@ import json
 import os
 from pathlib import Path
 import sqlite3
+import socket
+import ssl
 import tempfile
 import unittest
 from unittest.mock import patch
-from urllib.error import URLError
+from urllib.error import HTTPError, URLError
 
 from scripts import cvd_backfill as backfill
 
@@ -235,6 +237,132 @@ class BackfillTests(unittest.TestCase):
             with self.assertRaises(backfill.AuditError):
                 backfill.request('/api/private', {}, 3)
             build.assert_not_called()
+
+    def test_resume_continues_cursor_without_refetching_saved_pages(self):
+        a = self.audit([[self.row('3')], URLError('interrupted')])
+        self.calls = []
+        result = backfill.audit(
+            self.db, 'spot', now_ms=self.end + backfill.WINDOW + 120000,
+            resume=a['run_id'], fetch=self.fetcher([[self.row('2', size='.25')], []]),
+            pause=lambda _: None)
+        self.assertEqual(result['status'], 'provider_consistent')
+        self.assertEqual(result['run_id'], a['run_id'])
+        self.assertEqual(result['end_ms'], self.end)
+        self.assertEqual(result['pages'], 3)
+        self.assertEqual(result['recovered_trades'], 2)
+        self.assertEqual(result['resume_count'], 1)
+        self.assertEqual(self.calls[0][1]['idLessThan'], '3')
+        self.assertEqual(self.db.execute('SELECT COUNT(*) FROM cvd_backfill_runs').fetchone()[0], 1)
+        self.assertFalse(result['coverage_verified'])
+        self.assertIsNone(result['value'])
+
+    def test_resume_uses_durable_pages_after_crash_before_report_checkpoint(self):
+        a = self.audit([[self.row('3')], URLError('interrupted')])
+        stale = dict(a, pages=0, recovered_trades=0, pagination_exhausted=False, reason='in_progress')
+        with self.db:
+            self.db.execute('UPDATE cvd_backfill_runs SET report_json=? WHERE run_id=?',
+                            (json.dumps(stale), a['run_id']))
+        result = backfill.audit(self.db, 'spot', resume=a['run_id'], now_ms=self.end + 120000,
+                                fetch=self.fetcher([[self.row('2', size='.25')], []]),
+                                pause=lambda _: None)
+        self.assertEqual(result['recovered_trades'], 2)
+        self.assertEqual(result['status'], 'provider_consistent')
+
+    def test_resume_can_finish_candle_check_without_repeating_exhausted_history(self):
+        normal = self.fetcher([[self.row('3'), self.row('2', size='.25')], []])
+
+        def interrupted(path, query, timeout):
+            if path.endswith('history-candles'):
+                raise URLError('interrupted')
+            return normal(path, query, timeout)
+
+        a = backfill.audit(self.db, 'spot', self.end, now_ms=self.end + 120000,
+                           fetch=interrupted, pause=lambda _: None)
+        self.assertTrue(a['pagination_exhausted'])
+        self.calls = []
+        result = backfill.audit(self.db, 'spot', resume=a['run_id'], now_ms=self.end + 120000,
+                                fetch=self.fetcher([]), pause=lambda _: None)
+        self.assertEqual(result['status'], 'provider_consistent')
+        self.assertEqual(len(self.calls), 1)
+        self.assertTrue(self.calls[0][0].endswith('history-candles'))
+
+    def test_resume_refuses_wrong_market_end_and_completed_run(self):
+        a = self.audit([[self.row('3')], URLError('interrupted')])
+        for market, end, ident in [('usdt_futures', None, a['run_id']),
+                                   ('spot', self.end + backfill.WINDOW, a['run_id']),
+                                   ('spot', None, 'missing')]:
+            with self.subTest(market=market, end=end, ident=ident), self.assertRaises(backfill.AuditError):
+                backfill.audit(self.db, market, end, now_ms=self.end + 120000,
+                               resume=ident, fetch=lambda *a: self.fail('must not fetch'))
+        complete = self.audit([[self.row('3'), self.row('2', size='.25')], []])
+        with self.assertRaises(backfill.AuditError):
+            backfill.audit(self.db, 'spot', now_ms=self.end + 120000,
+                           resume=complete['run_id'])
+
+    def test_resume_rejects_changed_payload_rows_chain_and_orphan_records(self):
+        for mutation in (
+                "UPDATE cvd_backfill_pages SET response_sha256='changed' WHERE run_id=?",
+                "UPDATE cvd_backfill_trades SET price='101' WHERE run_id=?",
+                "UPDATE cvd_backfill_pages SET cursor='999' WHERE run_id=?",
+                "UPDATE cvd_backfill_trades SET page_no=99 WHERE run_id=?"):
+            a = self.audit([[self.row('3')], URLError('interrupted')])
+            with self.db:
+                self.db.execute(mutation, (a['run_id'],))
+            with self.subTest(mutation=mutation), self.assertRaises(backfill.AuditError):
+                backfill.audit(self.db, 'spot', now_ms=self.end + 120000, resume=a['run_id'],
+                               fetch=lambda *a: self.fail('must not fetch'))
+
+    def test_resumed_page_limit_is_additional_and_still_fail_closed(self):
+        a = self.audit([[self.row('5')], URLError('interrupted')])
+        result = backfill.audit(self.db, 'spot', now_ms=self.end + 120000, resume=a['run_id'],
+                                max_pages=2, fetch=self.fetcher([[self.row('4')], [self.row('3')]]),
+                                pause=lambda _: None)
+        self.assertEqual(result['pages'], 3)
+        self.assertEqual(result['recovered_trades'], 3)
+        self.assertEqual(result['reason'], 'page_budget_exhausted')
+
+    def test_transient_timeout_retries_same_cursor_then_recovers(self):
+        result = self.audit([[self.row('3')], URLError(socket.timeout('timed out')),
+                             [self.row('2', size='.25')], []])
+        self.assertEqual(result['status'], 'provider_consistent')
+        self.assertEqual(result['transient_retries'], 1)
+        self.assertEqual(self.calls[1][1], self.calls[2][1])
+        self.assertEqual(result['request_attempts'], 5)
+
+    def test_diagnostics_distinguish_timeout_http_tls_storage_and_response_failures(self):
+        cases = [(URLError(socket.timeout('secret')), 'network_timeout', 3),
+                 (HTTPError('https://private', 503, 'secret', {}, None), 'http_503', 3),
+                 (HTTPError('https://private', 429, 'secret', {}, None), 'http_429', 1),
+                 (HTTPError('https://private', 403, 'secret', {}, None), 'http_403', 1),
+                 (URLError(ssl.SSLCertVerificationError('secret')), 'tls_verification_failed', 1),
+                 (sqlite3.OperationalError('secret'), 'sqlite_OperationalError', 1),
+                 (ValueError('secret'), 'invalid_response_ValueError', 1)]
+        for exc, reason, attempts in cases:
+            with self.subTest(reason=reason):
+                calls = []
+
+                def failed(*args):
+                    calls.append(args)
+                    raise exc
+
+                result = backfill.audit(self.db, 'spot', self.end, now_ms=self.end + 120000,
+                                        fetch=failed, pause=lambda _: None)
+                self.assertEqual(result['reason'], reason)
+                self.assertEqual(len(calls), attempts)
+                self.assertNotIn('secret', json.dumps(result))
+                self.assertIsNone(result['candidate_delta_btc'])
+
+    def test_cli_refuses_concurrent_writer_to_same_store(self):
+        import fcntl
+        output = self.root / 'candidates.sqlite3'
+        with output.with_suffix('.lock').open('a') as lock:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            with patch('sys.argv', ['cvd_backfill', '--market', 'spot', '--journal',
+                                    str(self.journal), '--store', str(output)]), \
+                    patch.object(backfill, 'audit') as audit:
+                with self.assertRaises(BlockingIOError):
+                    backfill.main()
+                audit.assert_not_called()
 
 
 if __name__ == '__main__':
