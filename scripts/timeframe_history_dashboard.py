@@ -188,10 +188,26 @@ def collector_health_html(health):
         stamp = ""
     if not stamp:
         return '<section><h2>Collectorbewaking</h2><p>ONTBREEKT — ongeldige controletijd.</p></section>'
+    coverage = health.get("coverage_24h")
+    coverage_html = '<p>24-uursdekking: ONTBREEKT — nog geen geldig dekkingsrapport.</p>'
+    if isinstance(coverage, dict):
+        observed = coverage.get("observed_snapshots")
+        expected = coverage.get("expected_snapshots")
+        gap = coverage.get("max_observed_gap_seconds")
+        if (type(observed) is int and type(expected) is int and
+                expected > 0 and 0 <= observed and
+                (gap is None or (type(gap) is int and gap >= 0))):
+            percentage = 100 * observed / expected
+            gap_text = "ONTBREEKT" if gap is None else str(round(gap / 60)) + " minuten"
+            coverage_html = ('<p>24-uursdekking: ' + str(observed) + '/' + str(expected) +
+                             ' verwachte snapshots (' + f'{percentage:.1f}' +
+                             '%). Grootste gemeten tussenruimte: ' + gap_text +
+                             '.</p><p>Dit telt opgeslagen meetmomenten, niet complete candles. ' +
+                             'De 24-uursdekking is een historisch rapport, geen live meting.</p>')
     return ('<section><h2>Collectorbewaking</h2><p id="collector-watchdog" data-checked="' +
             html.escape(stamp, quote=True) + '" data-status="' + status +
             '">Laatste watchdog-resultaat: ' + label + '</p><p>Laatste BTC-meting volgens watchdog: ' +
-            html.escape(latest) + '</p><p>De onafhankelijke watchdog is niet continu; ' +
+            html.escape(latest) + '</p>' + coverage_html + '<p>De onafhankelijke watchdog is niet continu; ' +
             'deze status kan verouderd zijn wanneer de controleworkflow niet draait.</p></section>')
 
 
