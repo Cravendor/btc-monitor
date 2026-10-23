@@ -83,17 +83,28 @@ class CvdDashboardTests(unittest.TestCase):
           assert(texts(root).includes('Ontbreekt'));
           for(const [value,status,expected] of [
             [null,'partial','Ontbreekt'],['0','partial','0 BTC'],
-            ['0.125','partial','0,125 BTC'],['3','invalid_data','Ontbreekt']]){
+            ['0.125','partial','0.125 BTC'],['3','invalid_data','Ontbreekt']]){
               renderCvd({markets:{spot:{status,coverage_verified:false,observed_delta_btc:value}}});
-              assert.equal(root.children[0].children[1].textContent,expected);
+              // Node builds may fall back to a decimal point for nl-NL.
+              // These fixtures are below 1: normalize only the decimal separator,
+              // retaining checks for the exact value, unit and missing-data label.
+              assert.equal(root.children[0].children[1].textContent.replace(',','.'),expected);
           }
           renderCvd({markets:{spot:{status:'partial',coverage_verified:false,
             observed_delta_btc:'1',journal_trade_status:'stale'}}});
           assert(texts(root).some(t=>t.includes('VEROUDERD')));
           assert(texts(root).some(t=>t.includes('geen gevalideerde CVD')));
         '''
-        result = subprocess.run(['node', '-e', harness], capture_output=True, text=True)
-        self.assertEqual(result.returncode, 0, result.stderr)
+        for locale, prefix in (
+                ('installed locale', ''),
+                ('decimal point fallback',
+                 'Number.prototype.toLocaleString=function(){return String(this.valueOf());};'),
+                ('decimal comma',
+                 "Number.prototype.toLocaleString=function(){return String(this.valueOf()).replace('.',',');};")):
+            with self.subTest(locale=locale):
+                result = subprocess.run(['node', '-e', prefix + harness],
+                                        capture_output=True, text=True)
+                self.assertEqual(result.returncode, 0, result.stderr)
         compile_result = subprocess.run(['node', '-e', 'new Function(' + json.dumps(script) + ')'],
                                         capture_output=True, text=True)
         self.assertEqual(compile_result.returncode, 0, compile_result.stderr)
