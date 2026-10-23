@@ -1,8 +1,8 @@
 {
   "schema_version": 3,
   "coverage_24h": {
-    "window_start": "2026-10-22T22:31:36.376737+00:00",
-    "window_end": "2026-10-23T22:31:36.376737+00:00",
+    "window_start": "2026-10-22T22:34:51.625876+00:00",
+    "window_end": "2026-10-23T22:34:51.625876+00:00",
     "first_retained_at": "2026-10-22T15:34:27.047744+00:00",
     "interval_seconds": 1800,
     "expected_snapshots": 48,
@@ -15,9 +15,9 @@
     "max_window_gap_seconds": 18014,
     "status": "gaps_detected"
   },
-  "checked_at": "2026-10-23T22:31:36.376737+00:00",
+  "checked_at": "2026-10-23T22:34:51.625876+00:00",
   "last_snapshot_at": "2026-10-23T21:01:04.688907+00:00",
-  "age_seconds": 5432,
+  "age_seconds": 5627,
   "max_age_seconds": 3600,
   "status": "stale"
 }
