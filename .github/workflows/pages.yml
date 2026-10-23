@@ -22,6 +22,7 @@ on:
     workflows:
       - BTC market snapshots
       - Archive BTC 4H provisional history
+      - BTC collector health check
     types: [completed]
     branches: [main]
 permissions: {}
@@ -30,11 +31,14 @@ concurrency:
   cancel-in-progress: false
 jobs:
   deploy:
+    # A failed watchdog may have saved a valid stale/missing report. Publish
+    # that report too, always from the default branch and without run artifacts.
     if: >-
       github.event.repository.private == false &&
       (github.event_name != 'workflow_run' ||
-       (github.event.workflow_run.conclusion == 'success' &&
-        github.event.workflow_run.head_branch == github.event.repository.default_branch))
+       (contains(fromJSON('["success","failure","timed_out"]'), github.event.workflow_run.conclusion) &&
+        github.event.workflow_run.head_branch == github.event.repository.default_branch &&
+        github.event.workflow_run.head_repository.full_name == github.repository))
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
