@@ -2,10 +2,19 @@
 import json
 import math
 import re
+import socket
+import ssl
+import time
 from datetime import datetime, timezone
+from http.client import IncompleteRead
+from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 BASE = 'https://api.bitget.com/api/v2/'
+COINBASE_TICKERS = {
+    'https://api.exchange.coinbase.com/products/BTC-USD/ticker',
+    'https://api.exchange.coinbase.com/products/USDT-USD/ticker',
+}
 
 
 def source_timestamp(value):
@@ -31,18 +40,42 @@ def number(value):
 
 
 def request(url, transform, bitget=False):
-    result = {'url': url, 'observed_at': datetime.now(timezone.utc).isoformat(),
-              'status': 'error', 'data': None}
-    try:
-        with urlopen(Request(url, headers={'User-Agent': 'btc-public-monitor/1.0'}), timeout=15) as response:
-            payload = json.load(response)
-        if bitget:
-            if payload.get('code') != '00000':
-                raise ValueError('Bitget API error: ' + str(payload.get('code')))
-            payload = payload['data']
-        result.update(status='ok', data=transform(payload))
-    except Exception as exc:
-        result['error'] = str(exc)[:200]
+    result = {'url': url, 'status': 'error', 'data': None}
+    # Only the two existing Coinbase reads get retries. Never broaden endpoints,
+    # retry rate limits/access restrictions, or reuse an earlier source value.
+    attempts = 3 if url in COINBASE_TICKERS and not bitget else 1
+    for attempt in range(1, attempts + 1):
+        result.update(attempts=attempt, observed_at=datetime.now(timezone.utc).isoformat())
+        retry = False
+        try:
+            with urlopen(Request(url, headers={'User-Agent': 'btc-public-monitor/1.0'}), timeout=15) as response:
+                payload = json.load(response)
+        except HTTPError as exc:
+            result['error'] = str(exc)[:200]
+            retry = exc.code in (500, 502, 503, 504)
+            exc.close()
+        except (URLError, TimeoutError, socket.timeout, ConnectionError, IncompleteRead) as exc:
+            result['error'] = str(exc)[:200]
+            retry = not isinstance(getattr(exc, 'reason', exc), ssl.SSLCertVerificationError)
+        except Exception as exc:
+            # Malformed JSON and other non-transport errors are not retryable.
+            result['error'] = str(exc)[:200]
+        else:
+            try:
+                if bitget:
+                    if payload.get('code') != '00000':
+                        raise ValueError('Bitget API error: ' + str(payload.get('code')))
+                    payload = payload['data']
+                data = transform(payload)
+            except Exception as exc:
+                result['error'] = str(exc)[:200]
+                return result
+            result.update(status='ok', data=data)
+            result.pop('error', None)
+            return result
+        if not retry or attempt == attempts:
+            break
+        time.sleep(attempt)  # 1s then 2s; preserve the 15s per-request timeout.
     return result
 
 
@@ -155,3 +188,4 @@ def collect_extra(metrics):
                 'source_ts_ms': int(row['ts']), 'method': 'Bitget perpetual mark/index premium; not dated futures annualised basis.'}
     extra['futures_basis'] = derived({'futures': metrics['futures_price']}, basis)
     return extra
+
