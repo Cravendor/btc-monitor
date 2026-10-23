@@ -2,7 +2,7 @@
 import html
 import json
 from pathlib import Path
-from scripts.signal_outcome_validation import evaluate
+from scripts.signal_outcome_validation import evaluate_horizons
 from datetime import datetime, timezone, timedelta
 
 TIMEFRAMES = ("5m", "15m", "30m", "1h", "4h", "1d", "1w")
@@ -230,25 +230,33 @@ WATCHDOG_SCRIPT = """<script>
 
 
 def outcome_html(records):
-    stats = evaluate(records)
+    results = evaluate_horizons(records)
     rows = []
-    for tf, item in stats.items():
-        total = item["evaluated"]
-        rate = f'{100 * item["confirmed_direction"] / total:.1f}%' if total >= 10 else "ONVOLDOENDE DATA"
-        rows.append("<tr><th>" + tf.upper() + "</th><td>" + str(total) +
-                    "</td><td>" + str(item["confirmed_direction"]) +
-                    "</td><td>" + str(item["opposite_direction"]) +
-                    "</td><td>" + str(item["pending_forward_price"]) +
-                    "</td><td>" + str(item["excluded"]) + "</td><td>" + rate + "</td></tr>")
-    return ('<h2>Voorlopige signaalvalidatie (+24 uur)</h2>' +
-            '<p>Unieke afgesloten candles per timeframe en modelversie. Alleen koerspunten ' +
-            'tussen 24u en 24u30 na de signaalcandle tellen mee. Geen interpolatie, ' +
-            'geen trading-PNL. Een match is geen bewijs van voorspellende waarde. ' +
-            'Percentage pas zichtbaar vanaf 10 beoordeelde signalen.</p><main><table>' +
-            '<tr><th>TF</th><th>Beoordeeld</th><th>Richting juist</th>' +
-            '<th>Tegengesteld</th><th>Geen toekomstige koers</th>' +
+    labels = {"bullish": "Bullish", "slightly_bullish": "Licht bullish",
+              "bearish": "Bearish", "slightly_bearish": "Licht bearish"}
+    for hours, by_tf in results.items():
+        for tf, by_grade in by_tf.items():
+            for grade, item in by_grade.items():
+                total = item["evaluated"]
+                rate = (f'{100 * item["confirmed_direction"] / total:.1f}%'
+                        if total >= 10 else "ONVOLDOENDE DATA")
+                rows.append("<tr><th>" + str(hours) + "u</th><td>" + tf.upper() +
+                            "</td><td>" + labels[grade] + "</td><td>" + str(total) +
+                            "</td><td>" + str(item["confirmed_direction"]) +
+                            "</td><td>" + str(item["opposite_direction"]) +
+                            "</td><td>" + str(item["pending_forward_price"]) +
+                            "</td><td>" + str(item["excluded"]) + "</td><td>" + rate + "</td></tr>")
+    return ('<h2>Voorlopige signaalvalidatie (1u / 4u / 24u / 7d)</h2>' +
+            '<p>Per timeframe en oorspronkelijke signaalsterkte. Eén signaal per afgesloten candle ' +
+            'en modelversie; de toekomstige koers moet tussen de gekozen horizon en 30 minuten ' +
+            'daarna zijn gemeten. Zonder geschikte koers blijft de uitkomst onbeoordeelbaar. ' +
+            'Percentage pas vanaf 10 beoordeelde signalen. Dit is geen backtest en ' +
+            'herhaalde of overlappende signalen zijn niet onafhankelijk.</p><main><table>' +
+            '<tr><th>Horizon</th><th>TF</th><th>Signaal</th><th>Beoordeeld</th>' +
+            '<th>Richting juist</th><th>Tegengesteld</th><th>Geen toekomstige koers</th>' +
             '<th>Uitgesloten</th><th>Matchpercentage</th></tr>' +
             "".join(rows) + '</table></main>')
+
 
 
 def render(records, health=None):
