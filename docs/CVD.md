@@ -56,12 +56,53 @@ Het algemene snapshotlabel ok betreft de marktmetrics, niet de CVD-dekking.
 `index.html` toont de twee waargenomen delta’s met een expliciet gedeeltelijk
 label, gapmetadata en brontijd; oude feeds zonder deze velden tonen Ontbreekt.
 
+## Sessieregistratie voorbereid (stap 1, nog niet op de NAS geïnstalleerd)
+
+`scripts/bitget_cvd_collector.py` en `scripts/cvd_store.py` bevatten een optionele
+opvolger van de aangeleverde recorder. De halfuurlijkse snapshottaak start of
+installeert deze bestanden niet. De bestaande recorder blijft dus actief na merge.
+
+De opvolger gebruikt dezelfde trades/gaps-tabellen en voegt `cvd_sessions` en
+`cvd_owned_gaps` toe. Per verbindingspoging worden markt, BTCUSDT, start,
+gevalideerde subscription acknowledgement, laatste opgeslagen frame-/tradetijd,
+afsluiting, reden en aantallen opgeslagen. Een frame met zijn trades en checkpoint
+wordt als één SQLite-transactie opgeslagen. Identieke replays worden gededupliceerd;
+een afwijkende inhoud bij hetzelfde trade-ID breekt de sessie af en rolt het hele
+frame terug. Spot en futures blijven gescheiden.
+
+Na een crash krijgt een onafgesloten sessie bij herstart de status interrupted.
+Het onbevestigde tijdvak begint uiterlijk bij het laatste duurzame checkpoint;
+de crash wordt niet achteraf gedateerd alsof de collector tot de herstart werkte.
+Een disconnect, verkeerd kanaal/symbool, ongeldig frame, klokregressie of ontbrekende
+acknowledgement beëindigt de poging. Applicatie-pings blijven ook bij een drukke
+tradefeed actief; een stille verbinding en een ontbrekende acknowledgement hebben
+afzonderlijke deadlines. Een gestorven worker laat het hoofdproces falen zodat
+de bestaande watchdog dit kan opmerken.
+
+De nieuwe recorder begrenst uitsluitend zijn eigen OPEN-markers bij een volgende
+gevalideerde acknowledgement. Alle blijven resolved=0: opnieuw verbonden betekent
+geen herstelde trades. Oude legacy-markers worden nooit gewijzigd. Nieuwe gapgrenzen
+zijn ontvangst-/transporttijden, geen bewezen exchange-tijdgrenzen. Een laat of
+ongeldig bericht kan oudere trades betreffen; sessies zijn daarom geen complete
+event-time-dekkingskaart of exchange-watermark.
+
+De health-export houdt coverage_verified=false en cvd_4h=null. Het extra veld
+transport_session toont het laatst opgeslagen checkpoint, geen live-status of
+volledigheidsgarantie. Een pong bewijst uitsluitend dat een frame is ontvangen.
+Er is nog geen provider-sequentiecontrole, volledige backfill of 4H-validatie.
+
+Deze stap gebruikt het aangeleverde V2-wireformaat; acceptatie op echte V2-berichten
+en de oorspronkelijke Python 3.8.12-omgeving blijft onderdeel van installatie.
+Er worden geen nieuwe afhankelijkheden, sleutels, diensten of abonnementen toegevoegd.
+
 ## Nog nodig voor volledige CVD
 
 Deze koppeling repareert geen historische gaten en claimt geen volledige CVD.
-Een vervolgstap moet subscription acknowledgements, sessiegrenzen, persistente
-watermarks, disconnects, invalid frames en achterstallige berichten registreren.
-Een crash moet ook na herstart een onbevestigd tijdvak achterlaten. Reconnects
+De voorbereide sessieregistratie moet nog gecontroleerd worden geïnstalleerd,
+met een consistente SQLite-backup, behoud van de bestaande flock en een rollback.
+Niet naast de bestaande recorder starten of live bestanden overschrijven.
+Daarna ontbreken nog exchange-dekkingsbewijs, event-time-watermarks en afhandeling
+van achterstallige berichten. Reconnects
 vereisen aantoonbaar volledige backfill of een expliciet ongeldig interval;
 alleen opnieuw verbinding maken of oude markers sluiten is geen bewijs.
 
@@ -78,5 +119,12 @@ marktisolatie, replay, tijdgrenzen, oude OPEN-gaten, lege/ongeldige brondata,
 WAL-concurrentie, feedintegratie en dashboardweergave. De JavaScript-test gebruikt
 Node indien aanwezig en vervangt geen visuele mobiele controle.
 
+`tests/test_cvd_sessions.py` controleert daarnaast een echte abrupte subprocess-crash,
+additieve schema-upgrade, marktisolatie, atomische rollback, conflicterende replay,
+out-of-order trades, ACK-deadline, ongeldige frames en pings tijdens een drukke feed.
+De tests gebruiken nagebootste sockets, zonder netwerk of websocket-client-installatie;
+zij vervangen geen echte Bitget-protocoltest of volledige dekkingscontrole.
+
 Na merge: controleer de eerstvolgende normale NAS-upload, de cvd_4h-velden en
 de Pages-publicatie. De bestaande taak en CVD-collector hoeven niet te veranderen.
+
