@@ -1,17 +1,23 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "coverage_24h": {
-    "window_start": "2026-10-22T05:21:05.191884+00:00",
-    "window_end": "2026-10-23T05:21:05.191884+00:00",
+    "window_start": "2026-10-22T07:09:43.043653+00:00",
+    "window_end": "2026-10-23T07:09:43.043653+00:00",
+    "first_retained_at": "2026-10-22T15:34:27.047744+00:00",
+    "interval_seconds": 1800,
     "expected_snapshots": 48,
-    "observed_snapshots": 17,
-    "coverage_percent": 35.4,
+    "observed_snapshots": 32,
+    "observed_intervals": 16,
+    "history_unavailable_intervals": 16,
+    "missing_measurement_intervals": 16,
+    "coverage_percent": 33.3,
     "max_observed_gap_seconds": 18014,
+    "max_window_gap_seconds": 30284,
     "status": "gaps_detected"
   },
-  "checked_at": "2026-10-23T05:21:05.191884+00:00",
-  "last_snapshot_at": "2026-10-23T05:19:09.616986+00:00",
-  "age_seconds": 116,
+  "checked_at": "2026-10-23T07:09:43.043653+00:00",
+  "last_snapshot_at": "2026-10-23T06:53:52.452557+00:00",
+  "age_seconds": 951,
   "max_age_seconds": 3600,
   "status": "current"
 }
