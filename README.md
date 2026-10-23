@@ -87,3 +87,46 @@ horizon. Grafieklijnen stoppen bij ontbrekende signalen of meer dan 45 minuten
 tussen metingen. De bestaande steekproefdrempels en Wilson-beperkingen blijven
 gelden. Oude watchdograpporten krijgen expliciet 'nieuw tijdvakrapport vereist'
 tot de volgende watchdogrun schema 3 heeft geschreven. Kosten blijven €0.
+
+
+## Beoordeelbaarheid van signalen (PR #33)
+
+De validatie telt unieke directionele signalen met status `ok`, een geldige
+candle-eindtijd en een bekende modelversie, ook als hun startkoers ontbreekt.
+Ongeldige identiteit of ontbrekende sleutelmetadata levert geen identificeerbaar
+signaal op. Dubbele waarnemingen verhogen de aantallen niet.
+
+Elke combinatie van timeframe, horizon en oorspronkelijke signaalsterkte krijgt:
+
+- **Beoordeeld:** geldige startkoers en een niet-tegenstrijdige vervolgkoers in
+  het venster van horizon tot en met horizon + 30 minuten.
+- **Startkoers ontbreekt:** de oorspronkelijke koers is ongeldig of ontbreekt;
+  geen reconstructie en geen resultaat in het matchpercentage.
+- **Horizon nog niet bereikt:** de laatste opgeslagen observatietijd ligt vóór
+  het doelmoment.
+- **Koersvenster nog open:** de horizon is bereikt, maar de tolerantie van
+  30 minuten is nog niet voorbij en er is nog geen geschikte vervolgkoers.
+- **Vervolgkoers ontbreekt:** het hele venster is voorbij volgens de laatste
+  opgeslagen observatietijd, maar een bruikbare vervolgkoers ontbreekt.
+- **Archieftijd onbekend:** zonder geldige observatietijd kan de fase niet
+  worden bepaald. Een aanwezige geldige koersuitkomst blijft wel beoordeelbaar.
+- **Horizon niet meetbaar met dit TF:** geen volgende candle-eindtijd van dit
+  timeframe past binnen het doelvenster. Bijvoorbeeld 1 uur vooruit met alleen
+  4-uurscandles; dit is geen collectorstoring en er wordt niet geïnterpoleerd.
+- **Uitgesloten:** tegenstrijdige oorspronkelijke labels/koersen, of een vlakke
+  uitkomst. Conflicten worden vóór selectie per signaalsterkte vastgesteld.
+
+Voorrang: conflict, onmeetbare horizon, ontbrekende startkoers, vervolgens
+koersuitkomst of wacht-/ontbreekstatus. Per groep geldt:
+`unieke signalen = beoordeeld + vier vervolgkoersstatussen + startkoers ontbreekt
++ horizon niet meetbaar + uitgesloten`. Een labelconflict wordt bij elke
+betrokken oorspronkelijke signaalsterkte uitgesloten; groepen mogen daarom
+niet als onafhankelijke totaaltellingen worden opgeteld.
+
+`pending_forward_price` blijft als compatibele subtelling van de vier
+vervolgkoersstatussen bestaan. De pagina toont ze afzonderlijk. De archiefklok
+bepaalt de status, niet de klok van de bezoeker of buildmachine: een stilgevallen
+collector wekt zo geen schijn dat de toekomst al is waargenomen. Candle-eindtijden
+na hun eigen opgeslagen observatietijd worden afgewezen. Alleen beoordeelde,
+niet-vlakke uitkomsten tellen mee voor percentages en Wilson-intervallen;
+de grenzen van 10/30 waarnemingen en alle statistische beperkingen blijven gelden.

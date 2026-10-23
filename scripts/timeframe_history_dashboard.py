@@ -225,18 +225,35 @@ def outcome_html(records):
                             "</td><td>" + labels[grade] + "</td><td>" + str(total) +
                             "</td><td>" + str(item["confirmed_direction"]) +
                             "</td><td>" + str(item["opposite_direction"]) +
-                            "</td><td>" + str(item["pending_forward_price"]) +
+                            "</td><td>" + str(item["total_signals"]) +
+                            "</td><td>" + str(item["missing_initial_price"]) +
+                            "</td><td>" + str(item["awaiting_horizon"]) +
+                            "</td><td>" + str(item["awaiting_price_window"]) +
+                            "</td><td>" + str(item["missing_forward_price"]) +
+                            "</td><td>" + str(item["unknown_observation_time"]) +
+                            "</td><td>" + str(item["unsupported_horizon"]) +
                             "</td><td>" + str(item["excluded"]) + "</td><td>" + rate + "</td><td>" + ci + "</td></tr>")
         sections.append('<details><summary>Uitkomsten na ' + str(hours) +
                         ' uur</summary><div class=table-scroll role=region aria-label=Gegevens tabindex=0><table><tr><th>Horizon</th><th>TF</th>' +
                         '<th>Signaal</th><th>Beoordeeld</th><th>Richting juist</th>' +
-                        '<th>Tegengesteld</th><th>Geen toekomstige koers</th><th>Uitgesloten</th>' +
+                        '<th>Tegengesteld</th><th>Unieke signalen</th><th>Startkoers ontbreekt</th>' +
+                        '<th>Horizon nog niet bereikt</th><th>Koersvenster nog open</th>' +
+                        '<th>Vervolgkoers ontbreekt</th><th>Archieftijd onbekend</th>' +
+                        '<th>Horizon niet meetbaar met dit TF</th><th>Uitgesloten</th>' +
                         '<th>Matchpercentage</th><th>95%-interval*</th></tr>' +
                         ''.join(rows) + '</table></div></details>')
     return ('<h2>Voorlopige signaalvalidatie (1u / 4u / 24u / 7d)</h2>' +
             '<p>Per timeframe en oorspronkelijke signaalsterkte. Eén signaal per afgesloten candle ' +
-            'en modelversie; de toekomstige koers moet tussen de gekozen horizon en 30 minuten ' +
+            'en bekende modelversie, met geldige candle-eindtijd en directioneel label; de toekomstige koers moet tussen de gekozen horizon en 30 minuten ' +
             'daarna zijn gemeten. Zonder geschikte koers blijft de uitkomst onbeoordeelbaar. ' +
+            'De status gebruikt de laatste opgeslagen observatietijd, niet de huidige klok. '
+            'Zonder startkoers: apart geteld. Horizon nog niet bereikt: wachten. '
+            'Koersvenster nog open: de horizon is bereikt, maar de 30 minuten tolerantie lopen nog. '
+            'Vervolgkoers ontbreekt: het hele venster is voorbij in het archief. '
+            'Archieftijd onbekend: geen geldige observatietijd voor deze indeling. '
+            'Horizon niet meetbaar: de volgende candle van dit timeframe sluit te laat; '
+            'er wordt geen koers geïnterpoleerd. Conflicten en vlakke uitkomsten zijn uitgesloten. '
+            'Een conflict telt bij elke betrokken oorspronkelijke signaalsterkte; tel die groepen niet op. '
             'Percentage pas vanaf 10 beoordeelde signalen. Dit is geen backtest en ' +
             'herhaalde of overlappende signalen zijn niet onafhankelijk. ' +
             'Het 95%-Wilson-interval is uitsluitend beschrijvend, verschijnt vanaf 30 ' +
