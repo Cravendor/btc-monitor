@@ -226,7 +226,7 @@ def outcome_tables(results):
                 bounds = confidence["interval"]
                 ci = (f"{bounds[0] * 100:.1f}%–{bounds[1] * 100:.1f}%"
                       if bounds is not None else "ONVOLDOENDE DATA")
-                rows.append("<tr><th>" + str(hours) + "u</th><td>" + tf.upper() +
+                rows.append('<tr data-tf="' + tf + '"><th>' + str(hours) + "u</th><td>" + tf.upper() +
                             "</td><td>" + labels[grade] + "</td><td>" + str(total) +
                             "</td><td>" + str(item["confirmed_direction"]) +
                             "</td><td>" + str(item["opposite_direction"]) +
@@ -240,7 +240,7 @@ def outcome_tables(results):
                             "</td><td>" + str(item["unknown_observation_time"]) +
                             "</td><td>" + str(item["unsupported_horizon"]) +
                             "</td><td>" + str(item["excluded"]) + "</td><td>" + rate + "</td><td>" + ci + "</td></tr>")
-        sections.append('<details><summary>Uitkomsten na ' + str(hours) +
+        sections.append('<details class=validation-horizon data-horizon="' + str(hours) + '"><summary>Uitkomsten na ' + str(hours) +
                         ' uur</summary><div class=table-scroll role=region aria-label=Gegevens tabindex=0><table><tr><th>Horizon</th><th>TF</th>' +
                         '<th>Signaal</th><th>Beoordeeld</th><th>Richting juist</th>' +
                         '<th>Tegengesteld</th><th>Unieke kandidaten</th><th>Overgeslagen wegens overlap</th>' +
@@ -253,18 +253,103 @@ def outcome_tables(results):
     return ''.join(sections)
 
 
+def validation_controls(models):
+    choices = {
+        "model": ("Modelversie", [(m, m) for m in models]),
+        "tf": ("Timeframe", [(tf, tf.upper()) for tf in TIMEFRAMES]),
+        "horizon": ("Horizon", [("1", "1 uur"), ("4", "4 uur"),
+                                ("24", "24 uur"), ("168", "7 dagen")]),
+        "sample": ("Telling", [("all_signals", "Alle unieke signalen"),
+                              ("non_overlapping", "Zonder overlappende perioden")]),
+    }
+    controls = []
+    for name, (label, options) in choices.items():
+        items = '<option value="all">Alle</option>' + ''.join(
+            '<option value="' + html.escape(value, quote=True) + '">' +
+            html.escape(text) + '</option>' for value, text in options)
+        controls.append('<label for="validation-' + name + '">' + label +
+                        '<select id="validation-' + name + '" name="' + name + '">' +
+                        items + '</select></label>')
+    return ('<form id="validation-filters" hidden aria-label="Validatie filteren">' +
+            ''.join(controls) + '<button type="button" id="validation-reset">Alle filters wissen</button>' +
+            '<p id="validation-filter-status" role="status" aria-live="polite"></p></form>' +
+            '<noscript><p>Filters vereisen JavaScript. Alle tabellen blijven hieronder beschikbaar.</p></noscript>')
+
+
+VALIDATION_FILTER_SCRIPT = """<script>
+(function () {
+  const root = document.getElementById("signal-validation");
+  const form = document.getElementById("validation-filters");
+  if (!root || !form) return;
+  const names = ["model", "tf", "horizon", "sample"];
+  const fields = Object.fromEntries(names.map(name => [name, document.getElementById("validation-" + name)]));
+  const params = new URLSearchParams(location.search);
+  for (const name of names) {
+    const value = params.get("v_" + name);
+    if (value !== null && Array.from(fields[name].options).some(option => option.value === value)) {
+      fields[name].value = value;
+    }
+  }
+  function apply(save) {
+    const selected = Object.fromEntries(names.map(name => [name, fields[name].value]));
+    let count = 0;
+    const focused = names.some(name => selected[name] !== "all");
+    root.querySelectorAll(".validation-model").forEach(model => {
+      model.hidden = selected.model !== "all" && selected.model !== model.dataset.model;
+      model.querySelectorAll(".validation-sample").forEach(sample => {
+        const policy = sample.dataset.sample === "all" ? "all_signals" : sample.dataset.sample;
+        sample.hidden = selected.sample !== "all" && selected.sample !== policy;
+        if (focused && !model.hidden && !sample.hidden) sample.open = true;
+        sample.querySelectorAll(".validation-horizon").forEach(horizon => {
+          horizon.hidden = selected.horizon !== "all" && selected.horizon !== horizon.dataset.horizon;
+          if (focused && !horizon.hidden && !sample.hidden && !model.hidden) horizon.open = true;
+          horizon.querySelectorAll("tr[data-tf]").forEach(row => {
+            row.hidden = selected.tf !== "all" && selected.tf !== row.dataset.tf;
+            if (!model.hidden && !sample.hidden && !horizon.hidden && !row.hidden) count++;
+          });
+        });
+      });
+    });
+    document.getElementById("validation-filter-status").textContent = count +
+      " validatieregels geselecteerd. Aantallen en percentages worden niet herberekend.";
+    if (save) {
+      try {
+        const url = new URL(location.href);
+        for (const name of names) {
+          if (selected[name] === "all") url.searchParams.delete("v_" + name);
+          else url.searchParams.set("v_" + name, selected[name]);
+        }
+        history.replaceState(null, "", url);
+      } catch (_) { /* Filtering also works in local/read-only previews. */ }
+    }
+  }
+  form.addEventListener("submit", event => event.preventDefault());
+  for (const field of Object.values(fields)) field.addEventListener("change", () => apply(true));
+  document.getElementById("validation-reset").addEventListener("click", () => {
+    for (const field of Object.values(fields)) field.value = "all";
+    apply(true);
+  });
+  form.hidden = false;
+  apply(false);
+})();
+</script>"""
+
+
 def outcome_html(records):
     results = evaluate_models(records)
     spaced = evaluate_models(records, sample_policy="non_overlapping")
-    sections = [('<section><h3>Modelversie: ' + html.escape(model) + '</h3>' +
-                 '<details><summary>Alle unieke signalen</summary>' +
+    sections = [('<section class=validation-model data-model="' + html.escape(model, quote=True) + '"><h3>Modelversie: ' + html.escape(model) + '</h3>' +
+                 '<details class=validation-sample data-sample=all><summary>Alle unieke signalen</summary>' +
                  outcome_tables(by_horizon) + '</details>' +
-                 '<details><summary>Zonder overlappende evaluatieperioden</summary>' +
+                 '<details class=validation-sample data-sample=non_overlapping><summary>Zonder overlappende evaluatieperioden</summary>' +
                  outcome_tables(spaced[model]) + '</details></section>')
                 for model, by_horizon in results.items()]
     if not sections:
         sections = ['<p>ONVOLDOENDE DATA — geen identificeerbare modelversie met geldige signalen.</p>']
-    return ('<h2>Voorlopige signaalvalidatie (1u / 4u / 24u / 7d)</h2>' +
+    return ('<section id=signal-validation><h2>Voorlopige signaalvalidatie (1u / 4u / 24u / 7d)</h2>' +
+            validation_controls(results) +
+            '<p>Filters veranderen alleen de weergave. Dit is beschrijvende validatie, geen bewijs van voorspellende waarde.</p>' +
+            '<details><summary>Werkwijze en beperkingen</summary>' +
             '<p>Elke modelversie heeft afzonderlijke tabellen, aantallen en steekproefdrempels. '
             'De tweede telling selecteert per model en timeframe chronologisch het eerste '
             'directionele signaal, reserveert de volledige horizon plus 30 minuten, en kiest '
@@ -294,7 +379,8 @@ def outcome_html(records):
             'herhaalde of overlappende signalen zijn niet onafhankelijk. ' +
             'Het 95%-interval (Wilson) is uitsluitend beschrijvend, verschijnt vanaf 30 ' +
             'waarnemingen en corrigeert NIET voor overlap, selectie of autocorrelatie. ' +
-            'Dit is geen bewijs van voorspellende waarde.</p>' + ''.join(sections))
+            'Dit is geen bewijs van voorspellende waarde.</p></details>' + ''.join(sections) +
+            '</section>' + VALIDATION_FILTER_SCRIPT)
 
 
 
@@ -329,6 +415,12 @@ p{color:#bac8da;overflow-wrap:anywhere}
 *{box-sizing:border-box}h1{font-size:clamp(1.5rem,5vw,2rem)}
 summary{cursor:pointer;padding:1rem;min-height:44px;background:#1c2940;border-radius:12px}
 details{margin:.7rem 0}a{color:#93c5fd}
+[hidden]{display:none!important}
+#validation-filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,12rem),1fr));gap:.8rem;background:#1c2940;padding:1rem;border-radius:12px}
+#validation-filters label{display:grid;gap:.3rem;min-width:0}
+#validation-filters select,#validation-filters button{font:inherit;min-width:0;max-width:100%;min-height:44px;background:#101827;color:#eef3ff;border:1px solid #64748b;border-radius:6px;padding:.5rem}
+#validation-filter-status{grid-column:1/-1;margin:.3rem 0}
+#validation-filters :focus-visible{outline:2px solid #93c5fd}
 .table-scroll:focus-visible,summary:focus-visible{outline:2px solid #93c5fd}
 @media(max-width:600px){body{margin:0 auto;padding:.8rem}.table-scroll{padding:.4rem}
 td,th{padding:.6rem;font-size:.875rem}h2{font-size:1.25rem}svg{min-width:640px}}</style><h1>BTC — Historische signaaltijdlijn</h1>

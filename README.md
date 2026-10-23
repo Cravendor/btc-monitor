@@ -223,3 +223,33 @@ onafhankelijke experimenten worden opgeteld. Oudere herstelde kandidaatrecords
 kunnen de chronologische selectie opnieuw faseren; dit is een reproduceerbare
 archiefselectie, geen vooraf vastgelegde prospectieve proef. Geen marktdata,
 modellen, kosten of workflows worden gewijzigd.
+
+
+## Validatietabellen filteren (PR #37)
+
+Boven de historische validatie staan filters voor modelversie, timeframe,
+horizon en telling (alle unieke signalen of zonder overlappende perioden).
+Een gerichte selectie opent de relevante uitklapbare tabellen. De statusregel
+telt geselecteerde tabelregels, geen beoordeelde of onafhankelijke signalen.
+Filters wijzigen uitsluitend zichtbaarheid: steekproefselectie, koersuitkomsten,
+percentages, conflicten en Wilson-intervallen worden niet herberekend.
+
+De adresbalk bewaart de selectie in `v_model`, `v_tf`, `v_horizon` en `v_sample`,
+zodat dezelfde weergave via de URL opnieuw kan worden geopend. Alleen waarden
+uit de weergegeven keuzelijsten worden overgenomen; onbekende waarden worden
+per filter genegeerd. `Alle filters wissen` zet alle keuzen terug op Alle en
+verwijdert uitsluitend deze vier parameters; andere parameters en het fragment
+blijven behouden. Filteren gebeurt lokaal in de browser; er is geen extra opslagdienst, account
+of dependency voor het dashboard nodig.
+
+Zonder JavaScript blijven alle tabellen en uitklappers beschikbaar; de
+filterbediening wordt pas zichtbaar als deze is geïnitialiseerd. De langere
+werkwijze en statistische beperkingen staan in een aparte uitklapper, met een
+korte beschrijvende-validatiewaarschuwing direct naast de filters.
+
+Validatie omvat een client-side rooktest met Node en een kleine DOM-adapter
+op de daadwerkelijk gegenereerde HTML: gecombineerde selectie, gedeelde URL,
+onbekende waarden, reset, intacte overige URL-onderdelen en ongewijzigde
+gegevenscellen. Dit vervangt geen visuele browser-, touch- of toegankelijkheids-
+controle; die blijft apart nodig. De bestaande GitHub-runner heeft Node; zonder
+Node slaat de lokale Python-testsuite alleen deze client-side rooktest over.
