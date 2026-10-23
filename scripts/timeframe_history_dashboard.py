@@ -3,6 +3,7 @@ import html
 import json
 from pathlib import Path
 from scripts.signal_outcome_validation import evaluate_horizons
+from scripts.signal_statistics import descriptive_confidence
 from datetime import datetime, timezone, timedelta
 
 TIMEFRAMES = ("5m", "15m", "30m", "1h", "4h", "1d", "1w")
@@ -240,21 +241,28 @@ def outcome_html(records):
                 total = item["evaluated"]
                 rate = (f'{100 * item["confirmed_direction"] / total:.1f}%'
                         if total >= 10 else "ONVOLDOENDE DATA")
+                confidence = descriptive_confidence(item["confirmed_direction"], total)
+                bounds = confidence["interval"]
+                ci = (f"{bounds[0] * 100:.1f}%–{bounds[1] * 100:.1f}%"
+                      if bounds is not None else "ONVOLDOENDE DATA")
                 rows.append("<tr><th>" + str(hours) + "u</th><td>" + tf.upper() +
                             "</td><td>" + labels[grade] + "</td><td>" + str(total) +
                             "</td><td>" + str(item["confirmed_direction"]) +
                             "</td><td>" + str(item["opposite_direction"]) +
                             "</td><td>" + str(item["pending_forward_price"]) +
-                            "</td><td>" + str(item["excluded"]) + "</td><td>" + rate + "</td></tr>")
+                            "</td><td>" + str(item["excluded"]) + "</td><td>" + rate + "</td><td>" + ci + "</td></tr>")
     return ('<h2>Voorlopige signaalvalidatie (1u / 4u / 24u / 7d)</h2>' +
             '<p>Per timeframe en oorspronkelijke signaalsterkte. Eén signaal per afgesloten candle ' +
             'en modelversie; de toekomstige koers moet tussen de gekozen horizon en 30 minuten ' +
             'daarna zijn gemeten. Zonder geschikte koers blijft de uitkomst onbeoordeelbaar. ' +
             'Percentage pas vanaf 10 beoordeelde signalen. Dit is geen backtest en ' +
-            'herhaalde of overlappende signalen zijn niet onafhankelijk.</p><main><table>' +
+            'herhaalde of overlappende signalen zijn niet onafhankelijk. ' +
+            'Het 95%-Wilson-interval is uitsluitend beschrijvend, verschijnt vanaf 30 ' +
+            'waarnemingen en corrigeert NIET voor overlap, selectie of autocorrelatie. ' +
+            'Dit is geen bewijs van voorspellende waarde.</p><main><table>' +
             '<tr><th>Horizon</th><th>TF</th><th>Signaal</th><th>Beoordeeld</th>' +
             '<th>Richting juist</th><th>Tegengesteld</th><th>Geen toekomstige koers</th>' +
-            '<th>Uitgesloten</th><th>Matchpercentage</th></tr>' +
+            '<th>Uitgesloten</th><th>Matchpercentage</th><th>95%-interval*</th></tr>' +
             "".join(rows) + '</table></main>')
 
 
