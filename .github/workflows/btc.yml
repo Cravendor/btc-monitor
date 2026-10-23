@@ -1,14 +1,7 @@
 name: BTC market snapshots
+# Periodic collection runs on the NAS. Keep an explicit manual fallback.
 on:
-  schedule:
-  - cron: '23,53 * * * *'
   workflow_dispatch:
-  workflow_run:
-    workflows: ['Archive BTC 4H provisional history']
-    types: [completed]
-  push:
-    branches: [main]
-    paths: [scripts/**, tests/**, .github/workflows/btc.yml]
 
 permissions: {}
 concurrency:
@@ -17,7 +10,7 @@ concurrency:
 
 jobs:
   collect:
-    if: github.event.repository.private == false && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+    if: github.event.repository.private == false && github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
