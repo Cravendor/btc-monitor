@@ -17,11 +17,31 @@ No Python packages, subscriptions or servers are installed by this script.
    Do not paste private keys or tokens into chat, a task script or the repository.
    Verify GitHub's host key against its official published fingerprints before
    accepting it: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
-3. Clone a separate checkout as `tony`:
+3. On the verified DS415+ installation, use Python 3.9 separately from the CVD
+   venv (which uses Python 3.8). Create a shared folder `btc-monitor` on Volume 1
+   and give `tony` read/write access. Keep keys and temporary files outside the
+   checkout. Export the following in each DSM task before using Git or the runner:
 
    ```sh
-   git clone git@github.com:Cravendor/btc-monitor.git /volume1/btc-monitor
-   /bin/sh /volume1/btc-monitor/nas/collect_publish.sh --check
+   export PATH="/var/packages/Git/target/bin:$PATH"
+   export BTC_PYTHON=/usr/local/bin/python3.9
+   export BTC_REPO=/volume1/btc-monitor/repo
+   export BTC_LOCK=/volume1/btc-monitor/publish.lock
+   export TMPDIR=/volume1/btc-monitor/tmp
+   mkdir -p "$TMPDIR"
+   chmod 700 "$TMPDIR"
+   export GIT_SSH_COMMAND="ssh -i /volume1/btc-monitor/keys/github_ed25519 -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=/volume1/btc-monitor/keys/known_hosts -o ConnectTimeout=15"
+   ```
+
+   The key and verified host key file must already exist. The runner preserves
+   this explicit SSH configuration. `TMPDIR` avoids executing test fixtures on
+   Synology's restricted `/tmp`; it changes neither mount flags nor CVD files.
+
+   Clone a separate checkout as `tony` (only if it does not already exist):
+
+   ```sh
+   git clone git@github.com:Cravendor/btc-monitor.git "$BTC_REPO"
+   /bin/sh "$BTC_REPO/nas/collect_publish.sh" --check
    ```
 
    `--check` makes no GitHub changes and does not collect market data. It checks
@@ -32,7 +52,7 @@ No Python packages, subscriptions or servers are installed by this script.
    `data/collector-health.json`, and the Pages workflow for that commit:
 
    ```sh
-   /bin/sh /volume1/btc-monitor/nas/collect_publish.sh --run
+   /bin/sh "$BTC_REPO/nas/collect_publish.sh" --run
    ```
 
 5. Only after that succeeds, create a DSM Task Scheduler **Scheduled Task →

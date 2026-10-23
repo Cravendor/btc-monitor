@@ -8,7 +8,8 @@ BTC_REPO=${BTC_REPO:-/volume1/btc-monitor}
 BTC_PYTHON=${BTC_PYTHON:-/volume1/btc-cvd/venv/bin/python}
 BTC_LOCK=${BTC_LOCK:-/volume1/btc-monitor-publish.lock}
 export GIT_TERMINAL_PROMPT=0
-export GIT_SSH_COMMAND='ssh -o BatchMode=yes -o ConnectTimeout=15'
+# Respect the explicit key and verified known_hosts configured by the NAS task.
+export GIT_SSH_COMMAND="${GIT_SSH_COMMAND:-ssh -o BatchMode=yes -o ConnectTimeout=15}"
 export PYTHONDONTWRITEBYTECODE=1
 unset GITHUB_OUTPUT GITHUB_STEP_SUMMARY
 exec 9>"$BTC_LOCK"

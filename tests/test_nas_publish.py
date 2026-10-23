@@ -36,7 +36,11 @@ class NasPublishTests(unittest.TestCase):
         # Stub only market calls and tests; use real git repositories and commits.
         self.python.write_text('''#!/bin/sh
 case "$1" in
--c) exit 0 ;;
+-c)
+  if [ -n "${NAS_TEST_SSH_CAPTURE:-}" ]; then
+    printf '%s' "$GIT_SSH_COMMAND" > "$NAS_TEST_SSH_CAPTURE"
+  fi
+  exit 0 ;;
 -m) exit 0 ;;
 scripts/collect.py)
   printf '{"snapshot_status":"%s"}\\n' "${NAS_TEST_STATUS:-ok}" > data/timeframe-health.json
@@ -65,6 +69,22 @@ exit 9
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(self.git('rev-parse', 'HEAD', cwd=self.repo), before)
         self.assertEqual(json.loads((self.repo / 'data/latest.json').read_text()), {})
+
+    def test_custom_key_and_known_hosts_configuration_is_preserved(self):
+        expected = 'ssh -i /dedicated/key -o StrictHostKeyChecking=yes -o UserKnownHostsFile=/dedicated/known_hosts'
+        capture = self.root / 'ssh-capture'
+        self.env.update(GIT_SSH_COMMAND=expected, NAS_TEST_SSH_CAPTURE=str(capture))
+        result = self.run_task('--check')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(capture.read_text(), expected)
+
+    def test_default_ssh_is_noninteractive_and_time_limited(self):
+        self.env.pop('GIT_SSH_COMMAND', None)
+        capture = self.root / 'ssh-capture'
+        self.env['NAS_TEST_SSH_CAPTURE'] = str(capture)
+        result = self.run_task('--check')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(capture.read_text(), 'ssh -o BatchMode=yes -o ConnectTimeout=15')
 
     def test_real_upload_and_partial_data_is_saved_before_failure(self):
         self.env['NAS_TEST_STATUS'] = 'partial'
