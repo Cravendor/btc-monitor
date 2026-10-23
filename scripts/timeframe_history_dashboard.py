@@ -2,7 +2,7 @@
 import html
 import json
 from pathlib import Path
-from scripts.signal_outcome_validation import evaluate_horizons
+from scripts.signal_outcome_validation import evaluate_models, model_version
 from scripts.signal_statistics import descriptive_confidence
 from scripts.history_coverage import coverage, coverage_html, observations
 from datetime import datetime, timezone, timedelta
@@ -54,7 +54,7 @@ def summary_html(records):
                         "</td><td>" + str(item["bullish"]) + "</td><td>" +
                         str(item["neutral"]) + "</td><td>" + str(item["bearish"]) +
                         "</td><td>" + str(item["changes"]) + "</td><td>" + str(item["unavailable"]) + "</td></tr>")
-        sections.append("<h2>" + label + "</h2>" + coverage_html(report) + "<p>Gedeeltelijke geschiedenis wordt getoond. Aantallen geldige snapshots, geen tijdgewogen percentages. Wissels kunnen over gaten heen lopen.</p>" +
+        sections.append("<h2>" + label + "</h2>" + coverage_html(report) + "<p>Gedeeltelijke geschiedenis wordt getoond. Aantallen geldige snapshots, geen tijdgewogen percentages. Deze beschrijvende telling kan meerdere modelversies bevatten; validatie staat hieronder per versie. Wissels kunnen over gaten heen lopen.</p>" +
                         "<div class=table-scroll role=region aria-label=Gegevens tabindex=0><table><tr><th>TF</th><th>Metingen</th><th>Bull</th><th>Neutraal</th><th>Bear</th><th>Wissels</th><th>Signaal ontbreekt</th></tr>" +
                         "".join(rows) + "</table></div>")
     return "".join(sections)
@@ -85,12 +85,18 @@ def chart_html(records):
     for tf in TIMEFRAMES:
         segments, current = [], []
         previous = None
+        previous_model = None
         for t, row in points:
             if previous is not None and t - previous > 2700 and current:
                 segments.append(current)
                 current = []
             previous = t
             signal = (row.get("signals") or {}).get(tf) or {}
+            model = model_version(signal, row)
+            if current and model != previous_model:
+                segments.append(current)
+                current = []
+            previous_model = model
             grade = signal.get("grade") if signal.get("status") == "ok" else None
             if grade not in SCORES:
                 if current:
@@ -111,7 +117,7 @@ def chart_html(records):
         parts.append(f'<text x="{px:.1f}" y="270" fill="#cbd5e1" font-size="12" text-anchor="{"start" if px == left else "end"}">{label}</text>')
     parts.append("</svg>")
     legend = " ".join(f'<span style="color:{COLORS[tf]};margin-right:1rem">{tf.upper()}</span>' for tf in TIMEFRAMES)
-    return "<h2>Signaaltrend (−2 bearish tot +2 bullish)</h2><p>Elke stip is een opgeslagen meting; ontbrekende scores en meetgaten groter dan 45 minuten worden niet doorgetrokken. Lijnen tonen geen koersverloop.</p><div class=table-scroll role=region aria-label=Gegevens tabindex=0>" + "".join(parts) + "<p>" + legend + "</p></div>"
+    return "<h2>Signaaltrend (−2 bearish tot +2 bullish)</h2><p>Elke stip is een opgeslagen meting; ontbrekende scores en meetgaten groter dan 45 minuten en modelwissels worden niet doorgetrokken. Lijnen tonen geen koersverloop.</p><div class=table-scroll role=region aria-label=Gegevens tabindex=0>" + "".join(parts) + "<p>" + legend + "</p></div>"
 
 
 
@@ -205,8 +211,7 @@ WATCHDOG_SCRIPT = """<script>
 </script>"""
 
 
-def outcome_html(records):
-    results = evaluate_horizons(records)
+def outcome_tables(results):
     sections = []
     labels = {"bullish": "Bullish", "slightly_bullish": "Licht bullish",
               "bearish": "Bearish", "slightly_bearish": "Licht bearish"}
@@ -242,8 +247,23 @@ def outcome_html(records):
                         '<th>Horizon niet meetbaar met dit TF</th><th>Uitgesloten</th>' +
                         '<th>Matchpercentage</th><th>95%-interval*</th></tr>' +
                         ''.join(rows) + '</table></div></details>')
+    return ''.join(sections)
+
+
+def outcome_html(records):
+    results = evaluate_models(records)
+    sections = [('<section><h3>Modelversie: ' + html.escape(model) + '</h3>' +
+                 outcome_tables(by_horizon) + '</section>')
+                for model, by_horizon in results.items()]
+    if not sections:
+        sections = ['<p>ONVOLDOENDE DATA — geen identificeerbare modelversie met geldige signalen.</p>']
     return ('<h2>Voorlopige signaalvalidatie (1u / 4u / 24u / 7d)</h2>' +
-            '<p>Per timeframe en oorspronkelijke signaalsterkte. Eén signaal per afgesloten candle ' +
+            '<p>Elke modelversie heeft afzonderlijke tabellen, aantallen en steekproefdrempels. '
+            'Versies worden niet samengevoegd tot een matchpercentage of interval. '
+            'Koersen uit latere modelversies mogen als waargenomen vervolgprijs dienen; '
+            'dit wijzigt het oorspronkelijke label niet. Een versieverschil is geen bewijs van verbetering. '
+            'Een onbekende modelversie wordt niet aan de huidige versie toegewezen. '
+            'Per timeframe en oorspronkelijke signaalsterkte. Eén signaal per afgesloten candle ' +
             'en bekende modelversie, met geldige candle-eindtijd en directioneel label; de toekomstige koers moet tussen de gekozen horizon en 30 minuten ' +
             'daarna zijn gemeten. Zonder geschikte koers blijft de uitkomst onbeoordeelbaar. ' +
             'De status gebruikt de laatste opgeslagen observatietijd, niet de huidige klok. '
@@ -256,7 +276,7 @@ def outcome_html(records):
             'Een conflict telt bij elke betrokken oorspronkelijke signaalsterkte; tel die groepen niet op. '
             'Percentage pas vanaf 10 beoordeelde signalen. Dit is geen backtest en ' +
             'herhaalde of overlappende signalen zijn niet onafhankelijk. ' +
-            'Het 95%-Wilson-interval is uitsluitend beschrijvend, verschijnt vanaf 30 ' +
+            'Het 95%-interval (Wilson) is uitsluitend beschrijvend, verschijnt vanaf 30 ' +
             'waarnemingen en corrigeert NIET voor overlap, selectie of autocorrelatie. ' +
             'Dit is geen bewijs van voorspellende waarde.</p>' + ''.join(sections))
 
@@ -275,9 +295,12 @@ def render(records, health=None):
             css = "bull" if grade in ("bullish", "slightly_bullish") else "bear" if grade in ("bearish", "slightly_bearish") else "neutral"
             cells.append('<td class="' + css + '">' + html.escape(label) + '</td>')
         origin = "Hersteld bronsnapshot" if item.get("provenance", {}).get("kind") == "recovered_stored_signal" else "Live archief"
-        rows.append("<tr><th>" + when + "</th><td>" + origin + "</td>" + "".join(cells) + "</tr>")
+        versions = sorted({model_version(signal, item) for signal in (item.get("signals") or {}).values()
+                           if isinstance(signal, dict) and model_version(signal, item)})
+        version_text = html.escape(', '.join(versions) or "ONTBREEKT")
+        rows.append("<tr><th>" + when + "</th><td>" + origin + "</td><td>" + version_text + "</td>" + "".join(cells) + "</tr>")
     head = "".join("<th>" + tf.upper() + "</th>" for tf in TIMEFRAMES)
-    body = "".join(rows) if rows else '<tr><td colspan="9">Nog geen geldige historische metingen.</td></tr>'
+    body = "".join(rows) if rows else '<tr><td colspan="10">Nog geen geldige historische metingen.</td></tr>'
     return """<!doctype html><html lang="nl"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BTC historische signaaltijdlijn</title>
@@ -296,7 +319,7 @@ td,th{padding:.6rem;font-size:.875rem}h2{font-size:1.25rem}svg{min-width:640px}}
 <nav><a href="btc-timeframes.html">← Actuele timeframes</a></nav><p>Tabellen en grafiek: veeg horizontaal voor alle kolommen.</p>
 <p>Laatste 100 opgeslagen snapshots, nieuwste bovenaan. Alle signalen zijn voorlopig;
 dit is geen backtest. Tijdstempels zijn UTC. Ontbrekende gegevens blijven ONTBREEKT. Herstelde bronsnapshots bevatten uitsluitend destijds opgeslagen labels; de meettijd is de oorspronkelijke eindtijd van de snapshot. Historische prijzen en modeluitkomsten worden niet achteraf ingevuld.</p>
-""" + collector_health_html(health) + freshness_html(records) + chart_html(records) + summary_html(records) + outcome_html(records) + """<div class=table-scroll role=region aria-label=Gegevens tabindex=0><table><thead><tr><th>Meting (UTC)</th><th>Herkomst</th>""" + head + "</tr></thead><tbody>" + body + "</tbody></table></div>" + FRESHNESS_SCRIPT + WATCHDOG_SCRIPT + "</html>"
+""" + collector_health_html(health) + freshness_html(records) + chart_html(records) + summary_html(records) + outcome_html(records) + """<div class=table-scroll role=region aria-label=Gegevens tabindex=0><table><thead><tr><th>Meting (UTC)</th><th>Herkomst</th><th>Modelversies</th>""" + head + "</tr></thead><tbody>" + body + "</tbody></table></div>" + FRESHNESS_SCRIPT + WATCHDOG_SCRIPT + "</html>"
 
 
 def build(source, output, health_source=None):
