@@ -1,10 +1,10 @@
 name: Archive BTC 4H provisional history
 
-# Release candidate only: this workflow is inactive on the default branch
-# until this pull request is reviewed and merged.
+# Periodic archive check also acts as a fallback trigger for the BTC collector.
+# GitHub scheduled jobs are best-effort and can be delayed or skipped.
 on:
   schedule:
-    - cron: '47 */4 * * *'
+    - cron: '17,47 * * * *'
   workflow_dispatch:
 
 permissions: {}
