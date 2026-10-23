@@ -187,3 +187,39 @@ geaggregeerde standaarduitvoer voor compatibiliteit; met `selected_model` kan
 één model worden geselecteerd. De dashboardpercentages gebruiken uitsluitend
 de gescheiden route. Geen bestaande signalen, koersen of modelversies worden
 achteraf aangepast en er worden geen betaalde bronnen toegevoegd.
+
+
+## Telling zonder overlappende evaluatieperioden (PR #36)
+
+Elke modelversie toont twee afzonderlijke validatieweergaven: **Alle unieke
+signalen** en **Zonder overlappende evaluatieperioden**. De standaard-API-uitvoer
+blijft de volledige telling. Met `sample_policy="non_overlapping"` kiest de
+validator per timeframe en modelversie het chronologisch eerste directionele
+signaal. Dat reserveert het gesloten interval vanaf zijn candle-eindtijd tot
+horizon + 30 minuten daarna. Het volgende signaal wordt alleen gekozen als
+zijn candle-eindtijd strikt ná dat interval ligt. Selectie gebeurt voor elke
+horizon opnieuw, vóór splitsing naar oorspronkelijke signaalsterkte.
+
+De selectie gebruikt alleen kandidaatidentiteit en tijd, nooit de koersuitkomst,
+prijsbeschikbaarheid, of het feit dat een signaal later beoordeelbaar blijkt.
+Ook een kandidaat met ontbrekende startkoers of een label-/prijsconflict
+reserveert de periode. Neutrale snapshots zijn geen directionele kandidaten.
+Niet-gekozen signalen en hun waargenomen koersen worden niet uit het archief
+verwijderd; die koersen mogen nog steeds een gekozen signaal helpen beoordelen.
+Alle bestaande validiteits- en conflictcontroles blijven actief.
+
+Elke groep toont unieke kandidaten, wegens overlap overgeslagen kandidaten en
+geselecteerde signalen. Daarbij geldt `kandidaten = overgeslagen + geselecteerd`;
+de bestaande uitkomststatussen tellen op tot de geselecteerde signalen.
+De drempels van 10 beoordeelde uitkomsten voor percentages en 30 voor
+beschrijvende Wilson-intervallen worden binnen elke afzonderlijke weergave,
+versie, horizon, timeframe en signaalsterkte toegepast. De grotere volledige
+steekproef kan de drempel voor de selectie niet vrijgeven.
+
+Niet-overlap is geen onafhankelijkheidsgarantie en geen correctie voor alle
+statistische onzekerheid: autocorrelatie, gedeelde regimes en selectiebias kunnen
+blijven bestaan. Modellen, timeframes, horizons en groepen mogen ook niet als
+onafhankelijke experimenten worden opgeteld. Oudere herstelde kandidaatrecords
+kunnen de chronologische selectie opnieuw faseren; dit is een reproduceerbare
+archiefselectie, geen vooraf vastgelegde prospectieve proef. Geen marktdata,
+modellen, kosten of workflows worden gewijzigd.

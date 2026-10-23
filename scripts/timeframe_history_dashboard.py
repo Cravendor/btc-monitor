@@ -230,6 +230,8 @@ def outcome_tables(results):
                             "</td><td>" + labels[grade] + "</td><td>" + str(total) +
                             "</td><td>" + str(item["confirmed_direction"]) +
                             "</td><td>" + str(item["opposite_direction"]) +
+                            "</td><td>" + str(item["candidate_signals"]) +
+                            "</td><td>" + str(item["overlap_skipped"]) +
                             "</td><td>" + str(item["total_signals"]) +
                             "</td><td>" + str(item["missing_initial_price"]) +
                             "</td><td>" + str(item["awaiting_horizon"]) +
@@ -241,7 +243,8 @@ def outcome_tables(results):
         sections.append('<details><summary>Uitkomsten na ' + str(hours) +
                         ' uur</summary><div class=table-scroll role=region aria-label=Gegevens tabindex=0><table><tr><th>Horizon</th><th>TF</th>' +
                         '<th>Signaal</th><th>Beoordeeld</th><th>Richting juist</th>' +
-                        '<th>Tegengesteld</th><th>Unieke signalen</th><th>Startkoers ontbreekt</th>' +
+                        '<th>Tegengesteld</th><th>Unieke kandidaten</th><th>Overgeslagen wegens overlap</th>' +
+                        '<th>Geselecteerde signalen</th><th>Startkoers ontbreekt</th>' +
                         '<th>Horizon nog niet bereikt</th><th>Koersvenster nog open</th>' +
                         '<th>Vervolgkoers ontbreekt</th><th>Archieftijd onbekend</th>' +
                         '<th>Horizon niet meetbaar met dit TF</th><th>Uitgesloten</th>' +
@@ -252,13 +255,26 @@ def outcome_tables(results):
 
 def outcome_html(records):
     results = evaluate_models(records)
+    spaced = evaluate_models(records, sample_policy="non_overlapping")
     sections = [('<section><h3>Modelversie: ' + html.escape(model) + '</h3>' +
-                 outcome_tables(by_horizon) + '</section>')
+                 '<details><summary>Alle unieke signalen</summary>' +
+                 outcome_tables(by_horizon) + '</details>' +
+                 '<details><summary>Zonder overlappende evaluatieperioden</summary>' +
+                 outcome_tables(spaced[model]) + '</details></section>')
                 for model, by_horizon in results.items()]
     if not sections:
         sections = ['<p>ONVOLDOENDE DATA — geen identificeerbare modelversie met geldige signalen.</p>']
     return ('<h2>Voorlopige signaalvalidatie (1u / 4u / 24u / 7d)</h2>' +
             '<p>Elke modelversie heeft afzonderlijke tabellen, aantallen en steekproefdrempels. '
+            'De tweede telling selecteert per model en timeframe chronologisch het eerste '
+            'directionele signaal, reserveert de volledige horizon plus 30 minuten, en kiest '
+            'het volgende signaal pas strikt daarna. Selectie gebeurt vóór splitsing per '
+            'signaalsterkte en zonder naar koersuitkomsten te kijken; ook signalen met '
+            'ontbrekende prijzen of conflicten reserveren hun periode. Niet-geselecteerde '
+            'signalen blijven als overlap zichtbaar en leveren nog wel waargenomen koersen. '
+            'Niet-overlap maakt waarnemingen NIET onafhankelijk: autocorrelatie, regimes '
+            'en selectiebias blijven mogelijk. Herstel van oudere signalen kan de selectie verschuiven. '
+            'Drempels gelden opnieuw binnen elke telling. '
             'Versies worden niet samengevoegd tot een matchpercentage of interval. '
             'Koersen uit latere modelversies mogen als waargenomen vervolgprijs dienen; '
             'dit wijzigt het oorspronkelijke label niet. Een versieverschil is geen bewijs van verbetering. '
