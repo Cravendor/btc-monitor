@@ -15,13 +15,13 @@ De bestaande Bitget futuresprijs, OI en funding blijven intact. De collector voe
 
 Orderboekbanden 0,1%, 0,5% en 1% bevatten notional en imbalance; `*_band_covered=false` betekent slechts een ondergrens uit de teruggegeven niveaus. Stablecoinmetingen tonen uitsluitend prijs en depeg, geen totale supply of exchange flows. De Coinbase-premium is expliciet een Bitget-vergelijkingsproxy met USDT/USD-correctie; bronnen ouder dan drie minuten of meer dan twee minuten uiteen worden afgewezen. Futuresbasis betekent hier perpetual mark/index-premium, geen geannualiseerde termijnbasis.
 
-`index.html` leest de openbare `main/data/latest.json` rechtstreeks, zodat snapshots zichtbaar worden zonder elke vier uur een Pages-build. De periodieke marktcollector draait op de NAS; GitHub heeft alleen nog een handmatige collector als terugval. Codewijzigingen starten de GitHub-tests, niet de collector. Activeer in de repository Settings → Pages → Source: GitHub Actions en start **BTC dashboard Pages** eenmaal handmatig. Publicatie en een succesvolle eerste Actions-run zijn nog vereist. De workflow gebruikt uitsluitend standaard publieke runners en slaat private repositories over; geen betaalde dienst of betaalde runner wordt gestart.
+`index.html` leest de openbare `main/data/latest.json` rechtstreeks, zodat snapshots zichtbaar worden zonder elke vier uur een Pages-build. De periodieke marktcollector draait primair op de NAS. GitHub behoudt een handmatige collector en krijgt via de watchdog een automatische reserve voor verouderde of ontbrekende opgeslagen metingen. Codewijzigingen starten de GitHub-tests, niet de collector. Activeer in de repository Settings → Pages → Source: GitHub Actions en start **BTC dashboard Pages** eenmaal handmatig. Publicatie en een succesvolle eerste Actions-run zijn nog vereist. De workflow gebruikt uitsluitend standaard publieke runners en slaat private repositories over; geen betaalde dienst of betaalde runner wordt gestart.
 
 De bestaande NAS-traderecorder wordt alleen-lezen gekoppeld: zie [CVD-waarnemingen en dekkingsbeperkingen](docs/CVD.md). Spot- en futuresdelta’s uit opgeslagen trades zijn gedeeltelijke waarnemingen, geen gevalideerde volledige CVD.
 
 ## Planning en beperkingen
 
-De NAS-taak **BTC NAS Collect Publish** is ingesteld op dagelijks iedere 30 minuten van 00:00 tot 23:30 **Europe/Amsterdam**. De GitHub-marktcollector heeft alleen `workflow_dispatch`; automatische cron-, push- en archiefvervolgtriggers zijn verwijderd. De afzonderlijke GitHub-4H-archivering (minuut 17/47 UTC) en watchdog (minuut 13/43 UTC) blijven voorlopig actief. GitHub kan runs vertragen of overslaan. Openbare repositories kunnen na 60 dagen zonder repositoryactiviteit hun planning verliezen; controleer Actions als er geen nieuwe bestanden verschijnen. Een geheel niet gestarte run kan zelf geen foutbestand schrijven. Controleer dus ook gaten tussen tijdstempels. Er wordt niet achteraf aangevuld.
+De NAS-taak **BTC NAS Collect Publish** is ingesteld op dagelijks iedere 30 minuten van 00:00 tot 23:30 **Europe/Amsterdam**. De GitHub-marktcollector heeft alleen `workflow_dispatch`; automatische cron-, push- en archiefvervolgtriggers zijn verwijderd. De afzonderlijke GitHub-4H-archivering (minuut 17/47 UTC) en watchdog (minuut 13/43 UTC) blijven actief. Alleen geplande of handmatig gestarte watchdog-controles mogen bij meer dan één uur oude of ontbrekende opgeslagen metingen een reservemeting uitvoeren. GitHub kan runs vertragen of overslaan. Openbare repositories kunnen na 60 dagen zonder repositoryactiviteit hun planning verliezen; controleer Actions als er geen nieuwe bestanden verschijnen. Een geheel niet gestarte run kan zelf geen foutbestand schrijven. Controleer dus ook gaten tussen tijdstempels. Er wordt niet achteraf aangevuld.
 
 Een beurs kan GitHub-runner-IP's of regio's blokkeren (bijvoorbeeld HTTP 451/403). De eerste handmatige run moet bevestigen welke bronnen bereikbaar zijn. De workflow probeert zulke beperkingen niet te omzeilen. De verzameling draait pas nadat je de bestanden op GitHub hebt gezet.
 
@@ -266,3 +266,32 @@ hierboven beschrijven de oorspronkelijke wijzigingen; de actuele marktcollector
 start uitsluitend handmatig op GitHub, terwijl NAS, archivering, watchdog en
 Pages hun afzonderlijke taken behouden. Budget blijft €0.
 
+
+
+## Automatische GitHub-reserve bij uitval van de NAS
+
+De bestaande `BTC collector health check` controleert op minuut 13/43 UTC de
+aanwezigheid van opgeslagen metingen. Alleen `schedule` en een expliciete
+`workflow_dispatch` mogen bij stale/missing data de marktcollector uitvoeren.
+De grens blijft strikt meer dan 3600 seconden sinds de nieuwste geldige
+archieftijd. Precies een uur oud is nog current. Dit is een aanwezigheidscheck,
+geen bewijs van geldige marktmetrics of van een fysiek offline NAS.
+
+Voor en na de reservemeting haalt de job de nieuwste repositoryreferentie op.
+Een inmiddels hervatte NAS-upload heeft voorrang. Verse gegevens voorkomen een
+reservemeting; na geslaagde fallback zijn ze eveneens weer current. De reserve
+verzamelt dus niet standaard elk halfuur. Bij voortdurende uitval volgen nieuwe
+pogingen zodra de opgeslagen meting weer ouder dan een uur is, op een volgende
+uitgevoerde watchdog-controle. Planning op GitHub blijft best-effort.
+
+Nieuwe snapshots vermelden `collection_source`: nas, github_fallback, github_manual
+of local. Het hoofddashboard toont die bron; oude snapshots zonder metadata tonen
+bron niet vastgelegd. Het watchdograpport bewaart alleen de uitkomst van zijn eigen
+controle onder `recovery`; NAS-healthrapporten kunnen die tijdelijke metadata later
+vervangen. Het snapshotarchief behoudt de bronvermelding.
+
+De GitHub-reserve heeft geen toegang tot het NAS-journal: zijn `cvd_4h` blijft
+not_collected/null. Hij vult geen verloren trades aan, neemt geen continue
+WebSocketverbinding over en bevestigt geen historische CVD-dekking. De NAS blijft
+de primaire collector. Geen AWS, nieuwe sleutels, inkomende NAS-poorten of betaalde
+diensten nodig. Zie [werkwijze en gelijktijdige uploads](docs/NAS.md).

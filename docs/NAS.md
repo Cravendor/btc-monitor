@@ -63,7 +63,7 @@ No Python packages, subscriptions or servers are installed by this script.
 6. Confirm at least two scheduled NAS runs and their dashboard publications.
    The periodic GitHub market collector is now manual-only: its cron, code-push
    trigger and archive-completion trigger are removed. The separate 4H archive
-   and read-only freshness watchdog keep their schedules until their replacements
+   and freshness watchdog keep their schedules until their replacements
    are verified. The NAS writes freshness together with each snapshot. Concurrent
    archive/watchdog writes can still reject a push; preserve local data and inspect
    conflicts rather than overwriting remote observations.
@@ -103,7 +103,9 @@ The GitHub BTC market snapshots workflow remains runnable from Actions → Run
 workflow for manual recovery. Its job also requires workflow_dispatch and a
 public repository. A code push or completion of the 4H archive must not collect.
 Pages push/workflow triggers and CI tests remain unchanged. The GitHub freshness
-watchdog still reports stale/missing stored data without starting collection.
+watchdog now has a gated reserve: only scheduled/manual checks may collect when
+stored data are stale/missing. Workflow-completion and code-push checks remain
+report-only. The main BTC market snapshots workflow itself is still manual-only.
 PR #38's proposed GitHub watchdog collector recovery is superseded by the NAS
 migration and should not be merged into this arrangement.
 
@@ -142,3 +144,56 @@ gaps. Consequently `cvd_4h.value` is null and `coverage_verified` is always fals
 even when an interval has no recorded gaps. Observed deltas must not be used as
 validated orderflow, cumulative CVD or evidence confirming a bullish/bearish bias.
 See [CVD.md](CVD.md) for the remaining coverage/backfill work.
+
+
+
+## Automatic GitHub reserve for missing or stale stored snapshots
+
+The NAS remains primary. `scripts/watchdog_recovery.py` runs in the existing
+public-repository `BTC collector health check` workflow on minute 13/43 UTC,
+manual checks, and the existing report-only push/workflow-completion triggers.
+Only `schedule`/`workflow_dispatch` may recover. It uses the existing 3600-second
+freshness threshold and archive timestamp validation: this checks presence of
+stored measurements, not that every metric was valid or the NAS is physically
+offline. Future/malformed archive timestamps do not keep the reserve idle.
+
+The job first fetches and fast-forwards a clean, disposable checkout of trusted
+main, recomputes health, and skips market collection when current. For recovery it
+runs the full tests, checks upstream again, then invokes the ordinary collector.
+It explicitly removes BTC_CVD_DB and tags the snapshot collection_source as
+github_fallback. CVD stays not_collected/null; no NAS journal, trade backfill,
+inbound connection or continuous CVD takeover is involved. All normal source
+validation and regional API restrictions remain in force.
+
+After a recovery attempt, the job recomputes health and saves the attempt outcome
+under recovery before marking stale data, failed tests or incomplete collection
+as a failed job. Valid partial output is uploaded before failure is reported.
+The existing Pages workflow_run trigger publishes successful and failed health
+runs; a GITHUB_TOKEN push alone is not assumed to start another workflow. Push and
+workflow-completion events never start recovery, preventing retry chains.
+
+The watchdog, manual GitHub collector and 4H archive share btc-market-collector
+concurrency. This serializes GitHub writers, not the NAS. Upstream is checked again
+before publication: fresh observations from a restored NAS take precedence and
+local reserve output is skipped. If upstream changed but remains stale, the job
+fails and the next check starts from a fresh checkout. A final race can still
+reject a normal push; there is no force-push, rebase of generated views, reset or
+deletion of remote observations. NAS pending commits remain local on rejection;
+inspect them if its existing outer fast-forward pull then refuses to proceed.
+GitHub job-local output from a rejected/skipped publication is not claimed as
+saved data and disappears with the disposable runner. Exactly-once collection
+and uninterrupted service are not guaranteed.
+
+Successful recovery refreshes the normal archive, so further checks skip until
+data become stale again. Recovery therefore does not promise half-hour snapshots
+during a long outage; it runs on the next executed check after the threshold.
+When the NAS resumes, its next successful upload makes the check current again.
+Both the NAS and fallback use additive collection_source metadata. The main page
+shows NAS or GitHub-reserve; older records without provenance stay unknown.
+
+The existing Synology task needs no script change. The next NAS pull picks up its
+source tag. Keep the task enabled and preserve the CVD boot/watchdog tasks. The
+old closed PR #38 remains superseded; this reserve is integrated with the verified
+NAS publication path and includes explicit upstream-race and failure tests.
+Runtime stays on standard public GitHub runners with the existing contents:write
+permission and 5-minute timeout. No paid services or new credentials are enabled.

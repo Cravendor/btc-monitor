@@ -27,6 +27,13 @@ def utcnow():
     return datetime.now(timezone.utc)
 
 
+def collection_source():
+    source = os.environ.get('BTC_COLLECTOR_SOURCE')
+    if source in ('nas', 'github_fallback', 'github_manual', 'local'):
+        return source
+    return 'github_manual' if os.environ.get('GITHUB_ACTIONS') == 'true' else 'local'
+
+
 def fetch(url, numbers, timestamps, opener=urlopen, sleep=time.sleep):
     result = {'url': url, 'status': 'error', 'data': None, 'error': None}
     for attempt in range(1, 4):
@@ -92,6 +99,7 @@ def main():
     successes = sum(item['status'] == 'ok' for item in metrics.values())
     status = 'ok' if successes == len(metrics) else ('partial' if successes else 'error')
     record = {
+        'collection_source': collection_source(),
         'schema_version': 2, 'exchange': 'bitget', 'market': 'USDT-FUTURES', 'symbol': 'BTCUSDT', 'started_at': started.isoformat(),
         'finished_at': utcnow().isoformat(), 'status': status, 'metrics': metrics,
         # Optional CVD observations have their own status; market ok never attests CVD.
