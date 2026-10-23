@@ -2,6 +2,7 @@
 import html
 import json
 from pathlib import Path
+from scripts.signal_outcome_validation import evaluate
 from datetime import datetime, timezone, timedelta
 
 TIMEFRAMES = ("5m", "15m", "30m", "1h", "4h", "1d", "1w")
@@ -228,6 +229,28 @@ WATCHDOG_SCRIPT = """<script>
 </script>"""
 
 
+def outcome_html(records):
+    stats = evaluate(records)
+    rows = []
+    for tf, item in stats.items():
+        total = item["evaluated"]
+        rate = f'{100 * item["confirmed_direction"] / total:.1f}%' if total >= 10 else "ONVOLDOENDE DATA"
+        rows.append("<tr><th>" + tf.upper() + "</th><td>" + str(total) +
+                    "</td><td>" + str(item["confirmed_direction"]) +
+                    "</td><td>" + str(item["opposite_direction"]) +
+                    "</td><td>" + str(item["pending_forward_price"]) +
+                    "</td><td>" + str(item["excluded"]) + "</td><td>" + rate + "</td></tr>")
+    return ('<h2>Voorlopige signaalvalidatie (+24 uur)</h2>' +
+            '<p>Unieke afgesloten candles per timeframe en modelversie. Alleen koerspunten ' +
+            'tussen 24u en 24u30 na de signaalcandle tellen mee. Geen interpolatie, ' +
+            'geen trading-PNL. Een match is geen bewijs van voorspellende waarde. ' +
+            'Percentage pas zichtbaar vanaf 10 beoordeelde signalen.</p><main><table>' +
+            '<tr><th>TF</th><th>Beoordeeld</th><th>Richting juist</th>' +
+            '<th>Tegengesteld</th><th>Geen toekomstige koers</th>' +
+            '<th>Uitgesloten</th><th>Matchpercentage</th></tr>' +
+            "".join(rows) + '</table></main>')
+
+
 def render(records, health=None):
     rows = []
     for item in sorted(records, key=lambda r: r.get("updated_at", ""), reverse=True)[:100]:
@@ -253,7 +276,7 @@ td,th{padding:.65rem;text-align:left;border-bottom:1px solid #44536d}
 p{color:#bac8da}</style><h1>BTC — Historische signaaltijdlijn</h1>
 <p>Laatste 100 opgeslagen snapshots, nieuwste bovenaan. Alle signalen zijn voorlopig;
 dit is geen backtest. Tijdstempels zijn UTC. Ontbrekende gegevens blijven ONTBREEKT.</p>
-""" + collector_health_html(health) + freshness_html(records) + chart_html(records) + summary_html(records) + """<main><table><thead><tr><th>Meting (UTC)</th>""" + head + "</tr></thead><tbody>" + body + "</tbody></table></main>" + FRESHNESS_SCRIPT + WATCHDOG_SCRIPT + "</html>"
+""" + collector_health_html(health) + freshness_html(records) + chart_html(records) + summary_html(records) + outcome_html(records) + """<main><table><thead><tr><th>Meting (UTC)</th>""" + head + "</tr></thead><tbody>" + body + "</tbody></table></main>" + FRESHNESS_SCRIPT + WATCHDOG_SCRIPT + "</html>"
 
 
 def build(source, output, health_source=None):
