@@ -94,6 +94,19 @@ class CvdDashboardTests(unittest.TestCase):
             observed_delta_btc:'1',journal_trade_status:'stale'}}});
           assert(texts(root).some(t=>t.includes('VEROUDERD')));
           assert(texts(root).some(t=>t.includes('geen gevalideerde CVD')));
+          const proof={status:'ok',coverage_verified:true,
+            coverage_scope:'bitget_public_history_only',
+            coverage_method:'bitget_history_exhaustion_and_exact_volume_v1',
+            unit:'BTC',validated_delta_btc:'-0.125',taker_side_verified:false};
+          renderCvd({markets:{spot:proof}});
+          assert.equal(root.children[0].children[1].textContent.replace(',','.'),'-0.125 BTC');
+          assert(texts(root).some(t=>t.includes('Bitget-dekking gecontroleerd')));
+          assert(texts(root).some(t=>t.includes('niet onafhankelijk geverifieerd')));
+          for(const invalid of [{coverage_scope:'all_exchanges'},
+                                {coverage_method:'unknown'},{validated_delta_btc:null}]){
+            renderCvd({markets:{spot:{...proof,...invalid}}});
+            assert.equal(root.children[0].children[1].textContent,'Ontbreekt');
+          }
         '''
         for locale, prefix in (
                 ('installed locale', ''),

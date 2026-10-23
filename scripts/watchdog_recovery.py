@@ -74,6 +74,7 @@ def run(event):
                    BTC_COLLECTOR_SOURCE='github_fallback')
         # No NAS access and no cached partial CVD values in a fallback snapshot.
         env.pop('BTC_CVD_DB', None)
+        env.pop('BTC_CVD_BACKFILL_STORE', None)
         tests = subprocess.run([sys.executable, '-m', 'unittest', 'discover', '-s', 'tests'], env=env)
         if tests.returncode:
             failure = 1

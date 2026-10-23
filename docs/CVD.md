@@ -18,8 +18,9 @@ Geen netwerkverzoeken, API-sleutels, nieuwe pakketten of betaalde diensten.
 - `cvd_4h.status`: partial bij opgeslagen waarnemingen; missing_data bij ontbrekende
   of onleesbare bronnen; invalid_data bij ongeldige trades; not_collected zonder
   geconfigureerde bron. Status per markt is leidend.
-- `value: null` en `coverage_verified: false`: volledige interval-CVD is niet
-  vastgesteld. Dit verandert niet bij nul geregistreerde gaten.
+- Zonder geslaagde historievalidatie blijven value:null en coverage_verified:false.
+  Nul geregistreerde gaten verandert dit niet. Gecontroleerde Bitget-historie kan
+  per markt een gevalideerde bron-delta leveren; zie stap 3 hieronder.
 - `markets.spot` en `markets.usdt_futures`: afzonderlijke waarnemingen in BTC.
 - `observed_buy_btc`, `observed_sell_btc`, `observed_delta_btc`: decimale strings,
   delta = opgeslagen buy-volume minus opgeslagen sell-volume binnen het interval.
@@ -90,7 +91,7 @@ zijn ontvangst-/transporttijden, geen bewezen exchange-tijdgrenzen. Een laat of
 ongeldig bericht kan oudere trades betreffen; sessies zijn daarom geen complete
 event-time-dekkingskaart of exchange-watermark.
 
-De health-export houdt coverage_verified=false en cvd_4h=null. Het extra veld
+De sessierecorder-health-export houdt coverage_verified=false en cvd_4h=null. Het extra veld
 transport_session toont het laatst opgeslagen checkpoint, geen live-status of
 volledigheidsgarantie. Een pong bewijst uitsluitend dat een frame is ontvangen.
 Er is nog geen provider-sequentiecontrole, volledige backfill of 4H-validatie.
@@ -144,8 +145,10 @@ ligt. Zulke matches worden geteld; oorspronkelijke tijdstempels blijven intact.
 Dit is een expliciete vergelijkingsregel, geen onafhankelijk bewezen timestampconversie.
 
 provider_consistent betekent dat deze controles slagen, niet dat alle beursdata
-onafhankelijk bewezen compleet zijn. coverage_verified blijft false, value blijft
-null, en de bestaande exporter/het dashboard gebruiken de kandidaten nog niet.
+onafhankelijk bewezen compleet zijn. De herstelrapporten zelf houden
+coverage_verified:false en value:null. De afzonderlijke validator hieronder moet
+de opgeslagen bewijsgegevens eerst opnieuw controleren voordat de exporter een
+delta met gecontroleerde Bitget-brondekking kan gebruiken.
 Ook legacy OPEN-gaten blijven ongewijzigd. Een candle-volumecontrole kan de
 buy/sell-richting niet zelfstandig bewijzen. Er is nog een bewijs- en integratiestap
 nodig voordat CVD door monitors als bevestigd mag worden gebruikt.
@@ -205,8 +208,80 @@ De CLI gebruikt een exclusieve, niet-blokkerende lock naast de kandidaatdatabase
 zodat twee herstelopdrachten die database niet tegelijk wijzigen. Dit is een
 afzonderlijke lock en raakt de live collector.lock of publish.lock niet.
 De SHA-controle is een lokale integriteitscontrole, geen cryptografisch bewijs
-van authenticiteit van de provider. coverage_verified en value blijven ongewijzigd
-false/null totdat de afzonderlijke dekkingsvalidatie en integratie klaar zijn.
+van authenticiteit van de provider. De herstelrapporten blijven false/null;
+de hieronder beschreven validator verleent uitsluitend de expliciete bron-scope.
+
+De hervatte futuresrun is op de NAS geslaagd met 262.345 trades / 264 pagina's,
+exacte BTC- en quote-volumeovereenkomst en nul ontbrekende, extra of conflicterende
+journal-trades. Kandidaatdelta's voor hetzelfde afgesloten interval:
+spot -29.700067 BTC en futures -26.1303 BTC. Deze runs vormen de eerste echte
+acceptatiegegevens; oude run-ID's worden niet vast in de exporter opgenomen.
+
+## Gecontroleerde bron-delta en automatische export (stap 3)
+
+`scripts/cvd_coverage.py` leest kandidaatdatabase en journal uitsluitend read-only,
+binnen één SQLite-readtransactie. Voor precies het gevraagde afgesloten interval
+worden de volledige pagina-/cursor-keten, hashes, ruwe payloads, opgeslagen trades,
+lege eindpagina, aantallen en Decimal BTC-/quote-volumes opnieuw gecontroleerd.
+De vergelijking met het journal loopt opnieuw in beide richtingen. Een opgeslagen
+groen rapport is geen voldoende bewijs. Gewijzigde data, een andere markt of een
+oud/toekomstig interval kunnen geen actuele gevalideerde delta opleveren.
+
+Geslaagde resultaten per markt bevatten status:ok, coverage_verified:true,
+coverage_scope:bitget_public_history_only en
+coverage_method:bitget_history_exhaustion_and_exact_volume_v1. value en
+validated_delta_btc bevatten dezelfde decimale BTC-intervaldelta, buy minus sell
+volgens de richting die Bitget rapporteert. recovered_missing_trades telt de
+historische trades die het live-journal mist; deze blijven in de aparte bron.
+Oude OPEN-gaten worden nooit aangepast of stilzwijgend resolved.
+
+De scope is essentieel: dit controleert de consistentie en uitputting van de
+publieke Bitget-historie plus beide candlevolumes. Het is geen onafhankelijk bewijs
+van ieder beursbericht, geen marktbrede meting en geen doorlopende cumulatieve CVD.
+side_semantics is provider_reported_buy_sell en taker_side_verified blijft false:
+de gebruikte V2-marktdata leveren geen onafhankelijke maker/taker-toewijzing.
+De expliciete takerdefinitie van een ander protocol (zoals V3/SBE) wordt niet
+stilzwijgend op V2 overgedragen. Dus geen bevestigde whale-intentie, absorptie of
+bull/bear-score alleen op basis van deze delta. Een CVD-monitor moet deze grenzen
+meenemen en uitsluitend exact vergelijkbare gesloten bron-intervallen gebruiken.
+
+validated_at is het tijdstip van de lokale hercontrole, niet van een nieuwe
+API-meting. history_response_at toont de provider requestTime van de opgeslagen
+laatste historiepagina indien beschikbaar. evidence_sha256 identificeert het
+lokaal gecontroleerde bewijs; ruwe pagina's/trades en bestandspaden blijven privé.
+
+`scripts/cvd_export.py` behoudt zijn gedeeltelijke journalvelden en vult alleen
+een geslaagde markt aan met deze bron-delta. Beide markten moeten slagen voor
+top-level status:ok/coverage_verified:true. Spot en futures worden nooit opgeteld;
+top-level value blijft null omdat er geen gezamenlijke delta is. Bij één geslaagde
+markt is de algemene status partial; de status per markt blijft leidend. Een oud
+gecontroleerd interval wordt nooit als waarde voor een nieuw interval gebruikt.
+
+`nas/collect_publish.sh --run` stelt BTC_CVD_BACKFILL_STORE standaard in op
+/volume1/btc-cvd/backfill/candidates.sqlite3 en start scripts.cvd_pipeline vóór
+de normale marktmeting. De pipeline controleert bestaande voltooide bewijsgegevens
+zonder nieuwe API-verzoeken. Voor een nieuw interval wordt per markt begrensd
+opgehaald of een onderbroken netwerk-/budgetrun hervat: 180 seconden zachte begroting
+en 400 extra pagina's per markt, normale retryregels. In de eerste minuut na een
+UTC-4H-grens wordt nog gewacht op afwikkeling door de provider: de upload publiceert
+dan beschikbare waarnemingen, niet het oude interval als nieuw. De volgende
+halfuurlijkse run probeert het actuele interval opnieuw. Als een proces over een
+nieuwe 4H-grens heen loopt, gebruikt de exporter altijd zijn actuele doelinterval;
+resultaten voor het vorige interval worden niet hernoemd of overgenomen.
+
+De kandidaatdatabase heeft een eigen exclusieve schrijverslock. De marktverzameling
+blijft onder publish.lock; de continue recorder gebruikt zijn eigen collector.lock.
+Een incomplete CVD-pipeline blokkeert de tien gewone marktmetrics of upload niet.
+Een defect voltooid bewijs wordt als inspectiepunt gemeld. Private kandidaatdata
+blijven buiten GitHub; alleen aggregaten met methode en scope worden gepubliceerd.
+Bewijsdata nemen schijfruimte in; deze wijziging verwijdert geen historische gegevens.
+--check doet nog steeds geen herstel, migratie of netwerkverzameling.
+
+De dashboardkaarten tonen 'Bitget-dekking gecontroleerd · buy−sell volgens bron'
+uitsluitend met de juiste methode/scope en een eindige delta. De beperkingen op
+taker-toewijzing en cumulatieve CVD staan zichtbaar bij die kaarten. Cloud/manual
+runs nemen geen NAS-kandidaatpad uit de omgeving over; de GitHub-reserve verwijdert
+zowel BTC_CVD_DB als BTC_CVD_BACKFILL_STORE.
 
 Primaire bronnen, geraadpleegd 23 oktober 2026:
 - [Bitget Classic Spot Market API](https://www.bitget.com/docs/catalog/classic-spot-market/classic-spot-market)
@@ -214,19 +289,11 @@ Primaire bronnen, geraadpleegd 23 oktober 2026:
 
 ## Nog nodig voor volledige CVD
 
-Deze koppeling repareert geen historische gaten en claimt geen volledige CVD.
-De sessieregistratie is geïnstalleerd; de herstelkandidaten moeten nog op een echt
-afgesloten interval worden getest. Daarna ontbreken exchange-dekkingsbewijs,
-event-time-watermarks en afhandeling
-van achterstallige berichten. Reconnects
-vereisen aantoonbaar volledige backfill of een expliciet ongeldig interval;
-alleen opnieuw verbinding maken of oude markers sluiten is geen bewijs.
-
-Voor een status ok moet de bewijsroute voor het hele gesloten interval controleerbaar
-zijn, met consistente marktidentiteit/eenheden, tijdgrenzen, deduplicatie en
-verificatie van ontbrekende trades. Zonder dat bewijs blijft volledige CVD null.
-Cumulatieve CVD vereist daarnaast een zichtbare baseline en een expliciete
-onderbreking bij onbekende dekking. Er wordt geen geschiedenis verzonnen.
+De provider-scoped intervaldelta is implementeerbaar met bovenstaande controles.
+Onafhankelijke taker-attributie en eventuele marktbrede conclusies zijn daarmee
+niet bewezen. Cumulatieve CVD vereist daarnaast een zichtbare baseline en expliciete
+onderbrekingen bij onbekende dekking. Deze wijziging bouwt geen cumulatieve reeks,
+verzint geen geschiedenis en verandert geen bestaande heuristische biasgraden.
 
 ## Controleren
 
@@ -241,8 +308,9 @@ out-of-order trades, ACK-deadline, ongeldige frames en pings tijdens een drukke 
 De tests gebruiken nagebootste sockets, zonder netwerk of websocket-client-installatie;
 zij vervangen geen echte Bitget-protocoltest of volledige dekkingscontrole.
 
-Na merge: controleer de normale NAS-upload en voer de nieuwe backfill-tests en
-herstelopdracht eerst handmatig uit. De bestaande sessierecorder blijft actief;
-een repository-update vervangt de geïnstalleerde versiemap niet automatisch.
-De halfuurlijkse taak en het dashboard gebruiken de herstelkandidaten nog niet.
+Na merge: actualiseer de NAS-checkout onder publish.lock en voer daarna de bestaande
+NAS-runner buiten die buitenste lock uit. Die draait de tests, verwerkt de actuele
+historiestatus en publiceert de snapshot. Controleer daarna cvd_4h en Pages.
+De bestaande sessierecorder blijft actief; een repository-update vervangt de
+geïnstalleerde versiemap niet automatisch.
 
