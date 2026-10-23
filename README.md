@@ -51,3 +51,39 @@ Budget: **€0 per maand**. Geen betaalde API's, cloudservers, proefabonnementen
 - https://docs.cdp.coinbase.com/api-reference/exchange-api/rest-api/products/get-product-ticker
 
 De API-responses zijn lokaal getest; bereikbaarheid vanaf GitHub-hosted runners moet nog met workflow_dispatch worden bevestigd.
+
+
+## Historische dekking en mobiel dashboard (PR #32)
+
+De signaaltijdlijn toont ook gedeeltelijke geschiedenis voor 24 uur, 7 dagen en
+30 dagen, steeds eindigend bij de laatste opgeslagen meting (UTC). De watchdog
+meet de laatste 24 uur tot zijn controletijd. Elk venster bestaat uit
+rechtsgesloten tijdvakken van 30 minuten `(start, eind]`, vanaf het venstereinde
+teruggerekend; dit zijn geen exacte GitHub-cronslots. Extra of dubbele runs
+verhogen de dekking van een tijdvak niet. Dekking is archiefaanwezigheid,
+geen geldigheid van signalen, onafhankelijke steekproefgrootte of candledekking.
+
+- **Geschiedenis ontbreekt:** tijdvakken geheel vóór de eerste bewaarde meting.
+  Of er vroeger een collector draaide is onbekend.
+- **Geen opgeslagen meting na archiefstart:** leeg tijdvak na die grens,
+  mogelijk een gemiste collectormeting. Zonder workflowlog bewijst dit geen
+  mislukte of overgeslagen run; ook archiefverlies kan een oorzaak zijn.
+- **Signaal ontbreekt:** een meting is bewaard, maar een timeframe heeft geen
+  geldig label. Dit wordt afzonderlijk geteld en nooit neutraal gemaakt.
+
+`python -m scripts.recover_signal_history` herstelt uitsluitend originele,
+reeds opgeslagen labels uit gedateerde Bitget-bronsnapshots van vóór de live
+archiefgrens. De eerste minuut bij die grens wordt overgeslagen om dubbele
+live-metingen te vermijden. Herstel is idempotent, append-only en bewaart
+bronpad en oorspronkelijke snapshot-eindtijd als herkomst. Bestaande rijen,
+ontbrekende historische prijzen en modelversies worden niet aangevuld;
+geen herberekende signalen worden als toenmalige waarneming gepresenteerd.
+De herstelde rijen hebben daardoor geen beoordeelbare koersuitkomsten.
+De dekkinggrens is de eerste bewaarde meting, niet de bewezen installatiedatum.
+
+De twee timeframepagina's gebruiken horizontaal schuifbare tabellen en
+passende tekstgroottes op kleine schermen. Validatie is uitklapbaar per
+horizon. Grafieklijnen stoppen bij ontbrekende signalen of meer dan 45 minuten
+tussen metingen. De bestaande steekproefdrempels en Wilson-beperkingen blijven
+gelden. Oude watchdograpporten krijgen expliciet 'nieuw tijdvakrapport vereist'
+tot de volgende watchdogrun schema 3 heeft geschreven. Kosten blijven €0.

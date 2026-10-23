@@ -9,6 +9,9 @@ on:
       - scripts/context_trends.py
       - scripts/context_trend_dashboard.py
       - scripts/multi_timeframe_dashboard.py
+      - scripts/history_coverage.py
+      - scripts/signal_outcome_validation.py
+      - scripts/signal_statistics.py
       - scripts/timeframe_history_dashboard.py
       - data/collector-health.json
       - data/latest.json

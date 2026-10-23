@@ -31,7 +31,7 @@ class CollectorHealthTests(unittest.TestCase):
     def test_coverage_deduplicates_and_excludes_outside_window(self):
         report = check([self.row(0), self.row(0), self.row(30), self.row(1500)], self.now)
         self.assertEqual(report["coverage_24h"]["observed_snapshots"], 2)
-        self.assertEqual(report["coverage_24h"]["status"], "no_large_internal_gaps")
+        self.assertEqual(report["coverage_24h"]["status"], "gaps_detected")
 
     def test_invalid_future_timestamp_not_accepted(self):
         self.assertEqual(check([self.row(-20)], self.now)["status"], "missing")
