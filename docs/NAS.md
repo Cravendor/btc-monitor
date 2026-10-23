@@ -197,3 +197,33 @@ old closed PR #38 remains superseded; this reserve is integrated with the verifi
 NAS publication path and includes explicit upstream-race and failure tests.
 Runtime stays on standard public GitHub runners with the existing contents:write
 permission and 5-minute timeout. No paid services or new credentials are enabled.
+
+
+## Bounded retries for transient Coinbase ticker failures
+
+The existing public BTC-USD and USDT-USD Coinbase ticker reads now have at most
+three attempts (one initial request plus two retries), with waits of one and two
+seconds. The socket timeout remains 15 seconds per attempt. This covers the NAS
+Python 3.9 socket.timeout class as well as TimeoutError, wrapped network errors,
+connection resets, incomplete reads and HTTP 500/502/503/504 responses. Other
+endpoints, including Bitget/native timeframe requests, keep one attempt here.
+
+HTTP 429, access/regional restrictions, certificate verification failures, malformed
+JSON and invalid source values are not retried. No source substitution, old-price
+cache, new API key or paid service is introduced. All failed attempts retain
+status error/data null; successful retries clear the prior error. Each request
+result includes attempts and the start time of its final attempt as observed_at.
+Original source timestamps and values remain intact.
+
+USDT-USD is still fetched once per snapshot (with its bounded retries) and shared
+by stablecoin pricing and the Coinbase premium proxy. A successful retry may
+restore both dependencies; if exhausted they stay partial/missing. The existing
+180-second source-age and 120-second source-skew limits on derived calculations
+remain unchanged. Extra waiting can therefore still lead to a correctly rejected
+old or unsynchronised source, rather than a plausible-looking substituted value.
+The same logic runs on the NAS and the GitHub manual/reserve collector.
+
+This change adds limited resilience to the recorded 18:30 NAS Coinbase timeout;
+it does not prove the service is reachable on the next run. After merge the NAS
+pulls it normally. Inspect the next source status, attempts and derived statuses;
+no scheduled-task edit or collector restart is needed.
