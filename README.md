@@ -15,13 +15,13 @@ De bestaande Bitget futuresprijs, OI en funding blijven intact. De collector voe
 
 Orderboekbanden 0,1%, 0,5% en 1% bevatten notional en imbalance; `*_band_covered=false` betekent slechts een ondergrens uit de teruggegeven niveaus. Stablecoinmetingen tonen uitsluitend prijs en depeg, geen totale supply of exchange flows. De Coinbase-premium is expliciet een Bitget-vergelijkingsproxy met USDT/USD-correctie; bronnen ouder dan drie minuten of meer dan twee minuten uiteen worden afgewezen. Futuresbasis betekent hier perpetual mark/index-premium, geen geannualiseerde termijnbasis.
 
-`index.html` leest de openbare `main/data/latest.json` rechtstreeks, zodat snapshots zichtbaar worden zonder elke vier uur een Pages-build. De collector start ook na wijzigingen aan scripts/tests/workflow op main. Activeer in de repository Settings → Pages → Source: GitHub Actions en start **BTC dashboard Pages** eenmaal handmatig. Publicatie en een succesvolle eerste Actions-run zijn nog vereist. De workflow gebruikt uitsluitend standaard publieke runners en slaat private repositories over; geen betaalde dienst of betaalde runner wordt gestart.
+`index.html` leest de openbare `main/data/latest.json` rechtstreeks, zodat snapshots zichtbaar worden zonder elke vier uur een Pages-build. De periodieke marktcollector draait op de NAS; GitHub heeft alleen nog een handmatige collector als terugval. Codewijzigingen starten de GitHub-tests, niet de collector. Activeer in de repository Settings → Pages → Source: GitHub Actions en start **BTC dashboard Pages** eenmaal handmatig. Publicatie en een succesvolle eerste Actions-run zijn nog vereist. De workflow gebruikt uitsluitend standaard publieke runners en slaat private repositories over; geen betaalde dienst of betaalde runner wordt gestart.
 
 Voor CVD: zie [voorbereiding](docs/CVD.md). Er is geen 24/7 host geactiveerd en er worden geen fictieve CVD-waarden getoond.
 
 ## Planning en beperkingen
 
-De planning is 00:17, 04:17, 08:17, 12:17, 16:17 en 20:17 **UTC**, onafhankelijk van Nederlandse zomer-/wintertijd. GitHub kan runs vertragen of overslaan. Openbare repositories kunnen na 60 dagen zonder repositoryactiviteit hun planning verliezen; controleer Actions als er geen nieuwe bestanden verschijnen. Een geheel niet gestarte run kan zelf geen foutbestand schrijven. Controleer dus ook gaten tussen tijdstempels. Er wordt niet achteraf aangevuld.
+De NAS-taak **BTC NAS Collect Publish** is ingesteld op dagelijks iedere 30 minuten van 00:00 tot 23:30 **Europe/Amsterdam**. De GitHub-marktcollector heeft alleen `workflow_dispatch`; automatische cron-, push- en archiefvervolgtriggers zijn verwijderd. De afzonderlijke GitHub-4H-archivering (minuut 17/47 UTC) en watchdog (minuut 13/43 UTC) blijven voorlopig actief. GitHub kan runs vertragen of overslaan. Openbare repositories kunnen na 60 dagen zonder repositoryactiviteit hun planning verliezen; controleer Actions als er geen nieuwe bestanden verschijnen. Een geheel niet gestarte run kan zelf geen foutbestand schrijven. Controleer dus ook gaten tussen tijdstempels. Er wordt niet achteraf aangevuld.
 
 Een beurs kan GitHub-runner-IP's of regio's blokkeren (bijvoorbeeld HTTP 451/403). De eerste handmatige run moet bevestigen welke bronnen bereikbaar zijn. De workflow probeert zulke beperkingen niet te omzeilen. De verzameling draait pas nadat je de bestanden op GitHub hebt gezet.
 
@@ -253,3 +253,15 @@ onbekende waarden, reset, intacte overige URL-onderdelen en ongewijzigde
 gegevenscellen. Dit vervangt geen visuele browser-, touch- of toegankelijkheids-
 controle; die blijft apart nodig. De bestaande GitHub-runner heeft Node; zonder
 Node slaat de lokale Python-testsuite alleen deze client-side rooktest over.
+
+
+## Marktverzameling op de NAS
+
+De NAS publiceert marktmetingen en native signaalhistorie naar dezelfde GitHub-feed.
+De uploads op 23 oktober om 14:00 en 14:30 Europe/Amsterdam hadden voor alle tien
+meetonderdelen status ok en geslaagde Pages-publicaties. De NAS-CVD-export en de
+aparte 4H-contextarchivering zijn nog niet overgezet. Zie [NAS-installatie,
+bevestigde uitvoering en herstel](docs/NAS.md). Eerdere implementatienotities
+hierboven beschrijven de oorspronkelijke wijzigingen; de actuele marktcollector
+start uitsluitend handmatig op GitHub, terwijl NAS, archivering, watchdog en
+Pages hun afzonderlijke taken behouden. Budget blijft €0.

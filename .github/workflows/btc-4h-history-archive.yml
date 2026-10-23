@@ -1,6 +1,6 @@
 name: Archive BTC 4H provisional history
 
-# Periodic archive check also acts as a fallback trigger for the BTC collector.
+# Periodic archive check uses stored observations; it does not start collection.
 # GitHub scheduled jobs are best-effort and can be delayed or skipped.
 on:
   schedule:

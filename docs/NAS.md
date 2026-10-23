@@ -2,8 +2,9 @@
 
 This installs the periodic market collector alongside the existing continuous CVD
 collector. It does not modify `/volume1/btc-cvd`, its database, watchdog, boot task
-or storage monitor. The default interpreter reuses its existing venv; the check
-requires Python 3.9+ and verifies the actual version before any collection.
+or storage monitor. Set BTC_PYTHON to the separate Python 3.9 interpreter; the runner's legacy default
+points to the CVD venv and must be overridden on this NAS. The preflight verifies
+Python 3.9+ before any collection.
 No Python packages, subscriptions or servers are installed by this script.
 
 ## Installation, one step at a time
@@ -56,14 +57,16 @@ No Python packages, subscriptions or servers are installed by this script.
    ```
 
 5. Only after that succeeds, create a DSM Task Scheduler **Scheduled Task →
-   User-defined script**, user `tony`, daily, every 30 minutes (for example 00:07
-   through 23:37), using the `--run` command above. Enable saved output results
+   User-defined script**, user `tony`, daily, every 30 minutes (00:00
+   through 23:30 Europe/Amsterdam), using the `--run` command above. Enable saved output results
    and failure notifications if already configured. Do not replace the CVD tasks.
 6. Confirm at least two scheduled NAS runs and their dashboard publications.
-   Then remove the corresponding GitHub collector/archive schedules and watchdog
-   recovery in a separate reviewed change. Leave the current GitHub schedules
-   enabled during setup. The brief overlap can cause a rejected push; it cannot
-   authorize overwriting remote data.
+   The periodic GitHub market collector is now manual-only: its cron, code-push
+   trigger and archive-completion trigger are removed. The separate 4H archive
+   and read-only freshness watchdog keep their schedules until their replacements
+   are verified. The NAS writes freshness together with each snapshot. Concurrent
+   archive/watchdog writes can still reject a push; preserve local data and inspect
+   conflicts rather than overwriting remote observations.
 
 ## Failure behavior and scope
 
@@ -85,4 +88,29 @@ rather than assuming upload means publication.
 This first migration step covers market snapshots and the signal archive. It
 neither exports SQLite CVD data nor moves the separate 4H context archive task.
 Those require follow-up integration after NAS publication has been verified.
-No cron schedules are disabled by this change. Existing coverage gaps stay gaps.
+Only the GitHub market collector's automatic triggers are removed by this cutover.
+Existing coverage gaps stay gaps.
+
+
+## Cutover evidence and rollback (23 October 2026)
+
+NAS commits 94c207b (12:00 UTC / 14:00 Europe/Amsterdam) and 794295f
+(12:30 UTC / 14:30 Europe/Amsterdam) uploaded snapshots with all ten metric
+statuses ok. Pages runs 39950121220 and 39953831222 succeeded. These two observed
+uploads align with the configured schedule; they do not prove future availability.
+The earlier manual test c21d0a0 is not counted as a scheduled upload.
+
+The GitHub BTC market snapshots workflow remains runnable from Actions → Run
+workflow for manual recovery. Its job also requires workflow_dispatch and a
+public repository. A code push or completion of the 4H archive must not collect.
+Pages push/workflow triggers and CI tests remain unchanged. The GitHub freshness
+watchdog still reports stale/missing stored data without starting collection.
+PR #38's proposed GitHub watchdog collector recovery is superseded by the NAS
+migration and should not be merged into this arrangement.
+
+After merging, verify a subsequent NAS snapshot and Pages deployment. Do not
+start a manual collector merely to prove the automatic trigger has stopped.
+If NAS collection fails, inspect saved task output and retain local pending
+commits. A manual GitHub run is a temporary recovery option; restoring periodic
+GitHub triggers requires an explicit reviewed rollback. CVD export and the 4H
+context archive migration remain separate work.
