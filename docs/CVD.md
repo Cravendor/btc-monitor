@@ -56,11 +56,15 @@ Het algemene snapshotlabel ok betreft de marktmetrics, niet de CVD-dekking.
 `index.html` toont de twee waargenomen delta’s met een expliciet gedeeltelijk
 label, gapmetadata en brontijd; oude feeds zonder deze velden tonen Ontbreekt.
 
-## Sessieregistratie voorbereid (stap 1, nog niet op de NAS geïnstalleerd)
+## Sessieregistratie (stap 1, op de NAS geïnstalleerd)
 
 `scripts/bitget_cvd_collector.py` en `scripts/cvd_store.py` bevatten een optionele
-opvolger van de aangeleverde recorder. De halfuurlijkse snapshottaak start of
-installeert deze bestanden niet. De bestaande recorder blijft dus actief na merge.
+opvolger van de aangeleverde recorder. De halfuurlijkse snapshottaak installeert
+deze bestanden niet. Op 23 oktober 2026 is de recorder handmatig geïnstalleerd
+via een aparte versiemap en een atomisch vervangen startbestand op het bestaande
+pad. De watchdog, opstarttaak, collector.lock en oorspronkelijke database blijven
+in gebruik. Een online SQLite-backup is vooraf gecontroleerd. De gebruiker heeft
+de 17 sessietests op Python 3.8.12 en echte ontvangst voor beide markten bevestigd.
 
 De opvolger gebruikt dezelfde trades/gaps-tabellen en voegt `cvd_sessions` en
 `cvd_owned_gaps` toe. Per verbindingspoging worden markt, BTCUSDT, start,
@@ -91,17 +95,89 @@ transport_session toont het laatst opgeslagen checkpoint, geen live-status of
 volledigheidsgarantie. Een pong bewijst uitsluitend dat een frame is ontvangen.
 Er is nog geen provider-sequentiecontrole, volledige backfill of 4H-validatie.
 
-Deze stap gebruikt het aangeleverde V2-wireformaat; acceptatie op echte V2-berichten
-en de oorspronkelijke Python 3.8.12-omgeving blijft onderdeel van installatie.
+Deze stap gebruikt het aangeleverde V2-wireformaat. De echte NAS-test ontving voor
+beide markten een acknowledgement en 50 trades in een tijdelijke database.
+Na installatie namen de opgeslagen trades in een 30-secondencontrole toe met
+60 voor spot en 189 voor futures. Dit bevestigt ontvangst, geen 4H-volledigheid.
 Er worden geen nieuwe afhankelijkheden, sleutels, diensten of abonnementen toegevoegd.
+
+## Historische herstelkandidaten (stap 2)
+
+`scripts/cvd_backfill.py` haalt per handmatige opdracht één volledig afgesloten
+UTC-interval van vier uur voor één markt op via publieke fills-history. Er zijn
+geen API-sleutels nodig. De oorspronkelijke journal wordt met SQLite mode=ro
+aangekoppeld. Historische trades gaan naar een APARTE lokale SQLite-database,
+buiten de repository; nooit rechtstreeks naar de draaiende recorder. Dit voorkomt
+conflicten tussen historische en live tijdstempels bij hetzelfde trade-ID.
+
+De standaardlimieten zijn 400 pagina's en een zachte tijdsbegroting van 180 seconden,
+met maximaal 1000 trades per pagina, maximaal 1 MiB per antwoord en 0,2 seconden
+pauze tussen verzoeken. De begroting wordt vóór en na elk verzoek gecontroleerd;
+dit is geen harde procesdeadline voor langzame socketreads of SQLite-werk.
+Geen automatische retries, achtergrondtaken of installatie. Een mislukte run
+bewaart de reeds gevalideerde pagina's voor inspectie; een nieuwe run begint
+opnieuw en vervangt de oude run niet.
+
+Trade-ID's moeten strikt aflopen en lager zijn dan de vorige cursor; ID's hoeven
+niet opeenvolgend te zijn. Symbool, richting, positieve Decimal-prijs/hoeveelheid
+en tijd binnen [start,eind) worden gecontroleerd. Ook na een korte pagina volgt
+een verzoek om een expliciet lege eindpagina. Een herhaalde cursor, fout antwoord,
+tijdslimiet of paginalimiet levert incomplete op, nooit complete CVD.
+
+Pagina's blijven inclusief ruwe antwoorden, cursor en SHA-256 lokaal bewaard.
+De som van BTC-volume én prijs maal BTC-volume moet exact overeenkomen met de
+afgesloten handelscandle (geen index- of mark-price-candle). Er is bewust geen
+tolerantie om verschillen groen te maken. Afronding door de provider kan daarom
+ook een onterecht negatieve uitkomst geven; die vraagt onderzoek.
+
+De koppeling wordt in beide richtingen met het live-journal vergeleken:
+ontbrekende lokale IDs zijn herstelkandidaten; tegenstrijdige bestaande trades
+of journal-IDs die ontbreken in de historie blokkeren provider_consistent.
+Alleen voor spot is de gedocumenteerde secondeprecisie toegestaan als de
+historische tijd exact op een seconde valt en de live tijd in dezelfde seconde
+ligt. Zulke matches worden geteld; oorspronkelijke tijdstempels blijven intact.
+Dit is een expliciete vergelijkingsregel, geen onafhankelijk bewezen timestampconversie.
+
+provider_consistent betekent dat deze controles slagen, niet dat alle beursdata
+onafhankelijk bewezen compleet zijn. coverage_verified blijft false, value blijft
+null, en de bestaande exporter/het dashboard gebruiken de kandidaten nog niet.
+Ook legacy OPEN-gaten blijven ongewijzigd. Een candle-volumecontrole kan de
+buy/sell-richting niet zelfstandig bewijzen. Er is nog een bewijs- en integratiestap
+nodig voordat CVD door monitors als bevestigd mag worden gebruikt.
+
+Na merge en actualiseren van de NAS-checkout, eerst handmatig testen op Python 3.8.12:
+
+```sh
+export PYTHONDONTWRITEBYTECODE=1
+export TMPDIR=/volume1/btc-monitor/tmp
+cd /volume1/btc-monitor/repo
+/volume1/btc-cvd/venv/bin/python -m unittest discover -s tests -p test_cvd_backfill.py -v
+```
+
+Daarna één markt per keer, met lokale kandidaten buiten de repository:
+
+```sh
+/volume1/btc-cvd/venv/bin/python -m scripts.cvd_backfill \
+  --journal /volume1/btc-cvd/trades.sqlite3 \
+  --store /volume1/btc-cvd/backfill/candidates.sqlite3 \
+  --market spot
+```
+
+Gebruik daarna --market usdt_futures voor futures. --end-ms kan een expliciete
+afgesloten UTC-4H-grens vastzetten zodat beide runs hetzelfde interval gebruiken.
+Exit 0 is uitsluitend provider_consistent; incomplete geeft exit 1. Bewaar en
+inspecteer het JSON-resultaat; publiceer de private kandidaatdatabase niet.
+
+Primaire bronnen, geraadpleegd 23 oktober 2026:
+- [Bitget Classic Spot Market API](https://www.bitget.com/docs/catalog/classic-spot-market/classic-spot-market)
+- [Bitget Classic Contract Market API](https://www.bitget.com/docs/catalog/classic-contract-market/classic-contract-market)
 
 ## Nog nodig voor volledige CVD
 
 Deze koppeling repareert geen historische gaten en claimt geen volledige CVD.
-De voorbereide sessieregistratie moet nog gecontroleerd worden geïnstalleerd,
-met een consistente SQLite-backup, behoud van de bestaande flock en een rollback.
-Niet naast de bestaande recorder starten of live bestanden overschrijven.
-Daarna ontbreken nog exchange-dekkingsbewijs, event-time-watermarks en afhandeling
+De sessieregistratie is geïnstalleerd; de herstelkandidaten moeten nog op een echt
+afgesloten interval worden getest. Daarna ontbreken exchange-dekkingsbewijs,
+event-time-watermarks en afhandeling
 van achterstallige berichten. Reconnects
 vereisen aantoonbaar volledige backfill of een expliciet ongeldig interval;
 alleen opnieuw verbinding maken of oude markers sluiten is geen bewijs.
@@ -125,6 +201,8 @@ out-of-order trades, ACK-deadline, ongeldige frames en pings tijdens een drukke 
 De tests gebruiken nagebootste sockets, zonder netwerk of websocket-client-installatie;
 zij vervangen geen echte Bitget-protocoltest of volledige dekkingscontrole.
 
-Na merge: controleer de eerstvolgende normale NAS-upload, de cvd_4h-velden en
-de Pages-publicatie. De bestaande taak en CVD-collector hoeven niet te veranderen.
+Na merge: controleer de normale NAS-upload en voer de nieuwe backfill-tests en
+herstelopdracht eerst handmatig uit. De bestaande sessierecorder blijft actief;
+een repository-update vervangt de geïnstalleerde versiemap niet automatisch.
+De halfuurlijkse taak en het dashboard gebruiken de herstelkandidaten nog niet.
 
