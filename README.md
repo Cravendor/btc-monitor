@@ -154,3 +154,36 @@ bronrepository, gebruiken uitsluitend de huidige standaardbranch bij checkout
 en downloaden geen code of artifacts van de activerende run. Er komen geen
 nieuwe rechten of betaalde diensten bij. GitHub-planningen en workflows blijven
 best-effort; dit is geen continue bewaking.
+
+
+## Validatie per modelversie (PR #35)
+
+Het archief bevat meerdere heuristiekversies. De validatie op de signaaltijdlijn
+splitst daarom eerst per opgeslagen modelversie, daarna per horizon, timeframe
+en oorspronkelijke signaalsterkte. Matchpercentages en beschrijvende
+Wilson-intervallen gebruiken uitsluitend de aantallen binnen die combinatie.
+Twee versies met elk zes uitkomsten halen samen dus niet de drempel van tien;
+twee versies met elk twintig halen niet samen de intervaldrempel van dertig.
+De groepen zeggen zonder vergelijkbare perioden en afhankelijkheidscorrecties
+niet welke versie beter voorspelt.
+
+De versie op het signaal heeft voorrang; alleen als die ontbreekt wordt de
+opgeslagen rijversie gebruikt. Onbekende of ongeldige versies worden nooit
+stilzwijgend aan het huidige model toegewezen. De historische snapshottabel
+vermeldt de modelversies en de grafiek onderbreekt lijnen bij versieovergangen.
+De beschrijvende 24u/7d/30d-snapshottellingen kunnen versies combineren en zijn
+uitdrukkelijk geen modelvalidatie.
+
+Waargenomen vervolgkoersen zijn feitelijke marktdata en blijven bruikbaar over
+versiegrenzen heen; de oorspronkelijke labels en versies veranderen niet.
+Koersconflicten worden over alle versies gecontroleerd vóór selectie, zodat een
+versiefilter tegenstrijdige marktdata niet kan verbergen. Verschillende labels
+van verschillende modellen op dezelfde candle zijn afzonderlijke signalen.
+De bestaande behandeling van conflicten binnen één model blijft behouden.
+
+`evaluate_models` levert de gescheiden groepen aan de dashboardrenderer.
+`evaluate`, `evaluate_horizons` en `evaluate_by_grade` behouden hun bestaande
+geaggregeerde standaarduitvoer voor compatibiliteit; met `selected_model` kan
+één model worden geselecteerd. De dashboardpercentages gebruiken uitsluitend
+de gescheiden route. Geen bestaande signalen, koersen of modelversies worden
+achteraf aangepast en er worden geen betaalde bronnen toegevoegd.

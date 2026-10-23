@@ -27,7 +27,32 @@ def price(value):
         return None
 
 
-def evaluate(records, horizon_hours=24, tolerance_minutes=30, *, selected_grade=None):
+def model_version(signal, row):
+    """Resolve a recorded model identifier; never infer the current version."""
+    value = signal.get("model_version") or row.get("model_version")
+    return value if isinstance(value, str) and value.strip() else None
+
+
+def model_versions(records):
+    """Versions with valid stored labels and candle identities, in stable order."""
+    versions = set()
+    for row in records:
+        if not isinstance(row, dict) or not isinstance(row.get("signals"), dict):
+            continue
+        observed = parse_time(row.get("updated_at"))
+        for tf in TIMEFRAMES:
+            signal = row["signals"].get(tf)
+            if not isinstance(signal, dict) or signal.get("status") != "ok":
+                continue
+            closed = parse_time(signal.get("candle_closed_at"))
+            model = model_version(signal, row)
+            if (model and closed is not None and (observed is None or closed <= observed)
+                    and signal.get("grade") in (*DIRECTIONS, "neutral")):
+                versions.add(model)
+    return sorted(versions)
+
+
+def evaluate(records, horizon_hours=24, tolerance_minutes=30, *, selected_grade=None, selected_model=None):
     """Count unique signals and mutually exclusive evaluation readiness states.
 
     The archive's latest aware observation time is the cutoff, never wall-clock
@@ -58,7 +83,7 @@ def evaluate(records, horizon_hours=24, tolerance_minutes=30, *, selected_grade=
             value = price(signal.get("close_price"))
             if value is not None:
                 candles[tf].setdefault(stamp, set()).add(value)
-            model = signal.get("model_version") or row.get("model_version")
+            model = model_version(signal, row)
             grade = signal.get("grade")
             if grade not in DIRECTIONS or not isinstance(model, str) or not model:
                 continue
@@ -78,7 +103,9 @@ def evaluate(records, horizon_hours=24, tolerance_minutes=30, *, selected_grade=
         # unless the next close falls within the explicitly allowed tolerance.
         remainder = horizon.total_seconds() % periods[tf]
         unsupported = bool(remainder and periods[tf] - remainder > tolerance.total_seconds())
-        for (stamp, _), candidate in signals[tf].items():
+        for (stamp, model), candidate in signals[tf].items():
+            if selected_model is not None and model != selected_model:
+                continue
             grades, values = candidate["grades"], candidate["prices"]
             if selected_grade is not None and selected_grade not in grades:
                 continue
@@ -118,12 +145,12 @@ def evaluate(records, horizon_hours=24, tolerance_minutes=30, *, selected_grade=
     return result
 
 
-def evaluate_horizons(records, horizons=(1, 4, 24, 168)):
+def evaluate_horizons(records, horizons=(1, 4, 24, 168), *, selected_model=None):
     """Group directional outcomes by timeframe, horizon and original grade."""
-    return {hours: evaluate_by_grade(records, hours) for hours in horizons}
+    return {hours: evaluate_by_grade(records, hours, selected_model=selected_model) for hours in horizons}
 
 
-def evaluate_by_grade(records, horizon_hours):
+def evaluate_by_grade(records, horizon_hours, *, selected_model=None):
     """Filter candidates after conflict detection, retaining all forward prices.
 
     A conflicting signal contributes an exclusion to every affected original
@@ -131,7 +158,13 @@ def evaluate_by_grade(records, horizon_hours):
     """
     result = {}
     for grade in DIRECTIONS:
-        outcome = evaluate(records, horizon_hours=horizon_hours, selected_grade=grade)
+        outcome = evaluate(records, horizon_hours=horizon_hours, selected_grade=grade, selected_model=selected_model)
         for tf, stats in outcome.items():
             result.setdefault(tf, {})[grade] = stats
     return result
+
+
+def evaluate_models(records, horizons=(1, 4, 24, 168)):
+    """Isolated model sample groups, preserving candles and conflicts globally."""
+    return {model: evaluate_horizons(records, horizons, selected_model=model)
+            for model in model_versions(records)}
