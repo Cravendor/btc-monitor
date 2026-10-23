@@ -20,5 +20,18 @@ class CollectorHealthTests(unittest.TestCase):
     def test_missing(self):
         self.assertEqual(check([], self.now)["status"], "missing")
 
+    def test_coverage_detects_long_gaps(self):
+        report = check([self.row(240), self.row(30), self.row(0)], self.now)
+        coverage = report["coverage_24h"]
+        self.assertEqual(coverage["expected_snapshots"], 48)
+        self.assertEqual(coverage["observed_snapshots"], 3)
+        self.assertEqual(coverage["max_observed_gap_seconds"], 12600)
+        self.assertEqual(coverage["status"], "gaps_detected")
+
+    def test_coverage_deduplicates_and_excludes_outside_window(self):
+        report = check([self.row(0), self.row(0), self.row(30), self.row(1500)], self.now)
+        self.assertEqual(report["coverage_24h"]["observed_snapshots"], 2)
+        self.assertEqual(report["coverage_24h"]["status"], "no_large_internal_gaps")
+
     def test_invalid_future_timestamp_not_accepted(self):
         self.assertEqual(check([self.row(-20)], self.now)["status"], "missing")
