@@ -41,7 +41,14 @@ fi
 COLLECT_EXIT=0
 # Read the separate journal in-place; no copy, migration or collector restart.
 export BTC_CVD_DB="${BTC_CVD_DB:-/volume1/btc-cvd/trades.sqlite3}"
+export BTC_CVD_BACKFILL_STORE="${BTC_CVD_BACKFILL_STORE:-/volume1/btc-cvd/backfill/candidates.sqlite3}"
 export BTC_COLLECTOR_SOURCE=nas
+# Failed/unfinished coverage never blocks publication of the normal market metrics.
+# Cached candidates are replay-verified; a new closed interval is recovered/resumed.
+if [ -f "$BTC_CVD_DB" ]; then
+  "$BTC_PYTHON" -m scripts.cvd_pipeline --journal "$BTC_CVD_DB" \
+    --store "$BTC_CVD_BACKFILL_STORE" || echo 'CVD coverage pending; publishing available observations.'
+fi
 "$BTC_PYTHON" scripts/collect.py || COLLECT_EXIT=$?
 "$BTC_PYTHON" -m scripts.collector_health
 # Stage only known public outputs; never the CVD database, logs or credentials.

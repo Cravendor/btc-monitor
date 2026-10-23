@@ -1,8 +1,4 @@
-"""Read observed 4h trade deltas from the existing NAS journal, without attesting coverage.
-
-The legacy journal has no verifiable session/backfill ledger. Even zero recorded
-gaps cannot establish completeness. Never promote these observations to CVD ok.
-"""
+"""Read journal observations and optionally verified Bitget public-history deltas."""
 import os
 import sqlite3
 from datetime import datetime, timezone
@@ -11,7 +7,7 @@ from pathlib import Path
 
 WINDOW_MS = 4 * 60 * 60 * 1000
 MARKETS = ('spot', 'usdt_futures')
-REASON = 'Legacy trade journal has no verified interval coverage or backfill evidence.'
+REASON = 'No verified Bitget public-history coverage for this interval.'
 
 
 def timestamp(ms):
@@ -84,7 +80,7 @@ def read_market(db, market, start, end, now_ms):
     return result
 
 
-def collect_cvd(path=None, now=None):
+def collect_cvd(path=None, now=None, backfill_path=None):
     """One consistent read transaction; no schema migration, writes or raw trade export."""
     now = now or datetime.now(timezone.utc)
     if now.tzinfo is None or now.utcoffset() is None:
@@ -123,4 +119,28 @@ def collect_cvd(path=None, now=None):
     finally:
         if db is not None:
             db.close()
+    # Cloud/manual runs never silently reuse NAS evidence from inherited env vars.
+    if backfill_path is None and os.environ.get('BTC_COLLECTOR_SOURCE') == 'nas':
+        backfill_path = os.environ.get('BTC_CVD_BACKFILL_STORE')
+    if backfill_path:
+        from scripts.cvd_coverage import read_verified
+        verified = read_verified(backfill_path, path, end, now_ms)
+        for market, proof in verified.items():
+            observed = result['markets'].get(market, {})
+            observed['observed_trade_count'] = observed.get('trade_count')
+            observed.update(proof)
+            observed['first_trade_at'] = timestamp(proof['first_trade_ms'])
+            observed['last_trade_at'] = timestamp(proof['last_trade_ms'])
+            result['markets'][market] = observed
+        if verified:
+            result.update(schema_version=2, method='provider_reported_buy_minus_sell',
+                          coverage_scope='bitget_public_history_only',
+                          side_semantics='provider_reported_buy_sell', taker_side_verified=False)
+            if len(verified) == 2:
+                result.update(status='ok', coverage_verified=True,
+                              reason='Both Bitget markets passed stored history coverage checks; '
+                                     'deltas use the provider buy/sell convention.')
+            else:
+                result.update(status='partial', coverage_verified=False,
+                              reason='Only one Bitget market has verified history coverage.')
     return result

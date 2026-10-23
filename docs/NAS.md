@@ -1,8 +1,8 @@
 # NAS collection and GitHub publication
 
 This installs the periodic market collector alongside the existing continuous CVD
-collector. It does not modify `/volume1/btc-cvd`, its database, watchdog, boot task
-or storage monitor. Set BTC_PYTHON to the separate Python 3.9 interpreter; the runner's legacy default
+collector. It preserves the original journal, watchdog, boot task
+and storage monitor. Set BTC_PYTHON to the separate Python 3.9 interpreter; the runner's legacy default
 points to the CVD venv and must be overridden on this NAS. The preflight verifies
 Python 3.9+ before any collection.
 No Python packages, subscriptions or servers are installed by this script.
@@ -139,11 +139,27 @@ prove CVD validity. In the new snapshot, inspect `cvd_4h.markets` and the dashbo
 CVD cards: observed delta, trade count, overlap counts and last stored trade time.
 No observations is null, not zero. Old snapshots remain unchanged.
 
-The uploaded legacy collector/store never establishes full coverage or repairs
-gaps. Consequently `cvd_4h.value` is null and `coverage_verified` is always false,
-even when an interval has no recorded gaps. Observed deltas must not be used as
-validated orderflow, cumulative CVD or evidence confirming a bullish/bearish bias.
-See [CVD.md](CVD.md) for the remaining coverage/backfill work.
+Zero gap markers never establish coverage. The runner now also sets
+`BTC_CVD_BACKFILL_STORE` to `/volume1/btc-cvd/backfill/candidates.sqlite3` and runs
+`scripts.cvd_pipeline` before collecting the snapshot. This separate private store
+needs existing user `tony` write access; the original journal remains read-only.
+Completed candidate evidence is replay-verified. A new closed interval is recovered
+or resumed with bounded public requests; failed coverage does not block normal
+market metrics or their upload. The first minute after a UTC 4H boundary is a
+settlement grace period, so the next half-hour run may supply verification instead.
+
+Only a fully replay-verified market gets `coverage_verified:true`,
+`coverage_scope:bitget_public_history_only` and a decimal `validated_delta_btc`/`value`.
+Both markets must pass for top-level status ok; top-level value remains null because
+spot and derivatives are never added together. Old intervals are not reused as new
+ones. The ordinary raw `observed_*` fields remain partial observations.
+
+The delta uses Bitget's reported buy/sell convention; `taker_side_verified:false`
+explicitly preserves the lack of independent taker attribution. Provider-scoped
+coverage is not proof of market-wide flow, cumulative CVD or whale intent. The UI
+labels the source scope and method. See [CVD.md](CVD.md) for exact validation rules,
+actual NAS acceptance results and remaining semantic limits. No live collector
+restart or task-script change is required for this integration.
 
 
 
@@ -160,7 +176,7 @@ offline. Future/malformed archive timestamps do not keep the reserve idle.
 The job first fetches and fast-forwards a clean, disposable checkout of trusted
 main, recomputes health, and skips market collection when current. For recovery it
 runs the full tests, checks upstream again, then invokes the ordinary collector.
-It explicitly removes BTC_CVD_DB and tags the snapshot collection_source as
+It explicitly removes BTC_CVD_DB and BTC_CVD_BACKFILL_STORE and tags the snapshot collection_source as
 github_fallback. CVD stays not_collected/null; no NAS journal, trade backfill,
 inbound connection or continuous CVD takeover is involved. All normal source
 validation and regional API restrictions remain in force.
@@ -227,3 +243,4 @@ This change adds limited resilience to the recorded 18:30 NAS Coinbase timeout;
 it does not prove the service is reachable on the next run. After merge the NAS
 pulls it normally. Inspect the next source status, attempts and derived statuses;
 no scheduled-task edit or collector restart is needed.
+

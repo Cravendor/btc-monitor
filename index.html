@@ -1,4 +1,4 @@
-<!doctype html><html lang="nl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BTC Monitor</title><style>body{background:#0d1420;color:#e3ebf5;font:16px system-ui;max-width:1150px;margin:45px auto;padding:24px}h1{font-size:38px}small,p{color:#a8b8ce}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}article{background:#182334;padding:22px;border-radius:16px}h2{font-size:17px}strong{font-size:28px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}.ok{color:#7ce4b6}.error,.missing_data,.partial{color:#ffca82}a{color:#a9caff}summary{cursor:pointer}table{width:100%;text-align:right}td,th{padding:9px}</style><h1>BTC Monitor <span style="color:#f9ad43">●</span></h1><p id="state">Meting laden…</p><div id="grid" class="grid"></div><h2>Spot en futures · afgesloten 4H-tradedelta</h2><div id="cvd" class="grid"></div><h2>Afgesloten 4H-candles · Bitget futures</h2><div id="candles"></div><p>NAS-momentopnamen gepland elk halfuur. Orderboekorders kunnen worden ingetrokken. Deze gegevens bewijzen geen whale-intentie. De tradedelta toont uitsluitend opgeslagen waarnemingen. Volledige CVD-dekking is niet bewezen; gedeeltelijke delta’s bevestigen geen koopdruk, verkoopdruk of whale-intentie.</p><a href="https://raw.githubusercontent.com/Cravendor/btc-monitor/main/data/latest.json">Brongegevens · latest.json</a><script>
+<!doctype html><html lang="nl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BTC Monitor</title><style>body{background:#0d1420;color:#e3ebf5;font:16px system-ui;max-width:1150px;margin:45px auto;padding:24px}h1{font-size:38px}small,p{color:#a8b8ce}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}article{background:#182334;padding:22px;border-radius:16px}h2{font-size:17px}strong{font-size:28px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}.ok{color:#7ce4b6}.error,.missing_data,.partial{color:#ffca82}a{color:#a9caff}summary{cursor:pointer}table{width:100%;text-align:right}td,th{padding:9px}</style><h1>BTC Monitor <span style="color:#f9ad43">●</span></h1><p id="state">Meting laden…</p><div id="grid" class="grid"></div><h2>Spot en futures · afgesloten 4H-tradedelta</h2><div id="cvd" class="grid"></div><h2>Afgesloten 4H-candles · Bitget futures</h2><div id="candles"></div><p>NAS-momentopnamen gepland elk halfuur. Orderboekorders kunnen worden ingetrokken. Deze gegevens bewijzen geen whale-intentie. De tradedelta gebruikt de buy/sell-conventie van Bitget. Gecontroleerde dekking betreft uitsluitend de publieke Bitget-historie en candlevolumes. Dit bewijst geen marktbrede orderflow of whale-intentie; gedeeltelijke delta’s blijven onbevestigd.</p><a href="https://raw.githubusercontent.com/Cravendor/btc-monitor/main/data/latest.json">Brongegevens · latest.json</a><script>
 const fmt=(x,n=2)=>Number(x).toLocaleString('nl-NL',{maximumFractionDigits:n});
 const descriptions={futures_price:'Bitget futuresprijs',open_interest:'Open interest · BTC',funding:'Funding · %',spot_price:'Bitget spot · USDT',coinbase_premium_proxy:'Coinbase Premium · proxy',futures_basis:'Perpetual mark/index-premium',orderbook_depth:'Orderboekdiepte · USDT',stablecoins:'Stablecoins · USD/depeg',candles_4h:'Afgesloten 4H-candles'};
 function value(k,d){if(!d)return 'Ontbreekt';switch(k){case 'futures_price':return fmt(d.lastPr)+' USDT';case 'open_interest':return fmt(d.holdingAmount)+' BTC';case 'funding':return fmt(d.fundingRate*100,5)+'%';case 'spot_price':return fmt(d.price_usdt)+' USDT';case 'coinbase_premium_proxy':return fmt(d.premium_pct,4)+'%';case 'futures_basis':return fmt(d.basis_pct,4)+'%';case 'orderbook_depth':return 'Spread '+fmt(d.spread_bps,3)+' bps';case 'candles_4h':return d.candles.length+' candles · '+d.gap_count+' gaten';case 'stablecoins':return Object.entries(d).map(([coin,m])=>coin+': '+(m.status==='ok'?fmt(m.data.price_usd,5):'ontbreekt')).join(' / ');default:return '';}}
@@ -12,7 +12,16 @@ function renderCvd(cvd){
     const status=document.createElement('p');status.className='partial';
     status.textContent='ONTBREEKT · volledige CVD onbevestigd';
     const delta=document.createElement('strong');delta.textContent='Ontbreekt';
-    if(m?.status==='partial' && m.coverage_verified===false &&
+    const verified=m?.status==='ok' && m.coverage_verified===true &&
+       m.coverage_scope==='bitget_public_history_only' &&
+       m.coverage_method==='bitget_history_exhaustion_and_exact_volume_v1' &&
+       m.unit==='BTC' && typeof m.validated_delta_btc==='string' &&
+       m.validated_delta_btc.trim()!=='' && Number.isFinite(Number(m.validated_delta_btc));
+    if(verified){
+      delta.textContent=fmt(m.validated_delta_btc,8)+' BTC';
+      status.className='ok';
+      status.textContent='Bitget-dekking gecontroleerd · buy−sell volgens bron';
+    }else if(m?.status==='partial' && m.coverage_verified===false &&
        typeof m.observed_delta_btc==='string' && m.observed_delta_btc.trim()!=='' &&
        Number.isFinite(Number(m.observed_delta_btc))){
       delta.textContent=fmt(m.observed_delta_btc,8)+' BTC';
@@ -30,6 +39,11 @@ function renderCvd(cvd){
       ' · Laatste opgeslagen trade: '+(m.latest_journal_trade_at??'onbekend')+
       (m.journal_trade_status==='stale'?' · VEROUDERD':'') : 'Geen lokale CVD-waarneming beschikbaar.';
     card.append(info);
+    if(verified){
+      const scope=document.createElement('p');
+      scope.textContent='Alleen Bitget, afgesloten interval. Geen doorlopende CVD; taker-toewijzing is niet onafhankelijk geverifieerd.';
+      card.append(scope);
+    }
     const details=document.createElement('details');
     const summary=document.createElement('summary');summary.textContent='Dekking en meetdetails';
     const pre=document.createElement('pre');pre.textContent=JSON.stringify(m||cvd||{},null,2);

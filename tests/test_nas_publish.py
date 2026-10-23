@@ -41,7 +41,14 @@ case "$1" in
     printf '%s' "$GIT_SSH_COMMAND" > "$NAS_TEST_SSH_CAPTURE"
   fi
   exit 0 ;;
--m) exit 0 ;;
+-m)
+  if [ "$2" = scripts.cvd_pipeline ]; then
+    if [ -n "${NAS_TEST_CVD_CAPTURE:-}" ]; then
+      printf '%s' "$BTC_CVD_BACKFILL_STORE" > "$NAS_TEST_CVD_CAPTURE"
+    fi
+    exit "${NAS_TEST_CVD_EXIT:-0}"
+  fi
+  exit 0 ;;
 scripts/collect.py)
   printf '{"snapshot_status":"%s"}\\n' "${NAS_TEST_STATUS:-ok}" > data/timeframe-health.json
   printf '{"nas":true}\\n' > data/latest.json
@@ -77,6 +84,25 @@ exit 9
         result = self.run_task('--check')
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(capture.read_text(), expected)
+
+    def test_failed_coverage_does_not_block_market_upload_or_publish_private_candidates(self):
+        journal, private, capture = self.root/'live.sqlite3',self.root/'private.sqlite3',self.root/'capture'
+        journal.write_text('private journal sentinel')
+        private.write_text('private candidate sentinel')
+        self.env.update(BTC_CVD_DB=str(journal),BTC_CVD_BACKFILL_STORE=str(private),
+                        NAS_TEST_CVD_CAPTURE=str(capture),NAS_TEST_CVD_EXIT='1')
+        result = self.run_task()
+        self.assertEqual(result.returncode,0,result.stderr)
+        self.assertEqual(capture.read_text(),str(private))
+        self.assertIn('CVD coverage pending',result.stdout)
+        published = self.git('--git-dir='+str(self.remote),'ls-tree','-r','--name-only','main')
+        self.assertNotIn('private.sqlite3',published)
+        self.assertNotIn('live.sqlite3',published)
+        self.assertEqual(json.loads(self.git('--git-dir='+str(self.remote),
+                                            'show','main:data/latest.json')),{'nas':True})
+        capture.unlink()
+        self.assertEqual(self.run_task('--check').returncode,0)
+        self.assertFalse(capture.exists())
 
     def test_default_ssh_is_noninteractive_and_time_limited(self):
         self.env.pop('GIT_SSH_COMMAND', None)
