@@ -10,7 +10,10 @@ from decimal import Decimal, localcontext
 from pathlib import Path
 import sqlite3
 
-from scripts.cvd_backfill import AuditError, WINDOW, decimal, integer, resume_checkpoint
+if __package__:
+    from .cvd_backfill import AuditError, WINDOW, decimal, integer, resume_checkpoint
+else:
+    from cvd_backfill import AuditError, WINDOW, decimal, integer, resume_checkpoint
 
 METHOD = 'bitget_history_exhaustion_and_exact_volume_v1'
 MARKETS = ('spot', 'usdt_futures')
