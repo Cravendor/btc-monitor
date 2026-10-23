@@ -1,4 +1,4 @@
-# BTC-monitor — elke vier uur
+# BTC-monitor — NAS-metingen elk halfuur
 
 ## Starten op GitHub
 
@@ -17,7 +17,7 @@ Orderboekbanden 0,1%, 0,5% en 1% bevatten notional en imbalance; `*_band_covered
 
 `index.html` leest de openbare `main/data/latest.json` rechtstreeks, zodat snapshots zichtbaar worden zonder elke vier uur een Pages-build. De periodieke marktcollector draait op de NAS; GitHub heeft alleen nog een handmatige collector als terugval. Codewijzigingen starten de GitHub-tests, niet de collector. Activeer in de repository Settings → Pages → Source: GitHub Actions en start **BTC dashboard Pages** eenmaal handmatig. Publicatie en een succesvolle eerste Actions-run zijn nog vereist. De workflow gebruikt uitsluitend standaard publieke runners en slaat private repositories over; geen betaalde dienst of betaalde runner wordt gestart.
 
-Voor CVD: zie [voorbereiding](docs/CVD.md). Er is geen 24/7 host geactiveerd en er worden geen fictieve CVD-waarden getoond.
+De bestaande NAS-traderecorder wordt alleen-lezen gekoppeld: zie [CVD-waarnemingen en dekkingsbeperkingen](docs/CVD.md). Spot- en futuresdelta’s uit opgeslagen trades zijn gedeeltelijke waarnemingen, geen gevalideerde volledige CVD.
 
 ## Planning en beperkingen
 
@@ -27,7 +27,7 @@ Een beurs kan GitHub-runner-IP's of regio's blokkeren (bijvoorbeeld HTTP 451/403
 
 ### Geen 4H CVD uit vijf aggTrades
 
-4H CVD vereist volledige trade-data over het gekozen vieruursinterval, met koop-/verkoopagressorrichting en consistente volume-eenheden. Vijf recente aggTrades zijn slechts een klein fragment en leveren geen geldige 4H CVD op. Daarvoor zijn volledige gepagineerde trade-data (of een aantoonbaar volledige trade-stream/archief) nodig, met controle op tijdgrenzen, gaten en dubbelen. Een cumulatieve reeks vereist daarnaast een gekozen beginpunt. Deze versie zet `cvd_4h.value` expliciet op `null` met status `not_collected`.
+4H CVD vereist volledige trade-data over het gekozen vieruursinterval, met koop-/verkoopagressorrichting en consistente volume-eenheden. Vijf recente aggTrades zijn slechts een klein fragment en leveren geen geldige 4H CVD op. Daarvoor zijn volledige gepagineerde trade-data (of een aantoonbaar volledige trade-stream/archief) nodig, met controle op tijdgrenzen, gaten en dubbelen. Een cumulatieve reeks vereist daarnaast een gekozen beginpunt. Deze versie houdt `cvd_4h.value` expliciet op `null` en `coverage_verified=false`. Met een leesbaar NAS-journal staan gedeeltelijke delta’s apart onder `cvd_4h.markets`; zonder configuratie blijft de status `not_collected`. Geen geregistreerde gaten bewijst nog geen volledige dekking.
 
 ## Lokaal controleren
 
@@ -43,7 +43,7 @@ Een echte meting: `python3 scripts/collect.py` (schrijft naar `data/`).
 
 ## Kostengrens
 
-Budget: **€0 per maand**. Geen betaalde API's, cloudservers, proefabonnementen, grotere runners of upgrades activeren. De nieuwe workflows weigeren uitvoering in een private repository. CVD blijft voorbereiding totdat een bestaande kosteloze host beschikbaar is.
+Budget: **€0 per maand**. Geen betaalde API's, cloudservers, proefabonnementen, grotere runners of upgrades activeren. De nieuwe workflows weigeren uitvoering in een private repository. CVD-waarnemingen komen uit de bestaande NAS; volledige intervaldekking is nog niet bewezen.
 
 ## Aanvullende bronnen
 
@@ -259,9 +259,10 @@ Node slaat de lokale Python-testsuite alleen deze client-side rooktest over.
 
 De NAS publiceert marktmetingen en native signaalhistorie naar dezelfde GitHub-feed.
 De uploads op 23 oktober om 14:00 en 14:30 Europe/Amsterdam hadden voor alle tien
-meetonderdelen status ok en geslaagde Pages-publicaties. De NAS-CVD-export en de
-aparte 4H-contextarchivering zijn nog niet overgezet. Zie [NAS-installatie,
+meetonderdelen status ok en geslaagde Pages-publicaties. De NAS-CVD-export leest gedeeltelijke waarnemingen uit het bestaande journal. De
+aparte 4H-contextarchivering is nog niet overgezet. Zie [NAS-installatie,
 bevestigde uitvoering en herstel](docs/NAS.md). Eerdere implementatienotities
 hierboven beschrijven de oorspronkelijke wijzigingen; de actuele marktcollector
 start uitsluitend handmatig op GitHub, terwijl NAS, archivering, watchdog en
 Pages hun afzonderlijke taken behouden. Budget blijft €0.
+

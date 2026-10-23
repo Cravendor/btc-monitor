@@ -85,9 +85,8 @@ row alone does not prove valid source data. A push with the repository SSH key
 can trigger the existing Pages push workflow; confirm its successful completion
 rather than assuming upload means publication.
 
-This first migration step covers market snapshots and the signal archive. It
-neither exports SQLite CVD data nor moves the separate 4H context archive task.
-Those require follow-up integration after NAS publication has been verified.
+The migration covers market snapshots, the signal archive and optional read-only
+CVD journal observations. The separate 4H context archive task is not migrated.
 Only the GitHub market collector's automatic triggers are removed by this cutover.
 Existing coverage gaps stay gaps.
 
@@ -112,5 +111,34 @@ After merging, verify a subsequent NAS snapshot and Pages deployment. Do not
 start a manual collector merely to prove the automatic trigger has stopped.
 If NAS collection fails, inspect saved task output and retain local pending
 commits. A manual GitHub run is a temporary recovery option; restoring periodic
-GitHub triggers requires an explicit reviewed rollback. CVD export and the 4H
+GitHub triggers requires an explicit reviewed rollback. Verified CVD coverage and the 4H
 context archive migration remain separate work.
+
+
+
+## Read-only CVD journal observations
+
+`nas/collect_publish.sh --run` sets `BTC_CVD_DB` to
+`/volume1/btc-cvd/trades.sqlite3` unless explicitly overridden. After merging,
+the existing NAS task pulls the code and includes the observations on its next
+normal run; no task-script change, dependency installation or collector restart
+is needed. User `tony` needs existing read access to the journal and WAL.
+`--check` still checks runtime/repository access, not CVD availability.
+
+The exporter opens the original database with SQLite `mode=ro`, query-only mode
+and one read transaction. It never invokes `cvd_store.connect`, creates a missing
+database, edits gaps, changes the schema, or stages the journal or raw trades.
+It exports aggregates of the last fully closed UTC four-hour interval.
+
+CVD is an optional separate status, not part of the ten market metrics or their
+final completeness check. A missing/incompatible journal is recorded as missing
+without stopping market collection. A successful market task therefore does not
+prove CVD validity. In the new snapshot, inspect `cvd_4h.markets` and the dashboard
+CVD cards: observed delta, trade count, overlap counts and last stored trade time.
+No observations is null, not zero. Old snapshots remain unchanged.
+
+The uploaded legacy collector/store never establishes full coverage or repairs
+gaps. Consequently `cvd_4h.value` is null and `coverage_verified` is always false,
+even when an interval has no recorded gaps. Observed deltas must not be used as
+validated orderflow, cumulative CVD or evidence confirming a bullish/bearish bias.
+See [CVD.md](CVD.md) for the remaining coverage/backfill work.

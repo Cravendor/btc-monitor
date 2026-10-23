@@ -39,6 +39,8 @@ fi
 # Check the exact fetched collector before it runs.
 "$BTC_PYTHON" -m unittest discover -s tests
 COLLECT_EXIT=0
+# Read the separate journal in-place; no copy, migration or collector restart.
+export BTC_CVD_DB="${BTC_CVD_DB:-/volume1/btc-cvd/trades.sqlite3}"
 "$BTC_PYTHON" scripts/collect.py || COLLECT_EXIT=$?
 "$BTC_PYTHON" -m scripts.collector_health
 # Stage only known public outputs; never the CVD database, logs or credentials.
@@ -60,3 +62,4 @@ if health.get('snapshot_status') != 'ok':
     raise SystemExit('Snapshot uploaded with incomplete source data; inspect source statuses')
 print('NAS snapshot uploaded. Dashboard publication is a separate GitHub run.')
 PY
+
