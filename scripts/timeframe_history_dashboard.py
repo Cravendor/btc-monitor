@@ -187,10 +187,21 @@ def collector_health_html(health):
     if not stamp:
         return '<section><h2>Collectorbewaking</h2><p>ONTBREEKT — ongeldige controletijd.</p></section>'
     coverage_text = coverage_html(health.get("coverage_24h"))
+    recovery_text = ''
+    recovery = health.get('recovery')
+    if isinstance(recovery, dict) and recovery.get('attempted') is True:
+        success = (recovery.get('outcome') == 'uploaded' and
+                   recovery.get('snapshot_status') == 'ok' and
+                   recovery.get('collection_exit_code') == 0 and status == 'current')
+        recovery_text = ('<p>GitHub-reserve bij deze controle: ' +
+                         ('GESLAAGD' if success else 'ONVOLLEDIG / MISLUKT') +
+                         '. Alleen periodieke marktdata; geen herstel van CVD-dekking.</p>')
+    elif isinstance(recovery, dict) and recovery.get('attempted') is False:
+        recovery_text = '<p>Bij deze watchdog-controle is geen reservemeting uitgevoerd.</p>'
     return ('<section><h2>Collectorbewaking</h2><p id="collector-watchdog" data-checked="' +
             html.escape(stamp, quote=True) + '" data-status="' + status +
             '">Laatste watchdog-resultaat: ' + label + '</p><p>Laatste BTC-meting volgens watchdog: ' +
-            html.escape(latest) + '</p><h3>24-uursdekking</h3>' + coverage_text + '<p>De onafhankelijke watchdog is niet continu; ' +
+            html.escape(latest) + '</p>' + recovery_text + '<h3>24-uursdekking</h3>' + coverage_text + '<p>De onafhankelijke watchdog is niet continu; ' +
             'deze status kan verouderd zijn wanneer de controleworkflow niet draait.</p></section>')
 
 
@@ -455,3 +466,4 @@ def build(source, output, health_source=None):
 if __name__ == "__main__":
     import sys
     build(sys.argv[1], sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else None)
+

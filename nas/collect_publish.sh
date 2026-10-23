@@ -41,6 +41,7 @@ fi
 COLLECT_EXIT=0
 # Read the separate journal in-place; no copy, migration or collector restart.
 export BTC_CVD_DB="${BTC_CVD_DB:-/volume1/btc-cvd/trades.sqlite3}"
+export BTC_COLLECTOR_SOURCE=nas
 "$BTC_PYTHON" scripts/collect.py || COLLECT_EXIT=$?
 "$BTC_PYTHON" -m scripts.collector_health
 # Stage only known public outputs; never the CVD database, logs or credentials.
