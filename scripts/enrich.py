@@ -1,10 +1,26 @@
 """Public, credential-free supplementary snapshots. Never starts paid services."""
 import json
 import math
+import re
 from datetime import datetime, timezone
 from urllib.request import Request, urlopen
 
 BASE = 'https://api.bitget.com/api/v2/'
+
+
+def source_timestamp(value):
+    """Parse explicit-zone source times consistently on Python 3.9+.
+
+    Coinbase supplies nanoseconds; datetime stores microseconds. Truncate only
+    fractional precision, preserving the date and UTC offset for age/skew checks.
+    """
+    match = re.fullmatch(r'(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.(\d{1,9}))?(Z|[+-]\d{2}:\d{2})', value)
+    if match is None:
+        raise ValueError('Invalid source timestamp or missing timezone')
+    base, fraction, zone = match.groups()
+    fraction = '.' + fraction[:6].ljust(6, '0') if fraction else ''
+    zone = '+00:00' if zone == 'Z' else zone
+    return datetime.fromisoformat(base + fraction + zone).timestamp()
 
 
 def number(value):
@@ -110,7 +126,7 @@ def collect_extra(metrics):
                                       'source_ts_ms': int(next(r for r in rows if r['symbol']=='USDCUSDT')['ts'])}, True)
     def usdc_price(s):
         ts = s['pair']['source_ts_ms']/1000
-        usd_ts = datetime.fromisoformat(s['usdt']['source_time'].replace('Z','+00:00')).timestamp()
+        usd_ts = source_timestamp(s['usdt']['source_time'])
         if abs(ts-usd_ts)>120 or datetime.now(timezone.utc).timestamp()-min(ts,usd_ts)>180:
             raise ValueError('Stale or unsynchronised stablecoin sources')
         price = s['pair']['price_usdt'] * s['usdt']['price_usd']
@@ -122,7 +138,7 @@ def collect_extra(metrics):
                            'data': {'USDT': usdt, 'USDC': usdc},
                            'scope': 'USD prices/depeg only; not supply, exchange balances or buying power.'}
     def premium(s):
-        times = [s['spot']['source_ts_ms']/1000] + [datetime.fromisoformat(s[k]['source_time'].replace('Z','+00:00')).timestamp() for k in ('coinbase','usdt')]
+        times = [s['spot']['source_ts_ms']/1000] + [source_timestamp(s[k]['source_time']) for k in ('coinbase','usdt')]
         if max(times)-min(times) > 120 or datetime.now(timezone.utc).timestamp()-min(times) > 180:
             raise ValueError('Stale or unsynchronised price sources')
         reference = s['spot']['price_usdt'] * s['usdt']['price_usd']
