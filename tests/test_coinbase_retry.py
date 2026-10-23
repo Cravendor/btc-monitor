@@ -141,6 +141,25 @@ class CoinbaseRetryTests(unittest.TestCase):
         self.assertTrue(body.closed)
         self.assertTrue(good.closed)
 
+    def test_bodyless_http_error_does_not_call_broken_python39_close(self):
+        class LegacyBodylessError(HTTPError):
+            def __init__(self, *args):
+                super().__init__(*args)
+                # Newer Python inserts an empty BytesIO; 3.9.14 leaves fp None.
+                self.fp = None
+            def close(self):
+                raise KeyError('file')
+        for code, expected_calls in ((403, 1), (429, 1), (451, 1), (503, 2)):
+            error = LegacyBodylessError(USDT, code, 'test', {}, None)
+            with self.subTest(code=code), \
+                    patch('scripts.enrich.urlopen', side_effect=[error, response()]) as open_, \
+                    patch('scripts.enrich.time.sleep'):
+                result = request(USDT, stable)
+                self.assertEqual(open_.call_count, expected_calls)
+                self.assertEqual(result['status'], 'ok' if code == 503 else 'error')
+                if code != 503:
+                    self.assertIsNone(result['data'])
+
 
 class CoinbaseDependenciesTests(unittest.TestCase):
     def collect(self, stamp, fail_usdt=False):
