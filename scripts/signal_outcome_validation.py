@@ -27,12 +27,13 @@ def price(value):
         return None
 
 
-def evaluate(records, horizon_hours=24, tolerance_minutes=30):
-    """One signal per (timeframe, candle, model); no price interpolation.
+def evaluate(records, horizon_hours=24, tolerance_minutes=30, *, selected_grade=None):
+    """Count unique signals and mutually exclusive evaluation readiness states.
 
-    A forward price must come from a candle closing at least the horizon
-    after the signal candle, within the specified tolerance. Report only
-    directional matches; no trading PNL or causal accuracy claims.
+    The archive's latest aware observation time is the cutoff, never wall-clock
+    time: a stopped collector must not turn pending signals into missing prices.
+    `pending_forward_price` remains a compatibility subtotal of the four
+    forward-price readiness states. No reconstruction or interpolation.
     """
     if horizon_hours <= 0 or tolerance_minutes < 0:
         raise ValueError("invalid evaluation horizon")
@@ -40,58 +41,80 @@ def evaluate(records, horizon_hours=24, tolerance_minutes=30):
     tolerance = timedelta(minutes=tolerance_minutes)
     candles = {tf: {} for tf in TIMEFRAMES}
     signals = {tf: {} for tf in TIMEFRAMES}
+    cutoff = None
     for row in records:
-        if not isinstance(row, dict):
+        if not isinstance(row, dict) or not isinstance(row.get("signals"), dict):
             continue
+        observed = parse_time(row.get("updated_at"))
+        if observed is not None:
+            cutoff = max(cutoff, observed) if cutoff else observed
         for tf in TIMEFRAMES:
-            s = (row.get("signals") or {}).get(tf) or {}
-            if s.get("status") != "ok":
+            signal = row["signals"].get(tf)
+            if not isinstance(signal, dict) or signal.get("status") != "ok":
                 continue
-            stamp = parse_time(s.get("candle_closed_at"))
-            value = price(s.get("close_price"))
-            if stamp is None or value is None:
+            stamp = parse_time(signal.get("candle_closed_at"))
+            if stamp is None or (observed is not None and stamp > observed):
                 continue
-            model = s.get("model_version") or row.get("model_version")
-            if not isinstance(model, str) or not model:
+            value = price(signal.get("close_price"))
+            if value is not None:
+                candles[tf].setdefault(stamp, set()).add(value)
+            model = signal.get("model_version") or row.get("model_version")
+            grade = signal.get("grade")
+            if grade not in DIRECTIONS or not isinstance(model, str) or not model:
                 continue
-            # Conflicting prices for the same candle invalidate that candle.
-            old = candles[tf].get(stamp)
-            if old is None:
-                candles[tf][stamp] = value
-            elif old != value:
-                candles[tf][stamp] = -1
-            grade = s.get("grade")
-            if grade in DIRECTIONS:
-                key = (stamp, model)
-                previous = signals[tf].get(key)
-                candidate = (grade, value)
-                if previous is None:
-                    signals[tf][key] = candidate
-                elif previous != candidate:
-                    signals[tf][key] = ("conflict", None)
+            candidate = signals[tf].setdefault((stamp, model),
+                                               {"grades": set(), "prices": set()})
+            candidate["grades"].add(grade)
+            if value is not None:
+                candidate["prices"].add(value)
+    periods = dict(zip(TIMEFRAMES, (300, 900, 1800, 3600, 14400, 86400, 604800)))
     result = {}
     for tf in TIMEFRAMES:
-        matched = opposed = pending = excluded = 0
-        for (stamp, _), (grade, initial) in signals[tf].items():
-            if grade not in DIRECTIONS or candles[tf].get(stamp) != initial:
-                excluded += 1
+        counts = {key: 0 for key in (
+            "confirmed_direction", "opposite_direction", "awaiting_horizon",
+            "awaiting_price_window", "missing_forward_price", "unknown_observation_time",
+            "missing_initial_price", "unsupported_horizon", "excluded", "total_signals")}
+        # A same-timeframe candle cannot resolve a shorter, misaligned horizon
+        # unless the next close falls within the explicitly allowed tolerance.
+        remainder = horizon.total_seconds() % periods[tf]
+        unsupported = bool(remainder and periods[tf] - remainder > tolerance.total_seconds())
+        for (stamp, _), candidate in signals[tf].items():
+            grades, values = candidate["grades"], candidate["prices"]
+            if selected_grade is not None and selected_grade not in grades:
                 continue
+            counts["total_signals"] += 1
+            if len(grades) != 1 or len(values) > 1 or len(candles[tf].get(stamp, ())) > 1:
+                counts["excluded"] += 1
+                continue
+            if unsupported:
+                counts["unsupported_horizon"] += 1
+                continue
+            if not values:
+                counts["missing_initial_price"] += 1
+                continue
+            initial = next(iter(values))
+            grade = next(iter(grades))
             target = stamp + horizon
-            eligible = sorted((t, p) for t, p in candles[tf].items()
-                              if target <= t <= target + tolerance and p > 0)
+            eligible = sorted((t, next(iter(prices))) for t, prices in candles[tf].items()
+                              if target <= t <= target + tolerance and len(prices) == 1)
             if not eligible:
-                pending += 1
+                state = ("unknown_observation_time" if cutoff is None else
+                         "awaiting_horizon" if cutoff < target else
+                         "awaiting_price_window" if cutoff <= target + tolerance else
+                         "missing_forward_price")
+                counts[state] += 1
                 continue
             change = eligible[0][1] - initial
             if change == 0:
-                excluded += 1
-            elif change * DIRECTIONS[grade] > 0:
-                matched += 1
+                counts["excluded"] += 1
             else:
-                opposed += 1
-        result[tf] = {"confirmed_direction": matched, "opposite_direction": opposed,
-                      "pending_forward_price": pending, "excluded": excluded,
-                      "evaluated": matched + opposed}
+                counts["confirmed_direction" if change * DIRECTIONS[grade] > 0
+                       else "opposite_direction"] += 1
+        counts["evaluated"] = counts["confirmed_direction"] + counts["opposite_direction"]
+        counts["pending_forward_price"] = sum(counts[k] for k in (
+            "awaiting_horizon", "awaiting_price_window", "missing_forward_price",
+            "unknown_observation_time"))
+        result[tf] = counts
     return result
 
 
@@ -101,25 +124,14 @@ def evaluate_horizons(records, horizons=(1, 4, 24, 168)):
 
 
 def evaluate_by_grade(records, horizon_hours):
-    """Reuse the conservative evaluator on grade-filtered signals.
+    """Filter candidates after conflict detection, retaining all forward prices.
 
-    Preserve all valid candles as possible future prices, while selecting
-    only one original grade for outcome counting.
+    A conflicting signal contributes an exclusion to every affected original
+    grade; grade groups must therefore not be summed as independent totals.
     """
-    from copy import deepcopy
-    grades = tuple(DIRECTIONS)
     result = {}
-    for grade in grades:
-        filtered = []
-        for record in records:
-            if not isinstance(record, dict):
-                continue
-            item = deepcopy(record)
-            for signal in (item.get("signals") or {}).values():
-                if isinstance(signal, dict) and signal.get("grade") in DIRECTIONS and signal.get("grade") != grade:
-                    signal["grade"] = "neutral"
-            filtered.append(item)
-        outcome = evaluate(filtered, horizon_hours=horizon_hours)
+    for grade in DIRECTIONS:
+        outcome = evaluate(records, horizon_hours=horizon_hours, selected_grade=grade)
         for tf, stats in outcome.items():
             result.setdefault(tf, {})[grade] = stats
     return result
