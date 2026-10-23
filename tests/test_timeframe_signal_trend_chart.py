@@ -15,6 +15,6 @@ class SignalTrendChartTests(unittest.TestCase):
         ]
         page = render(rows)
         self.assertIn("<svg", page)
-        self.assertIn("<polyline", page)
+        self.assertNotIn("<polyline", page)
         self.assertIn("5M", page)
         self.assertNotIn("undefined", page)

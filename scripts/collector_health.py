@@ -1,7 +1,8 @@
 """Independent freshness check of persisted BTC snapshots; no network/API calls."""
 import json
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 from pathlib import Path
+from scripts.history_coverage import coverage, observations
 
 MAX_AGE_SECONDS = 3600
 EXPECTED_INTERVAL_SECONDS = 1800
@@ -12,41 +13,12 @@ def check(records, now):
     if now.tzinfo is None:
         raise ValueError("now must be timezone-aware")
     now = now.astimezone(timezone.utc)
-    valid = []
-    for record in records:
-        if not isinstance(record, dict) or not isinstance(record.get("signals"), dict):
-            continue
-        try:
-            stamp = datetime.fromisoformat(record["updated_at"].replace("Z", "+00:00"))
-            if stamp.tzinfo is None:
-                continue
-            stamp = stamp.astimezone(timezone.utc)
-            if stamp <= now:
-                valid.append(stamp)
-        except (KeyError, ValueError, TypeError, AttributeError):
-            continue
-    unique = sorted(set(valid))
-    window_start = now - timedelta(hours=COVERAGE_WINDOW_HOURS)
-    in_window = [stamp for stamp in unique if window_start < stamp <= now]
-    gaps = [
-        round((right - left).total_seconds())
-        for left, right in zip(in_window, in_window[1:])
-    ]
-    # Historical rows may be sparse. Counts describe observations, not exchange candle coverage.
-    expected = COVERAGE_WINDOW_HOURS * 3600 // EXPECTED_INTERVAL_SECONDS
-    latest = max(valid) if valid else None
+    valid = observations(records, now)
+    latest = valid[-1][0] if valid else None
     age = (now - latest).total_seconds() if latest else None
     return {
-        "schema_version": 2,
-        "coverage_24h": {
-            "window_start": window_start.isoformat(),
-            "window_end": now.isoformat(),
-            "expected_snapshots": expected,
-            "observed_snapshots": len(in_window),
-            "coverage_percent": round(100 * len(in_window) / expected, 1),
-            "max_observed_gap_seconds": max(gaps) if gaps else None,
-            "status": "insufficient" if len(in_window) < 2 else ("gaps_detected" if max(gaps) > EXPECTED_INTERVAL_SECONDS * 1.5 else "no_large_internal_gaps"),
-        },
+        "schema_version": 3,
+        "coverage_24h": coverage(records, now),
         "checked_at": now.isoformat(),
         "last_snapshot_at": latest.isoformat() if latest else None,
         "age_seconds": round(age) if age is not None else None,

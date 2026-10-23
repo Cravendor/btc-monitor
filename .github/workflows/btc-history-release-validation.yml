@@ -37,8 +37,10 @@ jobs:
                 'output/btc-4h-history.html',
                 datetime.now(timezone.utc).isoformat())
           PY
+          python -m scripts.timeframe_history_dashboard data/history/timeframe_signals.jsonl output/btc-signal-history.html data/collector-health.json
+          python -m scripts.multi_timeframe_dashboard data/latest.json output/btc-timeframes.html data/collector-health.json
       - uses: actions/upload-artifact@v4
         with:
           name: btc-history-release-preview
-          path: output/btc-4h-history.html
+          path: output/
           retention-days: 30

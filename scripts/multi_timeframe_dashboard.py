@@ -2,6 +2,7 @@
 import html
 import json
 from pathlib import Path
+from scripts.history_coverage import coverage_html
 
 TIMEFRAMES = ("5m", "15m", "30m", "1h", "4h", "1d", "1w")
 LABELS = {"slightly_bearish": "Licht bearish", "bearish": "Bearish",
@@ -16,19 +17,10 @@ EVIDENCE = {"aligned": "Trend en momentum eens", "conflicting": "Trend en moment
 
 def render(feed, health=None):
     health = health if isinstance(health, dict) else {}
-    coverage = health.get("coverage_24h")
-    coverage_text = "ONTBREEKT"
-    if isinstance(coverage, dict):
-        observed = coverage.get("observed_snapshots")
-        expected = coverage.get("expected_snapshots")
-        if type(observed) is int and type(expected) is int and 0 <= observed and expected > 0:
-            coverage_text = f"{observed}/{expected} ({100 * observed / expected:.1f}%)"
-    health_banner = ('<section><h2>Datakwaliteit</h2><p>24-uursdekking: ' +
-                     html.escape(coverage_text) +
-                     ' opgeslagen snapshots. Deze historische dekking is geen signaalzekerheid.</p>' +
+    health_banner = ('<section><h2>Datakwaliteit — 24 uur</h2>' +
+                     coverage_html(health.get("coverage_24h")) +
                      '<p>Watchdog laatst gecontroleerd: ' +
-                     html.escape(str(health.get("checked_at") or "ONTBREEKT")) +
-                     ' UTC/offset</p></section>')
+                     html.escape(str(health.get("checked_at") or "ONTBREEKT")) + '</p></section>')
 
     measurement = (feed.get("measurements") or [{}])[0]
     metrics = measurement.get("metrics") or {}
@@ -57,9 +49,13 @@ def render(feed, health=None):
 max-width:960px;margin:2rem auto;padding:1rem}
 section{background:#1c2940;padding:1.4rem;border-radius:16px;overflow:auto}
 table{width:100%;border-collapse:collapse}th,td{padding:.8rem;
-text-align:left;border-bottom:1px solid #44536d}p{color:#bac8da}</style>
+text-align:left;border-bottom:1px solid #44536d}p{color:#bac8da;overflow-wrap:anywhere}
+*{box-sizing:border-box}h1{font-size:clamp(1.5rem,5vw,2rem)}
+section{max-width:100%;overscroll-behavior-x:contain}
+@media(max-width:600px){body{margin:0 auto;padding:.8rem}section{padding:.6rem}
+th,td{min-width:8rem;padding:.65rem}th:first-child{min-width:4rem;position:sticky;left:0;background:#1c2940}}</style>
 <h1>BTC — Multi-timeframe marktrichting</h1>\n<p><a href="btc-signal-history.html" style="color:#93c5fd">Bekijk historische signaaltijdlijn →</a></p>
-""" + health_banner + """<section><table><thead><tr><th>Timeframe</th><th>Signaal</th>
+""" + health_banner + """<p>Veeg de tabel horizontaal voor alle kolommen.</p><section tabindex="0" role="region" aria-label="Timeframes, horizontaal schuifbaar"><table><thead><tr><th>Timeframe</th><th>Signaal</th>
 <th>Onderbouwing</th><th>Betrouwbaarheid</th><th>Afgesloten candle (UTC)</th><th>Candle-actualiteit</th></tr></thead>
 <tbody>""" + "".join(rows) + """</tbody></table></section>
 <p>Alle scores zijn voorlopig en gebaseerd op prijs en volume. Een neutrale score kan ook tegenstrijdig bewijs betekenen.
