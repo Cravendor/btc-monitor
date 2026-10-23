@@ -59,7 +59,7 @@ jobs:
                 '_site/btc-4h-history.html',
                 datetime.now(timezone.utc).isoformat())
           PY
-          python -m scripts.multi_timeframe_dashboard data/latest.json _site/btc-timeframes.html
+          python -m scripts.multi_timeframe_dashboard data/latest.json _site/btc-timeframes.html data/collector-health.json
           python -m scripts.timeframe_history_dashboard data/history/timeframe_signals.jsonl _site/btc-signal-history.html data/collector-health.json
       - uses: actions/upload-pages-artifact@v3
         with:
