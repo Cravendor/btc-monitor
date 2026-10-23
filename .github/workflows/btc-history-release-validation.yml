@@ -16,13 +16,23 @@ permissions:
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    name: Python ${{ matrix.python }}
+    if: github.event.repository.private == false
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: '3.9.14'
+            os: ubuntu-22.04
+          - python: '3.11'
+            os: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: ${{ matrix.python }}
       - name: Compile source
         run: python -m compileall -q scripts tests
       - name: Run isolated release tests
@@ -40,7 +50,9 @@ jobs:
           python -m scripts.timeframe_history_dashboard data/history/timeframe_signals.jsonl output/btc-signal-history.html data/collector-health.json
           python -m scripts.multi_timeframe_dashboard data/latest.json output/btc-timeframes.html data/collector-health.json
       - uses: actions/upload-artifact@v4
+        if: matrix.python == '3.11'
         with:
           name: btc-history-release-preview
           path: output/
           retention-days: 30
+

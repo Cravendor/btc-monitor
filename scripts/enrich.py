@@ -53,7 +53,10 @@ def request(url, transform, bitget=False):
         except HTTPError as exc:
             result['error'] = str(exc)[:200]
             retry = exc.code in (500, 502, 503, 504)
-            exc.close()
+            # Python 3.9.14 HTTPError(fp=None) has no usable file wrapper.
+            # Real HTTP response bodies still need normal cleanup.
+            if exc.fp is not None:
+                exc.close()
         except (URLError, TimeoutError, socket.timeout, ConnectionError, IncompleteRead) as exc:
             result['error'] = str(exc)[:200]
             retry = not isinstance(getattr(exc, 'reason', exc), ssl.SSLCertVerificationError)
