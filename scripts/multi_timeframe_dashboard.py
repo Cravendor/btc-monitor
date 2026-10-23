@@ -42,9 +42,14 @@ def render(feed, health=None):
         confidence = "Laag (prijs-only)" if valid else "Geen"
         observed = signal.get("observed_at") if valid else "—"
         evidence = EVIDENCE.get((signal.get("evidence") or {}).get("state"), "ONTBREEKT") if valid else "ONTBREEKT"
+        freshness = ('<span class="candle-freshness" data-closed="' +
+                     html.escape(str(observed), quote=True) + '" data-period-min="' +
+                     str({"5m": 5, "15m": 15, "30m": 30, "1h": 60, "4h": 240,
+                          "1d": 1440, "1w": 10080}[tf]) +
+                     '">CONTROLEREN</span>') if valid else "GEEN CANDLE"
         rows.append("<tr><th>" + html.escape(tf.upper()) + "</th><td>" +
                     html.escape(grade) + "</td><td>" + html.escape(evidence) + "</td><td>" + html.escape(confidence) +
-                    "</td><td>" + html.escape(str(observed)) + "</td></tr>")
+                    "</td><td>" + html.escape(str(observed)) + "</td><td>" + freshness + "</td></tr>")
     return """<!doctype html><html lang="nl"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BTC Multi-timeframe Signals</title>
@@ -55,11 +60,30 @@ table{width:100%;border-collapse:collapse}th,td{padding:.8rem;
 text-align:left;border-bottom:1px solid #44536d}p{color:#bac8da}</style>
 <h1>BTC — Multi-timeframe marktrichting</h1>\n<p><a href="btc-signal-history.html" style="color:#93c5fd">Bekijk historische signaaltijdlijn →</a></p>
 """ + health_banner + """<section><table><thead><tr><th>Timeframe</th><th>Signaal</th>
-<th>Onderbouwing</th><th>Betrouwbaarheid</th><th>Afgesloten candle (UTC)</th></tr></thead>
+<th>Onderbouwing</th><th>Betrouwbaarheid</th><th>Afgesloten candle (UTC)</th><th>Candle-actualiteit</th></tr></thead>
 <tbody>""" + "".join(rows) + """</tbody></table></section>
 <p>Alle scores zijn voorlopig en gebaseerd op prijs en volume. Een neutrale score kan ook tegenstrijdig bewijs betekenen.
 Volume is context, geen richtingsbevestiging. Ontbrekende candles, CVD of
-timeframes worden niet ingevuld. Geen handelsadvies.</p></html>"""
+timeframes worden niet ingevuld. Geen handelsadvies.</p>
+<p>Actualiteit wordt in de browser berekend. Een afgesloten candle is verouderd
+wanneer deze ouder is dan twee volledige timeframe-perioden plus vijf minuten.
+Dit is geen validatie van orderflow of modelbetrouwbaarheid.</p>
+<script>
+(function () {
+  function refresh() {
+    document.querySelectorAll(".candle-freshness").forEach(function (el) {
+      var timestamp = Date.parse(el.dataset.closed);
+      var period = Number(el.dataset.periodMin);
+      var age = (Date.now() - timestamp) / 60000;
+      el.textContent = !Number.isFinite(timestamp) || !Number.isFinite(period) ||
+        period <= 0 || age < -5 ? "ONGELDIGE TIJD" :
+        age > 2 * period + 5 ? "VEROUDERD" : "ACTUEEL";
+    });
+  }
+  refresh();
+  setInterval(refresh, 60000);
+})();
+</script></html>"""
 
 
 def build(feed_path, output, health_path=None):
