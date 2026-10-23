@@ -130,3 +130,27 @@ collector wekt zo geen schijn dat de toekomst al is waargenomen. Candle-eindtijd
 na hun eigen opgeslagen observatietijd worden afgewezen. Alleen beoordeelde,
 niet-vlakke uitkomsten tellen mee voor percentages en Wilson-intervallen;
 de grenzen van 10/30 waarnemingen en alle statistische beperkingen blijven gelden.
+
+
+## Watchdograpporten publiceren (PR #34)
+
+Een afgeronde `BTC market snapshots`-run start nu ook een onafhankelijke
+`BTC collector health check`, ongeacht of de collector is geslaagd, mislukt,
+geannuleerd of gestopt door de tijdslimiet. De bestaande halfuurplanning blijft
+als onafhankelijke terugval bestaan. Wijzigingen aan de watchdog/dekkingscode
+op `main` starten ook een controle, zodat nieuwe rapportschema's niet op een
+vertraagde cronrun hoeven te wachten.
+
+De watchdog bewaart zijn rapport vóór de stap die een verouderde of ontbrekende
+meting als fout markeert. Pages start nu ook na een watchdogrun en publiceert
+bij een geslaagde, mislukte of door de tijdslimiet gestopte bronworkflow. Zo kan
+een rood watchdogresultaat juist de juiste waarschuwing op het dashboard zetten.
+Een bronfout kan nog steeds een ouder rapport opleveren; de bestaande zichtbare
+ouderdomscontrole blijft daarom gelden. Een dashboardpublicatie is geen bewijs
+dat marktdata actueel of geldig zijn.
+
+Beide `workflow_run`-jobs controleren de standaardbranch en dezelfde
+bronrepository, gebruiken uitsluitend de huidige standaardbranch bij checkout
+en downloaden geen code of artifacts van de activerende run. Er komen geen
+nieuwe rechten of betaalde diensten bij. GitHub-planningen en workflows blijven
+best-effort; dit is geen continue bewaking.

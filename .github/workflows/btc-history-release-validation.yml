@@ -8,7 +8,7 @@ on:
     paths:
       - 'scripts/**'
       - 'tests/**'
-      - '.github/workflows/btc-history-release-validation.yml'
+      - '.github/workflows/**'
   workflow_dispatch:
 
 permissions:
