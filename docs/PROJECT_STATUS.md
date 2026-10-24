@@ -13,10 +13,10 @@ Stand van de controle: 24 oktober 2026. Een werkende NAS-koppeling betekent niet
 | Hoofdpagina met navigatie | Deze wijziging | De gepubliceerde root wordt overzicht/scenario’s; de bestaande marktmetingen staan op btc-dashboard.html. |
 | Prijsniveaus en scenario’s | Deze wijziging | Afgesloten 4H-candles; range van 20 voorafgaande candles, eenvoudige ATR14, expliciete voorwaarden, projecties en ongeldigverklaring. Ongekalibreerd. |
 | Volumevergelijking | Deze wijziging op hoofdpagina | Laatste candle tegenover 20 voorafgaande; laatste 6 afgesloten 4H-candles tegenover de 6 daarvoor. Geen volledige 7D/30D-volumetrend toegevoegd. |
-| Automatisch archief van echte monitorrapporten en geïntegreerde vijfpuntsbias | Open | archive-bias.yml accepteert alleen handmatig aangeleverde rapport-JSON. Geen automatische ChatGPT→GitHub-koppeling of rapportarchief aangetoond. Native signalen vervangen dit niet. |
+| Archief van echte monitorrapporten en geïntegreerde vijfpuntsbias | Koppeling in review | Inbox→ongewijzigde rapporttekst→gedateerd record/index→Pages is geïmplementeerd. Het openbare archief start leeg; tests gebruiken fictieve teksten. Echte rapportpublicatie en activering in de monitors vereisen expliciete toestemming en merge; een toekomstige echte schrijfrun moet de automatische keten nog aantonen. Native signalen vervangen dit archief niet. |
 | GitHub-reserve | Werkende marktmeting aangetoond | Start afhankelijk van GitHub-planning. Geen NAS-CVD bij uitval. Echte uitvaltest niet uitgevoerd. |
 | Onafhankelijke agressor-CVD / absorptie- en distributiebevestiging | Open | Gecontroleerde Bitget buy/sell-velden bewijzen dit niet. |
-| Wall Street-marktpsychologiefase | Niet geïmplementeerd | Bullish/bearish technische labels zijn geen fasen zoals optimisme, euforie of capitulatie. |
+| Psychologie, Fibonacci en Elliott Wave | Aanvullende laag in review | De homepage berekent range-geankerde Fibonacci-niveaus. Monitors krijgen een expliciet protocol voor psychologische fasehypothesen en alternatieve Elliott-tellingen. Geen automatische bevestiging van een fase of complete golftelling; onvoldoende data blijft zichtbaar. |
 
 ## Scenario-methode
 

@@ -5,6 +5,8 @@ on:
     paths:
       - index.html
       - bias.html
+      - btc-methoden.html
+      - reports/index.json
       - data/history/bitget_4h_context.jsonl
       - scripts/context_trends.py
       - scripts/context_trend_dashboard.py
@@ -25,6 +27,7 @@ on:
       - BTC market snapshots
       - Archive BTC 4H provisional history
       - BTC collector health check
+      - Archive BTC bias report
     types: [completed]
     branches: [main]
 permissions: {}
@@ -61,7 +64,7 @@ jobs:
         run: |
           mkdir _site
           cp index.html _site/btc-dashboard.html
-          cp bias.html _site/
+          cp bias.html btc-methoden.html _site/
           python -m scripts.home_dashboard data/latest.json _site/index.html
           python - <<'PY'
           from datetime import datetime, timezone

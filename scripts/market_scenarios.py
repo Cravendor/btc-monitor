@@ -34,6 +34,32 @@ def iso(value):
     return datetime.fromtimestamp(value / 1000, timezone.utc).isoformat()
 
 
+def fibonacci_range(prior):
+    """Use chronological extremes of the same reference range, not a wave count."""
+    low = min(c[3] for c in prior)
+    high = max(c[2] for c in prior)
+    low_time = max(c[0] for c in prior if c[3] == low)
+    high_time = max(c[0] for c in prior if c[2] == high)
+    if low_time == high_time or high <= low:
+        return {'status': 'unavailable', 'reason': 'Volgorde van range-extremen binnen dezelfde candle onbekend.'}
+    up = low_time < high_time
+    distance = high - low
+    return {'status': 'calculated', 'direction': 'up' if up else 'down',
+            'low': low, 'high': high, 'low_at': iso(low_time), 'high_at': iso(high_time),
+            'scale': 'linear', 'anchor_method': 'prior20_range_extremes',
+            'retracements': [{'ratio': r, 'price': high-r*distance if up else low+r*distance,
+                             'role': role} for r, role in (
+                                 (0.0, 'Eindpunt van de oorspronkelijke beweging'),
+                                 (0.236, 'Ondiepe terugname'),
+                                 (0.382, 'Gematigde terugname'),
+                                 (0.5, 'Halvering; geen Fibonacci-ratio'),
+                                 (0.618, 'Diepe terugname; golden-ratio-zone'),
+                                 (0.786, 'Verdere diepe terugname'),
+                                 (1.0, 'Volledige terugname naar het beginpunt'))],
+            'extensions': [{'ratio': r, 'price': low+r*distance if up else high-r*distance}
+                           for r in (1.272, 1.618, 2.618, 4.236) if (low+r*distance if up else high-r*distance) > 0]}
+
+
 def build_scenarios(feed, as_of):
     """Never replace a missing latest snapshot with an older green one."""
     unavailable = {'status': 'unavailable', 'model_version': MODEL,
@@ -148,7 +174,8 @@ def build_scenarios(feed, as_of):
                 'volume_24h': volume_24h, 'previous_24h_volume': previous_24h,
                 'volume_24h_ratio': volume_24h / previous_24h if previous_24h > 0 else None,
                 'prior20_volume': average_volume, 'state': state, 'scenarios': scenarios,
-                'provider_deltas': deltas, 'confidence': 'uncalibrated_price_scenario'}
+                'provider_deltas': deltas, 'fibonacci': fibonacci_range(prior),
+                'confidence': 'uncalibrated_price_scenario'}
     except (AttributeError, KeyError, TypeError, ValueError, OverflowError):
         # Return a useful, non-sensitive explanation without leaking raw errors.
         return unavailable
