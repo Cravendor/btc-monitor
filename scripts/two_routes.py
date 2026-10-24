@@ -6,6 +6,7 @@ is disclosed. These are provisional ordinal rules, not probabilities or orders.
 from html import escape
 
 VERSION = 'two_routes_zone_context_v1'
+ANCHOR_VERSION = 'two_routes_zone_context_v2_anchors'
 LABELS = {-2: 'Sterk SELL', -1: 'SELL', 0: 'Neutraal / afwachten', 1: 'BUY', 2: 'Sterk BUY'}
 
 
@@ -33,7 +34,10 @@ def assess(route):
                    combined=combination(None, None), context='Actuele brondata ontbreken.')
     if route.get('status') != 'ready' or route.get('reference_price') is None:
         return missing
-    fib = route.get('fibonacci') or {}
+    historical = route.get('route_anchors') or {}
+    use_history = historical.get('status') == 'calculated'
+    version = ANCHOR_VERSION if 'route_anchors' in route else VERSION
+    fib = historical if use_history else (route.get('fibonacci') or {})
     if fib.get('status') != 'calculated':
         missing['context'] = 'Geen controleerbare high/low-ankers beschikbaar.'
         return missing
@@ -102,14 +106,18 @@ def assess(route):
         context = 'Neerwaartse zonereactie; controleer de volgende steun en mogelijke uitputting. Geen automatische voortzetting.'
     else:
         context = 'Koers in de zonebuffer. Nog geen duidelijke doorbraak, afwijzing of steunbevestiging.'
-    return dict(model_version=VERSION, status='provisional', routes=results, combined=combined,
+    output = dict(model_version=version, status='provisional', routes=results, combined=combined,
         context=context, zone_price=chosen['selected_zone'] if chosen else None,
         confirmation_timeframe=assessment['confirmation_timeframe'],
         confirmation_closed_at=assessment['confirmation_closed_at'],
         source_family='bitget_price_volume', independent_evidence=False,
         news_status='not_integrated', news_reason='Nieuws wordt apart getoond; geen gevalideerde nieuwsscore in deze routebeoordeling.',
-        anchor_scope='prior20_range_not_confirmed_cycle_ath_or_low', position_tracked=False,
+        anchor_scope='available_history_high_then_later_low' if use_history else 'prior20_range_not_confirmed_cycle_ath_or_low',
+        anchor_quality=historical if 'route_anchors' in route else None, position_tracked=False,
         probability=None)
+    if 'route_anchors' not in route:
+        output.pop('anchor_quality',None)
+    return output
 
 
 def render_meter(route, mode):
@@ -121,10 +129,12 @@ def render_meter(route, mode):
     if data['status'] == 'unavailable':
         return ''.join(parts)+'<p class="meter-reading">Onvoldoende data</p><p>'+esc(data['context'])+'</p></article>'
     parts.append('<div class="shb-levels"><h4>Gezamenlijke interpretatie</h4><p class="meter-reading">'+esc(data['combined']['label'])+'</p><p>'+esc(data['context'])+'</p>')
+    historical=route.get('route_anchors') or {}
     for item in data['routes']:
         name = 'Bullroute' if item['id']=='bull' else 'Bearroute'
         parts.append('<details><summary>'+name+' · '+esc(item['label'])+'</summary>'+svg(item['score']/2,name+': '+item['label'])+'<div class="dial-labels"><span>Sterk SELL</span><span>Neutraal</span><span>Sterk BUY</span></div><p class="meter-reading">'+esc(item['label'])+'</p>')
-        parts.append('<p>Beginprijs '+price(item['origin_price'])+' · <time>'+esc(item['origin_at'])+'</time>. High/low van 20 voorafgaande candles; cyclus-ATH/bodem nog niet bevestigd.</p><p>Zonecheck '+price(item['selected_zone'])+' · '+esc(item['reaction'])+'.</p><p>'+esc(item['reason'])+'</p>')
+        anchor_note=('Kandidaat-top en latere low uit '+str(historical.get('history_candles'))+' afgesloten '+route['timeframe'].upper()+'-candles; geen bewezen cyclus-ATH of definitieve bodem.' if data['anchor_scope']=='available_history_high_then_later_low' else 'High/low van 20 voorafgaande candles; cyclus-ATH/bodem nog niet bevestigd.')
+        parts.append('<p>Beginprijs '+price(item['origin_price'])+' · <time>'+esc(item['origin_at'])+'</time>. '+esc(anchor_note)+'</p><p>Zonecheck '+price(item['selected_zone'])+' · '+esc(item['reaction'])+'.</p><p>'+esc(item['reason'])+'</p>')
         if item['invalidated_on_native_close']:
             parts.append('<p>Route ongeldig op dag-/weekslot: opnieuw beoordelen.</p>')
         else:
@@ -140,8 +150,12 @@ def render_meter(route, mode):
                 label='Beginprijs' if point['ratio']==0 else '50% · halvering' if point['ratio']==.5 else 'Fib '+format(point['ratio']*100,'.1f')+'%'
                 parts.append('<li class="path-zone"><strong>'+price(point['price'])+'</strong><span>'+label+(' · Volgende aandacht' if attention else '')+'</span></li>')
         parts.append('</ol><p>Ongeldigverklaringsgrens: '+price(item['invalidation_price'])+' op '+esc(route['timeframe'].upper())+'-slot. Positie op dit pad bewijst geen eerdere activatie; geen aankomstdatums.</p></details>')
+    if historical:
+        parts.append('<p>Ankercontrole: '+esc(historical.get('reason',''))+'</p>')
+        if historical.get('status')=='calculated':
+            parts.append('<p>Historiedekking: '+esc(historical['history_from'])+' tot '+esc(historical['history_to'])+'. De dag-/weekcandle voor bevestiging is uitgesloten van de ankerselectie. Top aan begin bronvenster: '+('ja · eerdere toppen onbekend' if historical['high_at_history_boundary'] else 'nee')+'.</p>')
     parts.append('<details><summary>Uitleg en onderbouwing</summary><h4>25 combinaties en kwaliteitscontrole</h4><p>BUY betekent opwaartse ondersteuning; SELL neerwaartse ondersteuning, bij beide routes. Neutraal volgt uit geen bevestigde voorkeur, nooit uit ontbrekende data. Gedeelde brondata vormen geen dubbel onafhankelijk bewijs.</p><div style="overflow:auto"><table><caption>Rijen: bullroute · kolommen: bearroute</caption><thead><tr><th>Bull / Bear</th>'+''.join('<th>'+esc(LABELS[b])+'</th>' for b in LABELS)+'</tr></thead><tbody>')
     for bull in LABELS:
         parts.append('<tr><th>'+esc(LABELS[bull])+'</th>'+''.join('<td>'+esc(combination(bull,bear)['label'])+'</td>' for bear in LABELS)+'</tr>')
-    parts.append('</tbody></table></div><p>Beide routes beoordelen hun eigen Fibonacci-ladder. Soms vallen zones samen en zijn de uitslagen gelijk. Niet alle 25 combinaties hoeven in de praktijk voor te komen.</p><p>'+esc(data['news_reason'])+' Geen vastgestelde Elliott-telling of psychologische fase. Geen persoonlijke TP-percentages of orders.</p></details></div><p class="meter-time">Bronmeting '+esc(route['recorded_at'])+' · zonereactie '+esc(data['confirmation_timeframe'])+' · slot '+esc(data['confirmation_closed_at'])+'</p><p class="model-tag">'+VERSION+' · voorlopig, niet gekalibreerd</p></article>')
+    parts.append('</tbody></table></div><p>Beide routes beoordelen hun eigen Fibonacci-ladder. Soms vallen zones samen en zijn de uitslagen gelijk. Niet alle 25 combinaties hoeven in de praktijk voor te komen.</p><p>'+esc(data['news_reason'])+' Geen vastgestelde Elliott-telling of psychologische fase. Geen persoonlijke TP-percentages of orders.</p></details></div><p class="meter-time">Bronmeting '+esc(route['recorded_at'])+' · zonereactie '+esc(data['confirmation_timeframe'])+' · slot '+esc(data['confirmation_closed_at'])+'</p><p class="model-tag">'+data['model_version']+' · voorlopig, niet gekalibreerd</p></article>')
     return ''.join(parts)

@@ -19,8 +19,8 @@ except ImportError:
     from elliott_rules import assess_candidates
     from scenario_actions import attach, assess_action
 
-MODEL = 'two_routes_daily_weekly_v3'
-ACTION_MODELS = ('four_routes_daily_weekly_v2_shb', MODEL)
+MODEL = 'two_routes_daily_weekly_v4_anchors'
+ACTION_MODELS = ('four_routes_daily_weekly_v2_shb', 'two_routes_daily_weekly_v3', MODEL)
 MODES = {'swing': ('1d', 'Swing · dagen tot weken'),
          'position': ('1w', 'Positietrade · weken tot maanden of langer')}
 KINDS = ('very_bearish','bearish','bullish','very_bullish')
@@ -207,6 +207,11 @@ def route_set(rows, price, tf, mode, snapshot_at, observed, as_of, timing=None):
         from .two_routes import assess as assess_two_routes
     except ImportError:
         from two_routes import assess as assess_two_routes
+    try:
+        from .route_anchors import build as build_anchors
+    except ImportError:
+        from route_anchors import build as build_anchors
+    payload['route_anchors']=build_anchors(rows,tf)
     payload['two_route_assessment']=assess_two_routes(payload)
     identity=json.dumps(payload,sort_keys=True,separators=(',',':'),allow_nan=False)
     payload['scenario_set_id']=hashlib.sha256(identity.encode()).hexdigest()[:24]
@@ -248,6 +253,13 @@ def validate_frozen(route):
     if route['model_version'] in ACTION_MODELS and set(route.get('scenario_actions') or {})!=set(KINDS):
         raise ValueError('missing original scenario actions')
     if route['model_version']==MODEL:
+        try:
+            from .route_anchors import validate as validate_anchors
+        except ImportError:
+            from route_anchors import validate as validate_anchors
+        if 'route_anchors' not in route: raise ValueError('missing route anchors')
+        validate_anchors(route['route_anchors'],route['timeframe'])
+    if route['model_version'] in ('two_routes_daily_weekly_v3', MODEL):
         try:
             from .two_routes import assess as assess_two_routes
         except ImportError:
