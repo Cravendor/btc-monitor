@@ -363,3 +363,12 @@ See [CYCLE_HISTORY.md](CYCLE_HISTORY.md) for the separate, resumable daily archi
 Normal snapshots expose `cycle_history_reference`; historical coverage does not
 activate a macroanchor policy or establish a completed cycle peak. The current
 observed-history anchors remain unchanged until those additional steps are done.
+
+
+## Archive context adapter
+
+The [cycle-context adapter](CYCLE_CONTEXT.md) supplies a separately archived
+macroanchor review from the complete daily source. The checked-in configuration
+is draft: existing v4 routes remain active. Explicit active configuration supplies
+original v5 evidence, with unavailable readings on failed validation. Local archive
+validation is labeled separately from network retrieval timestamps.

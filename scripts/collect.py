@@ -115,6 +115,11 @@ def main():
     except ImportError:
         from cycle_history import reference as history_reference, PATH as history_path
     record['cycle_history_reference']=history_reference(history_path,record['finished_at'])
+    try:
+        from scripts.cycle_context import attach as attach_cycle_context
+    except ImportError:
+        from cycle_context import attach as attach_cycle_context
+    attach_cycle_context(record)
     record['scenario_snapshot'] = freeze(record)
     run = os.environ.get('GITHUB_RUN_ID', 'local')
     attempt = os.environ.get('GITHUB_RUN_ATTEMPT', '1')

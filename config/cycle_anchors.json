@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "status": "draft",
+  "cycle_id": "after-2021-reference",
+  "previous_cycle_id": "2021-reference",
+  "previous_cycle_peak_at": "2021-11-10T00:00:00Z",
+  "previous_peak_window_from": "2021-01-01T00:00:00Z",
+  "previous_peak_window_through": "2022-01-01T00:00:00Z",
+  "reference_basis": "Expliciet gekozen historische referentie: hoogste Bitget BTCUSDT USDT-FUTURES-daghigh binnen 2021. De adapter controleert dit tegen het volledige referentiejaar; dit is geen automatische herkenning van alle cycli.",
+  "phase": "post_peak",
+  "classification_basis": "Voorstel voor de prijsroute na de hoogste gemeten high sinds de gekozen referentietop: bull volgt de laagste afgesloten daglow daarna, bear begint bij die high. Dit is een operationele fasekeuze voor controle, geen bewijs dat de cyclus definitief is geëindigd. De huidige routeankers blijven actief zolang deze configuratie draft is."
+}
