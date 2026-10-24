@@ -110,6 +110,11 @@ def main():
         from scripts.scenario_archive import freeze
     except ModuleNotFoundError:
         from scenario_archive import freeze
+    try:
+        from scripts.cycle_history import reference as history_reference, PATH as history_path
+    except ImportError:
+        from cycle_history import reference as history_reference, PATH as history_path
+    record['cycle_history_reference']=history_reference(history_path,record['finished_at'])
     record['scenario_snapshot'] = freeze(record)
     run = os.environ.get('GITHUB_RUN_ID', 'local')
     attempt = os.environ.get('GITHUB_RUN_ATTEMPT', '1')

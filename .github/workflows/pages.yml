@@ -19,6 +19,7 @@ on:
       - scripts/two_routes.py
       - scripts/route_anchors.py
       - scripts/cycle_anchor_policy.py
+      - scripts/cycle_history.py
       - scripts/swing_scenarios.py
       - scripts/swing_dashboard.py
       - scripts/elliott_rules.py
