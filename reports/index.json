@@ -77,6 +77,30 @@
     {
       "bias": {
         "30d_macro": {
+          "reason": "30D/macro: **ONVOLDOENDE DATA** — actuele ETF-, LTH/aanbod-, on-chain- en macrobevestiging zijn in deze korte controle niet opnieuw verkregen. Liquidaties, onafhankelijke agressor-CVD en orderboekexecuties/replenishment ontbreken eveneens.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: **-1 ZWAK BEARISH** — onvolledig zoneherstel, lagere high/low en relatief beperkt herstelvolume. Het hogere slot is het belangrijkste tegensignaal. Onderbouwing uit één Bitget-bronfamilie; onafhankelijke richtingbevestiging ontbreekt.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: **0 NEUTRAAL/GEMENGD** — de gecontroleerde dagreeks toont herstel gevolgd door terugval; laatste dagslot **81.155,6**, tegenover **81.580,3** zeven dagen eerder. Beperkt prijsstructuuroordeel uit één bronfamilie; complete 7D-volumevergelijking en onafhankelijke vraag-/aanbodbevestiging ontbreken.",
+          "score": 0,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "f36662f1456cbd3b73ae8434f8ff1542d35dee81a358b07310c0aa64f1a73abe",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/10/24/4h-warning-215742.json",
+      "reported_at": "2026-10-24T21:57:42Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
           "reason": "30D/macro: **ONVOLDOENDE DATA** — de weekreeks ondersteunt een herstelhypothese maar ook een correctiescenario; aanbod, LTH, macro en structurele sentimentdekking ontbreken voor een cyclusoordeel.",
           "score": null,
           "status": "ONVOLDOENDE DATA"
