@@ -102,6 +102,7 @@ def evaluate(records,as_of,days=30):
                 target_events=targets,invalidated_at=iso(invalidated) if invalidated else None,
                 expected_closes=len(expected),observed_closes=len(valid),missing_closes=missing,conflicts=conflicts,
                 preference_at_registration=r['preferred_scenario'],original_scenario=s,
+                original_two_route_assessment=r.get('two_route_assessment'),
                 original_shb=(r.get('scenario_actions') or {}).get(s['id'])))
     return results
 

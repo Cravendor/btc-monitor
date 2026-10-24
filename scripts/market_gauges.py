@@ -102,14 +102,14 @@ def build_gauges(feed,as_of,sentiment=None,mode='swing'):
                     observed_at=r['candle_closed_at'],valid_until=r['valid_until'])
         momentum=dict(common,value=signal['score']/2,label=LABELS[signal['score']],
             reason='Slot versus voorafgaand 20-candlegemiddelde: {:+.2f}%; koersverandering over 6 candles: {:+.2f}%; relatief volume: {}. Voorlopig prijs-/volumemodel.'.format(signal['price_vs_20_prior_pct'],signal['momentum_6_pct'],signal['volume_ratio']))
-        from .shb_dashboard import gauge_action, VALUES
-        assessment=gauge_action(r)
-        code=assessment['action']
+        from .two_routes import assess as assess_two_routes
+        assessment=assess_two_routes(r)
+        code=assessment['combined']['score']
         if code is not None:
-            action=dict(common,value=VALUES[code],label=code,reason=assessment['reason'],quality='Beperkt',
-                        scenario_id=assessment.get('scenario_id'))
+            action=dict(common,value=code/2,label=assessment['combined']['label'],
+                        reason=assessment['context'],quality='Beperkt')
         else:
-            action['reason']=assessment['reason']
+            action['reason']=assessment['context']
     fear=sentiment_gauge(as_of,sentiment)
     return [momentum,action,fear]
 
@@ -126,7 +126,7 @@ def render(feed,as_of,sentiment=None,mode='swing'):
     cards=[]
     for i,item in enumerate(items):
         if i==1:
-            from .shb_dashboard import render_meter
+            from .two_routes import render_meter
             from .swing_scenarios import build_swing_scenarios
             cards.append(render_meter(build_swing_scenarios(feed,as_of)['horizons'][mode],mode))
             continue
@@ -141,4 +141,4 @@ def render(feed,as_of,sentiment=None,mode='swing'):
 
 
 def render_all(feed,as_of,sentiment=None):
-    return '<div class="meter-stack-title"><h2>Je drie marktmeters</h2><p>BNB geeft richting; SHB volgt een voorgesteld scenario. Kies swing of positie. Uitleg is inklapbaar.</p><p><a href="btc-action-history.html">Niveauhistorie, scenario-evaluatie en kwaliteitscontrole →</a></p></div><div class="mode-controls" role="group" aria-label="Handelshorizon"><button type="button" data-select-mode="swing" aria-pressed="true">Swing · dag</button><button type="button" data-select-mode="position" aria-pressed="false">Positie · week</button></div>'+''.join(render(feed,as_of,sentiment,mode) for mode in MODE_NAMES)
+    return '<div class="meter-stack-title"><h2>Je drie marktmeters</h2><p>BNB geeft richting; bull- en bearroute geven samen een niveau-uitleg. Kies swing of positie. Uitleg is inklapbaar.</p><p><a href="btc-action-history.html">Niveauhistorie, scenario-evaluatie en kwaliteitscontrole →</a></p></div><div class="mode-controls" role="group" aria-label="Handelshorizon"><button type="button" data-select-mode="swing" aria-pressed="true">Swing · dag</button><button type="button" data-select-mode="position" aria-pressed="false">Positie · week</button></div>'+''.join(render(feed,as_of,sentiment,mode) for mode in MODE_NAMES)

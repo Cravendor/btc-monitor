@@ -19,7 +19,8 @@ except ImportError:
     from elliott_rules import assess_candidates
     from scenario_actions import attach, assess_action
 
-MODEL = 'four_routes_daily_weekly_v2_shb'
+MODEL = 'two_routes_daily_weekly_v3'
+ACTION_MODELS = ('four_routes_daily_weekly_v2_shb', MODEL)
 MODES = {'swing': ('1d', 'Swing · dagen tot weken'),
          'position': ('1w', 'Positietrade · weken tot maanden of langer')}
 KINDS = ('very_bearish','bearish','bullish','very_bullish')
@@ -128,6 +129,7 @@ def route_set(rows, price, tf, mode, snapshot_at, observed, as_of, timing=None):
                           confirmation_source_at=timing_observed,
                           confirmation_bar={k:test_candle[k] for k in ('open','high','low','close')},
                           confirmation_previous_close=test_previous['close'],
+                          confirmation_prior_close=test_rows[-3]['close'],
                           reason='Beoordeling op de laatste afgesloten broncandle; een huidige koers aan de andere kant maakt de uitkomst gemengd. Geen automatische voortzetting.')
 
     # Close rules are explicit and separate from hard intrabar Elliott constraints.
@@ -201,6 +203,11 @@ def route_set(rows, price, tf, mode, snapshot_at, observed, as_of, timing=None):
         preference_reason='Voorlopige technische ondersteuning; geen onafhankelijke psychologie- of volledige Elliott-bevestiging.' if active else 'Afwachten: geen duidelijke combinatie van slot en momentum.',
         quality_checks=quality,data_quality='limited_interpretation',probability=None)
     attach(payload)
+    try:
+        from .two_routes import assess as assess_two_routes
+    except ImportError:
+        from two_routes import assess as assess_two_routes
+    payload['two_route_assessment']=assess_two_routes(payload)
     identity=json.dumps(payload,sort_keys=True,separators=(',',':'),allow_nan=False)
     payload['scenario_set_id']=hashlib.sha256(identity.encode()).hexdigest()[:24]
     return payload
@@ -238,10 +245,17 @@ def validate_frozen(route):
     if identifier!=digest: raise ValueError('scenario content mismatch')
     if time_ms(route['candle_closed_at'])>time_ms(route['recorded_at']): raise ValueError('future source candle')
     if [s['id'] for s in route['scenarios']]!=list(KINDS): raise ValueError('four fixed routes required')
-    if route['model_version']==MODEL and set(route.get('scenario_actions') or {})!=set(KINDS):
+    if route['model_version'] in ACTION_MODELS and set(route.get('scenario_actions') or {})!=set(KINDS):
         raise ValueError('missing original scenario actions')
+    if route['model_version']==MODEL:
+        try:
+            from .two_routes import assess as assess_two_routes
+        except ImportError:
+            from two_routes import assess as assess_two_routes
+        if route.get('two_route_assessment') != assess_two_routes(route):
+            raise ValueError('two-route assessment disagrees with original inputs')
     for s in route['scenarios']:
-        if route['model_version']==MODEL and route['scenario_actions'][s['id']]!=assess_action(route,s):
+        if route['model_version'] in ACTION_MODELS and route['scenario_actions'][s['id']]!=assess_action(route,s):
             raise ValueError('SHB assessment disagrees with original inputs')
         direction=s['direction']
         if direction not in (-1,1) or (number(s['trigger_price'])-number(s['invalidation_price']))*direction<=0:
