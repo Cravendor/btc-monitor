@@ -67,3 +67,12 @@ recorded configuration, actual executed run, original stored result and live
 page evidence separate. Recheck external state before changes. Retain the
 user's existing schedules and permission scope; this register does not itself
 create an automation or authorize unrelated communications.
+
+
+## Archive-context checkpoint
+
+Open PR #65 adds a guarded producer and separately archived draft review. The
+2021 peak reference and post_peak phase are explicit review proposals, not newly
+accepted automatic cycle classifications. The default remains draft/current v4
+anchors; activation requires a separate reviewed configuration change. Local
+archive validation must be labeled distinctly from network retrieval.
