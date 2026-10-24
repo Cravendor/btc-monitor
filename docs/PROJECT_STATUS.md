@@ -13,8 +13,9 @@ checkpoint when they change.
 | Technical multi-timeframe signals/history | Implemented | Provisional price/volume rules; not integrated independent macro evidence |
 | Public meters | Two public routes with five directional states and combined interpretation, merged #60 | No private position state or calibrated probabilities |
 | Available-history route anchors | Merged #61; v4 records observed | Native day/week windows are not verified cycle extrema |
-| Cycle-top/running-low rule | Merged #62; 354-test CI success | Opt-in only; macro identification/context producer still absent |
-| Multi-year daily archive | Merged #63; 2,122 source-validated closed UTC days, 2021-01-01 through 2026-10-23; 361-test CI, initial history workflow and Pages success | First NAS coverage metadata still to verify |
+| Cycle-top/running-low rule | Merged #62; 354-test CI success | Explicit cycle/phase required; producer merged #65, default remains draft |
+| Multi-year daily archive | Merged #63; 2,122 source-validated closed UTC days through 2026-10-23; NAS coverage metadata verified at 22:01:55 UTC | Fresh coverage required at each new UTC day |
+| Archive to cycle-context producer | Merged PR #65; 369 local tests, read-only generation and GitHub CI pass | Draft review only; deployment and automatic NAS review still to verify |
 | Original report archive | Protocol v2, real 4h-warning and psychology records observed | Read current protocol, not old automation prompt version claims |
 | News integration | Separate contextual reports | No validated numerical news contribution to route scores |
 | Elliott/psychology | Rule checks/candidates and phase hypotheses | No complete proved current wave count or automatic psychological phase |
@@ -24,9 +25,10 @@ checkpoint when they change.
 
 ## Next concrete sequence
 
-1. Verify the next source-history metadata in an original NAS snapshot after #63.
-2. Connect that source to the guarded macroanchor policy with justified historical
-   peak/phase selection. Do not activate merely because a data file exists.
+1. Verify post-merge #65 Pages publication and its first original NAS draft review.
+2. Review the proposed reference window/peak and operational phase; activate in a
+   separate reviewed configuration change when justified. Current anchors remain
+   active with the shipped draft; complete history alone does not activate it.
 3. Improve independent news/macro contribution, Elliott/psychology support,
    dedicated forward evaluation, browser QA and upload race resilience.
 4. Keep this checkpoint and HANDOVER current with evidence at every phase.

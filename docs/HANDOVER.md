@@ -8,17 +8,33 @@ Dashboard: https://cravendor.github.io/btc-monitor/.
 
 ## Resume from here
 
-PR #63 merged on 24 October at 23:23 Amsterdam: multi-year daily history,
-361 tests and 2,122 live-fetched closed days. Its initial history workflow and
-Pages publication both completed successfully. Verify the next NAS coverage
-metadata separately; merging source data does not prove NAS incorporation.
-Next feature: adapt the complete historical source into the opt-in cycle-anchor
-context with an explicitly justified previous completed-cycle peak and phase.
-Do not automatically activate the new macroanchors from data coverage alone.
+Post-merge checkpoint: 25 October 2026, Europe/Amsterdam.
 
-The current user preference is to retain the observed-history anchors until
-the macro policy has adequate evidence. Latest accepted rule is price-event
-based; the earlier fixed bear-calendar-year proposal was superseded.
+PR #63 is merged and its source metadata is now verified in an original NAS
+snapshot ending 2026-10-24T22:01:55.667737+00:00: 2,122 closed days, no gaps,
+through 2026-10-23. This closes the previous metadata-incorporation check.
+
+PR #65 is merged (merge commit 46dd127): a read-only producer connects the archive to a separately stored
+cycle_anchor_review, with explicit prior reference window, phase rationale,
+configuration/archive hashes and local-versus-network timestamps. Its shipped
+configuration is draft, so existing v4 routes remain unchanged. A separately
+reviewed active configuration supplies original v5 context; incomplete history or
+invalid active configuration suppresses readings without short-range fallback.
+369 local tests, read-only dashboard generation and GitHub validation pass
+(Actions run 40137999451). Post-merge Pages publication and an automatic NAS review must still be
+verified separately; the latest observed NAS snapshot predates this merge.
+
+The draft proposes the first highest Bitget futures daily high within 2021
+(2021-11-10) as prior reference and post_peak as an operational price-route
+hypothesis; it does not identify all cycles or confirm that the latest top is
+final. Do not activate merely because this proposal or complete data exists.
+Next: verify post-merge Pages publication and a new original NAS draft review,
+then review the proposed reference/phase.
+Read docs/CYCLE_CONTEXT.md from #65 when that change is available.
+
+PR #64 is merged (7cd2b1a); its later branch-only documentation update is
+superseded by this post-merge checkpoint. The accepted rule is
+price-event based; the fixed bear-calendar-year proposal was superseded.
 
 ## Implemented versus activated
 
@@ -28,8 +44,9 @@ based; the earlier fixed bear-calendar-year proposal was superseded.
 | Public homepage and meters | PRs #56–#61 merged; Pages checked after #60/#61 | New browser visual QA still outstanding; HTML retrieval/tests are not interactive visual QA |
 | Two public routes, five directional readings each, 25 ordered combinations | PR #60 merged; original swing/position assessments frozen and validated in NAS data | Combination-specific performance statistics not complete |
 | Observed-history anchor candidates | PR #61 merged; v4 source snapshots observed after merge | Available native history was only about 89 daily/36 weekly candles; not verified cycle extremes |
-| Macro policy: cycle peaks and running lows | PR #62 merged, CI successful; opt-in v5 contract and hooks exist | No automatic cycle identification or fresh multi-year context producer; NOT ACTIVE by default |
-| Multi-year daily source | PR #63 merged; CI, initial history workflow and Pages success | Next NAS coverage metadata still to verify |
+| Macro policy: cycle peaks and running lows | PR #62 merged, CI successful; opt-in v5 contract and hooks exist | No automatic cycle identification; #65 adds the guarded producer, with draft configuration |
+| Multi-year daily source | PR #63 merged; complete coverage metadata verified in the 22:01:55 UTC NAS snapshot | Next UTC day still requires fresh archive coverage |
+| Archive/context producer | Merged PR #65; 369 local tests and read-only generation pass | Draft review only; CI passed; deployment and original NAS review still to verify |
 | Technical signal history/evaluation | Existing JSONL and statistics/evaluation modules | Same-price-source heuristics are uncalibrated |
 | Original monitor report archive | Reports present on main for 4h-warning and psychology; protocol v2 | Not every scheduled execution or report type proven; read actual archive |
 | CVD journal/export/backfill | Existing recorder, sessions, coverage verification and bounded recovery | Per-market/interval proof required; no independent aggressor-side or market-wide CVD claim |
@@ -170,10 +187,10 @@ outcome rows as independent two-route observations.
 
 ## Open work, in practical order
 
-1. Verify the next NAS cycle_history_reference now that #63 and its initial workflow are complete.
-2. Connect the multi-year archive to cycle_anchor_context, with justified prior
-   completed-cycle peak/phase and current closed source coverage. The numerical
-   selector is prepared, but no producer or autonomous phase detection is active.
+1. Verify post-merge #65 Pages publication and its original automatic NAS draft review.
+2. Review the proposed prior reference/phase and current closed source coverage;
+   activate separately only when justified. The producer is built in #65, but its
+   shipped draft preserves current anchors; autonomous cycle recognition is absent.
 3. Integrate independently sourced news/macro evidence into tested route logic;
    current news reports are context, not numerical route votes.
 4. Further substantiate current Elliott alternatives and psychological phase;
