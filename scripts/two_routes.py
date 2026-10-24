@@ -8,6 +8,15 @@ from html import escape
 VERSION = 'two_routes_zone_context_v1'
 ANCHOR_VERSION = 'two_routes_zone_context_v2_anchors'
 LABELS = {-2: 'Sterk SELL', -1: 'SELL', 0: 'Neutraal / afwachten', 1: 'BUY', 2: 'Sterk BUY'}
+# Presentation only: keep original assessment codes and frozen model evidence.
+REACTION_LABELS = {
+    'reclaim': 'Zone heroverd met een slot erboven',
+    'breakdown': 'Zone verloren met een slot eronder',
+    'support_hold': 'Steun gehouden met een slot erboven',
+    'rejection': 'Afgewezen met een slot onder de zone',
+    'undecided': 'Nog geen bevestigde zonereactie',
+    'not_tested': 'Zone niet getest door de bevestigingscandle',
+}
 
 
 def combination(bull, bear):
@@ -139,7 +148,7 @@ def render_meter(route, mode):
         anchor_note=('Kandidaat-top en latere low uit '+str(historical.get('history_candles'))+' afgesloten '+route['timeframe'].upper()+'-candles; geen bewezen cyclus-ATH of definitieve bodem.' if data['anchor_scope']=='available_history_high_then_later_low' else 'High/low van 20 voorafgaande candles; cyclus-ATH/bodem nog niet bevestigd.')
         if data['anchor_scope']=='cycle_peaks_running_low':
             anchor_note='Cyclus '+str(historical['cycle_id'])+'; '+('bullbodem tussen cyclustoppen' if historical['phase']=='advance' else 'laagste low sinds de nieuwste cyclustop')+'; bear vanaf de hoogste gemeten cyclustop. Zelfde macroankers voor swing en positie.'
-        parts.append('<p>Beginprijs '+price(item['origin_price'])+' · <time>'+esc(item['origin_at'])+'</time>. '+esc(anchor_note)+'</p><p>Zonecheck '+price(item['selected_zone'])+' · '+esc(item['reaction'])+'.</p><p>'+esc(item['reason'])+'</p>')
+        parts.append('<p>Beginprijs '+price(item['origin_price'])+' · <time>'+esc(item['origin_at'])+'</time>. '+esc(anchor_note)+'</p><p>Zonecheck '+price(item['selected_zone'])+' · '+esc(REACTION_LABELS.get(item['reaction'],'Zonereactie niet beschikbaar'))+'.</p><p>'+esc(item['reason'])+'</p>')
         if item['invalidated_on_native_close']:
             parts.append('<p>Route ongeldig op dag-/weekslot: opnieuw beoordelen.</p>')
         else:

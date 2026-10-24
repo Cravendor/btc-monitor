@@ -129,12 +129,16 @@ def render(feed):
     text = '<p>' + esc(review.get('reason')) + '</p>'
     anchors = review.get('anchors', {})
     if review.get('status') == 'ready':
+        phase = {'advance': 'tussen cyclustoppen', 'post_peak': 'na de hoogste gemeten top'}.get(
+            anchors.get('phase'), 'niet beschikbaar')
         text += ('<p>Beoordeeld bij meting: ' + esc(review.get('checked_at')) +
-                 '. Fasekeuze: ' + esc(anchors.get('phase')) + '.</p>' +
+                 '. Fasekeuze: ' + esc(phase) + '.</p>' +
                  '<p>Bullvertrekpunt: ' + esc(anchors.get('low')) + ' USDT · ' + esc(anchors.get('low_at')) +
                  '<br>Bearvertrekpunt: ' + esc(anchors.get('high')) + ' USDT · ' + esc(anchors.get('high_at')) +
                  '.</p><p>' + esc(anchors.get('classification_basis')) + '</p>')
-    return ('<details><summary>Controle macroankers · ' + esc(review.get('activation')) +
+    activation = {'draft': 'voorstel', 'active': 'ingeschakeld', 'disabled': 'uitgeschakeld'}.get(
+        review.get('activation'), 'status onbekend')
+    return ('<details><summary>Controle macroankers · ' + esc(activation) +
             '</summary>' + text + '<p>Lokale controle van opgeslagen dagcandles; geen nieuwe API-meting. '
             'Een kandidaatlow bevestigt geen bodem en een gemeten high geen voltooide cyclus.</p></details>')
 

@@ -10,6 +10,21 @@ Dashboard: https://cravendor.github.io/btc-monitor/.
 
 Post-merge checkpoint: 25 October 2026, Europe/Amsterdam.
 
+Browser checkpoint: the live desktop page was inspected at a 1348px viewport.
+Swing/position switching, both position route disclosures and their ladders,
+and navigation to the multi-timeframe page worked. No whole-page horizontal
+overflow was present with both position routes open. This is partial desktop
+visual/interaction QA, not iPhone QA or proof of #65 deployment: the latest
+visible snapshot still ended 2026-10-24T22:01:55.667737+00:00, before #65.
+The browser API used here does not expose viewport emulation, so mobile QA is
+still open. Only an extension-origin metadata error appeared in captured logs;
+it was not a dashboard script error.
+
+The zone explanation visibly exposed `undecided`. The accompanying rendering
+change translates all six reaction codes and the new macro review phase/state
+labels to Dutch without changing stored assessments, anchors or model versions.
+Publication and another live check of those new labels remain separate steps.
+
 PR #63 is merged and its source metadata is now verified in an original NAS
 snapshot ending 2026-10-24T22:01:55.667737+00:00: 2,122 closed days, no gaps,
 through 2026-10-23. This closes the previous metadata-incorporation check.
@@ -41,7 +56,7 @@ price-event based; the fixed bear-calendar-year proposal was superseded.
 | Component | Evidence/checkpoint | Remaining limitation |
 | --- | --- | --- |
 | NAS market snapshots | Restored uploads confirmed 24 October at 22:01 and 22:33 Amsterdam, then a 23:01 NAS snapshot observed | Continuous availability not guaranteed; recheck latest source and statuses |
-| Public homepage and meters | PRs #56–#61 merged; Pages checked after #60/#61 | New browser visual QA still outstanding; HTML retrieval/tests are not interactive visual QA |
+| Public homepage and meters | PRs #56–#61 merged; live desktop interaction/visual checks recorded above | Mobile QA and post-#65 deployment/original NAS review still open |
 | Two public routes, five directional readings each, 25 ordered combinations | PR #60 merged; original swing/position assessments frozen and validated in NAS data | Combination-specific performance statistics not complete |
 | Observed-history anchor candidates | PR #61 merged; v4 source snapshots observed after merge | Available native history was only about 89 daily/36 weekly candles; not verified cycle extremes |
 | Macro policy: cycle peaks and running lows | PR #62 merged, CI successful; opt-in v5 contract and hooks exist | No automatic cycle identification; #65 adds the guarded producer, with draft configuration |
