@@ -7,7 +7,7 @@ import pathlib
 import sys
 
 LABELS = {-2: "sterk bearish", -1: "zwak bearish", 0: "neutraal", 1: "zwak bullish", 2: "sterk bullish"}
-MONITORS = {"daily", "4h-warning", "market-risk"}
+MONITORS = {"daily", "4h-warning", "market-risk", "psychology"}
 HORIZONS = ("4h_1d", "7d", "30d_macro")
 
 def validate(obj):

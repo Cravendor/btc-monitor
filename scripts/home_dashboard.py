@@ -4,6 +4,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 from scripts.market_scenarios import build_scenarios
+from scripts.price_roadmap import build_roadmap
+from scripts.roadmap_dashboard import render as render_roadmap
 
 
 def escape(value):
@@ -15,7 +17,7 @@ def price(value):
     return format(value, ',.1f').replace(',', '_').replace('.', ',').replace('_', '.') + ' USDT'
 
 
-def render(feed, as_of):
+def render(feed, as_of, ath=None):
     result = build_scenarios(feed, as_of)
     ready = result['status'] == 'ready'
     interpretation = '<p>Fibonacci-niveaus wachten op geldige koersdata. Psychologische fasen en golftellingen worden niet ingevuld bij gebrek aan onderbouwing.</p>'
@@ -124,6 +126,7 @@ table{width:100%;border-collapse:collapse}th,td{padding:8px;text-align:left;bord
 ''' + freshness + '''<h2>Op welke prijsactie letten?</h2><p>Drie voorwaardelijke 4H-scenario’s. Een intraperiode-prijsdoorbraak telt niet als bevestigd 4H-slot.</p>
 <p id="stale-warning" role="status" hidden>Deze berekening is verouderd of er is een nieuw 4H-venster. Niveaus zijn verborgen. Vernieuw voor de laatste publicatie.</p>
 ''' + content + '''<button type="button" onclick="location.reload()">Vernieuwen</button></section>
+''' + render_roadmap(build_roadmap(feed, as_of), ath) + '''
 <section class="panel" style="margin-top:24px"><h2>Psychologie, Fibonacci en Elliott Wave</h2><p>Een interpretatielaag naast de meetgegevens. Fibonacci is een berekening; marktpsychologie en golftellingen zijn te toetsen hypothesen.</p><p><a class="badge" href="btc-methoden.html">Uitleg: Fibonacci, marktpsychologie en Elliott Wave →</a></p>''' + interpretation + '''</section>
 <footer><p>De niveaus helpen bepalen wanneer je opnieuw kijkt. Het zijn geen koop-/verkooporders, stop-lossadvies of persoonlijke positiegrootte. Scenario’s kunnen mislukken; er worden geen kansen verzonnen.</p>
 <p>Bron: <a href="https://github.com/Cravendor/btc-monitor/blob/main/data/latest.json">marktmetingen</a> · <a href="https://www.bitget.com/docs/catalog/classic-contract-market/classic-contract-market">Bitget-candledefinitie</a>. De NAS verzamelt elk halfuur; de werkelijke meettijd is leidend.</p>
@@ -137,23 +140,30 @@ function refreshFreshness(){
   if(Date.now()>=expiry){
     const levels=document.querySelector('#action-levels');if(levels)levels.hidden=true;
     const interpretation=document.querySelector('#interpretation-levels');if(interpretation)interpretation.hidden=true;
+    const roadmap=document.querySelector('#roadmap-levels');if(roadmap)roadmap.hidden=true;
     document.querySelector('#stale-warning').hidden=false;
     const badge=document.querySelector('.badge');badge.textContent='VEROUDERD';badge.classList.remove('good');
     document.querySelector('.quote strong').textContent='Meting verouderd';
   }
 }
+function refreshAth(){const root=document.querySelector('#ath-reference');const expiry=Date.parse(root.dataset.validUntil);if(Number.isFinite(expiry)&&Date.now()>=expiry){const values=document.querySelector('#ath-values');if(values)values.hidden=true;const warning=document.querySelector('#ath-stale');if(warning)warning.hidden=false;}}
 document.querySelectorAll('time').forEach(el=>{const value=Date.parse(el.textContent);if(Number.isFinite(value)){el.dateTime=el.textContent;el.textContent=new Date(value).toLocaleString('nl-NL',{timeZone:'Europe/Amsterdam',timeZoneName:'short'});}});
-refreshFreshness();setInterval(refreshFreshness,60000);
+refreshFreshness();refreshAth();setInterval(()=>{refreshFreshness();refreshAth();},60000);
 </script></body></html>'''
 
 
-def build(feed_path, output, as_of=None):
+def build(feed_path, output, as_of=None, include_ath=False):
     as_of = as_of or datetime.now(timezone.utc).isoformat()
     feed = json.loads(Path(feed_path).read_text(encoding='utf-8'))
     Path(output).parent.mkdir(parents=True, exist_ok=True)
-    Path(output).write_text(render(feed, as_of), encoding='utf-8')
+    ath = None
+    if include_ath:
+        from scripts.ath_reference import fetch_reference
+        ath = fetch_reference(as_of)
+        print('ATH reference:', ath['status'])
+    Path(output).write_text(render(feed, as_of, ath), encoding='utf-8')
 
 
 if __name__ == '__main__':
     import sys
-    build(sys.argv[1], sys.argv[2])
+    build(sys.argv[1], sys.argv[2], include_ath='--ath' in sys.argv[3:])

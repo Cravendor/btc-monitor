@@ -49,6 +49,17 @@ class MonitorArchiveTests(unittest.TestCase):
         self.assertEqual(target.read_bytes(), first)
         validate(report)
 
+    def test_psychological_report_is_a_distinct_supported_category(self):
+        obj = payload()
+        obj['monitor'] = 'psychology'
+        path = self.root/'reports/inbox/psychology/20260101T120000Z.json'
+        path.parent.mkdir(parents=True)
+        path.write_text(json.dumps(obj))
+        self.assertEqual(import_inbox(self.root)['indexed'], 1)
+        entry = json.loads((self.root/'reports/index.json').read_text())['reports'][0]
+        self.assertEqual(entry['monitor'], 'psychology')
+        self.assertEqual(entry['path'], 'reports/2026/01/01/psychology-120000.json')
+
     def test_missing_score_is_not_inferred_from_direction_or_low_confidence(self):
         bias = extract_bias('4H–1D: Neutraal/gemengd.\n7D: bearish.\nMacro-cyclus: ONVOLDOENDE DATA.')
         for v in bias.values():
