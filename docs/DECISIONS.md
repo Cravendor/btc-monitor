@@ -1,5 +1,14 @@
 # Accepted project decisions
 
+## Operational status decision — 25 October 2026
+
+User requested a task-status page with coloured indicators. Show explicit text
+alongside colour: green for recent execution evidence/running GitHub jobs, amber
+for stale/queued/partial evidence, red for explicit failures/disabled workflows,
+grey for unavailable/unconnected status. Do not infer a stopped continuous CVD
+recorder from a failed or old NAS upload. No task-control buttons, paid service,
+private runtime/log publication or duplicated DSM tasks are introduced.
+
 Checkpoint: 24 October 2026. Latest user instructions override older proposals.
 Implementation/activation status is in [HANDOVER.md](HANDOVER.md), not implied
 by inclusion in this decision register.

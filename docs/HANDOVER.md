@@ -10,6 +10,32 @@ Dashboard: https://cravendor.github.io/btc-monitor/.
 
 Post-merge checkpoint: 25 October 2026, Europe/Amsterdam.
 
+## New checkpoint: operational task status
+
+The accompanying change builds btc-status.html, linked near the top of the home
+page. Read [OPERATIONAL_STATUS.md](OPERATIONAL_STATUS.md) for its evidence contract,
+freshness windows, free public GitHub API use and validation. NAS upload, spot/
+futures journal evidence, stored-market health and GitHub jobs remain distinct.
+Unconnected DSM watchdog/storage and ChatGPT execution status are grey, not an
+invented stopped/running state. Local checks: 378 Python tests, five Node tests,
+home/status generation and diff/link checks. Deployment, browser API access and
+mobile visual QA must be checked after merge; the page is not live yet.
+
+The NAS retry succeeded: original 00:32 and fresh 00:40 Amsterdam observations
+are now on main (e820048). The 00:40 record is status=ok and contains the original
+ready draft macroanchor review, plus recent journal trades in both markets.
+This closes the #65 original automatic-review storage check. The macroanchor
+configuration still remains draft; do not activate it as part of a status page.
+
+PR #67 publication succeeded (Pages run 40138890905) and the translated zone
+explanation was observed live after refresh. The commit-specific workflow helper
+had returned an empty list; repository Actions runs API supplied the actual runs.
+Earlier statements below about unverified publication/storage are historical
+checkpoints superseded by this evidence. Future writer races remain possible.
+
+Next: review/merge/publish this status page, verify its live data and API failure
+behaviour, then obtain actual mobile visual QA. Do not create duplicate NAS tasks.
+
 Browser checkpoint: the live desktop page was inspected at a 1348px viewport.
 Swing/position switching, both position route disclosures and their ladders,
 and navigation to the multi-timeframe page worked. No whole-page horizontal
