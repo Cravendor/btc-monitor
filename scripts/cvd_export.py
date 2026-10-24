@@ -123,7 +123,10 @@ def collect_cvd(path=None, now=None, backfill_path=None):
     if backfill_path is None and os.environ.get('BTC_COLLECTOR_SOURCE') == 'nas':
         backfill_path = os.environ.get('BTC_CVD_BACKFILL_STORE')
     if backfill_path:
-        from scripts.cvd_coverage import read_verified
+        if __package__:
+            from .cvd_coverage import read_verified
+        else:
+            from cvd_coverage import read_verified
         verified = read_verified(backfill_path, path, end, now_ms)
         for market, proof in verified.items():
             observed = result['markets'].get(market, {})

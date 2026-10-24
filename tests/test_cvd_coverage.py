@@ -3,6 +3,8 @@ import hashlib
 import json
 from pathlib import Path
 import sqlite3
+import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -13,6 +15,27 @@ from scripts.cvd_pipeline import run as pipeline
 
 
 class CvdCoverageTests(unittest.TestCase):
+    def test_direct_collector_import_exports_coverage_without_repository_on_path(self):
+        for market in ('spot', 'usdt_futures'):
+            self.candidate(market)
+        code = '''import json, sys
+from datetime import datetime, timezone
+sys.path.insert(0, sys.argv[1])
+from collect import collect_cvd
+result = collect_cvd(path=sys.argv[2], backfill_path=sys.argv[3],
+    now=datetime.fromtimestamp(int(sys.argv[4]) / 1000, timezone.utc))
+print(json.dumps(result))
+'''
+        result = subprocess.run(
+            [sys.executable, '-I', '-c', code,
+             str(Path(__file__).resolve().parents[1] / 'scripts'),
+             str(self.journal), str(self.store), str(self.now)],
+            cwd=str(self.root), capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        exported = json.loads(result.stdout)
+        self.assertTrue(exported['coverage_verified'])
+        self.assertEqual(exported['status'], 'ok')
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
