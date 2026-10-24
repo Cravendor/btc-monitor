@@ -355,3 +355,11 @@ strict lower-low updates, higher/equal-low stability, equal/new-high behavior,
 same-candle ambiguity, calendar rollover, complete source coverage, identity
 and freshness, shared horizons, rehashed evidence tampering, and default-output
 stability checked against a real archived measurement.
+
+
+## Multi-year source archive
+
+See [CYCLE_HISTORY.md](CYCLE_HISTORY.md) for the separate, resumable daily archive.
+Normal snapshots expose `cycle_history_reference`; historical coverage does not
+activate a macroanchor policy or establish a completed cycle peak. The current
+observed-history anchors remain unchanged until those additional steps are done.

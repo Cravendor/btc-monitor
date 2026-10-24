@@ -4,6 +4,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 from scripts.market_scenarios import build_scenarios
+from scripts.cycle_history import render_reference as render_cycle_history
 from scripts import market_gauges, swing_dashboard, report_context, shb_dashboard
 from scripts.swing_scenarios import build_swing_scenarios
 from scripts.price_roadmap import build_roadmap
@@ -128,7 +129,7 @@ table{width:100%;border-collapse:collapse}th,td{padding:8px;text-align:left;bord
 </style></head><body><main>
 <header class="hero"><div><div class="eyebrow">BTC Monitor / overzicht</div><h1>Eén plek voor je marktbeeld.</h1><p>Metingen, marktrichting en scenario’s met controleerbare prijsniveaus.</p></div>
 <div class="quote" data-expires="''' + escape(quote_expiry) + '''"><small>Bitget futures · laatste momentopname</small><strong>''' + escape(price_line) + '''</strong></div></header>''' + market_gauges.render_all(feed, as_of, sentiment) + '''
-''' + swing_dashboard.render(swing_bundle) + report_context.render(context) + '''
+''' + swing_dashboard.render(swing_bundle) + render_cycle_history(feed) + report_context.render(context) + '''
 <nav class="links" aria-label="BTC-pagina’s">
 <a class="link-card" href="btc-dashboard.html"><span>01 / METINGEN →</span><h2>Dashboard</h2><p>Prijs, funding, open interest, orderboek en gecontroleerde tradedelta.</p></a>
 <a class="link-card" href="btc-timeframes.html"><span>02 / RICHTING →</span><h2>Multi-timeframe marktrichting</h2><p>Technische signalen van 5 minuten tot 1 week, met actualiteit per candle.</p></a>
