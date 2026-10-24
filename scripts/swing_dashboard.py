@@ -81,6 +81,6 @@ def render(bundle):
         if route['status']!='ready':
             parts.append('<p>ONVOLDOENDE DATA: '+escape(route['reason'])+'</p>')
         else:
-            parts.append('<details><summary>Bronkwaliteit, Elliott en psychologie</summary><p>Set-ID '+escape(route['scenario_set_id'])+' · '+escape(route['model_version'])+'</p><ul>'+''.join('<li>'+escape(x['check'])+': '+escape(x['status'])+'</li>' for x in route['quality_checks'])+'</ul><p>'+escape(route['elliott']['reason'])+'</p><p>'+escape(route['psychology']['reason'])+'</p><p>De routeankers zijn nog de extremen van 20 voorafgaande candles; geen vastgestelde cyclus-ATH of cyclusbodem. Originele beoordelingen worden onveranderd opgeslagen.</p></details>')
+            parts.append('<details><summary>Bronkwaliteit, Elliott en psychologie</summary><p>Set-ID '+escape(route['scenario_set_id'])+' · '+escape(route['model_version'])+'</p><ul>'+''.join('<li>'+escape(x['check'])+': '+escape(x['status'])+'</li>' for x in route['quality_checks'])+'</ul><p>'+escape(route['elliott']['reason'])+'</p><p>'+escape(route['psychology']['reason'])+'</p><p>De routes gebruiken waar mogelijk de hoogste top uit beschikbare historie en de laagste low op een latere candle. Bij onvoldoende ankerbewijs blijft de 20-candlerange expliciet herkenbaar. Geen vastgestelde cyclus-ATH of cyclusbodem. Originele beoordelingen worden onveranderd opgeslagen.</p></details>')
         parts.append('</div>')
     return ''.join(parts)+'</section>'

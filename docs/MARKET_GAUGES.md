@@ -265,3 +265,32 @@ proof, duplicate correlated evidence, anchor changes and original versions.
 
 Validation: 337 unit tests pass. Browser visual QA remains pending because the
 local Playwright browser executable is unavailable.
+
+
+## Available-history anchor candidates (v4)
+
+Two-route readings now prefer the highest high in all available contiguous
+native candles before the confirmation candle, followed by the lowest low on
+a strictly later candle. Equal later highs restart the candidate decline; the
+latest equal low is used. Same-candle high/low order is never inferred. Daily
+and weekly sources remain separate, so their low candidates can differ.
+The native confirmation candle is excluded to prevent it setting its own zone.
+This can leave the last closed candle beyond an older anchor: report that
+boundary crossing rather than treating an intrabar move as retained support.
+
+History start/end, candle count, high/low dates and a source-boundary flag are
+recorded. No lifetime ATH, final cycle bottom or independent Elliott confirmation
+is claimed. If there is no later low or the candidate is unavailable, retain the
+existing 20-candle range with an explicit fallback label/reason. Do not silently
+claim a cycle anchor. No new API requests or paid services are introduced.
+
+The v4 payload freezes the candidate and its time/high/low evidence. Validation
+recomputes candidates and readings from that original evidence. Original v3
+records continue using v1 two-route rules; historical records are not migrated
+or reinterpreted. The full records remain the input to future quality review.
+
+Validation: 343 unit tests pass, including high-then-low chronology, same-candle
+ambiguity, no lookahead to the confirmation candle, later equal highs, gaps,
+truncated coverage flags, evidence tampering and v3 compatibility. Browser
+visual QA remains open. Wider source history and independently justified cycle
+selection are still future work; this change does not close those limitations.

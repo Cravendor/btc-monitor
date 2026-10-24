@@ -17,6 +17,7 @@ on:
       - scripts/scenario_actions.py
       - scripts/scenario_path.py
       - scripts/two_routes.py
+      - scripts/route_anchors.py
       - scripts/swing_scenarios.py
       - scripts/swing_dashboard.py
       - scripts/elliott_rules.py
