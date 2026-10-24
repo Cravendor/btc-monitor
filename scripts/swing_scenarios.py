@@ -20,7 +20,8 @@ except ImportError:
     from scenario_actions import attach, assess_action
 
 MODEL = 'two_routes_daily_weekly_v4_anchors'
-ACTION_MODELS = ('four_routes_daily_weekly_v2_shb', 'two_routes_daily_weekly_v3', MODEL)
+CYCLE_MODEL = 'two_routes_explicit_cycle_v5'
+ACTION_MODELS = ('four_routes_daily_weekly_v2_shb', 'two_routes_daily_weekly_v3', MODEL, CYCLE_MODEL)
 MODES = {'swing': ('1d', 'Swing · dagen tot weken'),
          'position': ('1w', 'Positietrade · weken tot maanden of langer')}
 KINDS = ('very_bearish','bearish','bullish','very_bullish')
@@ -231,6 +232,17 @@ def build_swing_scenarios(feed,as_of):
             output[mode]=route_set(rows,current_price(m,as_of),tf,mode,m['finished_at'],observed,as_of,timing)
             output[mode]['valid_until']=iso(min(time_ms(output[mode]['valid_until']),time_ms(m['started_at'])+3600000,
                 time_ms(timing[1])+3600000 if timing else time_ms(output[mode]['valid_until'])))
+            if 'cycle_anchor_context' in m:
+                try:
+                    from .cycle_anchor_policy import select as select_cycle
+                    from .two_routes import assess as assess_two
+                except ImportError:
+                    from cycle_anchor_policy import select as select_cycle
+                    from two_routes import assess as assess_two
+                output[mode]['model_version']=CYCLE_MODEL
+                output[mode]['anchor_selection_policy']='explicit_cycle'
+                output[mode]['route_anchors']=select_cycle(m['cycle_anchor_context'],as_of)
+                output[mode]['two_route_assessment']=assess_two(output[mode])
             output[mode].pop('scenario_set_id',None)
             output[mode]['scenario_set_id']=hashlib.sha256(json.dumps(output[mode],sort_keys=True,separators=(',',':'),allow_nan=False).encode()).hexdigest()[:24]
         except (IndexError,KeyError,AttributeError,TypeError,ValueError,OverflowError):
@@ -259,7 +271,14 @@ def validate_frozen(route):
             from route_anchors import validate as validate_anchors
         if 'route_anchors' not in route: raise ValueError('missing route anchors')
         validate_anchors(route['route_anchors'],route['timeframe'])
-    if route['model_version'] in ('two_routes_daily_weekly_v3', MODEL):
+    if route['model_version']==CYCLE_MODEL:
+        try:
+            from .cycle_anchor_policy import validate as validate_cycle
+        except ImportError:
+            from cycle_anchor_policy import validate as validate_cycle
+        if route.get('anchor_selection_policy')!='explicit_cycle':raise ValueError('missing cycle policy')
+        validate_cycle(route['route_anchors'])
+    if route['model_version'] in ('two_routes_daily_weekly_v3', MODEL, CYCLE_MODEL):
         try:
             from .two_routes import assess as assess_two_routes
         except ImportError:

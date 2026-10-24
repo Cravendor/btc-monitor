@@ -294,3 +294,64 @@ ambiguity, no lookahead to the confirmation candle, later equal highs, gaps,
 truncated coverage flags, evidence tampering and v3 compatibility. Browser
 visual QA remains open. Wider source history and independently justified cycle
 selection are still future work; this change does not close those limitations.
+
+
+## Cycle-top and running-low rule contract (opt-in v5)
+
+Current observed-history anchors remain active unless an original market record
+supplies cycle_anchor_context. The opt-in policy uses price-event windows,
+not a fixed bear calendar year. No dates or prices are hardcoded.
+
+Required context: schema_version=1, status=active, nonempty cycle_id,
+classification_basis explaining the prior completed cycle peak and phase,
+previous_cycle_peak_at (its UTC daily candle opening time), phase (advance or
+post_peak), and a fresh source of complete same-market closed daily candles.
+previous_cycle_id, when supplied, must differ from cycle_id. A calendar rollover
+or individual record high does not independently identify a completed cycle.
+
+From the explicitly identified previous cycle peak through the last closed day,
+find the highest high on a later candle. It must exceed the previous peak.
+That is the latest measured high within the selected current cycle. Both
+horizons use it as the bear origin. Equal highs retain the first anchor date;
+a strictly higher high moves the anchor and restarts the post-peak low window.
+
+For phase=advance, the bull origin is the lowest low strictly between the
+previous cycle peak candle and the latest peak candle. For phase=post_peak,
+it is the running lowest low on candles strictly after the latest peak through
+the last closed day. A higher or equal low retains the original anchor and
+version. A strictly lower low changes the bull origin and anchor version.
+If a new high occurs on the latest closed candle, no subsequent low candle
+exists yet: return unavailable, never infer high/low intrabar order.
+
+Same-candle extremes at either peak are excluded from low selection because
+daily OHLC cannot establish their event order. Only closed day candles are
+used; live intraday records wait for a closed source candle. The low is a
+provisional departure point, not a confirmed macro bottom. A historical high
+still does not prove a completed current cycle top. Phase selection remains
+explicit rather than automatically declaring any pullback a bear cycle.
+
+Source must identify bitget/BTCUSDT/USDT-FUTURES, status=ok, interval=1d,
+closed_only=true, observed_at less than one hour old, and valid daily OHLC.
+Every day from the previous peak through the last closed day must be present.
+Duplicates, missing days, stale/open/future candles, wrong-market values and
+malformed fields suppress the opt-in readings; no shorter-range fallback.
+Swing and position share identical macroanchor values, dates and version;
+reaction timeframes and volatility buffers may differ.
+
+The v5 frozen payload stores the original context and recomputes anchor values
+and readings during validation. Anchor version IDs exclude collection time,
+so merely fetching the same extremes does not create a new anchor version.
+Earlier scenario schemas retain their original rules and are not migrated.
+
+This PR prepares the contract and archive/dashboard hooks. It does not fetch
+multi-year data, infer prior cycle tops, select advance/post_peak automatically,
+or activate the current market. Without supplied context, v4 output is unchanged.
+The available short source window cannot establish the desired macroanchors.
+No new API calls or paid services are introduced. Original version history stays
+available for quality review; browser visual QA remains open.
+
+Validation: 354 unit tests pass, including between-peak vs post-peak selection,
+strict lower-low updates, higher/equal-low stability, equal/new-high behavior,
+same-candle ambiguity, calendar rollover, complete source coverage, identity
+and freshness, shared horizons, rehashed evidence tampering, and default-output
+stability checked against a real archived measurement.
