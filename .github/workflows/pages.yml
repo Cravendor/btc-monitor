@@ -21,6 +21,8 @@ on:
       - scripts/cycle_anchor_policy.py
       - scripts/cycle_history.py
       - scripts/cycle_context.py
+      - scripts/operational_status.py
+      - 'web/**'
       - config/cycle_anchors.json
       - scripts/swing_scenarios.py
       - scripts/swing_dashboard.py
@@ -87,6 +89,7 @@ jobs:
           cp bias.html btc-methoden.html _site/
           python -m scripts.scenario_evaluation data _site
           python -m scripts.home_dashboard data/latest.json _site/index.html --ath
+          python -m scripts.operational_status data/latest.json data/collector-health.json _site
           python - <<'PY'
           from datetime import datetime, timezone
           from scripts.context_trend_dashboard import build

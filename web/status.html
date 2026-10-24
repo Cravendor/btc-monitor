@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BTC Monitor — Taakstatus</title><link rel="stylesheet" href="status.css"></head>
+<body><main>
+<a class="back" href="index.html">← Overzicht en scenario’s</a>
+<header><div><p class="eyebrow">BTC MONITOR / SYSTEEMSTATUS</p><h1>Werkt de monitor?</h1>
+<p class="intro">De taken, hun laatste bewijs en wat aandacht vraagt.</p></div>
+<button id="refresh" type="button">Status vernieuwen</button></header>
+<p id="updated" class="meta" role="status">Status wordt opgehaald…</p>
+<div id="counts" class="counts" aria-label="Statusoverzicht"></div>
+<div class="legend"><span><i class="dot good" aria-hidden="true"></i> Werkt / bezig</span>
+<span><i class="dot attention" aria-hidden="true"></i> Aandacht nodig</span>
+<span><i class="dot error" aria-hidden="true"></i> Fout / uitgeschakeld</span>
+<span><i class="dot unknown" aria-hidden="true"></i> Onbekend</span></div>
+<h2>NAS en opgeslagen metingen</h2><p class="section-note">Groen betekent recent bewijs. Een oude upload bewijst niet dat de CVD-collector is gestopt.</p>
+<section id="local" class="grid" aria-label="NAS en meetstatus"><p>Wachten op geldig statusbewijs.</p></section>
+<h2>GitHub-taken</h2><p class="section-note">Actuele uitvoeringen uit de openbare GitHub API. “Laatste run geslaagd” betekent niet dat de taak nu draait.</p>
+<p id="api-status" class="meta" role="status">GitHub-status wordt opgehaald…</p>
+<section id="github" class="grid" aria-label="GitHub-taakstatus"></section>
+<details><summary>Wat betekenen de bolletjes?</summary><p>Groen: een taak is aantoonbaar bezig of heeft recent passend uitvoerbewijs.
+Oranje: wachten, gedeeltelijk bewijs of een verstreken actualiteitsgrens. Rood: een expliciete fout, mislukte uitvoering of uitgeschakelde workflow.
+Grijs: ontbrekend, onleesbaar of niet aangesloten bewijs. Zonder procescontrole wordt “gestopt” niet uit een oude meting afgeleid.</p>
+<p>NAS-bewijs wordt elke minuut opnieuw opgevraagd bij deze website. GitHub-status wordt bij openen en via “Status vernieuwen” opgehaald,
+maximaal eenmaal per 30 seconden. Een API-fout zet de GitHub-bolletjes op onbekend. De klok controleert ook zonder nieuwe publicatie of groen bewijs verouderd is.</p></details>
+<noscript><p>JavaScript is nodig om de taakstatus en actualiteit te tonen. Er worden zonder controle geen groene bolletjes getoond.</p></noscript>
+<footer>Alle tijden zijn Nederlandse tijd (Europe/Amsterdam). Alleen statuscontrole; deze pagina start, stopt of wijzigt geen taken.</footer>
+</main><script type="module" src="status.mjs"></script></body></html>

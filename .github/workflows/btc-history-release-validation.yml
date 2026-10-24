@@ -8,6 +8,7 @@ on:
     paths:
       - 'scripts/**'
       - 'tests/**'
+      - 'web/**'
       - '.github/workflows/**'
   workflow_dispatch:
 
@@ -37,6 +38,11 @@ jobs:
         run: python -m compileall -q scripts tests
       - name: Run isolated release tests
         run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify task status transitions
+        run: node --test tests/test_operational_status.mjs
       - name: Generate read-only HTML from existing archive
         run: |
           mkdir -p output
@@ -45,6 +51,7 @@ jobs:
           python -m scripts.monitor_archive
           python -m scripts.scenario_evaluation data output
           python -m scripts.home_dashboard data/latest.json output/index.html --ath
+          python -m scripts.operational_status data/latest.json data/collector-health.json output
           python - <<'PY'
           from datetime import datetime, timezone
           from scripts.context_trend_dashboard import build

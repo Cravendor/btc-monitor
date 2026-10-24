@@ -128,7 +128,7 @@ table{width:100%;border-collapse:collapse}th,td{padding:8px;text-align:left;bord
 @media(max-width:780px){.links,.scenario-grid{grid-template-columns:1fr}.condition{min-height:0}.hero{display:block}.quote{text-align:left;margin-top:20px}.context,.levels{grid-template-columns:1fr}main{padding:20px 16px 40px}.panel{padding:18px}.link-card{padding:18px}}
 ''' + market_gauges.CSS + swing_dashboard.CSS + shb_dashboard.CSS + '''
 </style></head><body><main>
-<header class="hero"><div><div class="eyebrow">BTC Monitor / overzicht</div><h1>Eén plek voor je marktbeeld.</h1><p>Metingen, marktrichting en scenario’s met controleerbare prijsniveaus.</p></div>
+<header class="hero"><div><div class="eyebrow">BTC Monitor / overzicht</div><h1>Eén plek voor je marktbeeld.</h1><p>Metingen, marktrichting en scenario’s met controleerbare prijsniveaus.</p><p><a href="btc-status.html">Taakstatus en laatste uitvoeringen →</a></p></div>
 <div class="quote" data-expires="''' + escape(quote_expiry) + '''"><small>Bitget futures · laatste momentopname</small><strong>''' + escape(price_line) + '''</strong></div></header>''' + market_gauges.render_all(feed, as_of, sentiment) + '''
 ''' + swing_dashboard.render(swing_bundle) + render_cycle_history(feed) + render_cycle_review(feed) + report_context.render(context) + '''
 <nav class="links" aria-label="BTC-pagina’s">

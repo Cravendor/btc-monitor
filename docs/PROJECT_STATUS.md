@@ -8,6 +8,7 @@ checkpoint when they change.
 
 | Component | State at checkpoint | Practical limit |
 | --- | --- | --- |
+| Operational task status | Built in accompanying change; 378 Python + 5 Node tests and read-only generation pass | Not deployed yet; DSM watchdog/storage and ChatGPT runtime remain explicitly unconnected |
 | NAS publisher | Restored; successive NAS uploads and Pages publication verified | Concurrent upstream writes can still reject a push |
 | Continuous CVD / sessions / backfill | Existing implementation and earlier successful NAS operation | Verify each market/interval; no market-wide or independently verified aggressor-CVD claim |
 | Technical multi-timeframe signals/history | Implemented | Provisional price/volume rules; not integrated independent macro evidence |
@@ -15,7 +16,7 @@ checkpoint when they change.
 | Available-history route anchors | Merged #61; v4 records observed | Native day/week windows are not verified cycle extrema |
 | Cycle-top/running-low rule | Merged #62; 354-test CI success | Explicit cycle/phase required; producer merged #65, default remains draft |
 | Multi-year daily archive | Merged #63; 2,122 source-validated closed UTC days through 2026-10-23; NAS coverage metadata verified at 22:01:55 UTC | Fresh coverage required at each new UTC day |
-| Archive to cycle-context producer | Merged PR #65; 369 local tests, read-only generation and GitHub CI pass | Draft review only; deployment and automatic NAS review still to verify |
+| Archive to cycle-context producer | Merged PR #65; ready draft review verified in original 00:40 Amsterdam NAS record | Macroanchor activation remains a separate reviewed change |
 | Original report archive | Protocol v2, real 4h-warning and psychology records observed | Read current protocol, not old automation prompt version claims |
 | News integration | Separate contextual reports | No validated numerical news contribution to route scores |
 | Elliott/psychology | Rule checks/candidates and phase hypotheses | No complete proved current wave count or automatic psychological phase |
@@ -25,7 +26,7 @@ checkpoint when they change.
 
 ## Next concrete sequence
 
-1. Verify post-merge #65 Pages publication and its first original NAS draft review.
+1. Review/merge/publish the operational status page; verify live evidence/API access and mobile layout. Original #65 NAS draft review and #67 Dutch label are now verified; see HANDOVER.
 2. Review the proposed reference window/peak and operational phase; activate in a
    separate reviewed configuration change when justified. Current anchors remain
    active with the shipped draft; complete history alone does not activate it.
