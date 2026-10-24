@@ -11,13 +11,15 @@ try:
     from .native_timeframe_candles import PERIOD_MS, validate_rows
     from .multi_timeframe_signals import assess
     from .elliott_rules import assess_candidates
+    from .scenario_actions import attach, assess_action
 except ImportError:
     from market_scenarios import number, time_ms, iso, fibonacci_range
     from native_timeframe_candles import PERIOD_MS, validate_rows
     from multi_timeframe_signals import assess
     from elliott_rules import assess_candidates
+    from scenario_actions import attach, assess_action
 
-MODEL = 'four_routes_daily_weekly_v1'
+MODEL = 'four_routes_daily_weekly_v2_shb'
 MODES = {'swing': ('1d', 'Swing · dagen tot weken'),
          'position': ('1w', 'Positietrade · weken tot maanden of langer')}
 KINDS = ('very_bearish','bearish','bullish','very_bullish')
@@ -124,6 +126,8 @@ def route_set(rows, price, tf, mode, snapshot_at, observed, as_of, timing=None):
                           zone_timeframe=tf,confirmation_timeframe=confirmation_tf,
                           confirmation_closed_at=iso(test_candle['open_time_ms']+PERIOD_MS[confirmation_tf]),
                           confirmation_source_at=timing_observed,
+                          confirmation_bar={k:test_candle[k] for k in ('open','high','low','close')},
+                          confirmation_previous_close=test_previous['close'],
                           reason='Beoordeling op de laatste afgesloten broncandle; een huidige koers aan de andere kant maakt de uitkomst gemengd. Geen automatische voortzetting.')
 
     # Close rules are explicit and separate from hard intrabar Elliott constraints.
@@ -185,7 +189,7 @@ def route_set(rows, price, tf, mode, snapshot_at, observed, as_of, timing=None):
         reference='bitget/BTCUSDT/USDT-FUTURES',unit='USDT',
         valid_until=iso(min(time_ms(snapshot_at)+3600000,time_ms(observed)+3600000,
                             last['open_time_ms']+2*PERIOD_MS[tf])),
-        candle_closed_at=iso(last['open_time_ms']+PERIOD_MS[tf]),last_close=last['close'],
+        candle_closed_at=iso(last['open_time_ms']+PERIOD_MS[tf]),last_close=last['close'],previous_close=prior[-1]['close'],
         history_from=iso(rows[0]['open_time_ms']),history_candles=len(rows),
         support=low,resistance=high,midpoint=mid,atr14=atr,buffer=buffer,
         momentum=signal,volume_ratio=volume,fibonacci=fib,elliott=ew,
@@ -196,6 +200,7 @@ def route_set(rows, price, tf, mode, snapshot_at, observed, as_of, timing=None):
         scenarios=candidates,preferred_scenario=active,
         preference_reason='Voorlopige technische ondersteuning; geen onafhankelijke psychologie- of volledige Elliott-bevestiging.' if active else 'Afwachten: geen duidelijke combinatie van slot en momentum.',
         quality_checks=quality,data_quality='limited_interpretation',probability=None)
+    attach(payload)
     identity=json.dumps(payload,sort_keys=True,separators=(',',':'),allow_nan=False)
     payload['scenario_set_id']=hashlib.sha256(identity.encode()).hexdigest()[:24]
     return payload
@@ -233,7 +238,11 @@ def validate_frozen(route):
     if identifier!=digest: raise ValueError('scenario content mismatch')
     if time_ms(route['candle_closed_at'])>time_ms(route['recorded_at']): raise ValueError('future source candle')
     if [s['id'] for s in route['scenarios']]!=list(KINDS): raise ValueError('four fixed routes required')
+    if route['model_version']==MODEL and set(route.get('scenario_actions') or {})!=set(KINDS):
+        raise ValueError('missing original scenario actions')
     for s in route['scenarios']:
+        if route['model_version']==MODEL and route['scenario_actions'][s['id']]!=assess_action(route,s):
+            raise ValueError('SHB assessment disagrees with original inputs')
         direction=s['direction']
         if direction not in (-1,1) or (number(s['trigger_price'])-number(s['invalidation_price']))*direction<=0:
             raise ValueError('invalid route geometry')

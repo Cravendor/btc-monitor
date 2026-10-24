@@ -1,4 +1,4 @@
-"""Mobile market meters: momentum, level reaction and sentiment; no trade advice."""
+"""Mobile market meters: BNB direction, scenario-linked SHB and sentiment."""
 import html
 import math
 try:
@@ -73,43 +73,14 @@ SCRIPT = '''
 function refreshGauges(){document.querySelectorAll('.meter[data-expires]').forEach(el=>{
 const expiry=Date.parse(el.dataset.expires);if(!Number.isFinite(expiry)||Date.now()<expiry)return;
 el.querySelectorAll('.gauge-needle').forEach(n=>n.remove());
-el.querySelector('.meter-reading').textContent='Onvoldoende actuele data';
-el.querySelector('.dial').setAttribute('aria-label','Onvoldoende actuele data');
+el.querySelectorAll('.meter-reading').forEach(n=>n.textContent='Onvoldoende actuele data');
+el.querySelectorAll('.shb-levels').forEach(n=>n.hidden=true);
+el.querySelectorAll('.dial').forEach(n=>n.setAttribute('aria-label','Onvoldoende actuele data'));
 const badge=el.querySelector('.data-badge');badge.textContent='Data: verouderd';badge.dataset.quality='Verouderd';
-el.querySelector('.meter-reason').textContent='Deze meting is verlopen. Vernieuw de pagina voor de laatste publicatie.';
+el.querySelectorAll('.meter-reason').forEach(n=>n.textContent='Deze meting is verlopen. Vernieuw de pagina voor de laatste publicatie.');
 });}
 refreshGauges();setInterval(refreshGauges,30000);
 '''
-
-
-def render_legacy(feed, as_of, sentiment=None):
-    items = build_legacy_gauges(feed, as_of, sentiment)
-    specs = [
-        ('Momentum · 4H', ('Bearish', 'Neutraal', 'Bullish'),
-         'Prijs versus het gemiddelde van 20 eerdere candles en koersverandering over 6 candles moeten dezelfde richting tonen (beide meer dan ±0,5%). Sterk: tevens meer dan ±2% van het gemiddelde en volume ≥1,2×. Anders neutraal; dat kan ook tegenstrijdig bewijs betekenen. De uitersten zijn modelcategorieën, geen kansen. OI, funding en CVD worden hier niet gewogen.'),
-        ('Actie · spotopbouw / afbouw · 4H', ('Verkopen', 'Afwachten', 'Kopen'),
-         'Kopen: bevestigd 4H-slot boven weerstand + 0,1 ATR, bullish momentum, actueel niveau boven trigger, volume ≥1,2× en ruimte tot eerste projectie / afstand tot ongeldigverklaring ≥2. Verkopen/afbouwen: bevestigd steunverlies met bearish momentum en actuele prijs onder de drempel. Anders afwachten. Ongeldigverklaring betreft een volgend 4H-slot, geen gegarandeerde uitvoerprijs. Zonder actuele prijs verschijnt geen wijzer. Model v1, niet historisch gekalibreerd; houdt geen rekening met jouw bezit, aankoopprijs of horizon. Fibonacci en Elliott zijn context naast deze regel.'),
-        ('Fear & Greed · dagindex', ('Angst · 0', 'Midden · 50', 'Hebzucht · 100'),
-         'Dagelijkse sentimentcontext op de schaal 0–100. De categorie komt rechtstreeks van de genoemde bron. Eerst CoinMarketCap; bij ongeldige of onbereikbare data Alternative.me, expliciet als reservebron. Verschillende indices worden niet samengevoegd. De index bepaalt de actiemeter niet. Waarden ouder dan 36 uur worden verborgen.'),
-    ]
-    cards = []
-    for i, (item, (title, ends, explanation)) in enumerate(zip(items, specs)):
-        quality = item['quality'] if item['value'] is not None else 'Ontbreekt'
-        source = ''
-        if i == 2 and item.get('provider'):
-            provider = item['provider']
-            link = 'https://alternative.me/crypto/fear-and-greed-index/' if provider == 'Alternative.me' else 'https://coinmarketcap.com/charts/fear-and-greed-index/'
-            source = '<p>Bron: <a href="' + link + '">' + provider + '</a>' + (' · reservebron' if item.get('fallback') else '') + '</p>'
-        source_time = ('<p class="meter-time">Bronmoment / candle-einde: <time>' + esc(item['observed_at']) + '</time></p>') if item['observed_at'] else ''
-        cards.append('<article class="meter" data-expires="' + esc(item['valid_until']) + '">'
-                     '<div class="meter-head"><h3>' + title + '</h3><span class="data-badge" data-quality="' + quality + '">Data: ' + quality.lower() + '</span></div>' +
-                     svg(item['value'], title + ': ' + item['label'], i == 2) +
-                     '<div class="dial-labels">' + ''.join('<span>' + e + '</span>' for e in ends) + '</div>' +
-                     '<p class="meter-reading" role="status">' + esc(item['label']) + '</p>' +
-                     ('<p class="model-tag">Voorlopig model · niet gekalibreerd</p>' if i < 2 else '') +
-                     source + source_time + '<details><summary>Uitleg en onderbouwing</summary><p class="meter-reason">' + esc(item['reason']) +
-                     '</p><p>' + explanation + '</p><p>Het datalabel beoordeelt actualiteit en volledigheid van de gebruikte invoer. Het is geen voorspelnauwkeurigheid en zegt niets over marktbrede dekking. De koersmeters gebruiken uitsluitend Bitget BTCUSDT USDT-futures als referentie voor spottiming.</p></details></article>')
-    return '<div class="meter-stack-title"><h2>Je drie marktmeters</h2><p>4H voor timing; sentiment als aparte dagcontext. Tik op uitleg om de berekening te bekijken.</p><p><a href="btc-action-history.html">Actiehistorie en evaluatie →</a></p></div><section class="meter-stack" aria-label="Drie marktmeters">' + ''.join(cards) + '</section>'
 
 
 MODE_NAMES={'swing':'Swing · 1D','position':'Positietrade · 1W'}
@@ -131,41 +102,34 @@ def build_gauges(feed,as_of,sentiment=None,mode='swing'):
                     observed_at=r['candle_closed_at'],valid_until=r['valid_until'])
         momentum=dict(common,value=signal['score']/2,label=LABELS[signal['score']],
             reason='Slot versus voorafgaand 20-candlegemiddelde: {:+.2f}%; koersverandering over 6 candles: {:+.2f}%; relatief volume: {}. Voorlopig prijs-/volumemodel.'.format(signal['price_vs_20_prior_pct'],signal['momentum_6_pct'],signal['volume_ratio']))
-        level=r['level_assessment']
-        reaction_labels={'closed_above':'Slot boven geteste zone','support_hold':'Steun gehouden',
-                         'closed_below':'Slot onder geteste zone','rejection':'Afwijzing bij zone',
-                         'undecided':'Onbeslist bij zone','not_tested':'Wachten op een zonetest'}
-        if r['reference_price'] is not None:
-            label=reaction_labels[level['reaction']]
-            if level['current_disagrees']: label='Gemengd · actuele koers spreekt slotreactie tegen'
-            reason=level['reason']+' Zones uit '+level['zone_timeframe'].upper()+'; reactie getoetst op '+level['confirmation_timeframe'].upper()+'. '
-            selected=level['selected']
-            if selected:
-                reason+=' Geteste zone {:.1f} USDT; {}. '.format(selected['price'],selected.get('role',selected['kind']))
-            if level['next_higher']:
-                reason+='Volgende hogere referenties: '+', '.join('{:.1f} USDT ({})'.format(x['price'],x['role']) for x in level['next_higher'])+'. '
-            if level['next_lower']:
-                reason+='Lagere referenties: '+', '.join('{:.1f} USDT ({:+.2f}% vanaf de zone)'.format(x['price'],x['from_zone_pct']) for x in level['next_lower'])+'. '
-            action=dict(common,value=level['vote'],label=label,reason=reason,quality='Beperkt')
-            action['observed_at']=level['confirmation_closed_at']
+        from .shb_dashboard import gauge_action, VALUES
+        assessment=gauge_action(r)
+        code=assessment['action']
+        if code is not None:
+            action=dict(common,value=VALUES[code],label=code,reason=assessment['reason'],quality='Beperkt',
+                        scenario_id=assessment.get('scenario_id'))
         else:
-            action['reason']='Actuele referentieprijs ontbreekt; geen niveaucheck ingevuld.'
+            action['reason']=assessment['reason']
     fear=sentiment_gauge(as_of,sentiment)
     return [momentum,action,fear]
 
 
 def render(feed,as_of,sentiment=None,mode='swing'):
     items=build_gauges(feed,as_of,sentiment,mode)
-    titles=['Momentum · '+MODE_NAMES[mode],'Niveaucheck · '+MODE_NAMES[mode],'Fear & Greed · dagindex']
+    titles=['BNB · richting · '+MODE_NAMES[mode],'SHB · scenario · '+MODE_NAMES[mode],'Fear & Greed · dagindex']
     ends=[('Bearish','Neutraal','Bullish'),('Bearish','Afwachten','Bullish'),('Angst · 0','Midden · 50','Hebzucht · 100')]
     explanations=[
-        'Dagcandles voor swing, weekcandles voor positie. De huidige gesloten candle wordt met de 20 voorafgaande vergeleken; momentum meet 6 candles. Richting vereist overeenstemming boven ±0,5%. Sterk vereist ook meer dan ±2% afwijking en volume ≥1,2×. Dit zijn gecorreleerde prijsmetingen, geen onafhankelijke bevestigingen. Een losse 4H-beweging bepaalt de dag-/weekbeoordeling niet zelfstandig.',
-        'Deze meter beoordeelt de koersreactie bij een daadwerkelijk geteste zone op een afgesloten 4H-candle waar beschikbaar, anders op de dag- of weekcandle. De prijszones zelf blijven uit het gekozen dag-/weekvenster komen. Slot boven een eerder bovenliggende zone of behoud van steun kan bullish zijn; afwijzing of steunverlies bearish. Bij onvoldoende bevestiging blijft de uitkomst afwachtend. Spreekt de huidige prijs de slotreactie tegen, dan is het beeld gemengd. Bij meerdere geteste zones toont de meter de zone het dichtst bij de actuele prijs; de vier routes blijven het alternatief tonen. Bullish betekent niet dat de volgende zone zeker wordt bereikt. Fibonacci is een reactiegebied, geen automatisch doel. Nieuws en psychologische interpretatie staan apart vermeld en worden zonder verifieerbare gestructureerde invoer niet in de wijzer verzonnen. Er wordt geen positie gevolgd en geen koop-/verkoopadvies gegeven.',
-
+        'BNB staat hier voor Bear–Neutraal–Bull: de marktrichting. Dagcandles voor swing, weekcandles voor positie. De huidige gesloten candle wordt met de 20 voorafgaande vergeleken; momentum meet 6 candles. Richting vereist overeenstemming boven ±0,5%. Sterk vereist ook meer dan ±2% afwijking en volume ≥1,2×. Dit zijn gecorreleerde prijsmetingen, geen onafhankelijke bevestigingen. Een losse 4H-beweging bepaalt de dag-/weekbeoordeling niet zelfstandig.',
+        '',
         'Dagelijkse sentimentcontext, geen koop-/verkoopregel. Eerst CoinMarketCap; Alternative.me is een expliciet genoemde reservebron. De categorie komt van de bron; indices worden niet samengevoegd. Brondata ouder dan 36 uur worden verborgen.'
     ]
     cards=[]
     for i,item in enumerate(items):
+        if i==1:
+            from .shb_dashboard import render_meter
+            from .swing_scenarios import build_swing_scenarios
+            cards.append(render_meter(build_swing_scenarios(feed,as_of)['horizons'][mode],mode))
+            continue
         quality=item['quality'] if item['value'] is not None else 'Ontbreekt'
         source=''
         if i==2 and item.get('provider'):
@@ -177,4 +141,4 @@ def render(feed,as_of,sentiment=None,mode='swing'):
 
 
 def render_all(feed,as_of,sentiment=None):
-    return '<div class="meter-stack-title"><h2>Je drie marktmeters</h2><p>Kies swing of positietrade. Uitleg per meter is inklapbaar.</p><p><a href="btc-action-history.html">Niveauhistorie, scenario-evaluatie en kwaliteitscontrole →</a></p></div><div class="mode-controls" role="group" aria-label="Handelshorizon"><button type="button" data-select-mode="swing" aria-pressed="true">Swing · dag</button><button type="button" data-select-mode="position" aria-pressed="false">Positie · week</button></div>'+''.join(render(feed,as_of,sentiment,mode) for mode in MODE_NAMES)
+    return '<div class="meter-stack-title"><h2>Je drie marktmeters</h2><p>BNB geeft richting; SHB volgt een voorgesteld scenario. Kies swing of positie. Uitleg is inklapbaar.</p><p><a href="btc-action-history.html">Niveauhistorie, scenario-evaluatie en kwaliteitscontrole →</a></p></div><div class="mode-controls" role="group" aria-label="Handelshorizon"><button type="button" data-select-mode="swing" aria-pressed="true">Swing · dag</button><button type="button" data-select-mode="position" aria-pressed="false">Positie · week</button></div>'+''.join(render(feed,as_of,sentiment,mode) for mode in MODE_NAMES)

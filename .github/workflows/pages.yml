@@ -13,6 +13,8 @@ on:
       - scripts/scenario_evaluation.py
       - scripts/scenario_archive.py
       - scripts/report_context.py
+      - scripts/shb_dashboard.py
+      - scripts/scenario_actions.py
       - scripts/swing_scenarios.py
       - scripts/swing_dashboard.py
       - scripts/elliott_rules.py

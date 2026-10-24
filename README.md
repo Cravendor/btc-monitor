@@ -298,10 +298,12 @@ diensten nodig. Zie [werkwijze en gelijktijdige uploads](docs/NAS.md).
 
 ## Grafische swingmeters en niveauhistorie
 
-De hoofdpagina toont momentum, een niveaucheck en Fear & Greed onder elkaar,
+De hoofdpagina toont BNB-marktrichting, scenario-gebonden SHB en Fear & Greed onder elkaar,
 met inklapbare uitleg en een afzonderlijk datakwaliteitslabel. Swing gebruikt
 dagzones, langere posities weekzones; 4H kan de reactie helpen bevestigen.
 Per horizon staan vier vooraf beschreven routes, van sterk bearish tot sterk
 bullish. De analyses worden onveranderd opgeslagen en na 7, 30 en 90 dagen
-beoordeeld. Geen positietracking of persoonlijke koop-/verkoopregels.
+beoordeeld. SHB volgt standaard een automatisch voorstel; alternatieven zijn selecteerbaar.
+De uiterste getoonde route blijft afhankelijk van iedere tussenliggende zone.
+Geen positietracking, persoonlijke stops of automatische orderuitvoering.
 Zie [methodiek, kwaliteitscontrole en beperkingen](docs/MARKET_GAUGES.md).

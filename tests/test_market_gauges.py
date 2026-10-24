@@ -9,14 +9,16 @@ from scripts.sentiment_reference import validate,fetch_reference
 
 
 class GaugeTests(unittest.TestCase):
-    def test_three_visible_meters_per_mode_and_no_trade_labels(self):
+    def test_three_meters_per_mode_with_scenario_linked_shb(self):
         feed,now=fixture()
         self.assertEqual(render(feed,now).count('<article class="meter"'),3)
         page=render_all(feed,now)
         self.assertEqual(page.count('<article class="meter"'),6)
         self.assertIn('data-mode-panel="position" hidden',page)
-        self.assertIn('Niveaucheck',page)
-        for text in ('BUY','SELL','HOLD','modeltrade','modelpositie'):
+        self.assertIn('SHB',page)
+        self.assertIn('data-scenario-select',page)
+        self.assertIn('Voorgesteld scenario',page)
+        for text in ('modeltrade','modelpositie'):
             self.assertNotIn(text,page)
         self.assertNotIn('class="gauge-needle"',svg(None,'missing'))
         self.assertIn('class="gauge-needle"',svg(0,'neutral'))
@@ -71,7 +73,7 @@ class GaugeTests(unittest.TestCase):
     def test_home_controls_details_and_expiry(self):
         feed,now=fixture();page=home(feed,now)
         self.assertEqual(page.count('<article class="meter"'),6)
-        self.assertEqual(page.count('<summary>Uitleg en onderbouwing</summary>'),6)
+        self.assertGreaterEqual(page.count('<summary>Uitleg en onderbouwing</summary>'),6)
         self.assertIn('setMarketMode',page)
         self.assertIn('refreshGauges()',page)
         self.assertIn('expireRoutes()',page)

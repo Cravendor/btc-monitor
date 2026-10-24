@@ -2,15 +2,15 @@
 
 ## Doel en grenzen
 
-Het dashboard beoordeelt de markt rond prijsniveaus. Het geeft geen persoonlijke
-koop-/verkoopopdracht, volgt geen modelposities en vraagt niet om echte trades.
-De vroegere experimentele 4H-actieregel is vervangen door een **niveaucheck**.
+Het dashboard beoordeelt de markt rond prijsniveaus. SHB toont technische actievoorwaarden binnen een expliciet voorgesteld scenario.
+Het dashboard volgt geen posities, kent geen persoonlijke stop-loss en voert
+geen orders uit. Er zijn geen privé-tradegegevens nodig.
 
 Er zijn twee modi met steeds drie zichtbare wijzermeters:
 
 - Swing: dagcandles bepalen momentum en de zone-ankers.
 - Positie: weekcandles bepalen momentum en de zone-ankers.
-- De drie meters zijn momentum, niveaucheck en een aparte Fear & Greed-dagindex.
+- De drie meters zijn BNB (Bear–Neutraal–Bull), scenario-gebonden SHB en een aparte Fear & Greed-dagindex.
 
 Vier-uurscandles kunnen de reactie bij de dag-/weekzone helpen toetsen; zij
 worden niet als dag-/weekhistorie hernoemd. Ontbreekt geldige 4H-invoer, dan wordt
@@ -37,18 +37,58 @@ laatste gesloten bevestigingsslot, met een buffer van 0,1 dag-/week-ATR:
 - Eerder erboven, test maar slot erboven: steun gehouden.
 - Anders onbeslist; niet geraakte zones worden niet beoordeeld.
 
-De wijzer toont de geteste zone het dichtst bij de actuele referentieprijs.
-Alle overige zonechecks blijven in een uitklapbare tabel zichtbaar. Als de
-actuele prijs aan de andere kant staat dan de slotreactie, wordt de wijzer
-gemengd. Volgende hogere en lagere niveaus blijven **voorwaardelijke**
-referenties. Bullish betekent niet dat de volgende Fib-zone zeker wordt bereikt.
+De niveaucheck beoordeelt alle geraakte zones in de uitklapbare tabel. De
+geteste zone het dichtst bij de actuele prijs kan ook een nieuwe BUY-voorwaarde
+bij steun/reclaim of SELL-voorwaarde bij afwijzing/steunverlies ondersteunen,
+als zij tussen de scenariotrigger en eerste doelzone ligt. Dit is een
+reactievoorwaarde, geen uitgevoerde trade. Zonder bevestiging wordt geen
+volgende zone als gegarandeerd beschouwd.
+
+## SHB volgt een zichtbaar scenario
+
+Er worden zonder eigen invoer vier voorstellen gedaan. Standaard volgt de
+meter de technisch ondersteunde voorkeur; zonder voorkeur toont hij WAIT.
+Via de selector of een knop op een routekaart kan een ander voorstel worden
+bekeken. De gekozen categorie wordt lokaal onthouden, zonder trades of
+persoonlijke gegevens. Het is steeds de actuele meting: nieuw berekende ankers
+kunnen wijzigen en worden niet als vergrendeld persoonlijk tradeplan gevolgd.
+
+De scenarioregel `scenario_shb_v1` in `scripts/scenario_actions.py` gebruikt de
+zichtbare trigger, eerste doelzone, ongeldigverklaring, native slot/momentum en
+waar beschikbaar een afgesloten 4H-reactie. De vaste regels zijn:
+
+- BUY: nieuwe bullish slotbevestiging met passende bronvoorwaarden en actuele
+  prijs boven de trigger, vóór de eerste doelzone; of bevestigd steun/reclaim
+  bij een tussenliggende zone terwijl de bullish bronvoorwaarden blijven gelden.
+- HOLD: geen nieuwe actievoorwaarde binnen een eerder ondersteunde route,
+  bevestiging verzwakt zonder overschreden native grens, of eerst een reactie
+  beoordelen bij een reeds bereikte doelzone. Dit bevestigt geen positie of stop.
+- SELL: bearish voorwaarden bevestigd vóór de neerwaartse doelzone, afwijzing
+  bij een tussenliggende/bovenliggende zone binnen een bullish route, of een
+  native slot voorbij de grens na een voorgaand slot boven de huidige trigger.
+- WAIT: scenario nog niet bevestigd, actuele prijs spreekt triggerbevestiging
+  tegen, scenario past niet of geen voorkeur. Zonder geldige actuele prijs
+  is er helemaal geen SHB-wijzer.
+
+Een huidige slotvergelijking met huidige vaste ankers bewijst NIET dat destijds
+al een BUY werd uitgegeven. Alleen werkelijk opgeslagen oorspronkelijke
+SHB-toestanden worden gelogd. Er wordt geen instap, bezit, stopuitvoering,
+herinstap of gerealiseerd resultaat afgeleid. Een ongeschonden dag-/weekslotgrens
+is een andere toets dan een harde intrabar stop.
+
+Een bereikte eerste doelzone veroorzaakt niet automatisch BUY richting het
+verste doel. Binnen elke hoofdroute staan vier mogelijkheden: voortzetting,
+terugtest na een eerdere bevestiging, pauze en tegenreactie. De verste getoonde
+zone is geen verplichte bestemming of uiterste marktgrens. Een nieuwe meterstand
+kan pas volgen nadat gegevens zijn binnengekomen; snelle omslagen kunnen eerder
+plaatsvinden. De technische regels zijn voorlopig en niet historisch gekalibreerd.
 
 Prijsreferentie: Bitget BTCUSDT USDT-futures, in USDT. Geen BTC/USD-spot,
 uitgevoerde order of persoonlijk rendement.
 
 ## Vier vooraf beschreven routes
 
-`scripts/swing_scenarios.py`, model `four_routes_daily_weekly_v1`, bouwt per
+`scripts/swing_scenarios.py`, model `four_routes_daily_weekly_v2_shb`, bouwt per
 modus sterk bearish, bearish, bullish en sterk bullish. De 20 referentiecandles
 sluiten de beoordeelde candle uit. Steun is hun laagste low, weerstand hun
 hoogste high. ATR14 is het eenvoudige gemiddelde van 14 true ranges, geen
@@ -108,7 +148,8 @@ https://www.elliottwave.com/waveopedia/fibonacci-relationships/ .
 ## Oorspronkelijke analyses en evaluatie
 
 De collector bewaart `scenario_snapshot` in iedere NIEUWE gedateerde snapshot,
-met beide horizons, vier routes, niveauchecks, kwaliteitschecks, formuleversie,
+met beide horizons, vier routes met subroutes, alle oorspronkelijke SHB-toestanden,
+niveauchecks, kwaliteitschecks, formuleversie,
 ankers en een inhouds-ID. Geen oude adviezen terugrekenen of eerdere bestanden
 herschrijven. Het bestaande NAS-/GitHub-snapshotpad publiceert deze velden;
 er is geen nieuwe verzamelaar, rekening of betaald abonnement nodig.
@@ -125,8 +166,10 @@ Geen targettreffer op dezelfde candle die de route activeert, geen reeds bij
 registratie gepasseerd doel als nieuwe toekomstige treffer. Ontbrekende
 opvolgcandles en conflicten geven geen succes. Nog niet verstreken horizons
 blijven wachtend. Het resultaat meet gesloten-candle-scenario’s, niet intrabar
-executies, echte trade-uitkomsten of gekalibreerde slagingskansen. Niveauchecks
-zelf blijven met hun oorspronkelijke bronmoment in de snapshots beschikbaar.
+executies, echte trade-uitkomsten of gekalibreerde slagingskansen. Niveauchecks en alle scenario-gebonden SHB-toestanden blijven met hun oorspronkelijke
+bronmoment in de snapshots en evaluatie-JSON beschikbaar. Oude v1-snapshots worden
+niet achteraf van SHB voorzien. Bij nieuwe v2-snapshots toetst de validator naast
+de inhouds-ID ook of de SHB-beoordeling bij de vastgelegde invoer en regel past.
 
 ## Quality & Improvement
 
