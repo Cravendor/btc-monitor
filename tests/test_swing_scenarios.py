@@ -110,7 +110,7 @@ class ScenarioTests(unittest.TestCase):
         for text in ('Sterk bearish','Bearish','Bullish','Sterk bullish','geen automatisch bevestigde','Alle Fib-'):
             if text=='geen automatisch bevestigde':self.assertIn(text.lower(),page.lower())
             else:self.assertIn(text,page)
-        self.assertIn('geen posities',page)
+        self.assertIn('geen persoonlijke posities',page)
 
     def test_direct_nas_import(self):
         proc=subprocess.run([sys.executable,'-c','import sys;sys.path.insert(0,"scripts");from scenario_archive import freeze;print(freeze({"finished_at":"2026-10-24T08:00:00Z"})["schema_version"])'],capture_output=True,text=True)
