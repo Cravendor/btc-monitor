@@ -20,7 +20,7 @@ checkpoint when they change.
 | News integration | Separate contextual reports | No validated numerical news contribution to route scores |
 | Elliott/psychology | Rule checks/candidates and phase hypotheses | No complete proved current wave count or automatic psychological phase |
 | Forward result evaluation | General technical/scenario tooling exists | Dedicated two-route/25-combination evidence and enough 7/30/90-day follow-up still needed |
-| Visual QA | HTML/publication and tests checked | Recent full mobile/desktop browser interaction/visual check outstanding |
+| Visual QA | Live 1348px desktop check: swing/position toggle, both position routes/ladders and timeframe navigation work; no whole-page horizontal overflow with routes open | iPhone/mobile QA, new-label verification and post-#65 deployment/original NAS review remain open |
 | Quality & Improvement | Existing enabled monthly task, with quarter/year levels | No recorded QI run at the checkpoint; old prompt clauses need version-aware interpretation |
 
 ## Next concrete sequence
