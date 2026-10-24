@@ -435,7 +435,7 @@ details{margin:.7rem 0}a{color:#93c5fd}
 .table-scroll:focus-visible,summary:focus-visible{outline:2px solid #93c5fd}
 @media(max-width:600px){body{margin:0 auto;padding:.8rem}.table-scroll{padding:.4rem}
 td,th{padding:.6rem;font-size:.875rem}h2{font-size:1.25rem}svg{min-width:640px}}</style><h1>BTC — Historische signaaltijdlijn</h1>
-<nav><a href="btc-timeframes.html">← Actuele timeframes</a></nav><p>Tabellen en grafiek: veeg horizontaal voor alle kolommen.</p>
+<nav><a href="index.html">← Overzicht en scenario’s</a> · <a href="btc-dashboard.html">Dashboard</a> · <a href="btc-timeframes.html">Actuele timeframes</a></nav><p>Tabellen en grafiek: veeg horizontaal voor alle kolommen.</p>
 <p>Laatste 100 opgeslagen snapshots, nieuwste bovenaan. Alle signalen zijn voorlopig;
 dit is geen backtest. Tijdstempels zijn UTC. Ontbrekende gegevens blijven ONTBREEKT. Herstelde bronsnapshots bevatten uitsluitend destijds opgeslagen labels; de meettijd is de oorspronkelijke eindtijd van de snapshot. Historische prijzen en modeluitkomsten worden niet achteraf ingevuld.</p>
 """ + collector_health_html(health) + freshness_html(records) + chart_html(records) + summary_html(records) + outcome_html(records) + """<div class=table-scroll role=region aria-label=Gegevens tabindex=0><table><thead><tr><th>Meting (UTC)</th><th>Herkomst</th><th>Modelversies</th>""" + head + "</tr></thead><tbody>" + body + "</tbody></table></div>" + FRESHNESS_SCRIPT + WATCHDOG_SCRIPT + "</html>"
@@ -466,4 +466,5 @@ def build(source, output, health_source=None):
 if __name__ == "__main__":
     import sys
     build(sys.argv[1], sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else None)
+
 

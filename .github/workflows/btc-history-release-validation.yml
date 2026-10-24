@@ -40,6 +40,8 @@ jobs:
       - name: Generate read-only HTML from existing archive
         run: |
           mkdir -p output
+          cp index.html output/btc-dashboard.html
+          python -m scripts.home_dashboard data/latest.json output/index.html
           python - <<'PY'
           from datetime import datetime, timezone
           from scripts.context_trend_dashboard import build
@@ -55,4 +57,5 @@ jobs:
           name: btc-history-release-preview
           path: output/
           retention-days: 30
+
 

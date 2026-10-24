@@ -8,6 +8,8 @@ on:
       - data/history/bitget_4h_context.jsonl
       - scripts/context_trends.py
       - scripts/context_trend_dashboard.py
+      - scripts/home_dashboard.py
+      - scripts/market_scenarios.py
       - scripts/multi_timeframe_dashboard.py
       - scripts/history_coverage.py
       - scripts/signal_outcome_validation.py
@@ -58,7 +60,9 @@ jobs:
       - name: Stage public dashboard and read-only 4H history
         run: |
           mkdir _site
-          cp index.html bias.html _site/
+          cp index.html _site/btc-dashboard.html
+          cp bias.html _site/
+          python -m scripts.home_dashboard data/latest.json _site/index.html
           python - <<'PY'
           from datetime import datetime, timezone
           from scripts.context_trend_dashboard import build
@@ -73,3 +77,4 @@ jobs:
           path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
+

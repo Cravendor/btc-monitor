@@ -1,0 +1,133 @@
+"""Public home page and conditional price scenarios; no collection or writes to data."""
+import html
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+from scripts.market_scenarios import build_scenarios
+
+
+def escape(value):
+    return html.escape(str(value), quote=True)
+
+
+def price(value):
+    # One decimal matches the source instrument's usual displayed precision.
+    return format(value, ',.1f').replace(',', '_').replace('.', ',').replace('_', '.') + ' USDT'
+
+
+def render(feed, as_of):
+    result = build_scenarios(feed, as_of)
+    ready = result['status'] == 'ready'
+    content = '<p>Geen actuele, volledige 4H-berekening beschikbaar. Er worden geen oude niveaus als actueel getoond.</p>'
+    freshness = '<span class="badge">ONVOLDOENDE DATA</span>'
+    price_line = 'Prijsniveaus wachten op geldige data'
+    if ready:
+        r = result
+        states = {'bullish_breakout': 'Laatste 4H-slot boven de uitbraakdrempel',
+                  'bearish_breakdown': 'Laatste 4H-slot onder de neerwaartse drempel',
+                  'range': 'Laatste 4H-slot binnen de aandachtsrange'}
+        freshness = '<span class="badge good">4H-berekening beschikbaar</span>'
+        price_line = price(r['price']) if r['price'] is not None else 'Actuele futuresprijs ontbreekt'
+        source = {'nas': 'NAS', 'github_fallback': 'GitHub-reserve', 'github_manual': 'GitHub handmatig',
+                  'local': 'Lokaal'}.get(r['source'], 'Bron niet vastgelegd')
+        cards = []
+        for s in r['scenarios']:
+            label = escape(s['label'])
+            if s['id'] == 'range':
+                body = ('<p class="condition">4H-slot tussen <b>' + price(s['lower']) + '</b> en <b>' +
+                        price(s['upper']) + '</b>.</p><dl><dt>Aandachtspunt</dt><dd>Range-midden ' +
+                        price(s['midpoint']) + '</dd><dt>Vervalt wanneer</dt><dd>Een 4H-candle buiten de drempels sluit.</dd></dl>' +
+                        '<p>Geen bevestigde uitbraak. Wacht op een afsluiting buiten de range; een aanraking is geen bevestiging.</p>')
+            else:
+                bull = s['id'] == 'bullish_breakout'
+                direction = 'boven' if bull else 'onder'
+                reverse = 'onder' if bull else 'boven'
+                body = ('<p class="condition">Eerst een 4H-slot ' + direction + ' <b>' + price(s['trigger']) +
+                        '</b>.</p><dl><dt>Mogelijke vervolgniveaus</dt><dd>' + price(s['targets'][0]) +
+                        '<br>' + price(s['targets'][1]) + '</dd><dt>Ontkracht bij</dt><dd>Een volgend 4H-slot ' +
+                        reverse + ' ' + price(s['invalidation']) + '</dd></dl><p>Vervolgniveaus zijn volatiliteitsprojecties, geen voorspelde doelen. Controleer daarna of het niveau standhoudt.</p>')
+            badge = '<span class="tag">Past bij laatste candle</span>' if s['confirmed_by_last_close'] else '<span class="tag muted">Voorwaardelijk</span>'
+            cards.append('<article class="scenario ' + s['id'] + '"><h3>' + label + '</h3>' + badge + body + '</article>')
+        delta_lines = []
+        for key, label in (('spot', 'Spot'), ('usdt_futures', 'USDT-futures')):
+            delta = r['provider_deltas'].get(key)
+            delta_lines.append('<li>' + label + ': <b>' +
+                               ((format(delta, ',.6f').rstrip('0').rstrip('.')) + ' BTC' if delta is not None
+                                else 'ONTBREEKT voor dit venster') + '</b></li>')
+        ratio = (format(r['volume_ratio'], '.2f') + '×') if r['volume_ratio'] is not None else 'ONTBREEKT'
+        ratio24 = (format(r['volume_24h_ratio'], '.2f') + '×') if r['volume_24h_ratio'] is not None else 'ONTBREEKT'
+        content = ('<div id="action-levels"><p class="state">' + states[r['state']] + '</p>' +
+                   '<div class="levels"><div><small>Steun · laagste low van vorige 20 candles</small><strong>' + price(r['support']) +
+                   '</strong></div><div><small>Weerstand · hoogste high van vorige 20 candles</small><strong>' + price(r['resistance']) +
+                   '</strong></div></div><p>Beoordeelde candle: <time>' + escape(r['interval_start']) + '</time> tot <time>' +
+                   escape(r['interval_end']) + '</time>. Slot: ' + price(r['last_close']) + '.</p>' +
+                   '<div class="scenario-grid">' + ''.join(cards) + '</div>' +
+                   '<div class="context"><div><h3>Volumebevestiging</h3><p>Laatste 4H-volume / gemiddelde van de 20 voorafgaande candles: <b>' +
+                   ratio + '</b>.</p><p>Laatste 6 afgesloten 4H-candles / de 6 daarvoor (24H versus vorige 24H): <b>' +
+                   ratio24 + '</b>.</p><p>Volume is context uit dezelfde futuresbron, geen onafhankelijke bevestiging van spotvraag.</p></div>' +
+                   '<div><h3>Bitget buy−sell-delta</h3><ul>' + ''.join(delta_lines) +
+                   '</ul><p>Alleen gecontroleerde dekking van hetzelfde 4H-venster. Agressorzijde niet onafhankelijk bevestigd.</p></div></div></div>' +
+                   '<details><summary>Hoe zijn de niveaus berekend?</summary><p>Referentierange: ' + escape(r['range_start']) + ' tot ' +
+                   escape(r['range_end']) + '. De 20 referentiecandles sluiten de beoordeelde candle uit.</p>' +
+                   '<p>ATR14 = het gewone gemiddelde van 14 true ranges in de referentieperiode: max(high−low, |high−vorig slot|, |low−vorig slot|). ' +
+                   'Dit is een eenvoudig gemiddelde, geen Wilder-ATR. ATR14: ' + price(r['atr14']) + '. Buffer: 0,1 × ATR14 = ' +
+                   price(r['buffer']) + '. Bullish drempel = weerstand + buffer; bearish drempel = steun − buffer. ' +
+                   'Vervolgniveaus liggen één en twee ATR vanaf de drempel. Ongeldigverklaring ligt aan de andere kant van de rangegrens met dezelfde buffer.</p>' +
+                   '<p>Model: ' + escape(r['model_version']) + '. Niet historisch gekalibreerd; geen slagingspercentages. ' +
+                   'Dit is een technische scenario-laag, niet de geïntegreerde vijfpuntsbeoordeling uit de monitors.</p></details>' +
+                   '<p class="meta">Meting: <time>' + escape(r['snapshot_at']) + '</time> · ' + source +
+                   ' · Bitget BTCUSDT USDT-FUTURES · niveaus in USDT, niet USD of euro.</p>')
+    expires = escape(result.get('valid_until', ''))
+    return '''<!doctype html><html lang="nl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>BTC Monitor — Overzicht en scenario’s</title>
+<style>
+:root{color-scheme:dark;--bg:#0c1320;--card:#162235;--line:#30415b;--text:#edf3fc;--muted:#a9b9d1;--accent:#f3b65d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,sans-serif}
+main{max-width:1180px;margin:auto;padding:30px 24px 60px}a{color:#a9ccff}a:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:5px}
+.eyebrow{color:var(--accent);font-size:.78rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase}h1{font-size:clamp(2rem,5vw,3.4rem);letter-spacing:-.04em;line-height:1.1;margin:.6em 0 .4em}h2{font-size:1.45rem;margin:0 0 .4rem}h3{font-size:1.1rem;margin:0 0 .7rem}p{color:var(--muted);margin:.7rem 0}strong,b{color:var(--text)}
+.hero{display:flex;justify-content:space-between;align-items:center;gap:24px;margin:10px 0 28px}.quote{text-align:right}.quote strong{font-size:1.65rem;display:block}.quote small{color:var(--muted)}.badge{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:5px 12px;font-size:.8rem;margin-bottom:12px}.good{color:#9ee7c4}
+.links,.scenario-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.links{margin-bottom:36px}.link-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;color:var(--text);text-decoration:none;transition:border-color .15s}.link-card:hover{border-color:var(--accent)}.link-card span{color:var(--accent);font-size:.8rem}.link-card h2{font-size:1.15rem;margin-top:10px}.link-card p{font-size:.9rem;margin:8px 0 0}
+.panel{border:1px solid var(--line);border-radius:20px;padding:26px;background:#101b2c}.state{color:var(--accent);font-weight:600}.levels{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}.levels>div{background:var(--card);border-radius:12px;padding:18px}.levels small{display:block;color:var(--muted)}.levels strong{display:block;font-size:1.5rem;margin-top:5px}.scenario{background:var(--card);border-top:3px solid #7893b6;border-radius:12px;padding:20px}.bullish_breakout{border-top-color:#83d5af}.bearish_breakdown{border-top-color:#e99a95}.tag{display:inline-block;font-size:.73rem;color:var(--accent);margin-bottom:10px}.muted{color:var(--muted)}.condition{min-height:70px}dt{color:var(--muted);font-size:.78rem}dd{margin:3px 0 14px;font-weight:600}.scenario p{font-size:.9rem}.context{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:25px 0 15px}.context p,.context li{font-size:.9rem}.context ul{padding-left:18px}details{border-top:1px solid var(--line);padding:18px 0}summary{cursor:pointer;color:#bfd6f6}.meta{font-size:.8rem;overflow-wrap:anywhere}footer{margin-top:25px;font-size:.85rem}button{background:var(--card);border:1px solid var(--line);color:var(--text);padding:9px 16px;border-radius:10px;cursor:pointer}.hidden,[hidden]{display:none!important}
+@media(max-width:780px){.links,.scenario-grid{grid-template-columns:1fr}.condition{min-height:0}.hero{display:block}.quote{text-align:left;margin-top:20px}.context,.levels{grid-template-columns:1fr}main{padding:20px 16px 40px}.panel{padding:18px}.link-card{padding:18px}}
+</style></head><body><main>
+<header class="hero"><div><div class="eyebrow">BTC Monitor / overzicht</div><h1>Eén plek voor je marktbeeld.</h1><p>Metingen, marktrichting en scenario’s met controleerbare prijsniveaus.</p></div>
+<div class="quote"><small>Bitget futures · laatste momentopname</small><strong>''' + escape(price_line) + '''</strong></div></header>
+<nav class="links" aria-label="BTC-pagina’s">
+<a class="link-card" href="btc-dashboard.html"><span>01 / METINGEN →</span><h2>Dashboard</h2><p>Prijs, funding, open interest, orderboek en gecontroleerde tradedelta.</p></a>
+<a class="link-card" href="btc-timeframes.html"><span>02 / RICHTING →</span><h2>Multi-timeframe marktrichting</h2><p>Technische signalen van 5 minuten tot 1 week, met actualiteit per candle.</p></a>
+<a class="link-card" href="btc-signal-history.html"><span>03 / HISTORIE →</span><h2>Historische signaaltijdlijn</h2><p>Opgeslagen modelsignalen en uitkomsten. Dit zijn geen gearchiveerde monitorrapporten.</p></a>
+</nav><section class="panel" id="scenarios" data-valid-until="''' + expires + '''">
+''' + freshness + '''<h2>Op welke prijsactie letten?</h2><p>Drie voorwaardelijke 4H-scenario’s. Een intraperiode-prijsdoorbraak telt niet als bevestigd 4H-slot.</p>
+<p id="stale-warning" role="status" hidden>Deze berekening is verouderd of er is een nieuw 4H-venster. Niveaus zijn verborgen. Vernieuw voor de laatste publicatie.</p>
+''' + content + '''<button type="button" onclick="location.reload()">Vernieuwen</button></section>
+<footer><p>De niveaus helpen bepalen wanneer je opnieuw kijkt. Het zijn geen koop-/verkooporders, stop-lossadvies of persoonlijke positiegrootte. Scenario’s kunnen mislukken; er worden geen kansen verzonnen.</p>
+<p>Bron: <a href="https://github.com/Cravendor/btc-monitor/blob/main/data/latest.json">marktmetingen</a> · <a href="https://www.bitget.com/docs/catalog/classic-contract-market/classic-contract-market">Bitget-candledefinitie</a>. De NAS verzamelt elk halfuur; de werkelijke meettijd is leidend.</p>
+<p>Technische signalen gebruiken koers, momentum en volume. Ze bepalen geen Wall Street-psychologiefase zoals euforie, angst of capitulatie.</p>
+<p><a href="bias.html">Archief van monitorbeoordelingen</a> — automatische opslag van de monitorrapporten is nog niet gekoppeld; de technische signaaltijdlijn is een apart archief.</p></footer>
+</main><script>
+function refreshFreshness(){
+  const section=document.querySelector('#scenarios');
+  const expiry=Date.parse(section.dataset.validUntil);
+  if(!Number.isFinite(expiry))return;
+  if(Date.now()>=expiry){
+    const levels=document.querySelector('#action-levels');if(levels)levels.hidden=true;
+    document.querySelector('#stale-warning').hidden=false;
+    const badge=document.querySelector('.badge');badge.textContent='VEROUDERD';badge.classList.remove('good');
+    document.querySelector('.quote strong').textContent='Meting verouderd';
+  }
+}
+document.querySelectorAll('time').forEach(el=>{const value=Date.parse(el.textContent);if(Number.isFinite(value)){el.dateTime=el.textContent;el.textContent=new Date(value).toLocaleString('nl-NL',{timeZone:'Europe/Amsterdam',timeZoneName:'short'});}});
+refreshFreshness();setInterval(refreshFreshness,60000);
+</script></body></html>'''
+
+
+def build(feed_path, output, as_of=None):
+    as_of = as_of or datetime.now(timezone.utc).isoformat()
+    feed = json.loads(Path(feed_path).read_text(encoding='utf-8'))
+    Path(output).parent.mkdir(parents=True, exist_ok=True)
+    Path(output).write_text(render(feed, as_of), encoding='utf-8')
+
+
+if __name__ == '__main__':
+    import sys
+    build(sys.argv[1], sys.argv[2])

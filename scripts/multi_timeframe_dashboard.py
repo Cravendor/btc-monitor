@@ -54,7 +54,7 @@ text-align:left;border-bottom:1px solid #44536d}p{color:#bac8da;overflow-wrap:an
 section{max-width:100%;overscroll-behavior-x:contain}
 @media(max-width:600px){body{margin:0 auto;padding:.8rem}section{padding:.6rem}
 th,td{min-width:8rem;padding:.65rem}th:first-child{min-width:4rem;position:sticky;left:0;background:#1c2940}}</style>
-<h1>BTC — Multi-timeframe marktrichting</h1>\n<p><a href="btc-signal-history.html" style="color:#93c5fd">Bekijk historische signaaltijdlijn →</a></p>
+<nav><a href="index.html" style="color:#93c5fd">← Overzicht en scenario’s</a> · <a href="btc-dashboard.html" style="color:#93c5fd">Dashboard</a></nav><h1>BTC — Multi-timeframe marktrichting</h1>\n<p><a href="btc-signal-history.html" style="color:#93c5fd">Bekijk historische signaaltijdlijn →</a></p>
 """ + health_banner + """<p>Veeg de tabel horizontaal voor alle kolommen.</p><section tabindex="0" role="region" aria-label="Timeframes, horizontaal schuifbaar"><table><thead><tr><th>Timeframe</th><th>Signaal</th>
 <th>Onderbouwing</th><th>Betrouwbaarheid</th><th>Afgesloten candle (UTC)</th><th>Candle-actualiteit</th></tr></thead>
 <tbody>""" + "".join(rows) + """</tbody></table></section>
@@ -99,3 +99,4 @@ def build(feed_path, output, health_path=None):
 if __name__ == "__main__":
     import sys
     build(sys.argv[1], sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else None)
+
