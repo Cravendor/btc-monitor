@@ -58,7 +58,7 @@ current observed-history anchors active until that is properly supported.
 | a64adc1 | One pending NAS measurement and both histories safely reconciled and pushed | A generic permanent fix for future writer races |
 | #61 | Wider available-history high followed by later low, evidence and dates | Full cycle extremes; daily/week lows may still differ |
 | #62 | Price-event macroanchor rule and guarded opt-in context | Automatic prior-cycle recognition, fresh history producer or active macroanchor mode |
-| #63 (open at checkpoint) | Complete 2021–2026 daily archive and independent resumable workflow, 361 tests | Already merged/deployed; activation of #62 |
+| #63 (merged) | Complete 2021–2026 daily archive, independent resumable workflow, 361-test CI and initial workflow/Pages success | Next NAS source-reference storage or activation of #62 |
 
 ## Keep external state distinct
 
