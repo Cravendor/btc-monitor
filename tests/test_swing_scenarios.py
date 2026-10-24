@@ -106,11 +106,10 @@ class ScenarioTests(unittest.TestCase):
 
     def test_render_all_routes_and_rule_limitations(self):
         feed,now=fixture();page=render(build_swing_scenarios(feed,now))
-        self.assertEqual(page.count('class="scenario route-'),8)
-        for text in ('Sterk bearish','Bearish','Bullish','Sterk bullish','geen automatisch bevestigde','Alle Fib-'):
-            if text=='geen automatisch bevestigde':self.assertIn(text.lower(),page.lower())
-            else:self.assertIn(text,page)
-        self.assertIn('geen persoonlijke posities',page)
+        self.assertIn('Twee routes: bull en bear',page)
+        self.assertNotIn('Vier vooraf',page)
+        self.assertIn('cyclus-ATH',page)
+        self.assertIn('Originele beoordelingen',page)
 
     def test_direct_nas_import(self):
         proc=subprocess.run([sys.executable,'-c','import sys;sys.path.insert(0,"scripts");from scenario_archive import freeze;print(freeze({"finished_at":"2026-10-24T08:00:00Z"})["schema_version"])'],capture_output=True,text=True)

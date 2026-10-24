@@ -182,6 +182,14 @@ met bronmoment. De ongeldigverklaringsgrens staat apart, niet als routebestemmin
 Dit is geen tijd-as met verwachte aankomstdatums. Afstanden op het scherm zijn
 gelijke stappen, geen schaal voor tijd, kans of prijsafstand.
 
+Het beginpunt is zichtbaar: de high voor bearish routes en de low voor bullish
+routes, met de openingstijd van de ankercandle en de native tijdschaal. Dit zijn
+de bestaande prior20-rangeankers, geen bewezen lifetime-ATH/ATL en ook niet
+automatisch de meest recente lokale pivot. Ook de Fib-retracements tussen dat
+beginpunt en de bevestigingszone worden getoond: daar kan prijsactie aandacht
+vragen voordat de route wordt bevestigd. Historische ankers bewijzen geen
+eerdere activatie of doorbraak. Ontbreekt een geldig anker, meld dit expliciet.
+
 Het volgende aandachtspunt is de dichtstbijzijnde zone binnen de bestaande
 modelbuffer, anders de eerstvolgende zone in de scenariorichting. Samenvallende
 zones worden gecombineerd. Voorbij alle zones: opnieuw beoordelen, geen nieuwe
@@ -209,3 +217,51 @@ Geen automatische gewichtsaanpassing of oorspronkelijke labels herschrijven.
 Een wijziging krijgt een nieuwe versie en wordt op toekomstige ongebruikte
 data vergeleken; bij onvoldoende bewijs wordt dat expliciet gerapporteerd.
 De kwaliteitscontrole beoordeelt analyses, geen persoonlijke handelsbeslissingen.
+
+
+## Two-route interpretation v1
+
+The public swing/position interface now shows bull and bear routes together,
+with five globally directional readings each: strong SELL, SELL, neutral,
+BUY and strong BUY. BUY always means upward evidence, including in the bear
+route. No personal position, HOLD state or fixed TP percentage is inferred.
+
+Each route uses its own ladder: low + r*(high-low) for bull, high - r*(high-low)
+for bear. r is 0, .236, .382, .5, .618, .786, 1, 1.272, 1.618, 2.618. These are
+progress fractions from the origin (and conditional extensions beyond 1);
+50% is not a Fibonacci ratio. An anchor range is not an Elliott wave count.
+The origin remains the prior-20-candle high/low, explicitly not a validated
+cycle ATH/low. Replacing that with a justified cycle anchor remains open.
+
+At the nearest route zone, the latest closed confirmation candle and previous
+close determine support hold, rejection, reclaim or breakdown, using the same
+ATR buffer. No tested reaction means neutral. Contradictory current price
+also suppresses a directional reading. A strong reading additionally requires
+strong native momentum in the same direction. A possible retest requires the
+preceding two closes to cross this same zone, followed by a touch. Candle
+resolution cannot establish intrabar event order or future retention.
+
+The ordered bull/bear pair gives one of 25 stable combination IDs. Opposing
+signs mean disagreement, not a net directional recommendation. Both extremes
+agreeing yield strong agreement; a lone directional reading is limited
+confirmation. Shared price evidence is never counted as independent proof.
+Not all 25 pairs are necessarily reachable with current geometry.
+
+The complete two_route_assessment is frozen into the new v3 scenario payload,
+covered by the existing content hash and recomputed during validation. The
+outcome export retains it as original_two_route_assessment. The four earlier
+internal definitions and their original SHB assessments are retained for
+backward-compatible historical diagnostics; they are not four public routes.
+Do not mix v3 combination samples with old route outcome counts: each original
+horizon/set ID is one two-route observation, even though legacy outcome rows
+repeat the same metadata. New combination-specific 7/30/90-day performance
+statistics still need sufficient forward observations and dedicated analysis.
+
+News remains separate context, not part of this version's numerical score.
+There is no inferred psychological phase or completed Elliott count. The
+existing freshness gate hides expired route readings and paths. Quality review
+must examine validity and missingness, disagreements, zone role and retest
+proof, duplicate correlated evidence, anchor changes and original versions.
+
+Validation: 337 unit tests pass. Browser visual QA remains pending because the
+local Playwright browser executable is unavailable.

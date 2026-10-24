@@ -16,8 +16,10 @@ class GaugeTests(unittest.TestCase):
         self.assertEqual(page.count('<article class="meter"'),6)
         self.assertIn('data-mode-panel="position" hidden',page)
         self.assertIn('SHB',page)
-        self.assertIn('data-scenario-select',page)
-        self.assertIn('Voorgesteld scenario',page)
+        self.assertNotIn('data-scenario-select',page)
+        self.assertIn('Gezamenlijke interpretatie',page)
+        self.assertIn('Bullroute',page)
+        self.assertIn('Bearroute',page)
         for text in ('modeltrade','modelpositie'):
             self.assertNotIn(text,page)
         self.assertNotIn('class="gauge-needle"',svg(None,'missing'))

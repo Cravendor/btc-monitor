@@ -17,9 +17,22 @@ def build_path(route, scenario):
         if label not in item['labels']:
             item['labels'].append(label)
 
+    fib=route.get('fibonacci',{})
+    anchor_key='low' if direction>0 else 'high'
+    origin=fib.get(anchor_key)
+    if isinstance(origin,bool) or not isinstance(origin,(int,float)) or not math.isfinite(origin) or origin<=0:
+        origin=None
+    if origin is not None:
+        anchor_name='swinglow' if direction>0 else 'swinghigh'
+        anchor_time=fib.get(anchor_key+'_at')
+        add(origin,'Beginprijs · '+anchor_name+' · '+route['timeframe'].upper()+
+            (' · candle opent '+str(anchor_time) if anchor_time else ' · ankertijd ontbreekt'))
     add(trigger,'Bevestigingszone')
-    for level in scenario.get('fibonacci_ahead',[]):
-        if (level['price']-trigger)*direction>0 and (end-level['price'])*direction>=0:
+    levels=[dict(level,kind='fib_retracement') for level in fib.get('retracements',[])]
+    levels+=scenario.get('fibonacci_ahead',[])
+    start=origin if origin is not None else trigger
+    for level in levels:
+        if (level['price']-start)*direction>=0 and (end-level['price'])*direction>=0:
             kind='Fib-retracement' if level['kind']=='fib_retracement' else 'Fib-extensie'
             add(level['price'],kind+' '+format(level['ratio']*100,'.1f')+'%')
     for i,target in enumerate(scenario['targets']):
@@ -36,7 +49,7 @@ def build_path(route, scenario):
     for point in points:
         point['state']=('attention' if point is attention else
                         'beyond' if (quote-point['price'])*direction>0 else 'ahead')
-    return dict(points=points,quote=quote,direction=direction,attention=attention,
+    return dict(points=points,quote=quote,direction=direction,attention=attention,origin=origin,
                 near_attention=bool(nearby) and not invalidated,
                 invalidated=invalidated,live_boundary=live_boundary,
                 invalidation=scenario['invalidation_price'],buffer=buffer)
@@ -60,10 +73,18 @@ def render_path(route,scenario):
     items=[dict(p,kind='zone') for p in path['points']]
     items.append(dict(price=path['quote'],kind='now'))
     items.sort(key=lambda p:(p['price']*path['direction'],p['kind']!='now'))
+    if path['origin'] is None:
+        origin_note='Beginprijs ontbreekt: geen geldig swinganker beschikbaar.'
+    elif route.get('fibonacci',{}).get('anchor_method')=='prior20_range_extremes':
+        origin_note=('Beginprijs: high/low van de gekozen '+route['timeframe'].upper()+
+                     '-range; geen vastgestelde all-time high of low. Historische ankerprijs, geen instapadvies.')
+    else:
+        origin_note='Beginprijs: swinganker uit de brondata; geen vastgestelde all-time high of low.'
     parts=['<section class="shb-levels scenario-path" aria-label="Scenariopad op prijsvolgorde">',
            '<h4>Waar staan we in dit scenario?</h4><p class="path-status" role="status">'+esc(status)+'</p>',
            '<p class="path-caption">'+('Omhoog' if path['direction']>0 else 'Omlaag')+
-           ' op prijsvolgorde · geen voorspelde aankomstdatums</p><ol class="path-track">']
+           ' op prijsvolgorde · geen voorspelde aankomstdatums</p>',
+           '<p class="path-caption">'+esc(origin_note)+'</p><ol class="path-track">']
     for item in items:
         if item['kind']=='now':
             parts.append('<li class="path-now" aria-current="location"><span class="path-dot" aria-hidden="true"></span><strong>Huidige koers · '+price(item['price'])+'</strong><span>Bronmeting: <time>'+esc(route['recorded_at'])+'</time></span></li>')

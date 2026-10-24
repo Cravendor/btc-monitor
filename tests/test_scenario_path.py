@@ -7,6 +7,7 @@ from tests.test_scenario_actions import base_route
 def example(direction=1):
     route=base_route()
     route.update(reference_price=115,last_close=115,buffer=1)
+    route['fibonacci']={}
     scenario=deepcopy(route['scenarios'][3])
     scenario.update(direction=direction,trigger_price=100 if direction>0 else 130,
                     invalidation_price=95 if direction>0 else 135,
@@ -17,6 +18,28 @@ def example(direction=1):
 
 
 class ScenarioPathTests(unittest.TestCase):
+    def test_origin_and_pretrigger_retracements_are_visible_for_both_directions(self):
+        for direction,origin,expected in [(1,80,[80,90,100,120,130,140]),(-1,150,[150,140,130,110,100,90])]:
+            r,s=example(direction)
+            key='low' if direction>0 else 'high'
+            r['fibonacci']={key:origin,key+'_at':'2026-10-01T00:00:00+00:00',
+                'anchor_method':'prior20_range_extremes',
+                'retracements':[dict(price=90 if direction>0 else 140,ratio=.236)]}
+            p=build_path(r,s)
+            self.assertEqual([x['price'] for x in p['points']],expected)
+            self.assertEqual(p['attention']['price'],120 if direction>0 else 110)
+            html=render_path(r,s)
+            self.assertIn('Beginprijs',html)
+            self.assertIn('2026-10-01T00:00:00+00:00',html)
+            self.assertIn('geen vastgestelde all-time high of low',html)
+            self.assertEqual(html.count('aria-current="location"'),1)
+
+    def test_invalid_anchor_is_not_invented(self):
+        for anchor in [None,float('nan'),float('inf'),True,-1]:
+            r,s=example();r['fibonacci']={'low':anchor}
+            html=render_path(r,s)
+            self.assertIn('Beginprijs ontbreekt',html)
+
     def test_next_attention_follows_bull_and_bear_direction(self):
         for direction,expected,prices in [(1,120,[100,120,130,140]),(-1,110,[130,110,100,90])]:
             route,scenario=example(direction)
