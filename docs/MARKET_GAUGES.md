@@ -296,47 +296,62 @@ visual QA remains open. Wider source history and independently justified cycle
 selection are still future work; this change does not close those limitations.
 
 
-## Explicit next-cycle rule contract (opt-in v5)
+## Cycle-top and running-low rule contract (opt-in v5)
 
-The user has chosen to retain the current observed-history anchors. Their values
-and v4 output remain unchanged when cycle_anchor_context is absent. No new API
-request, file-based override, calendar-year rollover or halving inference
-activates the opt-in contract.
+Current observed-history anchors remain active unless an original market record
+supplies cycle_anchor_context. The opt-in policy uses price-event windows,
+not a fixed bear calendar year. No dates or prices are hardcoded.
 
-When a future producer supplies cycle_anchor_context inside the original market
-record, both horizons evaluate the same validated daily reference:
+Required context: schema_version=1, status=active, nonempty cycle_id,
+classification_basis explaining the prior completed cycle peak and phase,
+previous_cycle_peak_at (its UTC daily candle opening time), phase (advance or
+post_peak), and a fresh source of complete same-market closed daily candles.
+previous_cycle_id, when supplied, must differ from cycle_id. A calendar rollover
+or individual record high does not independently identify a completed cycle.
 
-- Bull origin: minimum low during the explicitly selected latest or ongoing
-  bear year, January 1 UTC through year end or the last closed day as applicable.
-- Bear origin: maximum high since the explicitly recorded current cycle start
-  through the last closed day. The bull low need not follow the bear high.
-- Swing and position share identical macroanchor values, timestamps and version;
-  their existing reaction timeframes and volatility buffers may differ.
-- A new extreme changes anchor_version_id. Mere collection-time changes do not.
-  Original snapshot versions remain immutable.
+From the explicitly identified previous cycle peak through the last closed day,
+find the highest high on a later candle. It must exceed the previous peak.
+That is the latest measured high within the selected current cycle. Both
+horizons use it as the bear origin. Equal highs retain the first anchor date;
+a strictly higher high moves the anchor and restarts the post-peak low window.
 
-Required context fields: schema_version=1, status=active, nonempty cycle_id,
-classification_basis explaining the cycle/bear-year selection, cycle_start at
-UTC midnight, bear_year, and source. previous_cycle_id, when supplied, must not
-match cycle_id. Source must explicitly identify bitget/BTCUSDT/USDT-FUTURES,
-status=ok, interval=1d, closed_only=true, observed_at less than one hour old, and
-candles with open_time_ms and valid open/high/low/close values. Every day of the
-requested cycle and bear-year windows must be present. Duplicates, open/future
-candles, bad timestamps, malformed prices, other markets and missing coverage
-make the cycle reference unavailable. No short-range fallback is allowed after
-this policy is requested. Missing data are never a neutral reading.
+For phase=advance, the bull origin is the lowest low strictly between the
+previous cycle peak candle and the latest peak candle. For phase=post_peak,
+it is the running lowest low on candles strictly after the latest peak through
+the last closed day. A higher or equal low retains the original anchor and
+version. A strictly lower low changes the bull origin and anchor version.
+If a new high occurs on the latest closed candle, no subsequent low candle
+exists yet: return unavailable, never infer high/low intrabar order.
 
-No cycle/bear-year classification or longer-history collector is installed by
-this change. Those remain prerequisites before activation: the current 89 daily
-candles cannot cover a multi-year cycle. The hook is in build_swing_scenarios,
-so archival freeze and public rebuilding use the same supplied original context.
-Do not patch old records or infer missing context from a later config file.
-The v5 frozen record contains the original context and is recomputed during
-validation. Earlier v3/v4 assessments retain their original rules.
+Same-candle extremes at either peak are excluded from low selection because
+daily OHLC cannot establish their event order. Only closed day candles are
+used; live intraday records wait for a closed source candle. The low is a
+provisional departure point, not a confirmed macro bottom. A historical high
+still does not prove a completed current cycle top. Phase selection remains
+explicit rather than automatically declaring any pullback a bear cycle.
 
-Quality gates: test whole-window selection, shared horizon anchors, calendar
-rollover without cycle change, new-extreme versioning, current-output stability,
-source identity/freshness, incomplete intervals, missing evidence, rehashed
-anchor tampering and suppression of unsupported route readings. With this
-change all 350 tests pass. Visual QA and actual next-cycle activation remain
-open; this is tested preparation rather than autonomous cycle discovery.
+Source must identify bitget/BTCUSDT/USDT-FUTURES, status=ok, interval=1d,
+closed_only=true, observed_at less than one hour old, and valid daily OHLC.
+Every day from the previous peak through the last closed day must be present.
+Duplicates, missing days, stale/open/future candles, wrong-market values and
+malformed fields suppress the opt-in readings; no shorter-range fallback.
+Swing and position share identical macroanchor values, dates and version;
+reaction timeframes and volatility buffers may differ.
+
+The v5 frozen payload stores the original context and recomputes anchor values
+and readings during validation. Anchor version IDs exclude collection time,
+so merely fetching the same extremes does not create a new anchor version.
+Earlier scenario schemas retain their original rules and are not migrated.
+
+This PR prepares the contract and archive/dashboard hooks. It does not fetch
+multi-year data, infer prior cycle tops, select advance/post_peak automatically,
+or activate the current market. Without supplied context, v4 output is unchanged.
+The available short source window cannot establish the desired macroanchors.
+No new API calls or paid services are introduced. Original version history stays
+available for quality review; browser visual QA remains open.
+
+Validation: 354 unit tests pass, including between-peak vs post-peak selection,
+strict lower-low updates, higher/equal-low stability, equal/new-high behavior,
+same-candle ambiguity, calendar rollover, complete source coverage, identity
+and freshness, shared horizons, rehashed evidence tampering, and default-output
+stability checked against a real archived measurement.

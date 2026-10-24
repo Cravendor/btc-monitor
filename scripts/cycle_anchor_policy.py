@@ -1,9 +1,8 @@
-"""Explicit next-cycle anchor contract; no calendar/halving phase inference.
+"""Cycle-peak and running-low anchor contract; no calendar phase inference.
 
-The collector may supply cycle_anchor_context when a cycle has been identified
+The collector may supply cycle_anchor_context when the previous cycle peak and phase have been identified
 and a complete same-market daily source is available. Absent context is inactive.
 """
-from datetime import datetime, timezone
 import hashlib
 import json
 try:
@@ -12,7 +11,7 @@ except ImportError:
     from market_scenarios import time_ms, iso, number
 
 DAY=86400000
-VERSION='explicit_cycle_bear_year_anchors_v1'
+VERSION='cycle_peaks_running_low_v2'
 IDENTITY=('bitget','USDT-FUTURES','BTCUSDT')
 
 
@@ -25,18 +24,16 @@ def select(context, as_of):
         if context.get('status')!='active' or not isinstance(context.get('cycle_id'),str) or not context['cycle_id'].strip():
             raise ValueError('Geen expliciet actieve cyclus.')
         if not isinstance(context.get('classification_basis'),str) or not context['classification_basis'].strip():
-            raise ValueError('Onderbouwing voor cyclus/bearjaar ontbreekt.')
+            raise ValueError('Onderbouwing voor cyclustop en fase ontbreekt.')
         if context.get('previous_cycle_id')==context['cycle_id']:
             raise ValueError('Nieuwe cyclus mag niet dezelfde identiteit hebben als de vorige.')
         now=time_ms(as_of);boundary=now//DAY*DAY
-        start=time_ms(context['cycle_start'])
-        year=context['bear_year']
-        if type(year) is not int or not 2009<=year<=datetime.fromtimestamp(now/1000,timezone.utc).year:
-            raise ValueError('Ongeldig of toekomstig bearjaar.')
-        bear_start=int(datetime(year,1,1,tzinfo=timezone.utc).timestamp()*1000)
-        bear_end=min(int(datetime(year+1,1,1,tzinfo=timezone.utc).timestamp()*1000),boundary)
-        if start%DAY or start>=boundary or bear_start>=bear_end:
-            raise ValueError('Cyclus/bearjaar heeft nog geen afgesloten dagcandles.')
+        previous_peak=time_ms(context['previous_cycle_peak_at'])
+        phase=context['phase']
+        if phase not in ('advance','post_peak'):
+            raise ValueError('Fase moet advance of post_peak zijn; geen automatische cyclusclassificatie.')
+        if previous_peak<0 or previous_peak%DAY or previous_peak>=boundary-DAY:
+            raise ValueError('Vorige cyclustop moet een historische UTC-dagcandle zijn.')
         source=context['source']
         if tuple(source.get(k) for k in ('exchange','market','symbol'))!=IDENTITY:
             raise ValueError('Cyclusankers vereisen dezelfde Bitget futuresmarkt.')
@@ -56,29 +53,39 @@ def select(context, as_of):
             if l<=0 or l>min(o,close) or h<max(o,close):
                 raise ValueError('Ongeldige OHLC-waarden.')
             rows[t]=(h,l)
-        # Validate precisely the two required windows, not an arbitrary row count.
-        for left,right in ((start,boundary),(bear_start,bear_end)):
-            if any(t not in rows for t in range(left,right,DAY)):
-                raise ValueError('Onvolledige dekking van cyclus of bearjaar.')
-        highs=[(t,v[0]) for t,v in rows.items() if start<=t<boundary]
-        lows=[(t,v[1]) for t,v in rows.items() if bear_start<=t<bear_end]
-        high=max(v for t,v in highs);low=min(v for t,v in lows)
+        if any(t not in rows for t in range(previous_peak,boundary,DAY)):
+            raise ValueError('Onvolledige historie vanaf de vorige cyclustop.')
+        highs=[(t,v[0]) for t,v in rows.items() if previous_peak<t<boundary]
+        high=max(v for t,v in highs)
+        # Equal highs do not restart the drawdown; only a strictly higher record does.
+        high_at=min(t for t,v in highs if v==high)
+        if high<=rows[previous_peak][0]:
+            raise ValueError('Nog geen hogere cyclustop dan de vorige referentietop.')
+        left,right=(previous_peak+DAY,high_at) if phase=='advance' else (high_at+DAY,boundary)
+        lows=[(t,v[1]) for t,v in rows.items() if left<=t<right]
+        if not lows:
+            raise ValueError('Nog geen afzonderlijke afgesloten low-candle in het gekozen topinterval.')
+        low=min(v for t,v in lows)
+        # Equal lows must not move the original anchor or its version.
+        low_at=min(t for t,v in lows if v==low)
         if low>=high:raise ValueError('Geen bruikbaar ankerbereik.')
-        high_at=max(t for t,v in highs if v==high);low_at=max(t for t,v in lows if v==low)
         result=dict(status='calculated',model_version=VERSION,anchor_method=VERSION,
-            cycle_id=context['cycle_id'],bear_year=year,classification_basis=context['classification_basis'],
+            cycle_id=context['cycle_id'],phase=phase,classification_basis=context['classification_basis'],
             high=high,low=low,high_at=iso(high_at),low_at=iso(low_at),
-            cycle_start=iso(start),cycle_through=iso(boundary),
-            bear_from=iso(bear_start),bear_through=iso(bear_end),
+            cycle_start=iso(previous_peak+DAY),cycle_through=iso(boundary),
+            previous_cycle_peak_at=iso(previous_peak),previous_cycle_peak_price=rows[previous_peak][0],
+            bull_window_from=iso(left),bull_window_through=iso(right),
             source_timeframe='1d',same_anchors_for_all_horizons=True,
-            history_from=iso(min(start,bear_start)),history_to=iso(boundary),
-            history_candles=len(rows),high_at_history_boundary=high_at==start,
+            history_from=iso(previous_peak),history_to=iso(boundary),
+            history_candles=len(rows),high_at_history_boundary=False,
             bottom_confirmed=False,cycle_extremes_verified=False,
             reference_market='bitget/BTCUSDT/USDT-FUTURES',unit='USDT',
             observed_at=source['observed_at'],calculated_at=as_of,
-            reason='Bull: laagste gemeten koers van het expliciet gekozen bearjaar. Bear: hoogste gemeten koers sinds het expliciete cyclusbegin. Identificatie van de fase is een onderbouwde keuze, geen zekerheid.',
+            reason=('Bull: laagste koers tussen vorige en nieuwste cyclustop.' if phase=='advance' else
+                    'Bull: laagste koers sinds de nieuwste cyclustop; alleen een strikt lagere low verplaatst het anker.')+
+                   ' Bear: hoogste gemeten koers sinds de vorige cyclustop. Fasekeuze is expliciet; geen bevestigde bodem.',
             evidence=context)
-        identity=json.dumps({k:result[k] for k in ('model_version','cycle_id','bear_year','cycle_start','high','low','high_at','low_at')},sort_keys=True,separators=(',',':'),allow_nan=False)
+        identity=json.dumps({k:result[k] for k in ('model_version','cycle_id','phase','previous_cycle_peak_at','high','low','high_at','low_at')},sort_keys=True,separators=(',',':'),allow_nan=False)
         result['anchor_version_id']=hashlib.sha256(identity.encode()).hexdigest()[:24]
         return result
     except (ValueError,KeyError,TypeError,AttributeError,OverflowError) as e:
