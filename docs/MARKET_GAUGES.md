@@ -182,6 +182,14 @@ met bronmoment. De ongeldigverklaringsgrens staat apart, niet als routebestemmin
 Dit is geen tijd-as met verwachte aankomstdatums. Afstanden op het scherm zijn
 gelijke stappen, geen schaal voor tijd, kans of prijsafstand.
 
+Het beginpunt is zichtbaar: de high voor bearish routes en de low voor bullish
+routes, met de openingstijd van de ankercandle en de native tijdschaal. Dit zijn
+de bestaande prior20-rangeankers, geen bewezen lifetime-ATH/ATL en ook niet
+automatisch de meest recente lokale pivot. Ook de Fib-retracements tussen dat
+beginpunt en de bevestigingszone worden getoond: daar kan prijsactie aandacht
+vragen voordat de route wordt bevestigd. Historische ankers bewijzen geen
+eerdere activatie of doorbraak. Ontbreekt een geldig anker, meld dit expliciet.
+
 Het volgende aandachtspunt is de dichtstbijzijnde zone binnen de bestaande
 modelbuffer, anders de eerstvolgende zone in de scenariorichting. Samenvallende
 zones worden gecombineerd. Voorbij alle zones: opnieuw beoordelen, geen nieuwe
