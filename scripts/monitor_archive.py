@@ -10,7 +10,7 @@ import re
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-MONITORS = {'daily', '4h-warning', 'market-risk'}
+MONITORS = {'daily', '4h-warning', 'market-risk', 'psychology'}
 HORIZONS = ('4h_1d', '7d', '30d_macro')
 LABELS = {-2: 'STERK BEARISH', -1: 'ZWAK BEARISH', 0: 'NEUTRAAL/GEMENGD',
           1: 'ZWAK BULLISH', 2: 'STERK BULLISH'}

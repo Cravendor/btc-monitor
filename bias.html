@@ -13,8 +13,8 @@
 const root='https://raw.githubusercontent.com/Cravendor/btc-monitor/main/';
 const names={'-2':'Sterk bearish','-1':'Zwak bearish','0':'Neutraal/gemengd','1':'Zwak bullish','2':'Sterk bullish'};
 const classes={'-2':'strongbear','-1':'bear','0':'neutral','1':'bull','2':'strongbull'};
-const monitors={'daily':'Bodem vs complacency','4h-warning':'4H Early Warning','market-risk':'Market Risk Alert'};
-const validPath=p=>typeof p==='string'&&/^reports\/\d{4}\/\d{2}\/\d{2}\/(daily|4h-warning|market-risk)-\d{6}\.json$/.test(p);
+const monitors={'daily':'Dagrapport · gecombineerde monitor','4h-warning':'4H · gecombineerde monitor','market-risk':'Market Risk Alert','psychology':'Psychologie en scenario’s'};
+const validPath=p=>typeof p==='string'&&/^reports\/\d{4}\/\d{2}\/\d{2}\/(daily|4h-warning|market-risk|psychology)-\d{6}\.json$/.test(p);
 let reports=[], rejected=0, selectedPath='';
 function render(){
  const cutoff=Date.now()-Number(document.querySelector('#days').value)*86400000;

@@ -12,6 +12,9 @@ on:
       - scripts/context_trend_dashboard.py
       - scripts/home_dashboard.py
       - scripts/market_scenarios.py
+      - scripts/price_roadmap.py
+      - scripts/roadmap_dashboard.py
+      - scripts/ath_reference.py
       - scripts/multi_timeframe_dashboard.py
       - scripts/history_coverage.py
       - scripts/signal_outcome_validation.py
@@ -65,7 +68,7 @@ jobs:
           mkdir _site
           cp index.html _site/btc-dashboard.html
           cp bias.html btc-methoden.html _site/
-          python -m scripts.home_dashboard data/latest.json _site/index.html
+          python -m scripts.home_dashboard data/latest.json _site/index.html --ath
           python - <<'PY'
           from datetime import datetime, timezone
           from scripts.context_trend_dashboard import build

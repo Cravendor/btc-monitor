@@ -1,8 +1,10 @@
 # Monitor archive protocol
 
-archive_protocol_version: 1
+archive_protocol_version: 2
 
-Deze koppeling is voorbereid om volledige nieuwe BTC-monitorrapporten in de openbare repository te bewaren. Publicatie van echte rapporten en activering in de monitors vereisen eerst expliciete gebruikerstoestemming voor deze openbare bestemming. Zonder die toestemming wordt geen rapport uit privéchat- of connectorcontext gepubliceerd. Zij bewaart wat de monitor rapporteert, niet een achteraf berekende technische score. De drie monitorplanningen en meldingsdrempels blijven behouden.
+De gebruiker heeft op 24 oktober 2026 expliciet toestemming gegeven om voortaan volledige nieuwe rapporten van de drie BTC-monitors openbaar op te slaan in Cravendor/btc-monitor. Deze koppeling bewaart wat de monitor rapporteert, niet een achteraf berekende technische score. Oude privérapporten worden niet automatisch geïmporteerd. De oorspronkelijke meldingsdrempels blijven behouden; de nieuwe taakindeling staat hieronder. Activering van ondersteunde rapportsoorten wacht op beschikbaarheid van het vereiste protocol en de code op main.
+
+De door de gebruiker gekozen nieuwe planning combineert de dagelijkse en 4H-analyse in één exacte lokale taak: 00:00/04:00/08:00/12:00/16:00/20:00 Europe/Amsterdam; de 08:00-uitvoering is de uitgebreide dagversie. De aparte psychologische taak draait om 12:00. De oude twee losse taken zijn gepauzeerd; de nieuws- en VIX-taak zijn behouden. Er zijn vier actieve monitors. De categorieën daily en 4h-warning duiden dus de uitvoermodus van dezelfde taak aan, niet twee actieve taken.
 
 ## Inzending door de monitor
 
@@ -22,7 +24,7 @@ Lees deze protocolversie op de standaardbranch voordat je schrijft. Gebruik de b
 
 `reports/inbox/<monitor>/YYYYMMDDTHHMMSSZ.json`
 
-`<monitor>` is `daily`, `4h-warning` of `market-risk`. De bestandsnaam volgt de werkelijke UTC-rapporttijd; diezelfde tijd staat met tijdzone onder `reported_at`. Publiceer uitsluitend algemene BTC-marktanalyse. Privégegevens, accountgegevens, persoonlijke posities/portefeuilles, sleutels en interne conversatie- of taak-ID’s horen niet in dit openbare archief. Als de tekst zulke gegevens bevat, archiveer die tekst niet. Vermeld een opslagprobleem alleen bij het al uitgebrachte rapport, niet als extra marktalert.
+`<monitor>` is `daily`, `4h-warning`, `market-risk` of `psychology`. De gecombineerde BTC-taak gebruikt daily voor haar uitgebreide dagrapport en 4h-warning voor andere uitvoeringen; de aparte psychologische taak gebruikt psychology. Dit zijn rapportsoorten, geen vier verschillende monitorplanningen. De bestandsnaam volgt de werkelijke UTC-rapporttijd; diezelfde tijd staat met tijdzone onder `reported_at`. Publiceer uitsluitend algemene BTC-marktanalyse. Privégegevens, accountgegevens, persoonlijke posities/portefeuilles, sleutels en interne conversatie- of taak-ID’s horen niet in dit openbare archief. Als de tekst zulke gegevens bevat, archiveer die tekst niet. Vermeld een opslagprobleem alleen bij het al uitgebrachte rapport, niet als extra marktalert.
 
 ```json
 {
@@ -50,4 +52,4 @@ De Pages-workflow reageert op het voltooien van de archiefworkflow; dit is nodig
 
 Het openbare archief begint leeg. Testvoorbeelden zijn fictief; er worden geen bestaande privérapporten in deze wijziging meegestuurd. Afgekorte of niet bij de betreffende run horende terugblikken mogen niet als volledige rapporten worden geïmporteerd.
 
-Automatisch schrijven door de drie monitors wordt pas na expliciete toestemming voor openbare rapportpublicatie en na merge in hun broninstructies geactiveerd. Een toekomstige echte monitorrun moet de hele keten nog aantonen: inzending → gedateerd record/index → leesbaar rapport op Pages. Een geslaagde code-/schematest vervangt dat acceptatiepunt niet.
+De broninstructies van de drie monitors mogen de verleende toestemming gebruiken. Rapportsoorten daily/4h-warning/market-risk zijn compatibel met versie 1; psychology vereist versie 2 op main. Vóór beschikbaarheid van het vereiste protocol wordt niets ingestuurd. Een toekomstige echte monitorrun moet de hele keten nog aantonen: inzending → gedateerd record/index → leesbaar rapport op Pages. Een geslaagde code-/schematest vervangt dat acceptatiepunt niet.

@@ -32,6 +32,22 @@ Vermeld voor ieder alternatief het concrete niveau waarop het wordt ontkracht en
 
 ## Rapportage en publicatie
 
+### Koersroute per tijdschaal
+
+De homepage gebruikt afzonderlijke native 4H-, 1D- en 1W-candles voor kort, middellang en macro. Dit zijn analysehorizons, geen voorspelde aankomstdata. Alleen de recente 24 aaneengesloten gesloten candles worden gebruikt; de 20-candle-range sluit de laatste beoordeelde candle uit. Elke horizon toont haar eigen ankers, richting, historie en laatste candle. Een mislukte hogere timeframe wordt niet door een lagere vervangen.
+
+Bovenliggende Fib-/rangezones worden vanaf de actuele Bitget-futuresprijs gerangschikt. Bij een veronderstelde afwijzing wordt de eerstvolgende en daaropvolgende lagere zone getoond. Die kunnen retracementzones, eerdere rangegrenzen of pivot-lows zijn; alleen een strict pivot-low met twee afgesloten candles links en rechts telt als bevestigde pivot. Projecties blijven als projectie gelabeld. Deze niveaus zijn geen onafhankelijk van elkaar gemeten steunbewijzen en geen gegarandeerde koersroute.
+
+Afstand naar een bovenliggende zone = (zone/huidige referentieprijs − 1) × 100. Terugval bij afwijzing = (lagere zone/geteste bovenliggende zone − 1) × 100. Beide bases staan expliciet in de tabel. Een afwijzingsscenario vereist een test en vervolgens een slot onder de zone op de betreffende timeframe; een nieuw slot erboven ontkracht dat afwijzingsscenario. Deze close-regel is een transparante heuristiek, niet een gekalibreerde voorspeller of persoonlijke stop-loss.
+
+### Eerdere ATH
+
+Een bullcyclus wordt niet uit de routekaart afgeleid. Terugkeer naar een eerdere ATH is alleen een te toetsen langetermijnscenario als de geïntegreerde analyse dat ondersteunt, geen verplicht eerste doel. Een high uit 24 weken of 20 candles wordt nooit een all-time high genoemd.
+
+Bij de Pages-build kan één begrensd gratis verzoek zonder API-key naar CoinGecko /coins/bitcoin worden uitgevoerd. Er wordt geen account, proefperiode, token of betaald alternatief geactiveerd. Asset-id, USD-prijs, USD-ATH, ATH-datum en bronactualiteit worden gecontroleerd. Bij onbereikbaarheid, een limiet, een inconsistent antwoord of een bron ouder dan één uur blijft ATH ONTBREEKT; overige pagina’s en bronmetingen blijven werken. Requests volgen geen redirects en hebben één poging, maximaal acht seconden en één MiB antwoord.
+
+Het gaat om een geaggregeerde BTC/USD-spotreferentie van CoinGecko, geen Bitget BTCUSDT-futuresniveau. Het benodigde herstel naar ATH = (ATH/actuele USD-prijs − 1) × 100; drawdown = (actuele USD-prijs/ATH − 1) × 100. Deze percentages zijn niet elkaars tegengestelde. Er wordt geen USD-ATH als exact USDT-doel in de andere route gemengd. De browser verbergt ook deze referentie na haar eigen vervaltijd. Bron: https://docs.coingecko.com/demo/reference/coins-id en https://docs.coingecko.com/docs/keyless-public-api .
+
 De monitors voegen de interpretatielaag alleen toe aan rapporten/alerts die volgens hun bestaande voorwaarden al worden uitgebracht. De nieuwsmonitor neemt de laag alleen mee als die relevant is voor een bestaande materiële gebeurtenis; geen extra alert door een fase- of tellingwijziging. Behoud de exacte verplichte slotstatus en onafhankelijke onderbouwing van de vijfpuntsbias.
 
 Het rapportarchief bewaart de daadwerkelijke nieuwe tekst, inclusief alternatieven en onzekerheid. Oude rapporten worden niet achteraf met nieuwe modellen uitgebreid. De homepage berekent Fibonacci, maar claimt geen automatisch bevestigde huidige psychologische fase of complete Elliott-telling; die interpretaties staan in de oorspronkelijke monitorrapportage als de gegevens ze toelaten.
