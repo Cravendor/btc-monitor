@@ -1,30 +1,48 @@
-# BTC Monitor — scope en openstaande onderdelen
+# BTC Monitor — current scope and open work
 
-Stand van de controle: 24 oktober 2026. Een werkende NAS-koppeling betekent niet dat het gehele analyseproject is afgerond.
+Checkpoint: 24 October 2026, Europe/Amsterdam. Start with [HANDOVER.md](HANDOVER.md)
+and [DECISIONS.md](DECISIONS.md). This replaces earlier same-day wording such as
+"this change/in review" that no longer described merged releases accurately.
+Current GitHub code, actual original data, PR states and run results override this
+checkpoint when they change.
 
-| Onderdeel | Stand | Afbakening |
+| Component | State at checkpoint | Practical limit |
 | --- | --- | --- |
-| NAS-metingen en publicatie | Werkend bevestigd | Meerdere opeenvolgende metingen; geen garantie op ononderbroken beschikbaarheid. |
-| Spot- en futuresjournal | Werkend bevestigd | Bewaart trades en controlebewijs; bestaande gap-markers blijven behouden. |
-| Gecontroleerde Bitget buy−sell-delta | Werkend bevestigd per interval | Publieke historie/candlevolumes gecontroleerd. Agressorzijde niet onafhankelijk geverifieerd; geen volledige marktbrede of cumulatieve CVD. |
-| Drie BTC-monitors | Opnieuw ingedeeld op 24 oktober | Eén gecombineerde taak op 00/04/08/12/16/20 uur Europe/Amsterdam, om 08 uur uitgebreide dagversie; aparte psychologische analyse om 12 uur; nieuwsmonitor blijft apart. Oude losse dag-/4H-taken gepauzeerd, historie behouden. Inclusief bestaande VIX-taak zijn vier monitors actief, onder de grens van vijf. De eerstvolgende echte uitvoeringen moeten de nieuwe keten aantonen. |
-| Multi-timeframe marktrichting | Bestaand | Technische prijs-/momentum-/volumeheuristiek, niet hetzelfde als geïntegreerde monitorbias of Wall Street-marktpsychologie. |
-| Historische signaaltijdlijn | Bestaand | Archiveert native modelsignalen en uitkomsten per model/timeframe, geen volledige monitorrapporten. |
-| Hoofdpagina met navigatie | Deze wijziging | De gepubliceerde root wordt overzicht/scenario’s; de bestaande marktmetingen staan op btc-dashboard.html. |
-| Prijsniveaus en scenario’s | Deze wijziging | Afgesloten 4H-candles; range van 20 voorafgaande candles, eenvoudige ATR14, expliciete voorwaarden, projecties en ongeldigverklaring. Ongekalibreerd. |
-| Volumevergelijking | Deze wijziging op hoofdpagina | Laatste candle tegenover 20 voorafgaande; laatste 6 afgesloten 4H-candles tegenover de 6 daarvoor. Geen volledige 7D/30D-volumetrend toegevoegd. |
-| Archief van echte monitorrapporten en geïntegreerde vijfpuntsbias | Koppeling in review; toestemming verleend | Inbox→ongewijzigde rapporttekst→gedateerd record/index→Pages is geïmplementeerd. Het openbare archief start leeg; tests gebruiken fictieve teksten. Publicatie van nieuwe rapporten is expliciet toegestaan op 24 oktober. Schrijven start pas als protocol/code op main staan; een toekomstige echte schrijfrun moet de automatische keten nog aantonen. Native signalen vervangen dit archief niet. |
-| GitHub-reserve | Werkende marktmeting aangetoond | Start afhankelijk van GitHub-planning. Geen NAS-CVD bij uitval. Echte uitvaltest niet uitgevoerd. |
-| Onafhankelijke agressor-CVD / absorptie- en distributiebevestiging | Open | Gecontroleerde Bitget buy/sell-velden bewijzen dit niet. |
-| Psychologie, Fibonacci en Elliott Wave | Aanvullende laag in review | De homepage berekent range-geankerde Fibonacci-niveaus. Monitors krijgen een expliciet protocol voor psychologische fasehypothesen en alternatieve Elliott-tellingen. Geen automatische bevestiging van een fase of complete golftelling; onvoldoende data blijft zichtbaar. |
-| Korte, middellange en macro-koersroute | Deze aanvulling | Gescheiden native 4H/1D/1W-routes met voorwaarden en procentuele terugval vanaf een geteste zone. Geen bullcyclus automatisch vastgesteld. ATH alleen via apart gecontroleerde CoinGecko BTC/USD-bron; beperkte Bitget-historie is geen lifetime-record. |
+| NAS publisher | Restored; successive NAS uploads and Pages publication verified | Concurrent upstream writes can still reject a push |
+| Continuous CVD / sessions / backfill | Existing implementation and earlier successful NAS operation | Verify each market/interval; no market-wide or independently verified aggressor-CVD claim |
+| Technical multi-timeframe signals/history | Implemented | Provisional price/volume rules; not integrated independent macro evidence |
+| Public meters | Two public routes with five directional states and combined interpretation, merged #60 | No private position state or calibrated probabilities |
+| Available-history route anchors | Merged #61; v4 records observed | Native day/week windows are not verified cycle extrema |
+| Cycle-top/running-low rule | Merged #62; 354-test CI success | Opt-in only; macro identification/context producer still absent |
+| Multi-year daily archive | OPEN #63; 2,122 source-validated closed UTC days, 2021-01-01 through 2026-10-23; 361-test CI success | Merge and first NAS metadata/workflow observation not yet confirmed |
+| Original report archive | Protocol v2, real 4h-warning and psychology records observed | Read current protocol, not old automation prompt version claims |
+| News integration | Separate contextual reports | No validated numerical news contribution to route scores |
+| Elliott/psychology | Rule checks/candidates and phase hypotheses | No complete proved current wave count or automatic psychological phase |
+| Forward result evaluation | General technical/scenario tooling exists | Dedicated two-route/25-combination evidence and enough 7/30/90-day follow-up still needed |
+| Visual QA | HTML/publication and tests checked | Recent full mobile/desktop browser interaction/visual check outstanding |
+| Quality & Improvement | Existing enabled monthly task, with quarter/year levels | No recorded QI run at the checkpoint; old prompt clauses need version-aware interpretation |
 
-## Scenario-methode
+## Next concrete sequence
 
-`closed_4h_range20_atr14_v1` is een transparante technische heuristiek, geen gekalibreerd voorspellend model. De beoordeelde candle staat buiten de 20-candle-referentierange. True range is max(high−low, |high−vorig slot|, |low−vorig slot|); ATR14 is het eenvoudige gemiddelde van de laatste 14 referentie-true-ranges, geen Wilder-gemiddelde. De aandachtsdrempels liggen 0,1 ATR buiten de range. Projecties liggen één en twee ATR voorbij de drempel; ze zijn geen beloofde koersdoelen. Ongeldigverklaring gebruikt een volgend 4H-slot aan de andere kant van de rangegrens met 0,1 ATR buffer.
+1. Resolve/verify PR #63 merge and first source-history metadata in NAS/Pages.
+2. Connect that source to the guarded macroanchor policy with justified historical
+   peak/phase selection. Do not activate merely because a data file exists.
+3. Improve independent news/macro contribution, Elliott/psychology support,
+   dedicated forward evaluation, browser QA and upload race resilience.
+4. Keep this checkpoint and HANDOVER current with evidence at every phase.
 
-De nieuwste snapshot wordt gebruikt; er wordt niet stilzwijgend teruggevallen op een oudere groene meting. De laatste afgesloten UTC-candle moet aanwezig zijn en de 21 benodigde candles moeten aansluitend en geldig zijn. Bij een ongeldige/verouderde bron worden geen scenario-niveaus gepubliceerd. De browser verbergt de niveaus wanneer de meting één uur oud wordt of een nieuw 4H-venster aanbreekt. Vernieuwen vraagt de nieuwste Pages-publicatie op.
+## Continuing constraints
 
-Prijsniveaus horen bij Bitget BTCUSDT USDT-futures, in USDT. Ze mogen niet zonder aanpassing als spotorders, USD-/europrijzen, persoonlijke stop-loss of positiegrootte worden gebruikt. Spot en futuresdelta worden afzonderlijk getoond en alleen bij bewijs voor hetzelfde venster. Ze bepalen geen koop-/verkoopadvies, automatische bias of psychologische fase.
+EUR 0; no paid services or trial activation. Bitget BTCUSDT USDT-FUTURES in USDT is
+the primary reference; USD spot comparisons stay separate. Missing values stay
+unavailable rather than becoming zero/neutral. Only appropriate closed candles
+confirm levels. Preserve original observations and versions, including older
+four-route internal records. General market context only; no personal trading
+positions or orders. Existing NAS tasks are documented in HANDOVER; do not
+recreate them based on an incomplete new chat.
 
-Budget blijft €0. Deze wijziging verandert geen collector, monitorplanning, alertdrempel of betaalde dienst. Publicatie gebeurt na review en merge via de bestaande Pages-workflow.
+Monitor schedules must be checked through their actual service. As read on
+24 October, psychology was scheduled for 08:00 from 25 October while an older
+archive paragraph still said 12:00. HANDOVER records that discrepancy without
+silently changing a schedule. Similar dated statements should never be treated
+as guaranteed live configuration.
