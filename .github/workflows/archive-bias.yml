@@ -1,5 +1,12 @@
 name: Archive BTC bias report
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'reports/inbox/**'
+      - scripts/archive_report.py
+      - scripts/monitor_archive.py
+      - .github/workflows/archive-bias.yml
   workflow_dispatch:
     inputs:
       report_json:
@@ -23,16 +30,27 @@ jobs:
           ref: ${{ github.event.repository.default_branch }}
           persist-credentials: true
       - name: Validate and archive supplied report
+        if: github.event_name == 'workflow_dispatch'
         env:
           REPORT_JSON: ${{ inputs.report_json }}
-        run: python3 scripts/archive_report.py
+        run: python3 -m scripts.archive_report
+      - name: Import original monitor reports and rebuild index
+        run: python3 -m scripts.monitor_archive
       - name: Commit archived report
         env:
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- reports/
-          git commit -m 'Archive verified BTC bias report'
+          git add -- reports/index.json
+          for year in reports/[0-9][0-9][0-9][0-9]; do
+            [ ! -d "$year" ] || git add -- "$year"
+          done
+          if git diff --cached --quiet; then
+            echo 'No archive changes.'
+            exit 0
+          fi
+          git commit -m 'Archive original BTC monitor reports'
           git pull --rebase origin "$DEFAULT_BRANCH"
           git push origin "HEAD:$DEFAULT_BRANCH"
+

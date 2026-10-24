@@ -1,9 +1,60 @@
-<!doctype html><html lang="nl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BTC Bias History</title><style>body{background:#0d1420;color:#e3ebf5;font:16px system-ui;max-width:1000px;margin:32px auto;padding:20px}a{color:#a9caff}p,small{color:#a8b8ce}table{width:100%;border-collapse:collapse}td,th{padding:12px;border-bottom:1px solid #334;text-align:left}.strongbear{color:#ff7575}.bear{color:#ffaf91}.neutral{color:#bbc4d1}.bull{color:#8fe1c0}.strongbull{color:#42d79e}select{padding:8px;background:#182334;color:white;border:1px solid #445}</style><h1>BTC Market Bias · Historie</h1><p>Gearchiveerde beoordelingen. Geen scores berekend uit ontbrekende data. Dag-, week- en maandfilters tonen werkelijk geregistreerde rapporten, geen voorspellingen.</p><a href="./">← Marktmonitor</a><p><label>Periode <select id="days"><option value="1">24 uur</option><option value="7" selected>7 dagen</option><option value="30">30 dagen</option><option value="3650">Alles</option></select></label></p><p id="state">Rapporten laden…</p><table><thead><tr><th>Rapporttijd</th><th>Monitor</th><th>4H–1D</th><th>7D</th><th>30D/macro</th></tr></thead><tbody id="rows"></tbody></table><script>
-const root='https://raw.githubusercontent.com/Cravendor/btc-monitor/main/reports/index.json';
-const names={'-2':'Sterk bearish','-1':'Zwak bearish','0':'Neutraal','1':'Zwak bullish','2':'Sterk bullish'};
+<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BTC — Monitorrapporten en bias</title>
+<style>
+*{box-sizing:border-box}body{background:#0d1420;color:#e3ebf5;font:16px/1.6 system-ui;max-width:1150px;margin:32px auto;padding:20px}a{color:#a9caff}p,small{color:#a8b8ce}h1{font-size:clamp(1.7rem,5vw,2.5rem)}.scroll{overflow:auto}table{width:100%;border-collapse:collapse}td,th{padding:12px;border-bottom:1px solid #334;text-align:left;min-width:110px}.strongbear{color:#ff7575}.bear{color:#ffaf91}.neutral{color:#bbc4d1}.bull{color:#8fe1c0}.strongbull{color:#42d79e}select,button{padding:9px 12px;background:#182334;color:white;border:1px solid #445;border-radius:8px;font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #f3b65d}article{margin-top:28px;padding:22px;background:#182334;border-radius:16px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:15px/1.7 system-ui;margin-top:18px}nav{display:flex;gap:14px;flex-wrap:wrap}.hidden,[hidden]{display:none!important}@media(max-width:600px){body{margin:0;padding:16px}article{padding:15px}td,th{padding:9px}}
+</style></head><body><nav><a href="index.html">← Overzicht en scenario’s</a><a href="btc-signal-history.html">Technische signaaltijdlijn</a></nav>
+<h1>BTC — Monitorrapporten en bias</h1>
+<p>De oorspronkelijke rapportteksten van je drie monitors. De tabel toont uitsluitend expliciet gerapporteerde vijfpuntsscores; ontbrekende scores worden niet achteraf berekend. Dit archief staat los van de technische modelsignalen.</p>
+<p><label>Periode <select id="days"><option value="1">24 uur</option><option value="7" selected>7 dagen</option><option value="30">30 dagen</option><option value="36500">Alles</option></select></label></p>
+<p id="state" role="status">Rapporten laden…</p>
+<div class="scroll" tabindex="0" role="region" aria-label="Monitorrapporten, horizontaal schuifbaar"><table><thead><tr><th>Rapporttijd</th><th>Monitor</th><th>4H–1D</th><th>7D</th><th>30D/macro</th><th>Rapport</th></tr></thead><tbody id="rows"></tbody></table></div>
+<article id="report" hidden><h2 id="report-title">Rapport</h2><p id="report-state" role="status"></p><pre id="report-text"></pre><a id="report-source" target="_blank" rel="noopener noreferrer">Origineel JSON-bestand</a></article>
+<p>Historische beoordelingen zijn geen actuele marktadviezen. Een opgeslagen rapport is niet opnieuw inhoudelijk gevalideerd. ChatGPT-bronverwijzingen zijn buiten het oorspronkelijke gesprek niet zelfstandig uit te lezen; ze blijven ongewijzigd in het JSON-bestand bewaard.</p>
+<script>
+const root='https://raw.githubusercontent.com/Cravendor/btc-monitor/main/';
+const names={'-2':'Sterk bearish','-1':'Zwak bearish','0':'Neutraal/gemengd','1':'Zwak bullish','2':'Sterk bullish'};
 const classes={'-2':'strongbear','-1':'bear','0':'neutral','1':'bull','2':'strongbull'};
-let reports=[];
-function render(){const cutoff=Date.now()-Number(document.querySelector('#days').value)*86400000;const filtered=reports.filter(r=>Date.parse(r.reported_at)>=cutoff).sort((a,b)=>Date.parse(b.reported_at)-Date.parse(a.reported_at));document.querySelector('#state').textContent=filtered.length+' rapport(en) in deze periode; ontbrekende rapporten zijn geen neutrale scores.';const tbody=document.querySelector('#rows');tbody.replaceChildren();for(const r of filtered){const tr=document.createElement('tr');const vals=[new Date(r.reported_at).toLocaleString('nl-NL',{timeZone:'Europe/Amsterdam'}),r.monitor,...['4h_1d','7d','30d_macro'].map(k=>r.bias[k])];for(const v of vals){const td=document.createElement('td');if(v&&typeof v==='object'){td.textContent=v.score===null?'ONVOLDOENDE DATA':names[String(v.score)];td.className=classes[String(v.score)]||'neutral';td.title=v.reason||'';}else td.textContent=v;tr.append(td)}tbody.append(tr)}}
+const monitors={'daily':'Bodem vs complacency','4h-warning':'4H Early Warning','market-risk':'Market Risk Alert'};
+const validPath=p=>typeof p==='string'&&/^reports\/\d{4}\/\d{2}\/\d{2}\/(daily|4h-warning|market-risk)-\d{6}\.json$/.test(p);
+let reports=[], rejected=0, selectedPath='';
+function render(){
+ const cutoff=Date.now()-Number(document.querySelector('#days').value)*86400000;
+ const filtered=reports.filter(r=>Date.parse(r.reported_at)>=cutoff).sort((a,b)=>Date.parse(b.reported_at)-Date.parse(a.reported_at));
+ document.querySelector('#state').textContent=filtered.length+' rapport(en) in deze periode. Ontbrekende rapporten zijn geen neutrale scores.'+(rejected?' '+rejected+' inzending(en) afgewezen of niet geïndexeerd.':'');
+ const tbody=document.querySelector('#rows');tbody.replaceChildren();
+ for(const r of filtered){
+  const tr=document.createElement('tr');
+  for(const text of [new Date(r.reported_at).toLocaleString('nl-NL',{timeZone:'Europe/Amsterdam'}),monitors[r.monitor]||r.monitor]){const td=document.createElement('td');td.textContent=text;tr.append(td)}
+  for(const key of ['4h_1d','7d','30d_macro']){
+   const v=r.bias?.[key],td=document.createElement('td');
+   if(v&&Number.isInteger(v.score)&&v.score>=-2&&v.score<=2){td.textContent=names[String(v.score)];td.className=classes[String(v.score)];}
+   else td.textContent=v?.status==='ONVOLDOENDE DATA'?'ONVOLDOENDE DATA':'NIET GERAPPORTEERD';
+   td.title=v?.reason||'';tr.append(td);
+  }
+  const td=document.createElement('td');
+  if(r.has_report_text&&validPath(r.path)){const button=document.createElement('button');button.textContent='Rapport lezen';button.addEventListener('click',()=>loadReport(r));td.append(button)}
+  else td.textContent='Alleen beoordeling';
+  tr.append(td);tbody.append(tr);
+ }
+}
+async function loadReport(entry){
+ if(!validPath(entry.path))return;
+ selectedPath=entry.path;document.querySelector('#report').hidden=false;
+ document.querySelector('#report-title').textContent=(monitors[entry.monitor]||entry.monitor)+' · '+new Date(entry.reported_at).toLocaleString('nl-NL',{timeZone:'Europe/Amsterdam'});
+ document.querySelector('#report-state').textContent='Oorspronkelijke rapporttekst laden…';
+ document.querySelector('#report-text').textContent='';document.querySelector('#report-source').removeAttribute('href');
+ try{
+  const response=await fetch(root+entry.path,{cache:'no-store'});if(!response.ok)throw Error('HTTP '+response.status);
+  const data=await response.json();
+  if(data.monitor!==entry.monitor||data.reported_at!==entry.reported_at||typeof data.report_text!=='string'||data.report_text.length>60000)throw Error('Rapportidentiteit ongeldig');
+  const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(data.report_text));
+  const hash=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');
+  if(hash!==entry.content_sha256||hash!==data.content_sha256)throw Error('Tekstcontrole mislukt');
+  if(selectedPath!==entry.path)return;
+  document.querySelector('#report-text').textContent=data.report_text.replace(/genui[\s\S]*?/g,'[ChatGPT-bronverwijzing]');
+  document.querySelector('#report-state').textContent='Oorspronkelijke tekst · integriteitscontrole geslaagd · geen nieuwe marktbeoordeling';
+  document.querySelector('#report-source').href='https://github.com/Cravendor/btc-monitor/blob/main/'+entry.path;
+ }catch(e){if(selectedPath===entry.path)document.querySelector('#report-state').textContent='Rapport niet uitleesbaar: '+e.message;}
+}
 document.querySelector('#days').addEventListener('change',render);
-fetch(root,{cache:'no-store'}).then(r=>{if(r.status===404)return {reports:[]};if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(x=>{reports=Array.isArray(x.reports)?x.reports:[];render()}).catch(e=>document.querySelector('#state').textContent='Archief niet bereikbaar: '+e.message);
-</script></html>
+fetch(root+'reports/index.json',{cache:'no-store'}).then(r=>{if(r.status===404)return {reports:[]};if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(x=>{reports=Array.isArray(x.reports)?x.reports:[];rejected=Number.isInteger(x.rejected_count)?x.rejected_count:0;render()}).catch(e=>document.querySelector('#state').textContent='Archief niet bereikbaar: '+e.message);
+</script></body></html>

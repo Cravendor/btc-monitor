@@ -4,7 +4,7 @@ from pathlib import Path
 import unittest
 
 from scripts.home_dashboard import render
-from scripts.market_scenarios import STEP, build_scenarios, iso
+from scripts.market_scenarios import STEP, build_scenarios, fibonacci_range, iso
 
 
 def fixture():
@@ -24,6 +24,25 @@ def fixture():
 
 
 class MarketScenarioTests(unittest.TestCase):
+    def test_fibonacci_direction_anchor_order_and_same_candle_ambiguity(self):
+        def row(t, high, low): return (t, 100, high, low, 100, 10)
+        up = fibonacci_range([row(0, 120, 80), row(STEP, 180, 100)])
+        self.assertEqual(up['direction'], 'up')
+        levels = {x['ratio']: x['price'] for x in up['retracements']}
+        self.assertEqual(levels[.5], 130)
+        self.assertEqual((levels[0], levels[1]), (180, 80))
+        self.assertAlmostEqual(levels[.618], 118.2)
+        self.assertAlmostEqual(levels[.786], 101.4)
+        self.assertAlmostEqual(up['extensions'][1]['price'], 241.8)
+        down = fibonacci_range([row(0, 180, 100), row(STEP, 120, 80)])
+        self.assertEqual(down['direction'], 'down')
+        levels_down = {x['ratio']: x['price'] for x in down['retracements']}
+        self.assertAlmostEqual(levels_down[.618], 141.8)
+        self.assertEqual((levels_down[0], levels_down[1]), (80, 180))
+        self.assertAlmostEqual(down['extensions'][1]['price'], 18.2)
+        ambiguous = fibonacci_range([row(0, 180, 80), row(STEP, 120, 100)])
+        self.assertEqual(ambiguous['status'], 'unavailable')
+
     def test_exact_range_atr_projection_and_volume_without_lookahead(self):
         feed, now = fixture()
         last = feed['measurements'][0]['metrics']['candles_4h']['data']['candles'][-1]
@@ -129,6 +148,13 @@ class MarketScenarioTests(unittest.TestCase):
         self.assertIn('python -m scripts.home_dashboard data/latest.json _site/index.html', workflow)
         self.assertIn('- scripts/market_scenarios.py', workflow)
         self.assertIn('href="index.html"', (root/'index.html').read_text())
+        self.assertIn('btc-methoden.html', workflow)
+        self.assertIn('href="btc-methoden.html"', render(*fixture()))
+        methods = (root/'btc-methoden.html').read_text()
+        for text in ('0%', '23,6%', '38,2%', '50%', '61,8%', '78,6%', '100%',
+                     '127,2%', '161,8%', 'geen Fibonacci-ratio', 'geen actuele BTC-koers',
+                     'geen werkelijke prijzen', 'geen vaste schaal', 'geen Fibonacci-doelen'):
+            self.assertIn(text, methods)
 
 
 if __name__ == '__main__':

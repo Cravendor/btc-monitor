@@ -18,11 +18,34 @@ def price(value):
 def render(feed, as_of):
     result = build_scenarios(feed, as_of)
     ready = result['status'] == 'ready'
+    interpretation = '<p>Fibonacci-niveaus wachten op geldige koersdata. Psychologische fasen en golftellingen worden niet ingevuld bij gebrek aan onderbouwing.</p>'
     content = '<p>Geen actuele, volledige 4H-berekening beschikbaar. Er worden geen oude niveaus als actueel getoond.</p>'
     freshness = '<span class="badge">ONVOLDOENDE DATA</span>'
     price_line = 'Prijsniveaus wachten op geldige data'
     if ready:
         r = result
+        fib = r['fibonacci']
+        fib_text = '<p>Geen Fibonacci-berekening: de volgorde van de range-extremen is niet vast te stellen.</p>'
+        if fib['status'] == 'calculated':
+            fib_rows = ''.join('<tr><td>' + format(x['ratio']*100, '.1f') + '%</td><td>' + price(x['price']) + '</td><td>' + escape(x['role']) + '</td></tr>' for x in fib['retracements'])
+            extension = ' · '.join(format(x['ratio'], '.3f') + '×: ' + price(x['price']) for x in fib['extensions'] if x['ratio'] <= 1.618)
+            distant = ' · '.join(format(x['ratio'], '.3f') + '×: ' + price(x['price']) for x in fib['extensions'] if x['ratio'] > 1.618)
+            fib_text = ('<p>Geselecteerde referentiebeweging: ' + ('laag → hoog' if fib['direction'] == 'up' else 'hoog → laag') +
+                        '. De uiteinden zijn de range-extremen van de 20 referentiecandles, geen bevestigde Elliott-golf.</p>' +
+                        '<p>Low ' + price(fib['low']) + ' · ankercandle vanaf <time>' + escape(fib['low_at']) + '</time><br>High ' +
+                        price(fib['high']) + ' · ankercandle vanaf <time>' + escape(fib['high_at']) + '</time>. De exacte ticktijd van het extremum is hiermee niet vastgesteld.</p>' +
+                        '<div style="overflow:auto"><table><thead><tr><th>Terugname</th><th>Aandachtsniveau</th><th>Functie</th></tr></thead><tbody>' + fib_rows +
+                        '</tbody></table></div><p>Tweepunts-extensies voorbij het eerdere extremum: ' + (extension or 'ONTBREEKT') +
+                        '.</p><details><summary>Verdere extensies: 261,8% en 423,6%</summary><p>' +
+                        (distant or 'Geen positieve projectieniveaus voor deze richting.') +
+                        '.</p><p>Verdere extrapolaties, geen vastgestelde winstdoelen. Er is meer toekomstige prijsontwikkeling nodig om deze scenario’s te ondersteunen.</p></details>' +
+                        '<p>Lineaire schaal. 50% is een gebruikelijk halveringsniveau, geen Fibonacci-ratio. Dit zijn berekende zones; een koersreactie is niet gegarandeerd.</p>')
+        interpretation = ('<div id="interpretation-levels">' + fib_text + '</div><div class="context">' +
+                          '<div><h3>Wall Street-psychologie</h3><p>Herstel: ongeloof → hoop → optimisme. Oververhitting: overtuiging → euforie. Terugval: complacency → angst → mogelijke capitulatie.</p>' +
+                          '<p>Dit is een begrippenkader, geen vastgestelde huidige fase. De monitors toetsen fasehypothesen met argumenten vóór, tegen en ontbrekende sentimentgegevens.</p></div>' +
+                          '<div><h3>Elliott Wave</h3><p>De monitors bespreken waar mogelijk een hoofdtelling en een alternatief, met ankerpunten, timeframe en ongeldigverklaring.</p>' +
+                          '<p>Er is hier geen automatisch bevestigde golftelling. Zonder voldoende koersstructuur en subgolven blijft de telling voorlopig of ontbreekt zij.</p></div></div>' +
+                          '<p><a href="bias.html">Lees de psychologische hypothesen en golftellingen in de oorspronkelijke monitorrapporten →</a>. Oudere rapporten worden niet achteraf aangevuld.</p>')
         states = {'bullish_breakout': 'Laatste 4H-slot boven de uitbraakdrempel',
                   'bearish_breakdown': 'Laatste 4H-slot onder de neerwaartse drempel',
                   'range': 'Laatste 4H-slot binnen de aandachtsrange'}
@@ -86,6 +109,7 @@ def render(feed, as_of):
 main{max-width:1180px;margin:auto;padding:30px 24px 60px}a{color:#a9ccff}a:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:5px}
 .eyebrow{color:var(--accent);font-size:.78rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase}h1{font-size:clamp(2rem,5vw,3.4rem);letter-spacing:-.04em;line-height:1.1;margin:.6em 0 .4em}h2{font-size:1.45rem;margin:0 0 .4rem}h3{font-size:1.1rem;margin:0 0 .7rem}p{color:var(--muted);margin:.7rem 0}strong,b{color:var(--text)}
 .hero{display:flex;justify-content:space-between;align-items:center;gap:24px;margin:10px 0 28px}.quote{text-align:right}.quote strong{font-size:1.65rem;display:block}.quote small{color:var(--muted)}.badge{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:5px 12px;font-size:.8rem;margin-bottom:12px}.good{color:#9ee7c4}
+table{width:100%;border-collapse:collapse}th,td{padding:8px;text-align:left;border-bottom:1px solid var(--line)}
 .links,.scenario-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.links{margin-bottom:36px}.link-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;color:var(--text);text-decoration:none;transition:border-color .15s}.link-card:hover{border-color:var(--accent)}.link-card span{color:var(--accent);font-size:.8rem}.link-card h2{font-size:1.15rem;margin-top:10px}.link-card p{font-size:.9rem;margin:8px 0 0}
 .panel{border:1px solid var(--line);border-radius:20px;padding:26px;background:#101b2c}.state{color:var(--accent);font-weight:600}.levels{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}.levels>div{background:var(--card);border-radius:12px;padding:18px}.levels small{display:block;color:var(--muted)}.levels strong{display:block;font-size:1.5rem;margin-top:5px}.scenario{background:var(--card);border-top:3px solid #7893b6;border-radius:12px;padding:20px}.bullish_breakout{border-top-color:#83d5af}.bearish_breakdown{border-top-color:#e99a95}.tag{display:inline-block;font-size:.73rem;color:var(--accent);margin-bottom:10px}.muted{color:var(--muted)}.condition{min-height:70px}dt{color:var(--muted);font-size:.78rem}dd{margin:3px 0 14px;font-weight:600}.scenario p{font-size:.9rem}.context{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:25px 0 15px}.context p,.context li{font-size:.9rem}.context ul{padding-left:18px}details{border-top:1px solid var(--line);padding:18px 0}summary{cursor:pointer;color:#bfd6f6}.meta{font-size:.8rem;overflow-wrap:anywhere}footer{margin-top:25px;font-size:.85rem}button{background:var(--card);border:1px solid var(--line);color:var(--text);padding:9px 16px;border-radius:10px;cursor:pointer}.hidden,[hidden]{display:none!important}
 @media(max-width:780px){.links,.scenario-grid{grid-template-columns:1fr}.condition{min-height:0}.hero{display:block}.quote{text-align:left;margin-top:20px}.context,.levels{grid-template-columns:1fr}main{padding:20px 16px 40px}.panel{padding:18px}.link-card{padding:18px}}
@@ -100,10 +124,11 @@ main{max-width:1180px;margin:auto;padding:30px 24px 60px}a{color:#a9ccff}a:focus
 ''' + freshness + '''<h2>Op welke prijsactie letten?</h2><p>Drie voorwaardelijke 4H-scenario’s. Een intraperiode-prijsdoorbraak telt niet als bevestigd 4H-slot.</p>
 <p id="stale-warning" role="status" hidden>Deze berekening is verouderd of er is een nieuw 4H-venster. Niveaus zijn verborgen. Vernieuw voor de laatste publicatie.</p>
 ''' + content + '''<button type="button" onclick="location.reload()">Vernieuwen</button></section>
+<section class="panel" style="margin-top:24px"><h2>Psychologie, Fibonacci en Elliott Wave</h2><p>Een interpretatielaag naast de meetgegevens. Fibonacci is een berekening; marktpsychologie en golftellingen zijn te toetsen hypothesen.</p><p><a class="badge" href="btc-methoden.html">Uitleg: Fibonacci, marktpsychologie en Elliott Wave →</a></p>''' + interpretation + '''</section>
 <footer><p>De niveaus helpen bepalen wanneer je opnieuw kijkt. Het zijn geen koop-/verkooporders, stop-lossadvies of persoonlijke positiegrootte. Scenario’s kunnen mislukken; er worden geen kansen verzonnen.</p>
 <p>Bron: <a href="https://github.com/Cravendor/btc-monitor/blob/main/data/latest.json">marktmetingen</a> · <a href="https://www.bitget.com/docs/catalog/classic-contract-market/classic-contract-market">Bitget-candledefinitie</a>. De NAS verzamelt elk halfuur; de werkelijke meettijd is leidend.</p>
 <p>Technische signalen gebruiken koers, momentum en volume. Ze bepalen geen Wall Street-psychologiefase zoals euforie, angst of capitulatie.</p>
-<p><a href="bias.html">Archief van monitorbeoordelingen</a> — automatische opslag van de monitorrapporten is nog niet gekoppeld; de technische signaaltijdlijn is een apart archief.</p></footer>
+<p><a href="bias.html">Monitorrapporten en vijfpuntsbias →</a> — oorspronkelijke rapportteksten en expliciete beoordelingen. Dit archief is apart van de technische signaaltijdlijn; niet-gerapporteerde scores worden niet ingevuld.</p></footer>
 </main><script>
 function refreshFreshness(){
   const section=document.querySelector('#scenarios');
@@ -111,6 +136,7 @@ function refreshFreshness(){
   if(!Number.isFinite(expiry))return;
   if(Date.now()>=expiry){
     const levels=document.querySelector('#action-levels');if(levels)levels.hidden=true;
+    const interpretation=document.querySelector('#interpretation-levels');if(interpretation)interpretation.hidden=true;
     document.querySelector('#stale-warning').hidden=false;
     const badge=document.querySelector('.badge');badge.textContent='VEROUDERD';badge.classList.remove('good');
     document.querySelector('.quote strong').textContent='Meting verouderd';

@@ -41,6 +41,8 @@ jobs:
         run: |
           mkdir -p output
           cp index.html output/btc-dashboard.html
+          cp bias.html btc-methoden.html output/
+          python -m scripts.monitor_archive
           python -m scripts.home_dashboard data/latest.json output/index.html
           python - <<'PY'
           from datetime import datetime, timezone

@@ -11,6 +11,12 @@ MONITORS = {"daily", "4h-warning", "market-risk"}
 HORIZONS = ("4h_1d", "7d", "30d_macro")
 
 def validate(obj):
+    if isinstance(obj, dict) and obj.get("schema_version") == 2:
+        if __package__:
+            from .monitor_archive import validate_record
+        else:
+            from monitor_archive import validate_record
+        return validate_record(obj)
     if not isinstance(obj, dict) or obj.get("schema_version") != 1:
         raise ValueError("schema_version must equal 1")
     if obj.get("monitor") not in MONITORS:
@@ -53,13 +59,11 @@ def main():
         raise ValueError("Report already exists; never overwrite historical results")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(obj, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    files = sorted(pathlib.Path("reports").glob("20??/??/??/*.json"))
-    index = []
-    for file in files:
-        report = json.loads(file.read_text(encoding="utf-8"))
-        validate(report)
-        index.append({"path": str(file), "monitor": report["monitor"], "reported_at": report["reported_at"], "bias": report["bias"]})
-    pathlib.Path("reports/index.json").write_text(json.dumps({"schema_version": 1, "reports": index}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if __package__:
+        from .monitor_archive import import_inbox
+    else:
+        from monitor_archive import import_inbox
+    import_inbox()
     print("Saved", path)
 
 if __name__ == "__main__":
