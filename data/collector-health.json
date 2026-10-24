@@ -1,8 +1,8 @@
 {
   "schema_version": 3,
   "coverage_24h": {
-    "window_start": "2026-10-23T19:40:11.691314+00:00",
-    "window_end": "2026-10-24T19:40:11.691314+00:00",
+    "window_start": "2026-10-23T19:49:31.118208+00:00",
+    "window_end": "2026-10-24T19:49:31.118208+00:00",
     "first_retained_at": "2026-10-22T15:34:27.047744+00:00",
     "interval_seconds": 1800,
     "expected_snapshots": 48,
@@ -15,9 +15,17 @@
     "max_window_gap_seconds": 11105,
     "status": "gaps_detected"
   },
-  "checked_at": "2026-10-24T19:40:11.691314+00:00",
+  "checked_at": "2026-10-24T19:49:31.118208+00:00",
   "last_snapshot_at": "2026-10-24T19:40:10.344993+00:00",
-  "age_seconds": 1,
+  "age_seconds": 561,
   "max_age_seconds": 3600,
-  "status": "current"
+  "status": "current",
+  "recovery": {
+    "attempted": false,
+    "event": "schedule",
+    "before_status": "current",
+    "scope": "periodic_market_snapshot_only",
+    "outcome": "not_needed",
+    "after_status": "current"
+  }
 }
