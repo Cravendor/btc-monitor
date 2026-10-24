@@ -1,5 +1,14 @@
 # BTC-monitor — NAS-metingen elk halfuur
 
+## Verder werken / nieuwe agentsessie
+
+Lees eerst [AGENTS.md](AGENTS.md), het [overdrachtsdossier](docs/HANDOVER.md),
+[projectstatus](docs/PROJECT_STATUS.md) en [gemaakte keuzes](docs/DECISIONS.md).
+Daar staan ook bestaande NAS-taken, herstelwerk, open PRs en wat nog niet actief
+is. Controleer daarna de actuele code, data en runs: een oude chat of geplande
+functie bewijst geen live implementatie. Oudere installatie- en methodepassages
+hieronder hebben hun eigen scope en worden door de actuele overdracht geduid.
+
 ## Starten op GitHub
 
 1. Maak een lege **Public** repository, bijvoorbeeld `btc-monitor`. De code en marktdata worden openbaar. Standaard GitHub-hosted runners zijn gratis voor openbare repositories; private repositories hebben planlimieten.
