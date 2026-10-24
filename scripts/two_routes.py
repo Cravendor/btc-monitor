@@ -35,8 +35,11 @@ def assess(route):
     if route.get('status') != 'ready' or route.get('reference_price') is None:
         return missing
     historical = route.get('route_anchors') or {}
+    explicit_cycle = route.get('anchor_selection_policy')=='explicit_cycle'
+    if explicit_cycle and historical.get('status')!='calculated':
+        return dict(missing,context=historical.get('reason','Cyclusankers ontbreken.'))
     use_history = historical.get('status') == 'calculated'
-    version = ANCHOR_VERSION if 'route_anchors' in route else VERSION
+    version = 'two_routes_cycle_zone_context_v3' if explicit_cycle else ANCHOR_VERSION if 'route_anchors' in route else VERSION
     fib = historical if use_history else (route.get('fibonacci') or {})
     if fib.get('status') != 'calculated':
         missing['context'] = 'Geen controleerbare high/low-ankers beschikbaar.'
@@ -112,7 +115,7 @@ def assess(route):
         confirmation_closed_at=assessment['confirmation_closed_at'],
         source_family='bitget_price_volume', independent_evidence=False,
         news_status='not_integrated', news_reason='Nieuws wordt apart getoond; geen gevalideerde nieuwsscore in deze routebeoordeling.',
-        anchor_scope='available_history_high_then_later_low' if use_history else 'prior20_range_not_confirmed_cycle_ath_or_low',
+        anchor_scope='explicit_cycle_bear_year' if explicit_cycle else 'available_history_high_then_later_low' if use_history else 'prior20_range_not_confirmed_cycle_ath_or_low',
         anchor_quality=historical if 'route_anchors' in route else None, position_tracked=False,
         probability=None)
     if 'route_anchors' not in route:
@@ -134,6 +137,8 @@ def render_meter(route, mode):
         name = 'Bullroute' if item['id']=='bull' else 'Bearroute'
         parts.append('<details><summary>'+name+' · '+esc(item['label'])+'</summary>'+svg(item['score']/2,name+': '+item['label'])+'<div class="dial-labels"><span>Sterk SELL</span><span>Neutraal</span><span>Sterk BUY</span></div><p class="meter-reading">'+esc(item['label'])+'</p>')
         anchor_note=('Kandidaat-top en latere low uit '+str(historical.get('history_candles'))+' afgesloten '+route['timeframe'].upper()+'-candles; geen bewezen cyclus-ATH of definitieve bodem.' if data['anchor_scope']=='available_history_high_then_later_low' else 'High/low van 20 voorafgaande candles; cyclus-ATH/bodem nog niet bevestigd.')
+        if data['anchor_scope']=='explicit_cycle_bear_year':
+            anchor_note='Cyclus '+str(historical['cycle_id'])+'; bullbodem uit bearjaar '+str(historical['bear_year'])+'; beartop sinds '+str(historical['cycle_start'])+'. Zelfde macroankers voor swing en positie.'
         parts.append('<p>Beginprijs '+price(item['origin_price'])+' · <time>'+esc(item['origin_at'])+'</time>. '+esc(anchor_note)+'</p><p>Zonecheck '+price(item['selected_zone'])+' · '+esc(item['reaction'])+'.</p><p>'+esc(item['reason'])+'</p>')
         if item['invalidated_on_native_close']:
             parts.append('<p>Route ongeldig op dag-/weekslot: opnieuw beoordelen.</p>')
@@ -151,9 +156,11 @@ def render_meter(route, mode):
                 parts.append('<li class="path-zone"><strong>'+price(point['price'])+'</strong><span>'+label+(' · Volgende aandacht' if attention else '')+'</span></li>')
         parts.append('</ol><p>Ongeldigverklaringsgrens: '+price(item['invalidation_price'])+' op '+esc(route['timeframe'].upper())+'-slot. Positie op dit pad bewijst geen eerdere activatie; geen aankomstdatums.</p></details>')
     if historical:
+        if historical.get('anchor_version_id'):
+            parts.append('<p>Ankerversie '+esc(historical['anchor_version_id'])+'</p>')
         parts.append('<p>Ankercontrole: '+esc(historical.get('reason',''))+'</p>')
         if historical.get('status')=='calculated':
-            parts.append('<p>Historiedekking: '+esc(historical['history_from'])+' tot '+esc(historical['history_to'])+'. De dag-/weekcandle voor bevestiging is uitgesloten van de ankerselectie. Top aan begin bronvenster: '+('ja · eerdere toppen onbekend' if historical['high_at_history_boundary'] else 'nee')+'.</p>')
+            parts.append('<p>Historiedekking: '+esc(historical['history_from'])+' tot '+esc(historical['history_to'])+('. Alleen afgesloten dagcandles binnen de gekozen cyclus- en jaargrenzen.' if data['anchor_scope']=='explicit_cycle_bear_year' else '. De dag-/weekcandle voor bevestiging is uitgesloten van de ankerselectie.')+' Top aan begin bronvenster: '+('ja · eerdere toppen onbekend' if historical['high_at_history_boundary'] else 'nee')+'.</p>')
     parts.append('<details><summary>Uitleg en onderbouwing</summary><h4>25 combinaties en kwaliteitscontrole</h4><p>BUY betekent opwaartse ondersteuning; SELL neerwaartse ondersteuning, bij beide routes. Neutraal volgt uit geen bevestigde voorkeur, nooit uit ontbrekende data. Gedeelde brondata vormen geen dubbel onafhankelijk bewijs.</p><div style="overflow:auto"><table><caption>Rijen: bullroute · kolommen: bearroute</caption><thead><tr><th>Bull / Bear</th>'+''.join('<th>'+esc(LABELS[b])+'</th>' for b in LABELS)+'</tr></thead><tbody>')
     for bull in LABELS:
         parts.append('<tr><th>'+esc(LABELS[bull])+'</th>'+''.join('<td>'+esc(combination(bull,bear)['label'])+'</td>' for bear in LABELS)+'</tr>')

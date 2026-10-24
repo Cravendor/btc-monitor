@@ -294,3 +294,49 @@ ambiguity, no lookahead to the confirmation candle, later equal highs, gaps,
 truncated coverage flags, evidence tampering and v3 compatibility. Browser
 visual QA remains open. Wider source history and independently justified cycle
 selection are still future work; this change does not close those limitations.
+
+
+## Explicit next-cycle rule contract (opt-in v5)
+
+The user has chosen to retain the current observed-history anchors. Their values
+and v4 output remain unchanged when cycle_anchor_context is absent. No new API
+request, file-based override, calendar-year rollover or halving inference
+activates the opt-in contract.
+
+When a future producer supplies cycle_anchor_context inside the original market
+record, both horizons evaluate the same validated daily reference:
+
+- Bull origin: minimum low during the explicitly selected latest or ongoing
+  bear year, January 1 UTC through year end or the last closed day as applicable.
+- Bear origin: maximum high since the explicitly recorded current cycle start
+  through the last closed day. The bull low need not follow the bear high.
+- Swing and position share identical macroanchor values, timestamps and version;
+  their existing reaction timeframes and volatility buffers may differ.
+- A new extreme changes anchor_version_id. Mere collection-time changes do not.
+  Original snapshot versions remain immutable.
+
+Required context fields: schema_version=1, status=active, nonempty cycle_id,
+classification_basis explaining the cycle/bear-year selection, cycle_start at
+UTC midnight, bear_year, and source. previous_cycle_id, when supplied, must not
+match cycle_id. Source must explicitly identify bitget/BTCUSDT/USDT-FUTURES,
+status=ok, interval=1d, closed_only=true, observed_at less than one hour old, and
+candles with open_time_ms and valid open/high/low/close values. Every day of the
+requested cycle and bear-year windows must be present. Duplicates, open/future
+candles, bad timestamps, malformed prices, other markets and missing coverage
+make the cycle reference unavailable. No short-range fallback is allowed after
+this policy is requested. Missing data are never a neutral reading.
+
+No cycle/bear-year classification or longer-history collector is installed by
+this change. Those remain prerequisites before activation: the current 89 daily
+candles cannot cover a multi-year cycle. The hook is in build_swing_scenarios,
+so archival freeze and public rebuilding use the same supplied original context.
+Do not patch old records or infer missing context from a later config file.
+The v5 frozen record contains the original context and is recomputed during
+validation. Earlier v3/v4 assessments retain their original rules.
+
+Quality gates: test whole-window selection, shared horizon anchors, calendar
+rollover without cycle change, new-extreme versioning, current-output stability,
+source identity/freshness, incomplete intervals, missing evidence, rehashed
+anchor tampering and suppression of unsupported route readings. With this
+change all 350 tests pass. Visual QA and actual next-cycle activation remain
+open; this is tested preparation rather than autonomous cycle discovery.
