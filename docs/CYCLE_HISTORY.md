@@ -45,6 +45,10 @@ adapter still needs an explicit prior cycle peak, phase rationale, full relevant
 coverage and a fresh source context before activating those macroanchors. Current
 observed-history routes are unchanged.
 
+The subsequent [cycle-context adapter](CYCLE_CONTEXT.md) implements that read-only
+connection with explicit draft/active configuration and archived review evidence.
+Its shipped draft does not replace the current route anchors.
+
 Validation: 361 unit tests pass, including exact range coverage, page-budget
 resume, no duplicate downloads when complete, malformed/gapped/error responses,
 revision conflicts, cache tampering, open-day exclusion and next-day missingness.
