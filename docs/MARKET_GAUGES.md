@@ -173,6 +173,30 @@ de inhouds-ID ook of de SHB-beoordeling bij de vastgelegde invoer en regel past.
 
 ## Quality & Improvement
 
+### Visueel scenariopad
+
+Bij de geselecteerde SHB-route staat een verticaal pad op prijsvolgorde, ook
+voor bearish routes (dalend). Het toont bevestigingszone, tussenliggende
+Fibonacci-zones, doelzones en een afzonderlijke marker voor de actuele koers
+met bronmoment. De ongeldigverklaringsgrens staat apart, niet als routebestemming.
+Dit is geen tijd-as met verwachte aankomstdatums. Afstanden op het scherm zijn
+gelijke stappen, geen schaal voor tijd, kans of prijsafstand.
+
+Het volgende aandachtspunt is de dichtstbijzijnde zone binnen de bestaande
+modelbuffer, anders de eerstvolgende zone in de scenariorichting. Samenvallende
+zones worden gecombineerd. Voorbij alle zones: opnieuw beoordelen, geen nieuwe
+doelen extrapoleren. Bij ongeldigverklaring op native slotbasis vervalt het
+volgende aandachtspunt; een actuele koers voorbij de grens vraagt al aandacht
+voor slotbevestiging en het alternatief. De oorspronkelijke SHB-regels veranderen niet.
+
+“Koers voorbij” vergelijkt alleen het huidige prijsniveau met een zone: geen
+bewijs van een historische aanraking, succesvolle doorbraak of gevolgde trade.
+Selectie zet geen oorspronkelijke route vast; nieuwe metingen kunnen ankers
+en zones veranderen. Verlopen brondata verbergen het gehele pad, ook na
+scenariowisseling. Controleer bij elke zone richting, SHB en gesloten-candlereactie.
+
+### Geplande controles
+
 Tijdens verwerking: bronidentiteit, actualiteit, native sluiting, gaten,
 duplicaten, getalvaliditeit, ankers en inhouds-ID toetsen. Alle scenario’s en
 hun beperkingen moeten zichtbaar blijven. Tijdens de geplande controles:
