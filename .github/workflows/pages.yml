@@ -15,6 +15,7 @@ on:
       - scripts/report_context.py
       - scripts/shb_dashboard.py
       - scripts/scenario_actions.py
+      - scripts/scenario_path.py
       - scripts/swing_scenarios.py
       - scripts/swing_dashboard.py
       - scripts/elliott_rules.py

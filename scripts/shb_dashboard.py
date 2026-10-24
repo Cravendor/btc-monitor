@@ -48,6 +48,8 @@ def render_meter(route,mode):
             '<div class="dial-labels"><span>SELL</span><span>HOLD / WAIT</span><span>BUY</span></div>'+
             '<p class="meter-reading" role="status">'+reading+'</p><p class="shb-name">'+escape(description)+'</p>')
         if scenario and available:
+            from .scenario_path import render_path
+            parts.append(render_path(route,scenario))
             parts.append('<dl class="shb-levels"><dt>Bevestiging</dt><dd>'+condition(scenario['condition'])+'</dd><dt>Eerste zone → verdere getoonde route</dt><dd>'+price(scenario['targets'][0]['price'])+' ('+('rangegrens' if scenario['targets'][0]['kind']=='range_boundary' else 'ATR-projectie')+') → '+price(scenario['targets'][-1]['price'])+' ('+('rangegrens' if scenario['targets'][-1]['kind']=='range_boundary' else 'ATR-projectie')+')'+'</dd><dt>Tussenliggende Fib-aandachtszones</dt><dd>'+(' · '.join(price(x['price'])+' ('+('retracement' if x['kind']=='fib_retracement' else 'extensie')+' '+format(x['ratio']*100,'.1f')+'%)' for x in scenario['fibonacci_ahead']) or 'Geen passende niveaus bij deze ankers.')+'</dd><dt>Ongeldigverklaring</dt><dd>'+condition(scenario['invalidation_condition'])+'</dd></dl>')
         if scenario and available:
             parts.append('<p class="meter-time">Bron-slot '+escape(route['timeframe'].upper())+': <time>'+escape(route['candle_closed_at'])+'</time><br>Zonereactie '+escape(route['level_assessment']['confirmation_timeframe'].upper())+': <time>'+escape(route['level_assessment']['confirmation_closed_at'])+'</time>. Weergave afgerond; exacte grenzen staan in de brongegevens.</p>')
@@ -57,6 +59,9 @@ def render_meter(route,mode):
 
 
 CSS='''.shb-selector{display:block;font-size:.8rem;color:var(--muted);margin-top:12px}.shb-selector select{display:block;width:100%;max-width:100%;margin-top:5px;background:#0c1320;color:#edf3fc;border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;min-height:44px}.shb-name{text-align:center;color:var(--accent)!important;font-weight:600}.shb-levels{border:1px solid var(--line);padding:12px;border-radius:12px;margin:12px 0}.shb-levels dd{font-size:.82rem;font-weight:400;overflow-wrap:anywhere}.shb-levels dt{font-size:.73rem}.scenario[data-selected="true"]{outline:2px solid var(--accent);outline-offset:2px}.scenario button{width:100%;min-height:44px;margin-bottom:12px}#shb-swing,#shb-position{scroll-margin-top:16px}'''
+
+from .scenario_path import CSS as PATH_CSS
+CSS+=PATH_CSS
 
 SCRIPT='''
 function selectScenario(mode,choice,scroll){
