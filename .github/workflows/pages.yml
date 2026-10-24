@@ -10,6 +10,14 @@ on:
       - data/history/bitget_4h_context.jsonl
       - scripts/context_trends.py
       - scripts/context_trend_dashboard.py
+      - scripts/scenario_evaluation.py
+      - scripts/scenario_archive.py
+      - scripts/report_context.py
+      - scripts/swing_scenarios.py
+      - scripts/swing_dashboard.py
+      - scripts/elliott_rules.py
+      - scripts/market_gauges.py
+      - scripts/sentiment_reference.py
       - scripts/home_dashboard.py
       - scripts/market_scenarios.py
       - scripts/price_roadmap.py
@@ -68,6 +76,7 @@ jobs:
           mkdir _site
           cp index.html _site/btc-dashboard.html
           cp bias.html btc-methoden.html _site/
+          python -m scripts.scenario_evaluation data _site
           python -m scripts.home_dashboard data/latest.json _site/index.html --ath
           python - <<'PY'
           from datetime import datetime, timezone

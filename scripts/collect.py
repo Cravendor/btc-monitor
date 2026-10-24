@@ -105,6 +105,12 @@ def main():
         # Optional CVD observations have their own status; market ok never attests CVD.
         'cvd_4h': collect_cvd(now=started),
     }
+    # Preserve original scenario routes and level checks, never user positions.
+    try:
+        from scripts.scenario_archive import freeze
+    except ModuleNotFoundError:
+        from scenario_archive import freeze
+    record['scenario_snapshot'] = freeze(record)
     run = os.environ.get('GITHUB_RUN_ID', 'local')
     attempt = os.environ.get('GITHUB_RUN_ATTEMPT', '1')
     destination = Path('data') / started.strftime('%Y/%m/%d')
