@@ -295,3 +295,13 @@ not_collected/null. Hij vult geen verloren trades aan, neemt geen continue
 WebSocketverbinding over en bevestigt geen historische CVD-dekking. De NAS blijft
 de primaire collector. Geen AWS, nieuwe sleutels, inkomende NAS-poorten of betaalde
 diensten nodig. Zie [werkwijze en gelijktijdige uploads](docs/NAS.md).
+
+## Grafische swingmeters en niveauhistorie
+
+De hoofdpagina toont momentum, een niveaucheck en Fear & Greed onder elkaar,
+met inklapbare uitleg en een afzonderlijk datakwaliteitslabel. Swing gebruikt
+dagzones, langere posities weekzones; 4H kan de reactie helpen bevestigen.
+Per horizon staan vier vooraf beschreven routes, van sterk bearish tot sterk
+bullish. De analyses worden onveranderd opgeslagen en na 7, 30 en 90 dagen
+beoordeeld. Geen positietracking of persoonlijke koop-/verkoopregels.
+Zie [methodiek, kwaliteitscontrole en beperkingen](docs/MARKET_GAUGES.md).

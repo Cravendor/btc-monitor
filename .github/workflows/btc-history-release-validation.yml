@@ -43,6 +43,7 @@ jobs:
           cp index.html output/btc-dashboard.html
           cp bias.html btc-methoden.html output/
           python -m scripts.monitor_archive
+          python -m scripts.scenario_evaluation data output
           python -m scripts.home_dashboard data/latest.json output/index.html --ath
           python - <<'PY'
           from datetime import datetime, timezone
