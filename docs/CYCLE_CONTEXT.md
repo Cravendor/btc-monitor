@@ -70,8 +70,8 @@ The original NAS snapshot ending 2026-10-24T22:01:55.667737+00:00 confirms compl
 `cycle_history_reference` metadata: 2,122 days through 2026-10-23, no missing days,
 archive SHA-256 `42733ee6f74db2fb58ee53ed957ff89cce4989af73dda664d27feccb3305cf45`.
 This proves incorporation of #63 source metadata, not operation of this adapter.
-The adapter is implemented in the accompanying change; merge, publication and a
-new automatic NAS review still require separate verification. Documentation
-handover PR #64 was still open at this checkpoint. Next: inspect an original
+The adapter is merged in PR #65 (46dd127), and handover PR #64 is merged
+(7cd2b1a). Post-merge Pages publication and a new automatic NAS review still
+require separate verification. The latest checked NAS snapshot predates #65. Next: inspect an original
 automatic draft review, review the proposed reference/phase, then activate in a
 separate configuration change if appropriate. Browser visual QA remains open.
