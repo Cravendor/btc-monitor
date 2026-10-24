@@ -10,7 +10,7 @@ def pct(value):
     return 'ONTBREEKT' if value is None else format(value,'+.2f').replace('.',',')+'%'
 
 
-def render(bundle):
+def render_legacy(bundle):
     parts=['<section class="panel" style="margin-bottom:24px"><h2>Vier vooraf uitgewerkte routes</h2><p>Dagstructuur voor swing; weekstructuur voor langere posities. De tijdschaal is geen voorspelde aankomstdatum. Technische routes, psychologische hypothesen en Elliott-kandidaten blijven herkenbaar gescheiden.</p>']
     for mode,r in bundle['horizons'].items():
         attrs=' data-mode-panel="'+mode+'"'+(' hidden' if mode=='position' else '')
@@ -71,3 +71,16 @@ function expireRoutes(){document.querySelectorAll('.swing-current[data-expires]'
 let expiry=Date.parse(el.dataset.expires);if(Number.isFinite(expiry)&&Date.now()>=expiry){el.hidden=true;el.nextElementSibling.hidden=false;}
 });}expireRoutes();setInterval(expireRoutes,30000);
 '''
+
+
+def render(bundle):
+    """The two routes and their paths are shown together in the meter section."""
+    parts=['<section class="panel"><h2>Twee routes: bull en bear</h2><p>Beide routes staan bij de meters, met eigen prijszones en één gezamenlijke interpretatie. Dagstructuur voor swing; weekstructuur voor positie.</p>']
+    for mode, route in bundle['horizons'].items():
+        parts.append('<div data-mode-panel="'+mode+'"'+(' hidden' if mode=='position' else '')+'>')
+        if route['status']!='ready':
+            parts.append('<p>ONVOLDOENDE DATA: '+escape(route['reason'])+'</p>')
+        else:
+            parts.append('<details><summary>Bronkwaliteit, Elliott en psychologie</summary><p>Set-ID '+escape(route['scenario_set_id'])+' · '+escape(route['model_version'])+'</p><ul>'+''.join('<li>'+escape(x['check'])+': '+escape(x['status'])+'</li>' for x in route['quality_checks'])+'</ul><p>'+escape(route['elliott']['reason'])+'</p><p>'+escape(route['psychology']['reason'])+'</p><p>De routeankers zijn nog de extremen van 20 voorafgaande candles; geen vastgestelde cyclus-ATH of cyclusbodem. Originele beoordelingen worden onveranderd opgeslagen.</p></details>')
+        parts.append('</div>')
+    return ''.join(parts)+'</section>'
