@@ -139,6 +139,24 @@ Validation: parsed two original JSON records and collector-health, inspected
 receipt paths in the complete tree and current publisher/protocol. Documentation
 only; no new tests, receipt generation, NAS execution or recovery claimed.
 
+### Restricted DSM schedule observed — 25 October 2026
+
+Supplied Schedule screenshot in watchdog investigation shows Daily, first run
+00:00, every 5 minutes, last run 00:55. This configuration only covers the first
+hour of each day and cannot provide the intended all-day five-minute watchdog.
+The dialog does not show its task title, General/enabled state or script; retain
+that identity/configuration boundary. Historical 22:00–22:55 UTC logs are compatible
+with a local midnight window before the DST change; do not alter NAS timezone.
+
+Proposed correction for the existing BTC CVD Watchdog: retain Daily, first 00:00
+and every 5 minutes; set last run to 23:55 and save. This restores the previously
+intended watchdog cadence, adds no task, changes no recorder/runtime or market
+schedule. Not yet confirmed saved or executed. Current Task Settings body must
+still be inspected for the repository receipt wrapper; schedule correction alone
+does not establish receipt installation or publication. Next user action: save
+the watchdog time-window correction and send the Task Settings tab screenshot.
+Validation: actual visible schedule fields; documentation-only checkpoint.
+
 ### Local receipt inventory received — 25 October 2026
 
 Actual read-only diagnosis at 19:07:13 UTC establishes that the expected external
