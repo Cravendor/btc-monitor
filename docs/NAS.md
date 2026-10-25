@@ -244,3 +244,38 @@ it does not prove the service is reachable on the next run. After merge the NAS
 pulls it normally. Inspect the next source status, attempts and derived statuses;
 no scheduled-task edit or collector restart is needed.
 
+
+## Explicit one-off pending-snapshot reconciliation
+
+`nas/recover_pending_snapshot.py` is a manually invoked recovery helper, never
+part of the normal schedule. It requires the full diagnosed local HEAD SHA,
+exact immutable dated archive path and a NEW bundle path outside the checkout.
+It refuses a dirty tree, changed HEAD, non-main branch, wrong origin, active Git
+operation, unexpected local files, more than one pending local commit or original
+signal-history conflicts. An existing backup is never overwritten.
+
+Under the existing `/volume1/btc-monitor/publish.lock`, it verifies a complete Git
+bundle, fetches current main, retains the original dated archive byte-for-byte,
+unions original signal rows without overwriting differing same-time entries,
+and takes current upstream generated views and code. The upstream latest feed is
+not rebuilt from a historical local snapshot; the next ordinary publisher run
+creates a fresh measurement. Unexpected merge conflicts abort that merge. A
+rejected push keeps the local merge and backup, and requires a fresh diagnosis.
+No reset, clean, force-push, CVD database operation or recorder restart.
+
+If the checkout cannot pull the helper because of divergence, fetch its reviewed
+commit and extract only `nas/recover_pending_snapshot.py` into the external
+btc-monitor folder. Hold the same publisher lock during fetch/extraction, then
+release it so the Python helper can acquire the lock itself; a competing run
+may make it refuse safely. Use the documented Git PATH and explicit SSH/known-host
+configuration from this document. Keep the existing one-time BTC Git Diagnose
+task disabled for scheduling and run it manually; do not create a duplicate task.
+Capture output in repair-result.txt outside the checkout and inspect it before
+repeating any action. Public helper code contains no raw NAS logs or credentials.
+
+Checkpoint 25 October: a user-provided read-only diagnosis confirms one pending
+NAS commit and a clean divergent tree. This helper has been validated in isolated
+Git repositories, including successful preservation, changed/dirty state refusal,
+conflicting history, unexpected archive conflict abort and rejected-push retention.
+Actual NAS execution and publication remain unverified. This is an incident
+recovery tool, not a permanent fix for simultaneous NAS/GitHub writers.
