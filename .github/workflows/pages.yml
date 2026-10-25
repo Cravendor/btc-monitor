@@ -30,6 +30,7 @@ on:
       - scripts/swing_scenarios.py
       - scripts/swing_dashboard.py
       - scripts/elliott_rules.py
+      - scripts/elliott_dashboard.py
       - scripts/market_gauges.py
       - scripts/sentiment_reference.py
       - scripts/home_dashboard.py

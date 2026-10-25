@@ -1,0 +1,174 @@
+"""Read-only top-down price charts. Candidates are not certified wave counts."""
+from html import escape
+from statistics import mean
+from scripts.elliott_rules import assess_candidates, confirmed_pivots
+from scripts.swing_scenarios import valid_market, native_rows, current_price
+from scripts.market_scenarios import time_ms, iso
+from scripts.native_timeframe_candles import PERIOD_MS
+
+TIMEFRAMES = ('1w', '1d', '4h', '1h')
+MODEL = 'elliott_visual_price_candidates_v1'
+
+
+def zones(rows, tf):
+    """Fixed ATR band around confirmed pivots; descriptive, uncalibrated evidence.
+
+    Only independent pivot events count. Candle touches within one event do not.
+    Fib confluence is not another vote. Zones never generate wave endpoints.
+    """
+    tr = [max(c['high']-c['low'], abs(c['high']-p['close']),
+              abs(c['low']-p['close'])) for p, c in zip(rows[-15:-1], rows[-14:])]
+    width = mean(tr) * .15
+    result = []
+    for point in confirmed_pivots(rows):
+        zone = next((z for z in result if z['kind'] == point['kind'] and
+                     abs(z['anchor']-point['price']) <= width), None)
+        if zone is None:
+            zone = dict(anchor=point['price'], low=max(.00000001, point['price']-width),
+                        high=point['price']+width, kind=point['kind'], pivots=[],
+                        timeframe=tf)
+            result.append(zone)
+        zone['pivots'].append(point)
+    for z in result:
+        z['events'] = len(z['pivots'])
+        z['evidence'] = 'herhaald pivotgebied' if z['events'] >= 2 else 'enkele pivot'
+        # Current structural role, not an assertion that a future test will hold.
+        z['role'] = ('steunreferentie' if rows[-1]['close'] > z['high'] else
+                     'weerstandsreferentie' if rows[-1]['close'] < z['low'] else 'prijs in zone')
+    return sorted(result, key=lambda z: z['anchor'])
+
+
+def build(feed, as_of):
+    out = dict(model_version=MODEL, status='unavailable', as_of=as_of,
+               current_wave=None, nested_count='unproven', horizons=[])
+    try:
+        m = feed['measurements'][0]
+        observed = m['finished_at']
+        # Validate original observation at its own time; never relabel it live.
+        valid_market(feed, observed)
+        age = time_ms(as_of)-time_ms(observed)
+        if age < -60000:
+            raise ValueError('future observation')
+    except (KeyError, ValueError, IndexError, TypeError):
+        return out
+    fresh = age < 3600000 and time_ms(as_of) < time_ms(m['started_at'])+3600000
+    out.update(status='current' if fresh else 'historical', observed_at=observed,
+               valid_until=iso(time_ms(m['started_at'])+3600000))
+    for tf in TIMEFRAMES:
+        h = dict(timeframe=tf, status='unavailable', candidates=[], zones=[])
+        try:
+            rows, source_at = native_rows(m, tf, observed)
+            if len(rows) < 24:
+                raise ValueError('insufficient contiguous source history')
+            h.update(status='available', rows=rows, source_at=source_at,
+                     closed_at=iso(rows[-1]['open_time_ms']+PERIOD_MS[tf]),
+                     price=current_price(m, as_of) if fresh else None,
+                     candidates=assess_candidates(rows, tf)['candidates'],
+                     zones=zones(rows, tf))
+        except (KeyError, ValueError, TypeError, OverflowError):
+            pass
+        out['horizons'].append(h)
+    # Temporal containment is useful to inspect, but NOT proof of wave nesting.
+    for parent, child in zip(out['horizons'], out['horizons'][1:]):
+        for c in child['candidates']:
+            c['parent_legs'] = []
+            for p in parent['candidates']:
+                for i, (a, b) in enumerate(zip(p['points'], p['points'][1:]), 1):
+                    if a['open_time_ms'] <= c['points'][0]['open_time_ms'] and c['points'][-1]['open_time_ms'] <= b['open_time_ms']:
+                        c['parent_legs'].append(dict(direction=p['direction'], leg=i,
+                                                     parent_status=p['status']))
+    return out
+
+
+def price(v):
+    return f'{v:,.1f}'.replace(',', '_').replace('.', ',').replace('_', '.')
+
+
+def chart(h, candidate, suffix):
+    rows = h['rows']
+    points = candidate['points'] if candidate else []
+    # Retain every candle, including intermediate wicks used by rule checks.
+    start, end = rows[0]['open_time_ms'], rows[-1]['open_time_ms']+PERIOD_MS[h['timeframe']]
+    lower = min(r['low'] for r in rows)
+    upper = max(r['high'] for r in rows)
+    if h['price'] is not None:
+        lower, upper = min(lower,h['price']), max(upper,h['price'])
+    pad = max((upper-lower)*.12,upper*.001)
+    lower, upper = lower-pad, upper+pad
+    x = lambda t: 70+(t-start)/(end-start)*760
+    y = lambda p: 285-(p-lower)/(upper-lower)*250
+    title = escape(h['timeframe'].upper()+' · '+suffix+' · Bitget BTCUSDT futures, USDT')
+    parts = ['<svg class="ew-chart" viewBox="0 0 920 340" role="img" aria-labelledby="ew-'+h['timeframe']+'-'+suffix+'"><title id="ew-'+h['timeframe']+'-'+suffix+'">'+title+'</title>']
+    for i in range(5):
+        value = lower+(upper-lower)*i/4
+        parts.append(f'<path d="M70 {y(value):.2f}H835" stroke="#314353"/><text x="842" y="{y(value)+4:.2f}">{price(value)}</text>')
+    for z in h['zones']:
+        color = '#63c8af' if z['role']=='steunreferentie' else '#e99b9d'
+        parts.append(f'<rect x="70" y="{y(z["high"]):.2f}" width="760" height="{max(1,y(z["low"])-y(z["high"])):.2f}" fill="{color}" opacity=".10"/>')
+    w = min(8,760/len(rows)*.65)
+    for r in rows:
+        xx=x(r['open_time_ms']+PERIOD_MS[h['timeframe']]/2)
+        color='#69cfb4' if r['close']>=r['open'] else '#ed9199'
+        parts.append(f'<path d="M{xx:.2f} {y(r["high"]):.2f}V{y(r["low"]):.2f}" stroke="{color}"/><rect x="{xx-w/2:.2f}" y="{min(y(r["open"]),y(r["close"])):.2f}" width="{w:.2f}" height="{max(1,abs(y(r["open"])-y(r["close"]))):.2f}" fill="{color}"/>')
+    if points:
+        color='#e5b56f' if candidate['status']=='invalid' else '#a8b9ff'
+        coords=' '.join(f'{x(p["open_time_ms"]+PERIOD_MS[h["timeframe"]]/2):.2f},{y(p["price"]):.2f}' for p in points)
+        parts.append(f'<polyline points="{coords}" fill="none" stroke="{color}" stroke-width="2.5"/>')
+        for i,p in enumerate(points):
+            xx=x(p['open_time_ms']+PERIOD_MS[h['timeframe']]/2)
+            yy=y(p['price'])
+            label='start' if i==0 else str(i)+'?'
+            parts.append(f'<circle cx="{xx:.2f}" cy="{yy:.2f}" r="3" fill="{color}"/><text x="{xx:.2f}" y="{yy+(19 if p["kind"]=="low" else -12):.2f}" text-anchor="middle">{label}</text>')
+    last = rows[-1]
+    # Last closed candle marker remains distinct from an optional fresh ticker.
+    parts.append(f'<circle cx="{x(last["open_time_ms"]+PERIOD_MS[h["timeframe"]]/2):.2f}" cy="{y(last["close"]):.2f}" r="4" fill="white"/>')
+    if h['price'] is not None:
+        parts.append(f'<path d="M70 {y(h["price"]):.2f}H830" stroke="white" stroke-dasharray="4 5"/><text x="75" y="{y(h["price"])-6:.2f}">Snapshot {price(h["price"])} USDT</text>')
+    for t,anchor in ((start,'start'),((start+end)/2,'middle'),(end,'end')):
+        parts.append(f'<text x="{x(t):.2f}" y="316" text-anchor="{anchor}">{iso(t)[:10]} {iso(t)[11:16]}</text>')
+    parts.append('<text x="70" y="335">UTC · lineair · witte stip = laatste gesloten candle</text></svg>')
+    return ''.join(parts)
+
+
+def render(bundle):
+    parts=['<section class="panel" id="elliott-scenarios"><h2>Elliott: van week naar uur</h2><p>Begin bij de grote structuur en zoom in. Bull en bear zijn mogelijke prijspatronen. Een steunzone helpt een draaipunt duiden; zij bewijst geen golfnummer of toekomstige afwijzing.</p>']
+    if bundle['status']=='unavailable':
+        return ''.join(parts)+'<p>Bron niet valideerbaar. Geen telling ingevuld.</p></section>'
+    parts.append('<p class="ew-freshness" data-until="'+escape(bundle['valid_until'])+'">'+('Bron actueel bij opbouw' if bundle['status']=='current' else 'HISTORISCH — bron verouderd, geen actuele telling')+' · meting '+escape(bundle['observed_at'])+'.</p>')
+    parts.append('<p><b>Huidige golf en samenhang tussen graden: nog niet bewezen.</b> De lijnen tonen de twee recentste zes-pivotkandidaten, geselecteerd vóór de regeltoets. Een ongeldige kandidaat blijft zichtbaar. Interne 5–3–5–3–5-opbouw is niet vastgesteld; het laatste label is geen claim over waar we nu zitten.</p>')
+    for h in bundle['horizons']:
+        tf=h['timeframe']
+        parts.append('<details class="ew-timeframe"'+(' open' if tf=='1w' else '')+'><summary>'+tf.upper()+' · '+('Structurele zones' if tf in ('1w','1d') else 'Lokale zones')+'</summary>')
+        if h['status']!='available':
+            parts.append('<p>ONVOLDOENDE DATA voor deze timeframe; geen lagere timeframe als vervanging.</p></details>')
+            continue
+        parts.append('<p>'+str(len(h['rows']))+' gesloten candles · bron '+escape(h['source_at'])+' · laatste slot '+price(h['rows'][-1]['close'])+' USDT op '+escape(h['closed_at'])+'.</p>')
+        for direction,label in (('up','Bull'),('down','Bear')):
+            candidate=next((c for c in h['candidates'] if c['direction']==direction),None)
+            parts.append('<h3>'+label+' · '+('ONGELDIGE standaardimpuls' if candidate and candidate['status']=='invalid' else 'voorlopige prijspatroonkandidaat' if candidate else 'geen zes-pivotkandidaat')+'</h3>')
+            parts.append(chart(h,candidate,direction))
+            if candidate:
+                parts.append('<details><summary>Start, golfpunten en harde regels</summary><div class="ew-table"><table><thead><tr><th>Punt</th><th>Candle-opening UTC</th><th>USDT</th></tr></thead><tbody>')
+                for i,p in enumerate(candidate['points']):
+                    parts.append('<tr><td>'+('Start' if i==0 else str(i)+'?')+'</td><td>'+escape(iso(p['open_time_ms']))+'</td><td>'+price(p['price'])+'</td></tr>')
+                parts.append('</tbody></table></div><p>Openingtijden van pivot-candles; geen exacte ticktijden. Startgrens '+price(candidate['invalidation_price'])+' USDT hoort bij deze historische kandidaat, niet bij een veronderstelde volgende golf.</p><ul>')
+                parts.extend('<li>'+escape(c['rule'])+': <b>'+escape(c['result'])+'</b> — '+escape(c['detail'])+'</li>' for c in candidate['checks'])
+                parts.append('</ul><p>Harde overlapregels gelden intrabar, inclusief wicks. Een slot kan een schending niet ongedaan maken.</p>')
+                a,b=candidate['points'][-2:]
+                distance=abs(b['price']-a['price'])
+                fibs=[(r,b['price']-r*distance if b['price']>a['price'] else b['price']+r*distance) for r in (.236,.382,.5,.618,.786)]
+                parts.append('<p>Fib-context bij het laatste getekende been 4? → 5?: '+price(a['price'])+' → '+price(b['price'])+' USDT. Lineaire terugname vanaf het eindpunt: '+ '; '.join(f'{r*100:g}%: '+price(v) for r,v in fibs)+'. 50% is halvering, geen Fibonacci-ratio. Bij een ongeldige telling blijft dit alleen rekenkundige context bij deze prijsbeweging; geen steunbewijs of koersdoel.</p>')
+                if tf!='1w':
+                    links=candidate.get('parent_legs',[])
+                    parts.append('<p>'+('Tijdvenster past binnen bovenliggend been: '+escape('; '.join(x['direction']+' '+str(x['leg'])+' ('+x['parent_status']+')' for x in links))+'. Alleen tijdsoverlap; interne golfstructuur niet bewezen.' if links else 'Geen volledig omvattend bovenliggend kandidaatbeen gevonden. Deze lokale kandidaat bewijst de hogere telling niet.')+'</p>')
+                parts.append('</details>')
+        parts.append('<details><summary>Prijstijdlijn: steun, weerstand en bewijs</summary><p>Van laag naar hoog, geen voorspelde aankomstdata. Bandbreedte: ±0,15 × ATR(14) rond de eerste pivot. Herhaalde pivotgebieden hebben meer waargenomen reacties dan een enkele pivot; dit is geen gekalibreerde steunkracht of kans op rejection. Een Fib-ratio uit dezelfde koersdata is geen extra onafhankelijke bevestiging.</p><div class="ew-table"><table><thead><tr><th>Zone USDT</th><th>Rol bij laatste slot</th><th>Bewijs op '+tf.upper()+'</th></tr></thead><tbody>')
+        for z in h['zones']:
+            parts.append('<tr><td>'+price(z['low'])+'–'+price(z['high'])+'</td><td>'+escape(z['role'])+'</td><td>'+escape(z['evidence'])+' · '+str(z['events'])+' bevestigde pivot(s)</td></tr>')
+        parts.append('</tbody></table></div><p>Een slot buiten een zone op '+tf.upper()+' verandert de lokale prijsinterpretatie. Alleen een overtreden golfregel ontkracht de betreffende Elliott-kandidaat; een lokale steunbreuk ontkracht niet automatisch de weektelling.</p></details></details>')
+    parts.append('<p>Bron: opgeslagen native Bitget BTCUSDT USDT-FUTURES-candles, USDT. Geen lifetime-ATH uit dit beperkte venster afgeleid. Geen kanspercentages of verplichte koersroute. <a href="bias.html">Lees de onderbouwde rapportinterpretatie</a>.</p></section>')
+    return ''.join(parts)
+
+
+CSS = '''.ew-chart{display:block;width:100%;height:auto;background:#10202e;border-radius:10px;margin:12px 0}.ew-chart text{fill:#e7edf4;font-size:12px;font-family:system-ui,sans-serif}.ew-timeframe{border-top:1px solid #415465;padding:14px 0}.ew-table{overflow:auto}.ew-table td,.ew-table th{white-space:nowrap}.ew-freshness{padding:10px;border-left:3px solid #e5b56f}@media(max-width:600px){.ew-chart{min-width:680px}.ew-timeframe{overflow-x:auto}}'''
+SCRIPT = '''document.querySelectorAll('.ew-freshness').forEach(el=>{function check(){if(Date.now()>=Date.parse(el.dataset.until))el.textContent='HISTORISCH — bron verouderd; grafieken tonen de gedateerde observatie, geen actuele telling.';}check();setInterval(check,60000);});'''

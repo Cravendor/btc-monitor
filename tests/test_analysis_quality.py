@@ -96,7 +96,10 @@ class QualityTests(unittest.TestCase):
             with self.assertRaises(ValueError):stage(feed,folder,NOW)
             for name in ('index.html','btc-dashboard.html','btc-status.html','btc-timeframes.html',
                          'btc-signal-history.html','status.mjs','status.css'):
-                (folder/name).write_text('<section id="analysis-quality"></section>')
+                (folder/name).write_text('<section id="analysis-quality"></section><section id="elliott-scenarios"></section>')
             result=stage(feed,folder,NOW)
             self.assertEqual(result['dashboard_assets'],'checked')
             self.assertTrue((folder/'btc-quality.json').is_file())
+            (folder/'index.html').write_text('<section id="analysis-quality"></section>')
+            with self.assertRaisesRegex(ValueError,'Elliott visual panel missing'):
+                stage(feed,folder,NOW)
