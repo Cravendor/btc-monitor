@@ -114,3 +114,18 @@ DSM task, force-push or collector/database restart.
 Recovery implementation is open in [PR #71](https://github.com/Cravendor/btc-monitor/pull/71).
 397 Python and five Node tests pass locally. Recheck current CI, merge and actual
 NAS repair outcome; none is implied by this preparation checkpoint.
+
+## Storage receipt preparation and recovery checkpoint — 25 October 2026
+
+The previous NAS recovery is confirmed by the external task result and remote
+merge c4e2e94: the original pending NAS snapshot is on main, together with both
+signal histories and new code. This closes one recovery incident, not the
+concurrent-writer resilience issue. The user confirmed replacing the watchdog
+body with the repository wrapper. First real watchdog receipt/new ordinary NAS
+upload was still unverified at the latest read; no process availability inferred.
+
+The user supplied the storage ls/du/date body. Prepared nas/cvd_storage_check.sh
+and execution tests with no database changes; see TASK_EXECUTION.md. Script/report
+failures must not become success via the last date command. Full existing task
+name/schedule still unknown; preserve them at installation. Storage installation,
+first public receipt and live status are unverified. Startup script remains needed.

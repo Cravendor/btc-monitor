@@ -90,3 +90,23 @@ user and five-minute schedule. Do not create another task or run the recorder
 manually. Script must be readable and the existing user must be able to write
 the external spool. Inspect actual next-run evidence and publication afterwards.
 Storage/startup tasks still need their actual current scripts.
+
+## Storage check connection prepared from the supplied DSM body
+
+nas/cvd_storage_check.sh keeps the actual ls/du/date report at
+/volume1/btc-cvd/storage-check.txt. Only its six-field storage receipt goes into
+the external spool for the existing uploader. It fails on missing database
+files, failed size inspection or failed report redirection, even if the final
+date command succeeds. Receipt-write failure is nonzero and leaves the report.
+It does not modify the database or restart the recorder. Successful completion
+does not verify SQLite integrity, free capacity, disk health or full collection.
+The existing 36-hour storage freshness tolerance is unchanged; actual DSM task
+name/schedule has not been supplied and must be checked before interpreting
+periodicity. The size reported by du is total btc-cvd directory usage, not just
+the database. Raw sizes, paths, command errors and report text are not published.
+
+After merge and confirmed NAS code update, preserve the existing storage task's
+user and schedule and replace only its body with:
+/bin/sh /volume1/btc-monitor/repo/nas/cvd_storage_check.sh
+No new DSM task. Verify a real next execution, uploaded receipt and live card.
+The startup task remains unconnected until its actual body is supplied.
