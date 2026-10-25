@@ -30,7 +30,7 @@ and read-only dashboard staging/quality checks pass. Python 3.9.14/3.11 PR CI
 is still a separate required check.
 Not merged, installed or observed on NAS. See TASK_EXECUTION.md for exact
 installation order after merge and normal NAS checkout update.
-Next: complete release checks, open the reviewed PR, then verify CI. After merge,
+Implementation PR: [#77](https://github.com/Cravendor/btc-monitor/pull/77), open,\nnot merged or installed. Validation run 40226486119 was queued when inspected;\nrecheck its final result and current head. Next: verify required CI. After merge,
 replace only the active Storage Monitor body with the new wrapper, retain daily
 10:40 and execute that monitor once to verify a real receipt and publication.
 
