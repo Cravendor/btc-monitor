@@ -1,23 +1,76 @@
 {
   "schema_version": 3,
   "coverage_24h": {
-    "window_start": "2026-10-24T09:01:46.486320+00:00",
-    "window_end": "2026-10-25T09:01:46.486320+00:00",
+    "window_start": "2026-10-24T17:52:40.760692+00:00",
+    "window_end": "2026-10-25T17:52:40.760692+00:00",
     "first_retained_at": "2026-10-22T15:34:27.047744+00:00",
     "interval_seconds": 1800,
     "expected_snapshots": 48,
-    "observed_snapshots": 31,
-    "observed_intervals": 27,
+    "observed_snapshots": 21,
+    "observed_intervals": 19,
     "history_unavailable_intervals": 0,
-    "missing_measurement_intervals": 21,
-    "coverage_percent": 56.2,
+    "missing_measurement_intervals": 29,
+    "coverage_percent": 39.6,
     "max_observed_gap_seconds": 17313,
     "max_window_gap_seconds": 17313,
     "status": "gaps_detected"
   },
-  "checked_at": "2026-10-25T09:01:46.486320+00:00",
-  "last_snapshot_at": "2026-10-25T09:01:44.703208+00:00",
-  "age_seconds": 2,
+  "checked_at": "2026-10-25T17:52:40.760692+00:00",
+  "last_snapshot_at": "2026-10-25T17:52:40.564830+00:00",
+  "age_seconds": 0,
   "max_age_seconds": 3600,
-  "status": "current"
+  "status": "current",
+  "analysis_quality": {
+    "current": {
+      "schema_version": 1,
+      "checked_at": "2026-10-25T17:52:40.760692+00:00",
+      "measurement_at": "2026-10-25T17:52:40.419793+00:00",
+      "valid_until": "2026-10-25T20:00:00+00:00",
+      "scenario_processing": "consistent",
+      "status": "degraded",
+      "price_structure": "available",
+      "bitget_interval_delta": "unavailable",
+      "verified_delta_markets": [],
+      "macro_cycle_verdict": "requires_separate_macro_evidence",
+      "issues": [
+        {
+          "code": "cvd_spot",
+          "detail": "no_verified_history",
+          "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
+        },
+        {
+          "code": "cvd_usdt_futures",
+          "detail": "no_verified_history",
+          "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
+        }
+      ],
+      "interpretation": "Gebruik geldige onderdelen met hun eigen scope; ontbrekend is geen neutraal oordeel."
+    },
+    "recurring_blockers": [],
+    "report_findings": [
+      {
+        "code": "missing_macro_presented_as_neutral",
+        "monitor": "daily",
+        "path": "reports/2026/10/25/daily-070200.json",
+        "action": "Schrijf macro: niet vast te stellen; behoud origineel."
+      },
+      {
+        "code": "missing_macro_presented_as_neutral",
+        "monitor": "4h-warning",
+        "path": "reports/2026/10/25/4h-warning-025800.json",
+        "action": "Schrijf macro: niet vast te stellen; behoud origineel."
+      }
+    ],
+    "scope": "Engineering en rapportconsistentie; geen bewijs van voorspellende kwaliteit."
+  },
+  "recovery": {
+    "attempted": true,
+    "event": "schedule",
+    "before_status": "stale",
+    "scope": "periodic_market_snapshot_only",
+    "outcome": "uploaded",
+    "collection_exit_code": 0,
+    "snapshot_status": "ok",
+    "after_status": "current"
+  }
 }

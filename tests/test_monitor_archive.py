@@ -49,6 +49,15 @@ class MonitorArchiveTests(unittest.TestCase):
         self.assertEqual(target.read_bytes(), first)
         validate(report)
 
+    def test_new_report_with_missing_macro_claimed_neutral_is_rejected(self):
+        self.write(payload('Richting: macro Neutraal/gemengd wegens ONVOLDOENDE DATA.'))
+        r=import_inbox(self.root)
+        self.assertEqual(r['imported'],0)
+        self.assertEqual(r['rejected'],1)
+        self.assertTrue(self.inbox.exists())
+        self.write(payload())
+        self.assertEqual(import_inbox(self.root)['imported'],1)
+
     def test_psychological_report_is_a_distinct_supported_category(self):
         obj = payload()
         obj['monitor'] = 'psychology'

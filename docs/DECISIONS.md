@@ -1,5 +1,15 @@
 # Accepted project decisions
 
+## Immediate handover maintenance — 25 October 2026
+
+After every executed task, update HANDOVER.md and PROJECT_STATUS.md before
+reporting completion; use the same change or immediately record an observed
+external result. Record outcome/evidence, validation, PR/commit and the distinct
+implemented/merged/deployed/observed states, blockers and next step. Update this
+register for changed accepted decisions. This supersedes the weaker
+“after a substantive phase” cadence. Do not publish private conversations or logs.
+
+
 ## Operational status decision — 25 October 2026
 
 User requested a task-status page with coloured indicators. Show explicit text
@@ -94,3 +104,15 @@ task. New receipts expose only task kind, actual times and completed/error. They
 may be written after an actual no-alert check, without a user notification. No
 private identifiers, log details or retrospective runs. Missing proof stays
 unknown; runtime health and analysis quality remain separate. See TASK_EXECUTION.md.
+
+
+## Mandatory report and dashboard quality gates — 25 October 2026
+
+Latest user instruction requires a quality/recovery step in each existing
+scheduled financial report/alert, plus per-update and existing periodic dashboard
+checks. Monthly review alone is insufficient. Safe fixes may be prepared/tested
+in separate PRs; no automatic merge, paid services, NAS restarts/journal edits or
+new schedules. Reject unsupported claims while retaining explicitly usable
+components; unavailable macro evidence is not a neutral verdict. Preserve original
+reports and measurements. The live interval recovery and its remaining uncertainty
+are recorded in CVD_RECONCILIATION.md; exact matching remains the coverage rule.

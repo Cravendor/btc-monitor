@@ -7,7 +7,7 @@ from pathlib import Path
 import time
 
 from scripts.cvd_backfill import audit, open_store, AuditError, WINDOW
-from scripts.cvd_coverage import MARKETS, read_verified
+from scripts.cvd_coverage import MARKETS, read_verified, read_diagnostics
 
 
 def run(journal, store, now_ms=None, recover=audit, verify=read_verified):
@@ -54,6 +54,7 @@ def run(journal, store, now_ms=None, recover=audit, verify=read_verified):
                 result['markets'][market] = 'recovery_failed:' + type(exc).__name__
         final = verify(store, journal, end, now_ms)
         result['verified_markets'] = sorted(final)
+        result['diagnostics'] = read_diagnostics(store, end)
         if len(final) == 2:
             result['status'] = 'ok'
         return result

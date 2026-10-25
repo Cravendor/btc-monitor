@@ -7,6 +7,7 @@ on:
     branches: [main]
     paths:
       - scripts/collector_health.py
+      - scripts/analysis_quality.py
       - scripts/history_coverage.py
       - .github/workflows/collector-health.yml
   workflow_run:
@@ -41,6 +42,7 @@ jobs:
         run: |
           python3 -m unittest discover -s tests -p 'test_collector_health*.py'
           python3 -m unittest discover -s tests -p 'test_history_coverage.py'
+          python3 -m unittest discover -s tests -p 'test_analysis_quality.py'
       - name: Check freshness and recover stale market snapshots
         env:
           BTC_WATCHDOG_EVENT: ${{ github.event_name }}

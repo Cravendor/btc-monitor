@@ -53,3 +53,16 @@ De Pages-workflow reageert op het voltooien van de archiefworkflow; dit is nodig
 Het openbare archief begint leeg. Testvoorbeelden zijn fictief; er worden geen bestaande privérapporten in deze wijziging meegestuurd. Afgekorte of niet bij de betreffende run horende terugblikken mogen niet als volledige rapporten worden geïmporteerd.
 
 De broninstructies van de drie monitors mogen de verleende toestemming gebruiken. Rapportsoorten daily/4h-warning/market-risk zijn compatibel met versie 1; psychology vereist versie 2 op main. Vóór beschikbaarheid van het vereiste protocol wordt niets ingestuurd. Een toekomstige echte monitorrun moet de hele keten nog aantonen: inzending → gedateerd record/index → leesbaar rapport op Pages. Een geslaagde code-/schematest vervangt dat acceptatiepunt niet.
+
+
+## Kwaliteitspoort voor nieuwe inzendingen — 25 oktober 2026
+
+Naast de bestaande structurele validatie worden nieuwe rapporten afgekeurd bij
+het expliciete tekstconflict dat een macro-oordeel neutraal is wegens onvoldoende
+data. Een ontbrekend macro-oordeel blijft niet vast te stellen; het is geen nul.
+De oorspronkelijke inboxtekst blijft bewaard voor diagnose. Bestaande geaccepteerde
+rapporten worden niet herschreven of stilzwijgend verwijderd; kwaliteitsbevindingen
+staan apart. Deze smalle automatische controle vervangt geen bron-/berekenings-
+en claimcontrole vóór de rapportuitvoer. Zie QUALITY_CONTROL.md. De planning
+hierboven is een historisch checkpoint; de actuele automatiseringsconfiguratie
+is leidend en is door deze wijziging niet veranderd.

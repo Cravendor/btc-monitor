@@ -23,12 +23,17 @@ on:
       - scripts/cycle_context.py
       - scripts/task_execution.py
       - 'data/task-executions/**'
+      - scripts/analysis_quality.py
       - scripts/operational_status.py
       - 'web/**'
       - config/cycle_anchors.json
       - scripts/swing_scenarios.py
       - scripts/swing_dashboard.py
       - scripts/elliott_rules.py
+      - scripts/elliott_dashboard.py
+      - scripts/elliott_history.py
+      - 'data/history/elliott/**'
+      - data/history/bitget_btcusdt_daily.json
       - scripts/market_gauges.py
       - scripts/sentiment_reference.py
       - scripts/home_dashboard.py
@@ -51,6 +56,7 @@ on:
       - BTC market snapshots
       - Archive BTC 4H provisional history
       - BTC collector health check
+      - BTC multi-year daily history
       - Archive BTC bias report
     types: [completed]
     branches: [main]
@@ -101,6 +107,8 @@ jobs:
           PY
           python -m scripts.multi_timeframe_dashboard data/latest.json _site/btc-timeframes.html data/collector-health.json
           python -m scripts.timeframe_history_dashboard data/history/timeframe_signals.jsonl _site/btc-signal-history.html data/collector-health.json
+      - name: Quality gate for source processing and dashboard assets
+        run: python -m scripts.analysis_quality data/latest.json _site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

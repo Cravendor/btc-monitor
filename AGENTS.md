@@ -39,8 +39,11 @@ Before changing code, schedules, NAS tasks or interpreting project state:
 
 ## Required handoff maintenance
 
-After a substantive phase, update HANDOVER/PROJECT_STATUS and DECISIONS where
-needed in the same change. Record what is implemented, merged, deployed and
+After EVERY executed task, update docs/HANDOVER.md and docs/PROJECT_STATUS.md
+before reporting completion, in the same change or immediately after an external
+result is observed. Update docs/DECISIONS.md when accepted rules change.
+This includes task outcomes without a code change. Keep the current resume
+section authoritative and explicitly supersede stale open/blocked checkpoints. Record what is implemented, merged, deployed and
 actually observed separately; include evidence pointers, remaining blockers,
 validation and the next concrete step. Note open PRs by number and recheck them
 at the next session. Do not describe future activation as already operational.

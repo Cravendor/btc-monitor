@@ -24,8 +24,15 @@ OUTPUTS = (HEALTH, 'data/latest.json', 'data/timeframe-health.json', HISTORY)
 
 
 def recovery_required(report, event):
+    quality = (report.get('analysis_quality') or {}).get('current') or {}
+    core_failure = (quality.get('measurement_at') is not None and
+                    any(i.get('code') in ('source_identity_or_freshness','price_unavailable',
+                                         'closed_4h_candles_unavailable')
+                        for i in quality.get('issues',[])))
+    # A cloud reserve cannot repair a private NAS journal: CVD-only failures
+    # stay with the NAS history retry and must not create cloud collection loops.
     return (event in ('schedule', 'workflow_dispatch') and
-            report.get('status') in ('stale', 'missing'))
+            (report.get('status') in ('stale', 'missing') or core_failure))
 
 
 def git(*args, capture=False):

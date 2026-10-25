@@ -37,6 +37,12 @@ def run(source="data/history/timeframe_signals.jsonl", target="data/collector-he
             except (ValueError, TypeError):
                 continue
     report = check(records, datetime.now(timezone.utc))
+    from scripts.analysis_quality import review
+    try:
+        feed = json.loads(Path('data/latest.json').read_text())
+    except (OSError, ValueError):
+        feed = {}
+    report['analysis_quality'] = review(feed, report['checked_at'])
     output = Path(target)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")

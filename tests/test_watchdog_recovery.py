@@ -26,6 +26,14 @@ class RecoveryDecisionTests(unittest.TestCase):
                     expected = event in ('schedule', 'workflow_dispatch') and status in ('stale', 'missing')
                     self.assertEqual(recovery_required({'status': status}, event), expected)
 
+    def test_current_but_invalid_price_inputs_trigger_existing_reserve_not_cvd_only(self):
+        def report(code):
+            return dict(status='current',analysis_quality=dict(current=dict(
+                measurement_at='2026-10-25T08:02:00Z',issues=[dict(code=code)])))
+        self.assertTrue(recovery_required(report('price_unavailable'),'schedule'))
+        self.assertFalse(recovery_required(report('price_unavailable'),'workflow_run'))
+        self.assertFalse(recovery_required(report('cvd_spot'),'schedule'))
+
     def test_one_hour_boundary_future_and_malformed_archive_rows(self):
         now = datetime.now(timezone.utc)
         def row(age):
