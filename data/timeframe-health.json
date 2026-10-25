@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-25T10:10:34.050138+00:00",
+  "updated_at": "2026-10-25T14:25:08.210957+00:00",
   "exchange": "bitget",
   "market": "USDT-FUTURES",
   "symbol": "BTCUSDT",
@@ -13,9 +13,9 @@
       "confidence": "low",
       "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 80330.2,
+      "candle_close_price": 80327.0,
       "closed_candles": 99,
-      "observed_at": "2026-10-25T10:10:00+00:00",
+      "observed_at": "2026-10-25T14:25:00+00:00",
       "error": null
     },
     "15m": {
@@ -25,9 +25,9 @@
       "confidence": "low",
       "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 80294.3,
+      "candle_close_price": 80380.7,
       "closed_candles": 99,
-      "observed_at": "2026-10-25T10:00:00+00:00",
+      "observed_at": "2026-10-25T14:15:00+00:00",
       "error": null
     },
     "30m": {
@@ -37,9 +37,9 @@
       "confidence": "low",
       "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 80294.3,
+      "candle_close_price": 80342.0,
       "closed_candles": 99,
-      "observed_at": "2026-10-25T10:00:00+00:00",
+      "observed_at": "2026-10-25T14:00:00+00:00",
       "error": null
     },
     "1h": {
@@ -47,11 +47,11 @@
       "signal_status": "provisional",
       "grade": "neutral",
       "confidence": "low",
-      "evidence_state": "partial_direction",
+      "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 80294.3,
+      "candle_close_price": 80342.0,
       "closed_candles": 99,
-      "observed_at": "2026-10-25T10:00:00+00:00",
+      "observed_at": "2026-10-25T14:00:00+00:00",
       "error": null
     },
     "4h": {
@@ -61,9 +61,9 @@
       "confidence": "low",
       "evidence_state": "partial_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 80645.3,
+      "candle_close_price": 80545.3,
       "closed_candles": 99,
-      "observed_at": "2026-10-25T08:00:00+00:00",
+      "observed_at": "2026-10-25T12:00:00+00:00",
       "error": null
     },
     "1d": {
