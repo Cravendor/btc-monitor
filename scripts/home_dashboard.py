@@ -11,6 +11,7 @@ from scripts.swing_scenarios import build_swing_scenarios
 from scripts.price_roadmap import build_roadmap
 from scripts.analysis_quality import render as render_quality
 from scripts.roadmap_dashboard import render as render_roadmap
+from scripts import elliott_dashboard
 
 
 def escape(value):
@@ -127,11 +128,11 @@ table{width:100%;border-collapse:collapse}th,td{padding:8px;text-align:left;bord
 .links,.scenario-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.links{margin-bottom:36px}.link-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;color:var(--text);text-decoration:none;transition:border-color .15s}.link-card:hover{border-color:var(--accent)}.link-card span{color:var(--accent);font-size:.8rem}.link-card h2{font-size:1.15rem;margin-top:10px}.link-card p{font-size:.9rem;margin:8px 0 0}
 .panel{border:1px solid var(--line);border-radius:20px;padding:26px;background:#101b2c}.state{color:var(--accent);font-weight:600}.levels{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}.levels>div{background:var(--card);border-radius:12px;padding:18px}.levels small{display:block;color:var(--muted)}.levels strong{display:block;font-size:1.5rem;margin-top:5px}.scenario{background:var(--card);border-top:3px solid #7893b6;border-radius:12px;padding:20px}.bullish_breakout{border-top-color:#83d5af}.bearish_breakdown{border-top-color:#e99a95}.tag{display:inline-block;font-size:.73rem;color:var(--accent);margin-bottom:10px}.muted{color:var(--muted)}.condition{min-height:70px}dt{color:var(--muted);font-size:.78rem}dd{margin:3px 0 14px;font-weight:600}.scenario p{font-size:.9rem}.context{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:25px 0 15px}.context p,.context li{font-size:.9rem}.context ul{padding-left:18px}details{border-top:1px solid var(--line);padding:18px 0}summary{cursor:pointer;color:#bfd6f6}.meta{font-size:.8rem;overflow-wrap:anywhere}footer{margin-top:25px;font-size:.85rem}button{background:var(--card);border:1px solid var(--line);color:var(--text);padding:9px 16px;border-radius:10px;cursor:pointer}.hidden,[hidden]{display:none!important}
 @media(max-width:780px){.links,.scenario-grid{grid-template-columns:1fr}.condition{min-height:0}.hero{display:block}.quote{text-align:left;margin-top:20px}.context,.levels{grid-template-columns:1fr}main{padding:20px 16px 40px}.panel{padding:18px}.link-card{padding:18px}}
-''' + market_gauges.CSS + swing_dashboard.CSS + shb_dashboard.CSS + '''
+''' + market_gauges.CSS + swing_dashboard.CSS + shb_dashboard.CSS + elliott_dashboard.CSS + '''
 </style></head><body><main>
 <header class="hero"><div><div class="eyebrow">BTC Monitor / overzicht</div><h1>Eén plek voor je marktbeeld.</h1><p>Metingen, marktrichting en scenario’s met controleerbare prijsniveaus.</p><p><a href="btc-status.html">Taakstatus en laatste uitvoeringen →</a></p></div>
 <div class="quote" data-expires="''' + escape(quote_expiry) + '''"><small>Bitget futures · laatste momentopname</small><strong>''' + escape(price_line) + '''</strong></div></header>''' + render_quality(feed,as_of) + market_gauges.render_all(feed, as_of, sentiment) + '''
-''' + swing_dashboard.render(swing_bundle) + render_cycle_history(feed) + render_cycle_review(feed) + report_context.render(context) + '''
+''' + swing_dashboard.render(swing_bundle) + elliott_dashboard.render(elliott_dashboard.build(feed, as_of)) + render_cycle_history(feed) + render_cycle_review(feed) + report_context.render(context) + '''
 <nav class="links" aria-label="BTC-pagina’s">
 <a class="link-card" href="btc-dashboard.html"><span>01 / METINGEN →</span><h2>Dashboard</h2><p>Prijs, funding, open interest, orderboek en gecontroleerde tradedelta.</p></a>
 <a class="link-card" href="btc-timeframes.html"><span>02 / RICHTING →</span><h2>Multi-timeframe marktrichting</h2><p>Technische signalen van 5 minuten tot 1 week, met actualiteit per candle.</p></a>
@@ -167,7 +168,7 @@ function refreshAth(){const root=document.querySelector('#ath-reference');const 
 document.querySelectorAll('time').forEach(el=>{const value=Date.parse(el.textContent);if(Number.isFinite(value)){el.dateTime=el.textContent;el.textContent=new Date(value).toLocaleString('nl-NL',{timeZone:'Europe/Amsterdam',timeZoneName:'short'});}});
 function refreshQuote(){const q=document.querySelector('.quote');const t=Date.parse(q.dataset.expires);if(Number.isFinite(t)&&Date.now()>=t)q.querySelector('strong').textContent='Meting verouderd';}
 refreshFreshness();refreshAth();refreshQuote();setInterval(()=>{refreshFreshness();refreshAth();refreshQuote();},60000);
-''' + market_gauges.SCRIPT + swing_dashboard.SCRIPT + shb_dashboard.SCRIPT + '''
+''' + market_gauges.SCRIPT + swing_dashboard.SCRIPT + shb_dashboard.SCRIPT + elliott_dashboard.SCRIPT + '''
 </script></body></html>'''
 
 
