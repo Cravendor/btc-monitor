@@ -13,6 +13,26 @@ below. Original entry point was created in commit 0ab7fde on 24 October at
 21:31:28 UTC (23:31 Amsterdam). Reconciled against repository history through
 48191e8 and merged PRs #65–#76. This is a curated evidence record, not a transcript.
 
+### Tests passed; final upload still pending — 25 October 2026
+
+The next partial log from the same 18:56:46 UTC run confirms 429 tests passed
+in 63.410 seconds (OK). It still contains no final EINDSTATUS, CVD pipeline
+result, new snapshot or successful push. Remote main remained fa8b1fc when read.
+Do not start another run or infer completion/failure from this partial output.
+
+The warning/error simulations, old 08:02 UTC quality JSON, fixture backup/recovery
+messages and invalid-receipt messages occur in the test output. In particular
+tests/test_task_receipt_sync.py deliberately covers conflicting/invalid receipts
+and emits the observed messages. They are not evidence of actual broken NAS
+receipts, deleted Elliott history, current source quality or another real repair.
+Buffered stdout may appear after unittest's stderr summary. Inspect actual
+post-test collection output and original published JSON before diagnosing them.
+
+Interim handover remains on docs/nas-upload-pending-20261025 to avoid moving
+main during the active upload. Incorporate both partial checkpoints when actual
+completion is known. Validation: partial user result, current runner order,
+receipt-test source and remote head; no new local tests or NAS action executed.
+
 ### Ordinary NAS upload started; completion pending — 25 October 2026
 
 The supplied partial result starts at 18:56:46 UTC. It confirms successful
