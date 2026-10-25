@@ -13,6 +13,33 @@ below. Original entry point was created in commit 0ab7fde on 24 October at
 21:31:28 UTC (23:31 Amsterdam). Reconciled against repository history through
 48191e8 and merged PRs #65–#76. This is a curated evidence record, not a transcript.
 
+### PR 77 merged; NAS code uptake next — 25 October 2026
+
+PR #77 merge confirmed at 19:35:11 UTC, merge commit
+5d5799834b44b91d50f13b358105f385121225b2. New storage monitor wrapper exists
+on main; implementation/release CI succeeded (40226652278). It is not yet
+established installed on NAS: latest original NAS record is
+20261025T193133162847Z-local-1.json, finished 19:31:38 UTC BEFORE the merge.
+That scheduled-window NAS original has source=nas, status=ok, cvd=ok and
+analysis_quality=ready_for_scoped_report. No need to repair that upload.
+
+Four actual watchdog receipts are now on main (19:15:02, 19:20:02, 19:25:02,
+19:30:02 UTC). Read newest immutable JSON: valid six-field identity,
+source=nas/task=watchdog, finished 19:30:02.574568+00:00, outcome=completed.
+This verifies the observed local → uploader → repository receipt path,
+not continuous uptime or a new live browser/card test. Storage still awaits
+its first actual wrapper execution.
+
+Next user action: run the existing BTC NAS Collect Publish once after this merge
+(or wait for its next scheduled run), wait for full completion and supply its
+final first-upload result. Verify code uptake before replacing ONLY active
+Storage Monitor body with /bin/sh /volume1/btc-monitor/repo/nas/cvd_storage_monitor.sh.
+Then retain daily 10:40, keep Storage Check disabled, run Storage Monitor once
+and inspect actual receipt/publication. Never start duplicate upload runs.
+Handover/PROJECT_STATUS updated post-merge; previous preparation/open wording
+below is historical. Validation: PR merge, code presence, latest original and
+newest actual watchdog receipt; no new tests or DSM execution by agent.
+
 ### Active Storage Monitor receipt integration prepared — 25 October 2026
 
 User supplied the active monitor's actual body: append timestamp, du, journal/WAL
