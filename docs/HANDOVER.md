@@ -13,6 +13,56 @@ below. Original entry point was created in commit 0ab7fde on 24 October at
 21:31:28 UTC (23:31 Amsterdam). Reconciled against repository history through
 48191e8 and merged PRs #65–#76. This is a curated evidence record, not a transcript.
 
+### Post-77 NAS uptake/publication confirmed — 25 October 2026
+
+Supplied log starts 20:00:43 UTC (a different invocation from 19:58:56), confirms
+435 tests passed on NAS Python 3.9.14 in 63.885s, but the supplied copy itself
+ends before final EINDSTATUS. Independent remote evidence closes publication:
+NAS original data/2026/10/25/20261025T200256297219Z-local-1.json finished
+20:03:01 UTC, collection_source=nas, status=ok, published at e6dba7c.
+Earlier 20:00 original is also stored. The checkout had successfully rebased
+through c98e111 including #77 before these tests/observations.
+Storage Monitor wrapper is ready for the existing DSM task; actual task
+replacement/execution is still unverified.
+
+New interval 16:00–20:00 UTC has BOTH deltas partial/null with
+candle_volume_mismatch and analysis_quality=degraded. Original safe aggregate
+diagnostics are now present, exhausted pages and candle_rechecked=true:
+spot trades 245.197769 BTC vs candle 240.527944 (difference +4.669825);
+futures 1786.7858 vs 1749.1381 (difference +37.6477).
+Quote differences are +376348.40263059 / +3032888.22895 USDT respectively.
+Journal missing/extra/conflicts are zero in those recovery comparisons, not
+proof of independently verified delivery/taker attribution. Cause unresolved;
+retain exact validation, no invented valid delta or macro verdict. Next ordinary
+interval recovery recheck and investigation remain separate from storage install.
+
+Next user action: replace ONLY active Storage Monitor script with
+/bin/sh /volume1/btc-monitor/repo/nas/cvd_storage_monitor.sh, save with current
+user/daily 10:40 unchanged and Storage Check disabled; run Storage Monitor once.
+Then run existing read-only receipt diagnosis and supply its updated output.
+Verify actual storage receipt locally and through the normal publisher/Pages.
+No second upload/recovery, database edit or collector restart requested.
+
+This incorporates and supersedes the interim storage-uptake branch checkpoints
+below. Validation: user log, original remote record including quality and exact
+diagnostics, source identity and code uptake; no new tests executed by agent.
+
+### Post-77 NAS code fetched; run completion pending — 25 October 2026
+
+Latest supplied partial log starts 19:58:56 UTC and confirms successful rebase
+from local cd2e25b through fetched main c98e111, which includes merged #77.
+Test progress has started but no test summary, fresh snapshot, push or final
+EINDSTATUS is present. File was captured at 19:59:23, only 27 seconds after start.
+Remote main still c98e111 when inspected; no post-merge upload is claimed.
+
+Store this interim checkpoint on docs/storage-uptake-pending-20261025 while the
+publisher may run; avoid advancing main during its upload window. Next user
+action: allow the SAME run to finish, then send first-upload.txt only after
+EINDSTATUS appears. No second run or Storage Monitor command replacement yet.
+Next agent action: inspect final result and fresh original, then provide the
+already-reviewed active monitor wrapper command. No code/task/runtime changes.
+Validation: actual partial log and remote head; no new tests executed.
+
 ### PR 77 merged; NAS code uptake next — 25 October 2026
 
 PR #77 merge confirmed at 19:35:11 UTC, merge commit
