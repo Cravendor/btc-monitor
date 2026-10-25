@@ -139,6 +139,25 @@ Validation: parsed two original JSON records and collector-health, inspected
 receipt paths in the complete tree and current publisher/protocol. Documentation
 only; no new tests, receipt generation, NAS execution or recovery claimed.
 
+### Storage schedule observed; script identity pending — 25 October 2026
+
+Supplied DSM screenshot shows the selected enabled storage-related row scheduled
+Daily, first/last 10:40, frequency Every day: one check per day, compatible with
+the existing 36-hour storage receipt freshness tolerance. Preserve this schedule;
+the watchdog all-day five-minute correction does not apply to storage.
+Two truncated BTC CVD Stor... rows are visible, one enabled and one disabled.
+Full names and purposes cannot be inferred; do not delete or duplicate them.
+
+No storage script body is shown yet. Since receipt integration was prepared/
+reviewed after today's 10:40 execution window, absence of a storage receipt
+alone does not establish a failed daily task. Need current enabled task's full
+name (General) and Task Settings script to determine whether the receipt wrapper
+is installed, before any replacement or actual test.
+Next user action: supply Task Settings and full task name for the selected
+enabled storage row. Next agent action: compare with existing reviewed
+nas/cvd_storage_check.sh and then validate a real execution/publication.
+Validation: visible settings only; no schedule, script or runtime changes.
+
 ### Watchdog execution and local receipts observed — 25 October 2026
 
 New local diagnosis at 19:21:48 UTC confirms pending spool now exists, with TWO
