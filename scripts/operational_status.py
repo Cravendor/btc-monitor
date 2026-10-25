@@ -28,7 +28,7 @@ def fresh(value, now, seconds):
     return stamp, now - stamp <= seconds*1000
 
 
-def build(feed, health, as_of):
+def build(feed, health, as_of, execution_root="data/task-executions"):
     now = time_ms(as_of)
     health = health if isinstance(health, dict) else {}
     rows = []
@@ -80,11 +80,6 @@ def build(feed, health, as_of):
             pass
         rows.append(item('cvd-'+market, name, state, label, detail,
                          trade_at if state != 'unknown' else None, expiry))
-    for key, name, detail in [
-        ('watchdog', 'BTC CVD Watchdog', 'Geen heartbeat van deze DSM-taak aangesloten. Recente trades bewijzen niet dat de watchdog heeft gedraaid.'),
-        ('storage', 'CVD-opslag / opstarttaken', 'De actuele DSM-taakstatus wordt nog niet gepubliceerd. Een oude takenlijst is geen live controle.'),
-        ('chatgpt', 'ChatGPT-monitors en Quality & Improvement', 'De uitvoerstatus van ChatGPT-taken is niet aangesloten. Geen rapport kan ook betekenen dat er geen alertvoorwaarde was.')]:
-        rows.append(item(key, name, 'unknown', 'Status niet aangesloten', detail))
     try:
         if health.get('schema_version') != 3 or health.get('status') not in ('current', 'stale'):
             raise ValueError('invalid health contract')
@@ -100,6 +95,8 @@ def build(feed, health, as_of):
     except (ValueError, TypeError, KeyError, OverflowError):
         rows.append(item('snapshot-health', 'Opgeslagen marktmetingen', 'unknown', 'Geen geldig actualiteitsbewijs',
                          'De actualiteitscontrole ontbreekt of is ongeldig.'))
+    from scripts.task_execution import read_items
+    rows.extend(read_items(execution_root, as_of))
     return dict(schema_version=1, generated_at=as_of, items=rows, workflows=WORKFLOWS,
                 repository='Cravendor/btc-monitor', source_scope='public_operational_evidence')
 
@@ -116,7 +113,7 @@ def run(feed_path, health_path, destination, as_of=None):
     as_of = as_of or datetime.now(timezone.utc).isoformat()
     folder = Path(destination)
     folder.mkdir(parents=True, exist_ok=True)
-    report = build(load(feed_path), load(health_path), as_of)
+    report = build(load(feed_path), load(health_path), as_of, Path(feed_path).parent / "task-executions")
     (folder/'btc-status.json').write_text(json.dumps(report, ensure_ascii=False, allow_nan=False)+'\n')
     (folder/'btc-status.html').write_text(Path('web/status.html').read_text())
     for name in ('status.mjs', 'status.css'):

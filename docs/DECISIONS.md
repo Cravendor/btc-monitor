@@ -85,3 +85,12 @@ Merged PR #65 adds a guarded producer and separately archived draft review. The
 accepted automatic cycle classifications. The default remains draft/current v4
 anchors; activation requires a separate reviewed configuration change. Local
 archive validation must be labeled distinctly from network retrieval.
+
+## Minimal execution receipts — 25 October 2026
+
+User authorized connecting grey tasks where possible and including operational
+failures in the existing Quality & Improvement review, without another scheduled
+task. New receipts expose only task kind, actual times and completed/error. They
+may be written after an actual no-alert check, without a user notification. No
+private identifiers, log details or retrospective runs. Missing proof stays
+unknown; runtime health and analysis quality remain separate. See TASK_EXECUTION.md.

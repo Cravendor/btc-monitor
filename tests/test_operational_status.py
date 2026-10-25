@@ -25,7 +25,7 @@ class OperationalStatusTests(unittest.TestCase):
         self.assertEqual(r['nas']['state'], 'good')
         self.assertEqual(r['cvd-spot']['state'], 'good')
         self.assertEqual(r['cvd-usdt_futures']['state'], 'good')
-        for key in ('watchdog', 'storage', 'chatgpt'):
+        for key in ('task-nas-watchdog', 'task-nas-storage', 'task-chatgpt-4h-warning'):
             self.assertEqual(r[key]['state'], 'unknown')
 
     def test_newer_reserve_cannot_turn_missing_or_old_nas_green(self):
