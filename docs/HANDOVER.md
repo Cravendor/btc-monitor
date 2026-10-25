@@ -13,6 +13,22 @@ below. Original entry point was created in commit 0ab7fde on 24 October at
 21:31:28 UTC (23:31 Amsterdam). Reconciled against repository history through
 48191e8 and merged PRs #65–#76. This is a curated evidence record, not a transcript.
 
+### Post-77 NAS code fetched; run completion pending — 25 October 2026
+
+Latest supplied partial log starts 19:58:56 UTC and confirms successful rebase
+from local cd2e25b through fetched main c98e111, which includes merged #77.
+Test progress has started but no test summary, fresh snapshot, push or final
+EINDSTATUS is present. File was captured at 19:59:23, only 27 seconds after start.
+Remote main still c98e111 when inspected; no post-merge upload is claimed.
+
+Store this interim checkpoint on docs/storage-uptake-pending-20261025 while the
+publisher may run; avoid advancing main during its upload window. Next user
+action: allow the SAME run to finish, then send first-upload.txt only after
+EINDSTATUS appears. No second run or Storage Monitor command replacement yet.
+Next agent action: inspect final result and fresh original, then provide the
+already-reviewed active monitor wrapper command. No code/task/runtime changes.
+Validation: actual partial log and remote head; no new tests executed.
+
 ### PR 77 merged; NAS code uptake next — 25 October 2026
 
 PR #77 merge confirmed at 19:35:11 UTC, merge commit
