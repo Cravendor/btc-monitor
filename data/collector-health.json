@@ -1,29 +1,29 @@
 {
   "schema_version": 3,
   "coverage_24h": {
-    "window_start": "2026-10-24T10:10:34.250433+00:00",
-    "window_end": "2026-10-25T10:10:34.250433+00:00",
+    "window_start": "2026-10-24T13:35:46.102491+00:00",
+    "window_end": "2026-10-25T13:35:46.102491+00:00",
     "first_retained_at": "2026-10-22T15:34:27.047744+00:00",
     "interval_seconds": 1800,
     "expected_snapshots": 48,
-    "observed_snapshots": 29,
-    "observed_intervals": 27,
+    "observed_snapshots": 22,
+    "observed_intervals": 19,
     "history_unavailable_intervals": 0,
-    "missing_measurement_intervals": 21,
-    "coverage_percent": 56.2,
+    "missing_measurement_intervals": 29,
+    "coverage_percent": 39.6,
     "max_observed_gap_seconds": 17313,
     "max_window_gap_seconds": 17313,
     "status": "gaps_detected"
   },
-  "checked_at": "2026-10-25T10:10:34.250433+00:00",
+  "checked_at": "2026-10-25T13:35:46.102491+00:00",
   "last_snapshot_at": "2026-10-25T10:10:34.050138+00:00",
-  "age_seconds": 0,
+  "age_seconds": 12312,
   "max_age_seconds": 3600,
-  "status": "current",
+  "status": "stale",
   "analysis_quality": {
     "current": {
       "schema_version": 1,
-      "checked_at": "2026-10-25T10:10:34.250433+00:00",
+      "checked_at": "2026-10-25T13:35:46.102491+00:00",
       "measurement_at": "2026-10-25T10:10:33.897424+00:00",
       "valid_until": "2026-10-25T12:00:00+00:00",
       "scenario_processing": "consistent",
@@ -56,12 +56,6 @@
       },
       {
         "code": "missing_macro_presented_as_neutral",
-        "monitor": "psychology",
-        "path": "reports/2026/10/25/psychology-070200.json",
-        "action": "Schrijf macro: niet vast te stellen; behoud origineel."
-      },
-      {
-        "code": "missing_macro_presented_as_neutral",
         "monitor": "4h-warning",
         "path": "reports/2026/10/25/4h-warning-025800.json",
         "action": "Schrijf macro: niet vast te stellen; behoud origineel."
@@ -70,13 +64,11 @@
     "scope": "Engineering en rapportconsistentie; geen bewijs van voorspellende kwaliteit."
   },
   "recovery": {
-    "attempted": true,
-    "event": "schedule",
+    "attempted": false,
+    "event": "push",
     "before_status": "stale",
     "scope": "periodic_market_snapshot_only",
-    "outcome": "uploaded",
-    "collection_exit_code": 0,
-    "snapshot_status": "ok",
-    "after_status": "current"
+    "outcome": "event_not_eligible",
+    "after_status": "stale"
   }
 }
