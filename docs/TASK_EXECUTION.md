@@ -42,7 +42,7 @@ Latest receipt wins, including errors. Invalid newer evidence must not expose
 an older success. Future timestamps, timezone-free times, unexpected fields and
 identity/path mismatches are rejected. Explicit errors stay red until a later
 valid receipt. Completed checks expire to amber after: 4H monitor 6h, psychology
-30h, breaking news 3h, Quality & Improvement 35 days, watchdog 15m, storage 36h.
+30h, breaking news 3h, Quality & Improvement 35 days, watchdog 45m (5m checks transported by 30m publication), storage 36h.
 These are tolerance windows, not proof of exact schedule execution or uptime.
 Startup runs remain grey with their recorded time: boot events have no periodic
 freshness expectation. No receipts means grey. Browser expiry also removes green.
@@ -67,3 +67,26 @@ succeeds, error only after its failure, and publish receipts through an explicit
 reviewed existing upload path. This change does not install these hooks or add
 receipts to the NAS publisher's Git staging list. Local receipts alone are not
 visible remotely. Keep those cards grey until actual published evidence exists.
+
+## Watchdog connection prepared from the actual DSM script
+
+nas/cvd_watchdog.sh preserves the supplied /volume1/btc-cvd recorder command,
+venv, DB, health/log paths and flock. It checks process presence after a two-second
+start grace. This is process-presence evidence only, not proof of new trades,
+coverage or future survival. Receipt write failure is logged but does not restart
+or stop an already-present collector.
+
+DSM receipts go to /volume1/btc-monitor/task-executions-pending, outside the Git
+checkout /volume1/btc-monitor/repo. The publisher imports strict NAS-only receipts
+after collection, stages them with existing public outputs, and removes identical
+spool files only after successful push. Invalid/conflicting receipts remain local;
+no raw logs or arbitrary fields are imported. A failed push retains both local
+commit and spool. Existing concurrent-writer recovery rules still apply.
+
+Installation: merge the implementation, let the existing publisher successfully
+update its checkout, then replace only the existing BTC CVD Watchdog task body
+with /bin/sh /volume1/btc-monitor/repo/nas/cvd_watchdog.sh. Retain its existing
+user and five-minute schedule. Do not create another task or run the recorder
+manually. Script must be readable and the existing user must be able to write
+the external spool. Inspect actual next-run evidence and publication afterwards.
+Storage/startup tasks still need their actual current scripts.

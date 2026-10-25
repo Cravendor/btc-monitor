@@ -78,3 +78,19 @@ PR/CI/deployment evidence must be checked separately.
 Open implementation PR: [#69](https://github.com/Cravendor/btc-monitor/pull/69).
 At creation, GitHub validation run 40165487142 was in progress; recheck its
 final result before claiming CI success. Not merged or deployed at this checkpoint.
+
+## Watchdog integration preparation — 25 October 2026
+
+PR #69 is merged; live status JSON has individual cards, with no execution
+receipts at the last check. The user supplied the actual DSM watchdog body.
+Prepared nas/cvd_watchdog.sh preserving its recorder/flock/runtime paths,
+adding process-presence confirmation and minimal completion/error receipts.
+External spool plus strict import/post-push acknowledgement is added to the
+existing NAS publisher. The watchdog freshness tolerance is now 45m because
+five-minute checks are published by the existing half-hour task; no new schedule.
+See TASK_EXECUTION.md for installation order and exact existing-task command.
+Not installed or observed on NAS yet. Storage/startup scripts still unknown.
+
+Validation: 392 Python tests, five Node status tests, shell syntax for both NAS
+scripts, read-only status generation and diff checks pass locally. CI, merge,
+DSM installation, first receipt and publication remain separate checkpoints.

@@ -51,6 +51,13 @@ if [ -f "$BTC_CVD_DB" ]; then
 fi
 "$BTC_PYTHON" scripts/collect.py || COLLECT_EXIT=$?
 "$BTC_PYTHON" -m scripts.collector_health
+# Receipts are written outside this checkout by DSM tasks. Import after rebase
+# and collection; never let auxiliary evidence interrupt market publication.
+BTC_TASK_RECEIPTS=${BTC_TASK_RECEIPTS:-/volume1/btc-monitor/task-executions-pending}
+"$BTC_PYTHON" -m scripts.task_receipt_sync "$BTC_TASK_RECEIPTS" data/task-executions || echo 'Receipt sync pending; preserving local evidence.'
+if [ -d data/task-executions/nas ]; then
+  git add -- data/task-executions/nas
+fi
 # Stage only known public outputs; never the CVD database, logs or credentials.
 git add -- data/latest.json data/timeframe-health.json data/collector-health.json data/history/timeframe_signals.jsonl
 for year in data/[0-9][0-9][0-9][0-9]; do
@@ -61,6 +68,8 @@ if ! git diff --cached --quiet; then
 fi
 # No force push: concurrent GitHub writes produce a safe failure. The commit stays local.
 git push origin HEAD:main
+# A failed push exits above and keeps every spool receipt for retry.
+"$BTC_PYTHON" -m scripts.task_receipt_sync "$BTC_TASK_RECEIPTS" data/task-executions --acknowledge || echo 'Receipt cleanup pending.'
 [ "$COLLECT_EXIT" -eq 0 ] || exit "$COLLECT_EXIT"
 "$BTC_PYTHON" - <<'PY'
 import json
