@@ -139,6 +139,18 @@ Validation: parsed two original JSON records and collector-health, inspected
 receipt paths in the complete tree and current publisher/protocol. Documentation
 only; no new tests, receipt generation, NAS execution or recovery claimed.
 
+### Receipt diagnosis input not yet supplied — 25 October 2026
+
+The newly supplied git-diagnose attachment repeats the earlier 4795253 /
+9c165721 divergence and exact original archive listing. It contains no spool
+counts or watchdog tail; it is not the requested receipt-diagnose.txt output.
+Do not treat it as proof that the recovered conflict has recurred and do not
+rerun the old repair. Current receipt diagnosis is still blocked on the actual
+/volume1/btc-monitor/receipt-diagnose.txt from the existing manual task.
+Next user action: supply that exact file, or run the previously prepared
+read-only receipt diagnostic if it has not yet been run. No code/runtime change.
+Validation: attachment read and compared with the previous diagnosed identities.
+
 ### Pages confirmed; NAS receipt diagnosis required — 25 October 2026
 
 Pages run 40224141712 at NAS head 748ba48 completed successfully; the prior

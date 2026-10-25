@@ -13,6 +13,18 @@ below. Original entry point was created in commit 0ab7fde on 24 October at
 21:31:28 UTC (23:31 Amsterdam). Reconciled against repository history through
 48191e8 and merged PRs #65–#76. This is a curated evidence record, not a transcript.
 
+### Receipt diagnosis input not yet supplied — 25 October 2026
+
+The newly supplied git-diagnose attachment repeats the earlier 4795253 /
+9c165721 divergence and exact original archive listing. It contains no spool
+counts or watchdog tail; it is not the requested receipt-diagnose.txt output.
+Do not treat it as proof that the recovered conflict has recurred and do not
+rerun the old repair. Current receipt diagnosis is still blocked on the actual
+/volume1/btc-monitor/receipt-diagnose.txt from the existing manual task.
+Next user action: supply that exact file, or run the previously prepared
+read-only receipt diagnostic if it has not yet been run. No code/runtime change.
+Validation: attachment read and compared with the previous diagnosed identities.
+
 ### Pages confirmed; NAS receipt diagnosis required — 25 October 2026
 
 Pages run 40224141712 at NAS head 748ba48 completed successfully; the prior
