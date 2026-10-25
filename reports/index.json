@@ -121,6 +121,30 @@
       "monitor": "psychology",
       "path": "reports/2026/10/24/psychology-064719.json",
       "reported_at": "2026-10-24T06:47:19Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "30D/macro: **ONVOLDOENDE DATA** — actuele ETF-, LTH/aanbod-, on-chain- en macrobevestiging zijn in deze korte controle niet opnieuw verkregen. Liquidaties, geverifieerde agressor-CVD en orderboekexecuties/replenishment ontbreken eveneens.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: **0 NEUTRAAL/GEMENGD** — verbeterde 4H-structuur en reclaim tegenover dalende dagcloses en laag herstelvolume. Eén geverifieerde Bitget-prijs-/volumebronfamilie; onafhankelijke vraag- en orderflowbevestiging ontbreekt. De oudere referentiemeting beperkt de actualiteit.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: **0 NEUTRAAL/GEMENGD** — laatste dagslot **80.844,5** tegenover **81.445,5** zeven dagen eerder, met tussentijds herstel en terugval. Beperkt structuurbeeld uit dezelfde bronfamilie; complete archiefvolumevergelijking en onafhankelijke vraag-/aanbodbevestiging ontbreken.",
+          "score": 0,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "ac81058d85245eb60997779ac596bc7285f9fa2de67411b163e5dccd8bfc2e49",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/10/25/4h-warning-025800.json",
+      "reported_at": "2026-10-25T02:58:00Z"
     }
   ],
   "schema_version": 2
