@@ -139,6 +139,23 @@ Validation: parsed two original JSON records and collector-health, inspected
 receipt paths in the complete tree and current publisher/protocol. Documentation
 only; no new tests, receipt generation, NAS execution or recovery claimed.
 
+### Watchdog corrected settings reviewed; save/execution pending — 25 October 2026
+
+New screenshot shows the enabled BTC CVD Watchdog row and editor schedule:
+Daily, first 00:00, every 5 minutes, last 23:55. User supplied current script
+command /bin/sh /volume1/btc-monitor/repo/nas/cvd_watchdog.sh, matching reviewed
+wrapper. This closes schedule/body review; editor is still open, so saving and
+a new real execution/receipt are not yet proven. No need to replace this script
+or create another task.
+
+Next user action: click OK to save, allow the next five-minute scheduled check,
+then run the existing read-only receipt diagnostic via BTC Git Diagnose and
+supply updated receipt-diagnose.txt. Do not manually restart the collector.
+Confirm a recent watchdog log/receipt locally, then publication by the existing
+half-hour NAS uploader; storage configuration remains separate open work.
+Validation: visible corrected settings and supplied exact command only;
+documentation checkpoint, no actual DSM mutation, execution or tests by agent.
+
 ### Restricted DSM schedule observed — 25 October 2026
 
 Supplied Schedule screenshot in watchdog investigation shows Daily, first run
