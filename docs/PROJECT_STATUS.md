@@ -139,6 +139,22 @@ Validation: parsed two original JSON records and collector-health, inspected
 receipt paths in the complete tree and current publisher/protocol. Documentation
 only; no new tests, receipt generation, NAS execution or recovery claimed.
 
+### Storage task identities clarified — 25 October 2026
+
+User explicitly identifies Storage Monitor as enabled and Storage Check as
+disabled. Preserve this distinction: do not activate the disabled Storage Check
+or create another task to obtain receipts. Investigate the existing active
+Storage Monitor. Prior screenshot showed the selected enabled storage-related
+task with one daily 10:40 run; exact script behavior still needs its actual
+Task Settings contents. Repository wrapper filename cvd_storage_check.sh does
+not establish that the DSM task named Storage Check should be enabled.
+
+Next user action: send Task Settings script of Storage Monitor only.
+Next agent action: compare actual behavior with the prepared minimal-receipt
+wrapper and retain the original monitor function, user and daily schedule.
+No runtime, schedule or task-state changes made. This clarifies the previously
+truncated two storage rows; no successful receipt execution is inferred.
+
 ### Storage schedule observed; script identity pending — 25 October 2026
 
 Supplied DSM screenshot shows the selected enabled storage-related row scheduled
