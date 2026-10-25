@@ -13,6 +13,34 @@ below. Original entry point was created in commit 0ab7fde on 24 October at
 21:31:28 UTC (23:31 Amsterdam). Reconciled against repository history through
 48191e8 and merged PRs #65–#76. This is a curated evidence record, not a transcript.
 
+### Guarded recovery ready for local 4795253 — 25 October 2026
+
+Read-only diagnosis confirms clean main, exactly one local commit and 36 upstream
+commits: HEAD 479525341c9d064f0930b6a533b339e00a001336; fetched origin/main
+9c165721cefa9b7714e8c17231d121bdc60ac6fa. Its changed-file set is exactly the
+three generated views, timeframe signal history and added immutable original
+data/2026/10/25/20261025T090120972251Z-local-1.json.
+This matches the existing recover_pending_snapshot.py guarded contract.
+No repair has been executed or published by this preparation.
+
+Prepare the manual invocation through the existing disabled-for-scheduling
+BTC Git Diagnose task: preserve the documented Git/SSH runtime, extract the
+reviewed helper from fetched 9c165721 under the publisher lock to an external
+helper path, then let it reacquire that same lock. Pass the full expected HEAD,
+exact archive and NEW external recovery-4795253.bundle. The helper must refuse
+changed/dirty state, active Git operations, unexpected paths, multiple pending
+commits or conflicting original history. It verifies a backup before merging,
+retains the dated original blob, unions histories and keeps upstream generated
+views; no reset/clean/force-push or live recorder/database changes.
+On failed push retain merge and backup and obtain a fresh diagnosis.
+
+Next required result: inspect repair-result-4795253.txt for backup verification
+and successful ordinary push. Only then run the existing BTC NAS Collect Publish
+task and verify a fresh NAS original, current interval delta/quality fields,
+receipts and Pages publication. Recurrent writer resilience remains open.
+Validation: supplied diagnosis and unchanged helper guards reviewed; no new
+runtime tests, NAS execution, repair, receipt or deployment claimed.
+
 ### Confirmed pending-upload conflict — 25 October 2026, 19:05 Amsterdam
 
 The supplied latest upload result confirms failure at 18:05:28–18:05:32 UTC:
