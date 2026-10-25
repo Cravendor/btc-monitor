@@ -13,6 +13,35 @@ below. Original entry point was created in commit 0ab7fde on 24 October at
 21:31:28 UTC (23:31 Amsterdam). Reconciled against repository history through
 48191e8 and merged PRs #65–#76. This is a curated evidence record, not a transcript.
 
+### Local receipt inventory received — 25 October 2026
+
+Actual read-only diagnosis at 19:07:13 UTC establishes that the expected external
+task-executions-pending directory does not exist, and the checkout has zero NAS
+watchdog/storage/startup receipt JSONs. There is no local evidence available for
+the uploader to import at that observation. This is not proof of a permissions
+failure, broken importer, disabled task or stopped collector.
+
+Latest displayed watchdog.log line is 2026-10-24T22:55:01Z (23:55 Amsterdam).
+The supplied tail shows five-minute checks only within 22:00–22:55 UTC on the
+visible dates; this raises a possible restricted time-window configuration,
+but the short historical tail is not authoritative current DSM configuration.
+Current wrapper would append a log line and attempt receipt creation on an
+ordinary process check. Need current DSM task body, enabled state and full
+schedule before editing it or diagnosing why no recent execution is visible.
+Earlier reported wrapper replacement does not establish today's task execution.
+
+Next user action: open existing BTC CVD Watchdog in DSM Task Scheduler and supply
+screenshots of General/enabled state, Schedule (including first/last run times)
+and Task Settings script. Inspect settings first; no task duplication, schedule
+change or manual recorder/watchdog start requested. Then diagnose storage using
+its actual existing task configuration. Current source-recorded recent trades
+remain distinct from watchdog execution status.
+
+Original private log/diagnostic attachment is not copied to this public repo.
+Validation: actual diagnostic inventory and timestamps, current wrapper source
+and documented task inventory. No code/runtime/schedule changes or new tests.
+This supersedes the earlier awaiting-correct-file checkpoint.
+
 ### Receipt diagnosis input not yet supplied — 25 October 2026
 
 The newly supplied git-diagnose attachment repeats the earlier 4795253 /
