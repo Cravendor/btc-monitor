@@ -193,6 +193,30 @@
       "monitor": "psychology",
       "path": "reports/2026/10/25/psychology-070200.json",
       "reported_at": "2026-10-25T07:02:00Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "30D/macro: **ONVOLDOENDE DATA** — positieve totale NUPL en zomerherstel beslissen de cyclus niet; onafhankelijke vraag-, cohort- en actuele orderflowbevestiging ontbreekt.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: **-1 ZWAK BEARISH** — het beschikbare bronbeeld tot 08:00 UTC toont een afzwakkende opleving en zwakke dagstructuur; geen oordeel over het ontbrekende latere 4H-slot.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: **-1 ZWAK BEARISH** — laatste dagclose 0,74% lager dan zeven dagen eerder, met recent dalende dagcloses; dit draagt geen sterke bearish of distributieclaim.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "ae600a305e65b9c6bf45d7ddfb96a8b16a164bb86f6d1953af78bcafffa71209",
+      "has_report_text": true,
+      "monitor": "psychology",
+      "path": "reports/2026/10/25/psychology-130043.json",
+      "reported_at": "2026-10-25T13:00:43Z"
     }
   ],
   "schema_version": 2
