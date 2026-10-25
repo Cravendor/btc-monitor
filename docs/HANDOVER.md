@@ -13,6 +13,30 @@ below. Original entry point was created in commit 0ab7fde on 24 October at
 21:31:28 UTC (23:31 Amsterdam). Reconciled against repository history through
 48191e8 and merged PRs #65–#76. This is a curated evidence record, not a transcript.
 
+### History completion acceptance — 25 October 2026, 18:53 Amsterdam
+
+Observed history run [40218583040](https://github.com/Cravendor/btc-monitor/actions/runs/40218583040)
+completed successfully at 17:53:03 UTC. Pages run
+[40218606715](https://github.com/Cravendor/btc-monitor/actions/runs/40218606715)
+was created at 17:53:05 UTC with event=workflow_run and updated archive head
+62df549; staging, quality gate, artifact upload and deploy-pages all succeeded
+(completed 17:53:34 UTC). The earlier health-triggered Pages run was already
+created at 17:52:48 UTC, alongside history, so this is a distinct later completion
+run. With the #76 workflow configuration, timing and updated head, the observed
+chain supports operational acceptance of automatic history-to-Pages publication.
+The source-run ID is inferred from these records; the API run listing does not
+expose the triggering event payload. This is not continuous-availability proof
+or a new browser/mobile visual inspection.
+
+coverage.json checked 17:52:57 UTC: 68 weekly / 481 daily / 2,890 4H / 11,561 1H
+candles; all degrees complete with zero missing candles at that checkpoint.
+Checked cross-degree prices and base volumes remain consistent.
+No executable, schedule, NAS task or data change was needed. Validation consisted
+of actual run/job/step results, workflow configuration and original coverage JSON.
+Handover/status links and whitespace checked. No new runtime tests claimed.
+Next: inspect a fresh original NAS snapshot for quality/recovery diagnostics and
+watchdog/storage receipt publication; preserve strict per-interval validation.
+
 ### Completed since the entry point was created
 
 | Change | Confirmed result | Remaining boundary |
@@ -29,7 +53,7 @@ below. Original entry point was created in commit 0ab7fde on 24 October at
 | #73 CVD diagnostics / quality gates | Merged 6d8b71d; exact validation, bounded same-candle retry, safe aggregate diagnostics, report/dashboard quality gates | Post-merge NAS uptake and real scheduled-task compliance need separate evidence |
 | #74 Elliott visuals | Merged 09be532; bull/bear candidates at week/day/4H/1H, eight charts, anchor/rule/zone evidence | Provisional candidates; not proved current count, nested subwaves or calibrated rejection strength |
 | #75 long Elliott history | Merged bf8a61e; complete native history from July 2025, resumable collection and incremental update observed | Longer source scope does not certify a count |
-| #76 history-to-Pages completion | Merged bd80bd3; Pages now watches BTC multi-year daily history completion | Observe a real post-merge history-completion-triggered Pages run to close acceptance |
+| #76 history-to-Pages completion | Merged bd80bd3; Pages now watches BTC multi-year daily history completion | Operational chain observed: history 40218583040 → Pages 40218606715; see acceptance above |
 
 ### Correct CVD interpretation
 
@@ -65,7 +89,7 @@ workflow_run trigger path. No authenticated NAS access is available here.
 
 ### Next concrete steps
 
-1. Inspect a real history completion after #76 and its resulting Pages trigger.
+1. History completion publication accepted for the observed run above.
 2. Inspect a fresh original NAS snapshot for #73 quality/recovery diagnostics;
    retrieve original mismatch totals if still missing. Verify current receipt
    publication for watchdog/storage; obtain existing startup body only when needed.
