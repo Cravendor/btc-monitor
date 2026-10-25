@@ -139,6 +139,22 @@ Validation: parsed two original JSON records and collector-health, inspected
 receipt paths in the complete tree and current publisher/protocol. Documentation
 only; no new tests, receipt generation, NAS execution or recovery claimed.
 
+### Ordinary NAS upload started; completion pending — 25 October 2026
+
+The supplied partial result starts at 18:56:46 UTC. It confirms successful
+synchronization to fa8b1fc and test progress, but ends in progress dots: no test
+summary, collection result, push or EINDSTATUS is present. Remote main was still
+fa8b1fc at inspection. Do not call this success or failure and do not start a
+second run. Await the same run's complete output, then inspect original NAS data
+and receipt publication.
+
+This interim checkpoint is saved on docs/nas-upload-pending-20261025, not main,
+while the existing NAS task may still be executing. Avoid advancing main during
+that task's collection/push window. Incorporate this checkpoint with the final
+result after completion; do not use it to trigger another task or recovery.
+No executable changes or tests performed here; only the actual partial log and
+remote head were inspected. Original private log is not published.
+
 ## Next concrete sequence
 
 1. History-to-Pages acceptance observed at 17:53 UTC; see evidence below.
