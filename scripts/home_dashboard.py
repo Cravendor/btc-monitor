@@ -23,7 +23,7 @@ def price(value):
     return format(value, ',.1f').replace(',', '_').replace('.', ',').replace('_', '.') + ' USDT'
 
 
-def render(feed, as_of, ath=None, sentiment=None, context=None):
+def render(feed, as_of, ath=None, sentiment=None, context=None, elliott_history=None):
     result = build_scenarios(feed, as_of)
     swing_bundle = build_swing_scenarios(feed, as_of)
     ready = result['status'] == 'ready'
@@ -132,7 +132,7 @@ table{width:100%;border-collapse:collapse}th,td{padding:8px;text-align:left;bord
 </style></head><body><main>
 <header class="hero"><div><div class="eyebrow">BTC Monitor / overzicht</div><h1>Eén plek voor je marktbeeld.</h1><p>Metingen, marktrichting en scenario’s met controleerbare prijsniveaus.</p><p><a href="btc-status.html">Taakstatus en laatste uitvoeringen →</a></p></div>
 <div class="quote" data-expires="''' + escape(quote_expiry) + '''"><small>Bitget futures · laatste momentopname</small><strong>''' + escape(price_line) + '''</strong></div></header>''' + render_quality(feed,as_of) + market_gauges.render_all(feed, as_of, sentiment) + '''
-''' + swing_dashboard.render(swing_bundle) + elliott_dashboard.render(elliott_dashboard.build(feed, as_of)) + render_cycle_history(feed) + render_cycle_review(feed) + report_context.render(context) + '''
+''' + swing_dashboard.render(swing_bundle) + elliott_dashboard.render(elliott_dashboard.build(feed, as_of, elliott_history)) + render_cycle_history(feed) + render_cycle_review(feed) + report_context.render(context) + '''
 <nav class="links" aria-label="BTC-pagina’s">
 <a class="link-card" href="btc-dashboard.html"><span>01 / METINGEN →</span><h2>Dashboard</h2><p>Prijs, funding, open interest, orderboek en gecontroleerde tradedelta.</p></a>
 <a class="link-card" href="btc-timeframes.html"><span>02 / RICHTING →</span><h2>Multi-timeframe marktrichting</h2><p>Technische signalen van 5 minuten tot 1 week, met actualiteit per candle.</p></a>
@@ -183,7 +183,9 @@ def build(feed_path, output, as_of=None, include_ath=False):
         print('ATH reference:', ath['status'])
     from scripts.sentiment_reference import fetch_reference as fetch_sentiment
     sentiment = fetch_sentiment(as_of) if include_ath else None
-    Path(output).write_text(render(feed, as_of, ath, sentiment, report_context.read_context(Path(feed_path).resolve().parent.parent, as_of)), encoding='utf-8')
+    from scripts.elliott_history import read as read_elliott_history
+    root=Path(feed_path).resolve().parent.parent
+    Path(output).write_text(render(feed, as_of, ath, sentiment, report_context.read_context(root, as_of), read_elliott_history(root,as_of)), encoding='utf-8')
 
 
 if __name__ == '__main__':
