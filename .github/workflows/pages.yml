@@ -21,6 +21,8 @@ on:
       - scripts/cycle_anchor_policy.py
       - scripts/cycle_history.py
       - scripts/cycle_context.py
+      - scripts/task_execution.py
+      - 'data/task-executions/**'
       - scripts/operational_status.py
       - 'web/**'
       - config/cycle_anchors.json

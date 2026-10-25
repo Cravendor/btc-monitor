@@ -1,19 +1,19 @@
 {
   "feed_schema_version": 1,
-  "updated_at": "2026-10-25T00:33:00.070426+00:00",
+  "updated_at": "2026-10-25T05:21:32.832518+00:00",
   "exchange": "bitget",
   "market": "USDT-FUTURES",
   "symbol": "BTCUSDT",
   "order": "newest_first",
   "measurements": [
     {
-      "collection_source": "nas",
+      "collection_source": "github_fallback",
       "schema_version": 2,
       "exchange": "bitget",
       "market": "USDT-FUTURES",
       "symbol": "BTCUSDT",
-      "started_at": "2026-10-25T00:32:33.275045+00:00",
-      "finished_at": "2026-10-25T00:32:38.243147+00:00",
+      "started_at": "2026-10-25T05:21:29.043233+00:00",
+      "finished_at": "2026-10-25T05:21:32.701325+00:00",
       "status": "ok",
       "metrics": {
         "futures_price": {
@@ -21,111 +21,102 @@
           "status": "ok",
           "data": {
             "symbol": "BTCUSDT",
-            "lastPr": "80842.2",
-            "askPr": "80842.3",
-            "bidPr": "80842.2",
-            "bidSz": "5.2882",
-            "askSz": "5.8689",
-            "high24h": "81073.3",
+            "lastPr": "80850.8",
+            "askPr": "80850.8",
+            "bidPr": "80850.7",
+            "bidSz": "7.4108",
+            "askSz": "5.129",
+            "high24h": "80997.9",
             "low24h": "79170.3",
-            "ts": "1792888353462",
-            "change24h": "0.00135",
-            "baseVolume": "27489.9887",
-            "quoteVolume": "2205119808.6557",
-            "usdtVolume": "2205119808.6557",
+            "ts": "1792905689306",
+            "change24h": "0.00119",
+            "baseVolume": "26653.6033",
+            "quoteVolume": "2137639981.06316",
+            "usdtVolume": "2137639981.06316",
             "openUtc": "80844.5",
-            "changeUtc24h": "-0.00003",
-            "indexPrice": "80877.8595",
-            "fundingRate": "0.000044",
-            "holdingAmount": "35911.2356999999754",
+            "changeUtc24h": "0.00008",
+            "indexPrice": "80893.974",
+            "fundingRate": "0.000059",
+            "holdingAmount": "36069.563199999978",
             "deliveryStartTime": null,
             "deliveryTime": null,
             "deliveryStatus": "",
-            "open24h": "80733.6",
-            "markPrice": "80842.3"
+            "open24h": "80755",
+            "markPrice": "80850.8"
           },
           "error": null,
           "attempts": 1,
-          "observed_at": "2026-10-25T00:32:33.275085+00:00"
+          "observed_at": "2026-10-25T05:21:29.043242+00:00"
         },
         "open_interest": {
           "url": "https://api.bitget.com/api/v2/mix/market/ticker?symbol=BTCUSDT&productType=USDT-FUTURES",
           "status": "ok",
           "data": {
             "symbol": "BTCUSDT",
-            "lastPr": "80842.2",
-            "askPr": "80842.3",
-            "bidPr": "80842.2",
-            "bidSz": "5.2882",
-            "askSz": "5.8689",
-            "high24h": "81073.3",
+            "lastPr": "80850.7",
+            "askPr": "80850.8",
+            "bidPr": "80850.7",
+            "bidSz": "7.4108",
+            "askSz": "5.129",
+            "high24h": "80997.9",
             "low24h": "79170.3",
-            "ts": "1792888353757",
-            "change24h": "0.00135",
-            "baseVolume": "27489.9887",
-            "quoteVolume": "2205119808.6557",
-            "usdtVolume": "2205119808.6557",
+            "ts": "1792905689502",
+            "change24h": "0.00119",
+            "baseVolume": "26653.6033",
+            "quoteVolume": "2137639981.06316",
+            "usdtVolume": "2137639981.06316",
             "openUtc": "80844.5",
-            "changeUtc24h": "-0.00003",
-            "indexPrice": "80877.8595",
-            "fundingRate": "0.000044",
-            "holdingAmount": "35911.2356999999754",
+            "changeUtc24h": "0.00008",
+            "indexPrice": "80893.9745",
+            "fundingRate": "0.000059",
+            "holdingAmount": "36069.563199999978",
             "deliveryStartTime": null,
             "deliveryTime": null,
             "deliveryStatus": "",
-            "open24h": "80733.6",
-            "markPrice": "80842.3"
+            "open24h": "80755",
+            "markPrice": "80850.8"
           },
           "error": null,
           "attempts": 1,
-          "observed_at": "2026-10-25T00:32:33.587234+00:00"
+          "observed_at": "2026-10-25T05:21:29.392693+00:00"
         },
         "funding": {
           "url": "https://api.bitget.com/api/v2/mix/market/ticker?symbol=BTCUSDT&productType=USDT-FUTURES",
           "status": "ok",
           "data": {
             "symbol": "BTCUSDT",
-            "lastPr": "80842.2",
-            "askPr": "80842.3",
-            "bidPr": "80842.2",
-            "bidSz": "5.2876",
-            "askSz": "5.8689",
-            "high24h": "81073.3",
+            "lastPr": "80850.7",
+            "askPr": "80850.8",
+            "bidPr": "80850.7",
+            "bidSz": "7.4108",
+            "askSz": "5.129",
+            "high24h": "80997.9",
             "low24h": "79170.3",
-            "ts": "1792888354050",
-            "change24h": "0.00135",
-            "baseVolume": "27490.2594",
-            "quoteVolume": "2205141692.66629",
-            "usdtVolume": "2205141692.66629",
+            "ts": "1792905689712",
+            "change24h": "0.00119",
+            "baseVolume": "26653.6033",
+            "quoteVolume": "2137639981.06316",
+            "usdtVolume": "2137639981.06316",
             "openUtc": "80844.5",
-            "changeUtc24h": "-0.00003",
-            "indexPrice": "80877.8595",
-            "fundingRate": "0.000044",
-            "holdingAmount": "35911.2356999999754",
+            "changeUtc24h": "0.00008",
+            "indexPrice": "80893.9745",
+            "fundingRate": "0.000059",
+            "holdingAmount": "36069.563199999978",
             "deliveryStartTime": null,
             "deliveryTime": null,
             "deliveryStatus": "",
-            "open24h": "80733.6",
-            "markPrice": "80842.2"
+            "open24h": "80755",
+            "markPrice": "80850.8"
           },
           "error": null,
           "attempts": 1,
-          "observed_at": "2026-10-25T00:32:33.874167+00:00"
+          "observed_at": "2026-10-25T05:21:29.600016+00:00"
         },
         "candles_4h": {
           "url": "https://api.bitget.com/api/v2/mix/market/candles?symbol=BTCUSDT&productType=USDT-FUTURES&granularity=4H&limit=100",
           "status": "ok",
           "data": {
             "candles": [
-              {
-                "open_time_ms": 1791460800000,
-                "open": 82515.2,
-                "high": 82795.4,
-                "low": 80938.9,
-                "close": 81025.0,
-                "base_volume_btc": 19773.3543,
-                "quote_volume_usdt": 1618877626.76581
-              },
               {
                 "open_time_ms": 1791475200000,
                 "open": 81025.0,
@@ -1007,6 +998,15 @@
                 "close": 80844.5,
                 "base_volume_btc": 2305.5546,
                 "quote_volume_usdt": 185746974.37284
+              },
+              {
+                "open_time_ms": 1792886400000,
+                "open": 80844.5,
+                "high": 80997.9,
+                "low": 80731.3,
+                "close": 80823.7,
+                "base_volume_btc": 1910.9443,
+                "quote_volume_usdt": 154515836.73822
               }
             ],
             "gap_count": 0,
@@ -1014,34 +1014,34 @@
             "interval": "4H"
           },
           "attempts": 1,
-          "observed_at": "2026-10-25T00:32:34.166539+00:00"
+          "observed_at": "2026-10-25T05:21:29.792531+00:00"
         },
         "orderbook_depth": {
           "url": "https://api.bitget.com/api/v2/mix/market/merge-depth?symbol=BTCUSDT&productType=USDT-FUTURES&precision=scale0&limit=100",
           "status": "ok",
           "data": {
-            "source_ts_ms": 1792888354676,
-            "mid_usdt": 80842.25,
-            "spread_bps": 0.01236976952098943,
+            "source_ts_ms": 1792905690183,
+            "mid_usdt": 80850.75,
+            "spread_bps": 0.01236846906254064,
             "bands_pct": {
               "0.1": {
-                "bid_notional_usdt": 5553314.950799998,
-                "ask_notional_usdt": 5198275.605959999,
-                "imbalance": 0.03302202990019645,
+                "bid_notional_usdt": 11708402.4768,
+                "ask_notional_usdt": 1744801.20483,
+                "imbalance": 0.7406117908981813,
                 "bid_band_covered": false,
                 "ask_band_covered": false
               },
               "0.5": {
-                "bid_notional_usdt": 5553314.950799998,
-                "ask_notional_usdt": 5198275.605959999,
-                "imbalance": 0.03302202990019645,
+                "bid_notional_usdt": 11708402.4768,
+                "ask_notional_usdt": 1744801.20483,
+                "imbalance": 0.7406117908981813,
                 "bid_band_covered": false,
                 "ask_band_covered": false
               },
               "1.0": {
-                "bid_notional_usdt": 5553314.950799998,
-                "ask_notional_usdt": 5198275.605959999,
-                "imbalance": 0.03302202990019645,
+                "bid_notional_usdt": 11708402.4768,
+                "ask_notional_usdt": 1744801.20483,
+                "imbalance": 0.7406117908981813,
                 "bid_band_covered": false,
                 "ask_band_covered": false
               }
@@ -1051,17 +1051,17 @@
             "scope": "Returned levels only; incomplete bands are lower bounds, not full market depth."
           },
           "attempts": 1,
-          "observed_at": "2026-10-25T00:32:34.484054+00:00"
+          "observed_at": "2026-10-25T05:21:30.013708+00:00"
         },
         "spot_price": {
           "url": "https://api.bitget.com/api/v2/spot/market/tickers?symbol=BTCUSDT",
           "status": "ok",
           "data": {
-            "price_usdt": 80878.77,
-            "source_ts_ms": 1792888353899
+            "price_usdt": 80891.07,
+            "source_ts_ms": 1792905689959
           },
           "attempts": 1,
-          "observed_at": "2026-10-25T00:32:34.797561+00:00"
+          "observed_at": "2026-10-25T05:21:30.269819+00:00"
         },
         "stablecoins": {
           "status": "ok",
@@ -1070,18 +1070,18 @@
               "url": "https://api.exchange.coinbase.com/products/USDT-USD/ticker",
               "status": "ok",
               "data": {
-                "price_usd": 0.99864,
-                "depeg_pct": -0.13600000000000279,
-                "source_time": "2026-10-25T00:32:31.304019216Z"
+                "price_usd": 0.99872,
+                "depeg_pct": -0.12799999999999478,
+                "source_time": "2026-10-25T05:21:18.946459267Z"
               },
               "attempts": 1,
-              "observed_at": "2026-10-25T00:32:35.162607+00:00"
+              "observed_at": "2026-10-25T05:21:30.544587+00:00"
             },
             "USDC": {
               "status": "ok",
               "data": {
-                "price_usd": 0.999788436,
-                "depeg_pct": -0.021156399999999742,
+                "price_usd": 0.9998285792,
+                "depeg_pct": -0.017142079999998838,
                 "method": "Bitget USDC-USDT times Coinbase USDT-USD"
               },
               "sources": {
@@ -1089,22 +1089,22 @@
                   "url": "https://api.bitget.com/api/v2/spot/market/tickers?symbol=USDCUSDT",
                   "status": "ok",
                   "data": {
-                    "price_usdt": 1.00115,
-                    "source_ts_ms": 1792888354225
+                    "price_usdt": 1.00111,
+                    "source_ts_ms": 1792905689647
                   },
                   "attempts": 1,
-                  "observed_at": "2026-10-25T00:32:35.219654+00:00"
+                  "observed_at": "2026-10-25T05:21:30.572893+00:00"
                 },
                 "usdt": {
                   "url": "https://api.exchange.coinbase.com/products/USDT-USD/ticker",
                   "status": "ok",
                   "data": {
-                    "price_usd": 0.99864,
-                    "depeg_pct": -0.13600000000000279,
-                    "source_time": "2026-10-25T00:32:31.304019216Z"
+                    "price_usd": 0.99872,
+                    "depeg_pct": -0.12799999999999478,
+                    "source_time": "2026-10-25T05:21:18.946459267Z"
                   },
                   "attempts": 1,
-                  "observed_at": "2026-10-25T00:32:35.162607+00:00"
+                  "observed_at": "2026-10-25T05:21:30.544587+00:00"
                 }
               }
             }
@@ -1114,51 +1114,51 @@
         "coinbase_premium_proxy": {
           "status": "ok",
           "data": {
-            "premium_pct": -0.0033984331250791477,
+            "premium_pct": 0.003058107627995632,
             "method": "Coinbase BTC-USD versus Bitget BTC-USDT converted using Coinbase USDT-USD; proxy, not standard Coinbase/Binance index.",
-            "max_source_skew_seconds": 2.5949809551239014
+            "max_source_skew_seconds": 11.012541055679321
           },
           "sources": {
             "spot": {
               "url": "https://api.bitget.com/api/v2/spot/market/tickers?symbol=BTCUSDT",
               "status": "ok",
               "data": {
-                "price_usdt": 80878.77,
-                "source_ts_ms": 1792888353899
+                "price_usdt": 80891.07,
+                "source_ts_ms": 1792905689959
               },
               "attempts": 1,
-              "observed_at": "2026-10-25T00:32:34.797561+00:00"
+              "observed_at": "2026-10-25T05:21:30.269819+00:00"
             },
             "coinbase": {
               "url": "https://api.exchange.coinbase.com/products/BTC-USD/ticker",
               "status": "ok",
               "data": {
-                "price_usd": 80766.03,
-                "source_time": "2026-10-25T00:32:32.067411726Z"
+                "price_usd": 80790.0,
+                "source_time": "2026-10-25T05:21:26.860948548Z"
               },
               "attempts": 1,
-              "observed_at": "2026-10-25T00:32:35.066093+00:00"
+              "observed_at": "2026-10-25T05:21:30.462513+00:00"
             },
             "usdt": {
               "url": "https://api.exchange.coinbase.com/products/USDT-USD/ticker",
               "status": "ok",
               "data": {
-                "price_usd": 0.99864,
-                "depeg_pct": -0.13600000000000279,
-                "source_time": "2026-10-25T00:32:31.304019216Z"
+                "price_usd": 0.99872,
+                "depeg_pct": -0.12799999999999478,
+                "source_time": "2026-10-25T05:21:18.946459267Z"
               },
               "attempts": 1,
-              "observed_at": "2026-10-25T00:32:35.162607+00:00"
+              "observed_at": "2026-10-25T05:21:30.544587+00:00"
             }
           }
         },
         "futures_basis": {
           "status": "ok",
           "data": {
-            "basis_pct": -0.04396691532124741,
-            "mark_price_usdt": 80842.3,
-            "index_price_usdt": 80877.8595,
-            "source_ts_ms": 1792888353462,
+            "basis_pct": -0.05337109535501483,
+            "mark_price_usdt": 80850.8,
+            "index_price_usdt": 80893.974,
+            "source_ts_ms": 1792905689306,
             "method": "Bitget perpetual mark/index premium; not dated futures annualised basis."
           },
           "sources": {
@@ -1167,32 +1167,32 @@
               "status": "ok",
               "data": {
                 "symbol": "BTCUSDT",
-                "lastPr": "80842.2",
-                "askPr": "80842.3",
-                "bidPr": "80842.2",
-                "bidSz": "5.2882",
-                "askSz": "5.8689",
-                "high24h": "81073.3",
+                "lastPr": "80850.8",
+                "askPr": "80850.8",
+                "bidPr": "80850.7",
+                "bidSz": "7.4108",
+                "askSz": "5.129",
+                "high24h": "80997.9",
                 "low24h": "79170.3",
-                "ts": "1792888353462",
-                "change24h": "0.00135",
-                "baseVolume": "27489.9887",
-                "quoteVolume": "2205119808.6557",
-                "usdtVolume": "2205119808.6557",
+                "ts": "1792905689306",
+                "change24h": "0.00119",
+                "baseVolume": "26653.6033",
+                "quoteVolume": "2137639981.06316",
+                "usdtVolume": "2137639981.06316",
                 "openUtc": "80844.5",
-                "changeUtc24h": "-0.00003",
-                "indexPrice": "80877.8595",
-                "fundingRate": "0.000044",
-                "holdingAmount": "35911.2356999999754",
+                "changeUtc24h": "0.00008",
+                "indexPrice": "80893.974",
+                "fundingRate": "0.000059",
+                "holdingAmount": "36069.563199999978",
                 "deliveryStartTime": null,
                 "deliveryTime": null,
                 "deliveryStatus": "",
-                "open24h": "80733.6",
-                "markPrice": "80842.3"
+                "open24h": "80755",
+                "markPrice": "80850.8"
               },
               "error": null,
               "attempts": 1,
-              "observed_at": "2026-10-25T00:32:33.275085+00:00"
+              "observed_at": "2026-10-25T05:21:29.043242+00:00"
             }
           }
         },
@@ -1204,528 +1204,6 @@
               "status": "ok",
               "data": {
                 "candles": [
-                  {
-                    "open_time_ms": 1792858500000,
-                    "open": 79812.6,
-                    "high": 79881.4,
-                    "low": 79660.0,
-                    "close": 79684.1,
-                    "base_volume_btc": 102.3777,
-                    "quote_volume_usdt": 8167847.2006
-                  },
-                  {
-                    "open_time_ms": 1792858800000,
-                    "open": 79684.1,
-                    "high": 79688.2,
-                    "low": 79544.4,
-                    "close": 79578.1,
-                    "base_volume_btc": 153.9193,
-                    "quote_volume_usdt": 12251291.02334
-                  },
-                  {
-                    "open_time_ms": 1792859100000,
-                    "open": 79578.1,
-                    "high": 79663.9,
-                    "low": 79574.5,
-                    "close": 79627.3,
-                    "base_volume_btc": 67.9237,
-                    "quote_volume_usdt": 5407615.57843
-                  },
-                  {
-                    "open_time_ms": 1792859400000,
-                    "open": 79627.3,
-                    "high": 79648.2,
-                    "low": 79537.5,
-                    "close": 79625.3,
-                    "base_volume_btc": 217.6026,
-                    "quote_volume_usdt": 17315120.49843
-                  },
-                  {
-                    "open_time_ms": 1792859700000,
-                    "open": 79625.3,
-                    "high": 79705.5,
-                    "low": 79605.8,
-                    "close": 79705.5,
-                    "base_volume_btc": 36.9139,
-                    "quote_volume_usdt": 2940406.10759
-                  },
-                  {
-                    "open_time_ms": 1792860000000,
-                    "open": 79705.5,
-                    "high": 79850.9,
-                    "low": 79704.2,
-                    "close": 79845.9,
-                    "base_volume_btc": 171.9668,
-                    "quote_volume_usdt": 13718483.58089
-                  },
-                  {
-                    "open_time_ms": 1792860300000,
-                    "open": 79845.9,
-                    "high": 80040.8,
-                    "low": 79821.6,
-                    "close": 80040.8,
-                    "base_volume_btc": 292.259,
-                    "quote_volume_usdt": 23360493.62764
-                  },
-                  {
-                    "open_time_ms": 1792860600000,
-                    "open": 80040.8,
-                    "high": 80258.7,
-                    "low": 80030.0,
-                    "close": 80143.3,
-                    "base_volume_btc": 713.4596,
-                    "quote_volume_usdt": 57193573.82467
-                  },
-                  {
-                    "open_time_ms": 1792860900000,
-                    "open": 80143.3,
-                    "high": 80246.9,
-                    "low": 80143.3,
-                    "close": 80178.3,
-                    "base_volume_btc": 252.3314,
-                    "quote_volume_usdt": 20237556.57475
-                  },
-                  {
-                    "open_time_ms": 1792861200000,
-                    "open": 80178.3,
-                    "high": 80207.5,
-                    "low": 80129.8,
-                    "close": 80204.0,
-                    "base_volume_btc": 88.492,
-                    "quote_volume_usdt": 7094895.14626
-                  },
-                  {
-                    "open_time_ms": 1792861500000,
-                    "open": 80204.0,
-                    "high": 80207.5,
-                    "low": 80120.0,
-                    "close": 80121.6,
-                    "base_volume_btc": 109.7517,
-                    "quote_volume_usdt": 8799747.71446
-                  },
-                  {
-                    "open_time_ms": 1792861800000,
-                    "open": 80121.6,
-                    "high": 80123.6,
-                    "low": 80070.0,
-                    "close": 80120.2,
-                    "base_volume_btc": 77.2102,
-                    "quote_volume_usdt": 6184643.9844
-                  },
-                  {
-                    "open_time_ms": 1792862100000,
-                    "open": 80120.2,
-                    "high": 80204.8,
-                    "low": 80088.0,
-                    "close": 80166.3,
-                    "base_volume_btc": 145.6751,
-                    "quote_volume_usdt": 11676949.63046
-                  },
-                  {
-                    "open_time_ms": 1792862400000,
-                    "open": 80166.3,
-                    "high": 80220.0,
-                    "low": 80166.2,
-                    "close": 80219.9,
-                    "base_volume_btc": 86.636,
-                    "quote_volume_usdt": 6948536.76208
-                  },
-                  {
-                    "open_time_ms": 1792862700000,
-                    "open": 80219.9,
-                    "high": 80220.0,
-                    "low": 80159.0,
-                    "close": 80159.1,
-                    "base_volume_btc": 49.9177,
-                    "quote_volume_usdt": 4003604.81788
-                  },
-                  {
-                    "open_time_ms": 1792863000000,
-                    "open": 80159.1,
-                    "high": 80167.2,
-                    "low": 80118.3,
-                    "close": 80149.6,
-                    "base_volume_btc": 34.1838,
-                    "quote_volume_usdt": 2739596.64178
-                  },
-                  {
-                    "open_time_ms": 1792863300000,
-                    "open": 80149.6,
-                    "high": 80149.7,
-                    "low": 80082.4,
-                    "close": 80129.1,
-                    "base_volume_btc": 32.2064,
-                    "quote_volume_usdt": 2580512.87469
-                  },
-                  {
-                    "open_time_ms": 1792863600000,
-                    "open": 80129.1,
-                    "high": 80182.0,
-                    "low": 80096.0,
-                    "close": 80117.2,
-                    "base_volume_btc": 97.892,
-                    "quote_volume_usdt": 7844680.60005
-                  },
-                  {
-                    "open_time_ms": 1792863900000,
-                    "open": 80117.2,
-                    "high": 80276.4,
-                    "low": 80110.9,
-                    "close": 80213.3,
-                    "base_volume_btc": 103.0161,
-                    "quote_volume_usdt": 8260348.28514
-                  },
-                  {
-                    "open_time_ms": 1792864200000,
-                    "open": 80213.3,
-                    "high": 80251.9,
-                    "low": 80180.4,
-                    "close": 80237.4,
-                    "base_volume_btc": 62.3924,
-                    "quote_volume_usdt": 5005558.32501
-                  },
-                  {
-                    "open_time_ms": 1792864500000,
-                    "open": 80237.4,
-                    "high": 80255.0,
-                    "low": 80206.9,
-                    "close": 80234.9,
-                    "base_volume_btc": 26.0294,
-                    "quote_volume_usdt": 2088465.39925
-                  },
-                  {
-                    "open_time_ms": 1792864800000,
-                    "open": 80234.9,
-                    "high": 80265.5,
-                    "low": 80211.7,
-                    "close": 80245.4,
-                    "base_volume_btc": 40.5194,
-                    "quote_volume_usdt": 3251302.32825
-                  },
-                  {
-                    "open_time_ms": 1792865100000,
-                    "open": 80245.4,
-                    "high": 80265.8,
-                    "low": 80213.9,
-                    "close": 80265.8,
-                    "base_volume_btc": 19.6046,
-                    "quote_volume_usdt": 1572975.73238
-                  },
-                  {
-                    "open_time_ms": 1792865400000,
-                    "open": 80265.8,
-                    "high": 80374.5,
-                    "low": 80265.7,
-                    "close": 80317.5,
-                    "base_volume_btc": 171.0454,
-                    "quote_volume_usdt": 13740056.74005
-                  },
-                  {
-                    "open_time_ms": 1792865700000,
-                    "open": 80317.5,
-                    "high": 80373.8,
-                    "low": 80280.3,
-                    "close": 80325.0,
-                    "base_volume_btc": 68.0841,
-                    "quote_volume_usdt": 5469688.48426
-                  },
-                  {
-                    "open_time_ms": 1792866000000,
-                    "open": 80325.0,
-                    "high": 80325.0,
-                    "low": 80223.2,
-                    "close": 80247.3,
-                    "base_volume_btc": 217.1077,
-                    "quote_volume_usdt": 17424978.99322
-                  },
-                  {
-                    "open_time_ms": 1792866300000,
-                    "open": 80247.3,
-                    "high": 80374.1,
-                    "low": 80247.3,
-                    "close": 80366.2,
-                    "base_volume_btc": 53.5473,
-                    "quote_volume_usdt": 4300523.33459
-                  },
-                  {
-                    "open_time_ms": 1792866600000,
-                    "open": 80366.2,
-                    "high": 80380.3,
-                    "low": 80318.7,
-                    "close": 80347.6,
-                    "base_volume_btc": 54.8122,
-                    "quote_volume_usdt": 4404865.14637
-                  },
-                  {
-                    "open_time_ms": 1792866900000,
-                    "open": 80347.6,
-                    "high": 80347.6,
-                    "low": 80256.4,
-                    "close": 80323.1,
-                    "base_volume_btc": 78.6352,
-                    "quote_volume_usdt": 6314891.08665
-                  },
-                  {
-                    "open_time_ms": 1792867200000,
-                    "open": 80323.1,
-                    "high": 80329.5,
-                    "low": 80290.9,
-                    "close": 80324.5,
-                    "base_volume_btc": 23.1453,
-                    "quote_volume_usdt": 1858843.44668
-                  },
-                  {
-                    "open_time_ms": 1792867500000,
-                    "open": 80324.5,
-                    "high": 80369.3,
-                    "low": 80316.0,
-                    "close": 80367.0,
-                    "base_volume_btc": 22.2046,
-                    "quote_volume_usdt": 1784138.14592
-                  },
-                  {
-                    "open_time_ms": 1792867800000,
-                    "open": 80367.0,
-                    "high": 80387.5,
-                    "low": 80347.0,
-                    "close": 80378.1,
-                    "base_volume_btc": 29.1444,
-                    "quote_volume_usdt": 2342141.52399
-                  },
-                  {
-                    "open_time_ms": 1792868100000,
-                    "open": 80378.1,
-                    "high": 80619.9,
-                    "low": 80378.0,
-                    "close": 80503.6,
-                    "base_volume_btc": 411.8829,
-                    "quote_volume_usdt": 33165357.8155
-                  },
-                  {
-                    "open_time_ms": 1792868400000,
-                    "open": 80503.6,
-                    "high": 80587.1,
-                    "low": 80452.6,
-                    "close": 80552.5,
-                    "base_volume_btc": 145.6708,
-                    "quote_volume_usdt": 11729710.20251
-                  },
-                  {
-                    "open_time_ms": 1792868700000,
-                    "open": 80552.5,
-                    "high": 80553.8,
-                    "low": 80470.1,
-                    "close": 80493.7,
-                    "base_volume_btc": 44.1497,
-                    "quote_volume_usdt": 3553899.28525
-                  },
-                  {
-                    "open_time_ms": 1792869000000,
-                    "open": 80493.7,
-                    "high": 80497.2,
-                    "low": 80458.5,
-                    "close": 80474.4,
-                    "base_volume_btc": 27.1899,
-                    "quote_volume_usdt": 2188217.03799
-                  },
-                  {
-                    "open_time_ms": 1792869300000,
-                    "open": 80474.4,
-                    "high": 80496.2,
-                    "low": 80459.8,
-                    "close": 80484.2,
-                    "base_volume_btc": 35.3285,
-                    "quote_volume_usdt": 2843051.3209
-                  },
-                  {
-                    "open_time_ms": 1792869600000,
-                    "open": 80484.2,
-                    "high": 80506.0,
-                    "low": 80470.0,
-                    "close": 80498.3,
-                    "base_volume_btc": 20.2624,
-                    "quote_volume_usdt": 1630984.54151
-                  },
-                  {
-                    "open_time_ms": 1792869900000,
-                    "open": 80498.3,
-                    "high": 80516.7,
-                    "low": 80489.3,
-                    "close": 80498.6,
-                    "base_volume_btc": 53.7618,
-                    "quote_volume_usdt": 4328235.27473
-                  },
-                  {
-                    "open_time_ms": 1792870200000,
-                    "open": 80498.6,
-                    "high": 80516.7,
-                    "low": 80465.6,
-                    "close": 80516.7,
-                    "base_volume_btc": 47.2853,
-                    "quote_volume_usdt": 3806315.68266
-                  },
-                  {
-                    "open_time_ms": 1792870500000,
-                    "open": 80516.7,
-                    "high": 80516.7,
-                    "low": 80497.4,
-                    "close": 80498.5,
-                    "base_volume_btc": 20.0808,
-                    "quote_volume_usdt": 1616642.19725
-                  },
-                  {
-                    "open_time_ms": 1792870800000,
-                    "open": 80498.5,
-                    "high": 80507.9,
-                    "low": 80498.4,
-                    "close": 80507.4,
-                    "base_volume_btc": 11.7998,
-                    "quote_volume_usdt": 949939.85179
-                  },
-                  {
-                    "open_time_ms": 1792871100000,
-                    "open": 80507.4,
-                    "high": 80507.5,
-                    "low": 80460.0,
-                    "close": 80473.9,
-                    "base_volume_btc": 21.1071,
-                    "quote_volume_usdt": 1698721.11156
-                  },
-                  {
-                    "open_time_ms": 1792871400000,
-                    "open": 80473.9,
-                    "high": 80490.2,
-                    "low": 80471.1,
-                    "close": 80471.2,
-                    "base_volume_btc": 10.7899,
-                    "quote_volume_usdt": 868369.05497
-                  },
-                  {
-                    "open_time_ms": 1792871700000,
-                    "open": 80471.2,
-                    "high": 80471.2,
-                    "low": 80446.6,
-                    "close": 80446.6,
-                    "base_volume_btc": 26.9981,
-                    "quote_volume_usdt": 2172369.04858
-                  },
-                  {
-                    "open_time_ms": 1792872000000,
-                    "open": 80446.6,
-                    "high": 80583.9,
-                    "low": 80446.6,
-                    "close": 80543.8,
-                    "base_volume_btc": 61.7647,
-                    "quote_volume_usdt": 4974053.58824
-                  },
-                  {
-                    "open_time_ms": 1792872300000,
-                    "open": 80543.8,
-                    "high": 80543.9,
-                    "low": 80501.6,
-                    "close": 80515.0,
-                    "base_volume_btc": 14.8961,
-                    "quote_volume_usdt": 1199439.34066
-                  },
-                  {
-                    "open_time_ms": 1792872600000,
-                    "open": 80515.0,
-                    "high": 80551.2,
-                    "low": 80512.7,
-                    "close": 80524.1,
-                    "base_volume_btc": 27.7219,
-                    "quote_volume_usdt": 2232307.88543
-                  },
-                  {
-                    "open_time_ms": 1792872900000,
-                    "open": 80524.1,
-                    "high": 80589.7,
-                    "low": 80522.0,
-                    "close": 80561.1,
-                    "base_volume_btc": 21.9715,
-                    "quote_volume_usdt": 1769984.25176
-                  },
-                  {
-                    "open_time_ms": 1792873200000,
-                    "open": 80561.1,
-                    "high": 80561.1,
-                    "low": 80509.3,
-                    "close": 80546.8,
-                    "base_volume_btc": 16.2612,
-                    "quote_volume_usdt": 1309697.68973
-                  },
-                  {
-                    "open_time_ms": 1792873500000,
-                    "open": 80546.8,
-                    "high": 80559.7,
-                    "low": 80481.2,
-                    "close": 80494.4,
-                    "base_volume_btc": 15.7202,
-                    "quote_volume_usdt": 1265738.37043
-                  },
-                  {
-                    "open_time_ms": 1792873800000,
-                    "open": 80494.4,
-                    "high": 80525.0,
-                    "low": 80480.0,
-                    "close": 80525.0,
-                    "base_volume_btc": 47.5546,
-                    "quote_volume_usdt": 3827900.87333
-                  },
-                  {
-                    "open_time_ms": 1792874100000,
-                    "open": 80525.0,
-                    "high": 80596.7,
-                    "low": 80524.9,
-                    "close": 80587.9,
-                    "base_volume_btc": 48.3581,
-                    "quote_volume_usdt": 3895412.76008
-                  },
-                  {
-                    "open_time_ms": 1792874400000,
-                    "open": 80587.9,
-                    "high": 80595.6,
-                    "low": 80503.9,
-                    "close": 80521.8,
-                    "base_volume_btc": 18.7045,
-                    "quote_volume_usdt": 1506307.69629
-                  },
-                  {
-                    "open_time_ms": 1792874700000,
-                    "open": 80521.8,
-                    "high": 80537.1,
-                    "low": 80507.3,
-                    "close": 80512.6,
-                    "base_volume_btc": 12.7117,
-                    "quote_volume_usdt": 1023545.96727
-                  },
-                  {
-                    "open_time_ms": 1792875000000,
-                    "open": 80512.6,
-                    "high": 80526.2,
-                    "low": 80500.0,
-                    "close": 80505.0,
-                    "base_volume_btc": 18.3806,
-                    "quote_volume_usdt": 1479848.86802
-                  },
-                  {
-                    "open_time_ms": 1792875300000,
-                    "open": 80505.0,
-                    "high": 80505.1,
-                    "low": 80480.0,
-                    "close": 80480.1,
-                    "base_volume_btc": 13.3119,
-                    "quote_volume_usdt": 1071611.23394
-                  },
-                  {
-                    "open_time_ms": 1792875600000,
-                    "open": 80480.1,
-                    "high": 80488.5,
-                    "low": 80423.3,
-                    "close": 80429.9,
-                    "base_volume_btc": 66.6415,
-                    "quote_volume_usdt": 5361730.88727
-                  },
                   {
                     "open_time_ms": 1792875900000,
                     "open": 80429.9,
@@ -2094,6 +1572,528 @@
                     "close": 80829.1,
                     "base_volume_btc": 31.0032,
                     "quote_volume_usdt": 2505985.86001
+                  },
+                  {
+                    "open_time_ms": 1792888200000,
+                    "open": 80829.1,
+                    "high": 80871.2,
+                    "low": 80818.5,
+                    "close": 80866.7,
+                    "base_volume_btc": 31.9563,
+                    "quote_volume_usdt": 2583624.1087
+                  },
+                  {
+                    "open_time_ms": 1792888500000,
+                    "open": 80866.7,
+                    "high": 80886.0,
+                    "low": 80837.5,
+                    "close": 80848.1,
+                    "base_volume_btc": 48.2612,
+                    "quote_volume_usdt": 3902346.58186
+                  },
+                  {
+                    "open_time_ms": 1792888800000,
+                    "open": 80848.1,
+                    "high": 80849.9,
+                    "low": 80830.0,
+                    "close": 80843.0,
+                    "base_volume_btc": 16.4722,
+                    "quote_volume_usdt": 1331618.36639
+                  },
+                  {
+                    "open_time_ms": 1792889100000,
+                    "open": 80843.0,
+                    "high": 80888.0,
+                    "low": 80835.4,
+                    "close": 80875.1,
+                    "base_volume_btc": 108.8422,
+                    "quote_volume_usdt": 8801596.10555
+                  },
+                  {
+                    "open_time_ms": 1792889400000,
+                    "open": 80875.1,
+                    "high": 80879.6,
+                    "low": 80826.1,
+                    "close": 80852.9,
+                    "base_volume_btc": 73.3291,
+                    "quote_volume_usdt": 5928930.37902
+                  },
+                  {
+                    "open_time_ms": 1792889700000,
+                    "open": 80852.9,
+                    "high": 80876.8,
+                    "low": 80840.1,
+                    "close": 80840.1,
+                    "base_volume_btc": 15.683,
+                    "quote_volume_usdt": 1268184.40707
+                  },
+                  {
+                    "open_time_ms": 1792890000000,
+                    "open": 80840.1,
+                    "high": 80840.1,
+                    "low": 80768.0,
+                    "close": 80781.0,
+                    "base_volume_btc": 29.7664,
+                    "quote_volume_usdt": 2404809.97098
+                  },
+                  {
+                    "open_time_ms": 1792890300000,
+                    "open": 80781.0,
+                    "high": 80790.0,
+                    "low": 80760.0,
+                    "close": 80761.9,
+                    "base_volume_btc": 33.014,
+                    "quote_volume_usdt": 2666479.96477
+                  },
+                  {
+                    "open_time_ms": 1792890600000,
+                    "open": 80761.9,
+                    "high": 80763.0,
+                    "low": 80761.9,
+                    "close": 80762.9,
+                    "base_volume_btc": 8.5228,
+                    "quote_volume_usdt": 688319.8313
+                  },
+                  {
+                    "open_time_ms": 1792890900000,
+                    "open": 80762.9,
+                    "high": 80767.4,
+                    "low": 80751.8,
+                    "close": 80767.4,
+                    "base_volume_btc": 27.1555,
+                    "quote_volume_usdt": 2192920.45261
+                  },
+                  {
+                    "open_time_ms": 1792891200000,
+                    "open": 80767.4,
+                    "high": 80799.9,
+                    "low": 80760.3,
+                    "close": 80799.9,
+                    "base_volume_btc": 58.1927,
+                    "quote_volume_usdt": 4700408.7149
+                  },
+                  {
+                    "open_time_ms": 1792891500000,
+                    "open": 80799.9,
+                    "high": 80807.3,
+                    "low": 80760.3,
+                    "close": 80774.1,
+                    "base_volume_btc": 19.8821,
+                    "quote_volume_usdt": 1606036.68386
+                  },
+                  {
+                    "open_time_ms": 1792891800000,
+                    "open": 80774.1,
+                    "high": 80774.1,
+                    "low": 80747.2,
+                    "close": 80756.6,
+                    "base_volume_btc": 18.0054,
+                    "quote_volume_usdt": 1454035.25548
+                  },
+                  {
+                    "open_time_ms": 1792892100000,
+                    "open": 80756.6,
+                    "high": 80837.6,
+                    "low": 80756.5,
+                    "close": 80802.3,
+                    "base_volume_btc": 27.6445,
+                    "quote_volume_usdt": 2233634.55393
+                  },
+                  {
+                    "open_time_ms": 1792892400000,
+                    "open": 80802.3,
+                    "high": 80835.5,
+                    "low": 80798.7,
+                    "close": 80835.5,
+                    "base_volume_btc": 26.2312,
+                    "quote_volume_usdt": 2119735.73673
+                  },
+                  {
+                    "open_time_ms": 1792892700000,
+                    "open": 80835.5,
+                    "high": 80888.0,
+                    "low": 80835.1,
+                    "close": 80852.8,
+                    "base_volume_btc": 30.8341,
+                    "quote_volume_usdt": 2493158.64401
+                  },
+                  {
+                    "open_time_ms": 1792893000000,
+                    "open": 80852.8,
+                    "high": 80853.3,
+                    "low": 80810.6,
+                    "close": 80813.4,
+                    "base_volume_btc": 12.8483,
+                    "quote_volume_usdt": 1038535.64236
+                  },
+                  {
+                    "open_time_ms": 1792893300000,
+                    "open": 80813.4,
+                    "high": 80874.0,
+                    "low": 80813.4,
+                    "close": 80874.0,
+                    "base_volume_btc": 16.219,
+                    "quote_volume_usdt": 1311157.04418
+                  },
+                  {
+                    "open_time_ms": 1792893600000,
+                    "open": 80874.0,
+                    "high": 80888.0,
+                    "low": 80857.7,
+                    "close": 80875.7,
+                    "base_volume_btc": 28.1403,
+                    "quote_volume_usdt": 2275856.32729
+                  },
+                  {
+                    "open_time_ms": 1792893900000,
+                    "open": 80875.7,
+                    "high": 80960.0,
+                    "low": 80875.6,
+                    "close": 80909.9,
+                    "base_volume_btc": 158.3479,
+                    "quote_volume_usdt": 12812165.74224
+                  },
+                  {
+                    "open_time_ms": 1792894200000,
+                    "open": 80909.9,
+                    "high": 80950.0,
+                    "low": 80824.8,
+                    "close": 80824.9,
+                    "base_volume_btc": 42.8867,
+                    "quote_volume_usdt": 3469117.55031
+                  },
+                  {
+                    "open_time_ms": 1792894500000,
+                    "open": 80824.9,
+                    "high": 80839.6,
+                    "low": 80769.0,
+                    "close": 80820.0,
+                    "base_volume_btc": 55.4331,
+                    "quote_volume_usdt": 4479576.66216
+                  },
+                  {
+                    "open_time_ms": 1792894800000,
+                    "open": 80820.0,
+                    "high": 80829.4,
+                    "low": 80773.7,
+                    "close": 80783.0,
+                    "base_volume_btc": 20.6521,
+                    "quote_volume_usdt": 1668687.20491
+                  },
+                  {
+                    "open_time_ms": 1792895100000,
+                    "open": 80783.0,
+                    "high": 80820.0,
+                    "low": 80782.9,
+                    "close": 80820.0,
+                    "base_volume_btc": 21.82,
+                    "quote_volume_usdt": 1763079.52547
+                  },
+                  {
+                    "open_time_ms": 1792895400000,
+                    "open": 80820.0,
+                    "high": 80874.9,
+                    "low": 80819.9,
+                    "close": 80849.0,
+                    "base_volume_btc": 142.014,
+                    "quote_volume_usdt": 11481599.64664
+                  },
+                  {
+                    "open_time_ms": 1792895700000,
+                    "open": 80849.0,
+                    "high": 80958.6,
+                    "low": 80848.9,
+                    "close": 80955.1,
+                    "base_volume_btc": 53.6411,
+                    "quote_volume_usdt": 4340396.00781
+                  },
+                  {
+                    "open_time_ms": 1792896000000,
+                    "open": 80955.1,
+                    "high": 80970.0,
+                    "low": 80916.1,
+                    "close": 80916.1,
+                    "base_volume_btc": 111.4005,
+                    "quote_volume_usdt": 9018409.93472
+                  },
+                  {
+                    "open_time_ms": 1792896300000,
+                    "open": 80916.1,
+                    "high": 80949.0,
+                    "low": 80904.3,
+                    "close": 80904.3,
+                    "base_volume_btc": 38.3665,
+                    "quote_volume_usdt": 3105013.38602
+                  },
+                  {
+                    "open_time_ms": 1792896600000,
+                    "open": 80904.3,
+                    "high": 80904.3,
+                    "low": 80884.0,
+                    "close": 80900.0,
+                    "base_volume_btc": 31.5644,
+                    "quote_volume_usdt": 2553383.14647
+                  },
+                  {
+                    "open_time_ms": 1792896900000,
+                    "open": 80900.0,
+                    "high": 80905.4,
+                    "low": 80880.0,
+                    "close": 80880.0,
+                    "base_volume_btc": 11.1729,
+                    "quote_volume_usdt": 903901.503
+                  },
+                  {
+                    "open_time_ms": 1792897200000,
+                    "open": 80880.0,
+                    "high": 80894.6,
+                    "low": 80871.2,
+                    "close": 80873.9,
+                    "base_volume_btc": 26.5431,
+                    "quote_volume_usdt": 2146824.19025
+                  },
+                  {
+                    "open_time_ms": 1792897500000,
+                    "open": 80873.9,
+                    "high": 80938.0,
+                    "low": 80873.9,
+                    "close": 80938.0,
+                    "base_volume_btc": 14.2443,
+                    "quote_volume_usdt": 1152533.8512
+                  },
+                  {
+                    "open_time_ms": 1792897800000,
+                    "open": 80938.0,
+                    "high": 80940.0,
+                    "low": 80908.9,
+                    "close": 80939.9,
+                    "base_volume_btc": 19.9902,
+                    "quote_volume_usdt": 1617668.88784
+                  },
+                  {
+                    "open_time_ms": 1792898100000,
+                    "open": 80939.9,
+                    "high": 80996.0,
+                    "low": 80939.9,
+                    "close": 80987.6,
+                    "base_volume_btc": 83.0052,
+                    "quote_volume_usdt": 6721001.6116
+                  },
+                  {
+                    "open_time_ms": 1792898400000,
+                    "open": 80987.6,
+                    "high": 80997.9,
+                    "low": 80908.2,
+                    "close": 80931.3,
+                    "base_volume_btc": 29.2289,
+                    "quote_volume_usdt": 2366500.33368
+                  },
+                  {
+                    "open_time_ms": 1792898700000,
+                    "open": 80931.3,
+                    "high": 80935.0,
+                    "low": 80896.7,
+                    "close": 80914.3,
+                    "base_volume_btc": 32.7458,
+                    "quote_volume_usdt": 2649789.53918
+                  },
+                  {
+                    "open_time_ms": 1792899000000,
+                    "open": 80914.3,
+                    "high": 80914.4,
+                    "low": 80884.1,
+                    "close": 80884.2,
+                    "base_volume_btc": 24.663,
+                    "quote_volume_usdt": 1995122.45214
+                  },
+                  {
+                    "open_time_ms": 1792899300000,
+                    "open": 80884.2,
+                    "high": 80915.2,
+                    "low": 80884.2,
+                    "close": 80897.4,
+                    "base_volume_btc": 15.8926,
+                    "quote_volume_usdt": 1285760.14373
+                  },
+                  {
+                    "open_time_ms": 1792899600000,
+                    "open": 80897.4,
+                    "high": 80897.4,
+                    "low": 80882.1,
+                    "close": 80882.1,
+                    "base_volume_btc": 10.2911,
+                    "quote_volume_usdt": 832405.30482
+                  },
+                  {
+                    "open_time_ms": 1792899900000,
+                    "open": 80882.1,
+                    "high": 80882.2,
+                    "low": 80853.5,
+                    "close": 80858.0,
+                    "base_volume_btc": 23.0951,
+                    "quote_volume_usdt": 1867581.47882
+                  },
+                  {
+                    "open_time_ms": 1792900200000,
+                    "open": 80858.0,
+                    "high": 80858.0,
+                    "low": 80833.7,
+                    "close": 80840.0,
+                    "base_volume_btc": 47.4345,
+                    "quote_volume_usdt": 3834810.07546
+                  },
+                  {
+                    "open_time_ms": 1792900500000,
+                    "open": 80840.0,
+                    "high": 80840.0,
+                    "low": 80808.5,
+                    "close": 80823.7,
+                    "base_volume_btc": 26.544,
+                    "quote_volume_usdt": 2145309.27619
+                  },
+                  {
+                    "open_time_ms": 1792900800000,
+                    "open": 80823.7,
+                    "high": 80823.8,
+                    "low": 80780.2,
+                    "close": 80792.4,
+                    "base_volume_btc": 56.6929,
+                    "quote_volume_usdt": 4580870.19123
+                  },
+                  {
+                    "open_time_ms": 1792901100000,
+                    "open": 80792.4,
+                    "high": 80839.8,
+                    "low": 80792.3,
+                    "close": 80839.7,
+                    "base_volume_btc": 20.3877,
+                    "quote_volume_usdt": 1647533.14109
+                  },
+                  {
+                    "open_time_ms": 1792901400000,
+                    "open": 80839.7,
+                    "high": 80850.0,
+                    "low": 80794.8,
+                    "close": 80809.9,
+                    "base_volume_btc": 21.857,
+                    "quote_volume_usdt": 1766584.44164
+                  },
+                  {
+                    "open_time_ms": 1792901700000,
+                    "open": 80809.9,
+                    "high": 80809.9,
+                    "low": 80804.8,
+                    "close": 80804.8,
+                    "base_volume_btc": 12.5954,
+                    "quote_volume_usdt": 1017771.95484
+                  },
+                  {
+                    "open_time_ms": 1792902000000,
+                    "open": 80804.8,
+                    "high": 80846.8,
+                    "low": 80804.8,
+                    "close": 80846.8,
+                    "base_volume_btc": 21.6617,
+                    "quote_volume_usdt": 1751034.88039
+                  },
+                  {
+                    "open_time_ms": 1792902300000,
+                    "open": 80846.8,
+                    "high": 80848.2,
+                    "low": 80817.5,
+                    "close": 80845.0,
+                    "base_volume_btc": 38.36,
+                    "quote_volume_usdt": 3100955.77774
+                  },
+                  {
+                    "open_time_ms": 1792902600000,
+                    "open": 80845.0,
+                    "high": 80870.1,
+                    "low": 80835.0,
+                    "close": 80835.1,
+                    "base_volume_btc": 25.0175,
+                    "quote_volume_usdt": 2022880.62191
+                  },
+                  {
+                    "open_time_ms": 1792902900000,
+                    "open": 80835.1,
+                    "high": 80900.0,
+                    "low": 80835.1,
+                    "close": 80896.7,
+                    "base_volume_btc": 56.3665,
+                    "quote_volume_usdt": 4558913.6364
+                  },
+                  {
+                    "open_time_ms": 1792903200000,
+                    "open": 80896.7,
+                    "high": 80903.7,
+                    "low": 80888.8,
+                    "close": 80903.7,
+                    "base_volume_btc": 7.5706,
+                    "quote_volume_usdt": 612459.90678
+                  },
+                  {
+                    "open_time_ms": 1792903500000,
+                    "open": 80903.7,
+                    "high": 80903.7,
+                    "low": 80889.8,
+                    "close": 80899.9,
+                    "base_volume_btc": 7.532,
+                    "quote_volume_usdt": 609328.25859
+                  },
+                  {
+                    "open_time_ms": 1792903800000,
+                    "open": 80899.9,
+                    "high": 80918.4,
+                    "low": 80899.9,
+                    "close": 80908.3,
+                    "base_volume_btc": 11.3341,
+                    "quote_volume_usdt": 917049.98021
+                  },
+                  {
+                    "open_time_ms": 1792904100000,
+                    "open": 80908.3,
+                    "high": 80923.8,
+                    "low": 80887.7,
+                    "close": 80889.9,
+                    "base_volume_btc": 30.9151,
+                    "quote_volume_usdt": 2501190.6979
+                  },
+                  {
+                    "open_time_ms": 1792904400000,
+                    "open": 80889.9,
+                    "high": 80892.2,
+                    "low": 80865.0,
+                    "close": 80889.8,
+                    "base_volume_btc": 34.2191,
+                    "quote_volume_usdt": 2767544.44978
+                  },
+                  {
+                    "open_time_ms": 1792904700000,
+                    "open": 80889.8,
+                    "high": 80889.9,
+                    "low": 80865.7,
+                    "close": 80866.5,
+                    "base_volume_btc": 12.2308,
+                    "quote_volume_usdt": 989251.43091
+                  },
+                  {
+                    "open_time_ms": 1792905000000,
+                    "open": 80866.5,
+                    "high": 80866.6,
+                    "low": 80866.5,
+                    "close": 80866.5,
+                    "base_volume_btc": 5.8945,
+                    "quote_volume_usdt": 476667.76612
+                  },
+                  {
+                    "open_time_ms": 1792905300000,
+                    "open": 80866.5,
+                    "high": 80866.6,
+                    "low": 80854.2,
+                    "close": 80854.8,
+                    "base_volume_btc": 8.3083,
+                    "quote_volume_usdt": 671826.26513
                   }
                 ],
                 "interval": "5m",
@@ -2101,16 +2101,16 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-10-25T00:32:35.598710+00:00",
+              "observed_at": "2026-10-25T05:21:30.815593+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "5m",
                 "grade": "neutral",
                 "score": 0,
-                "observed_at": "2026-10-25T00:30:00+00:00",
-                "price_vs_20_prior_pct": 0.161,
-                "momentum_6_pct": -0.019,
-                "volume_ratio": 0.5282,
+                "observed_at": "2026-10-25T05:20:00+00:00",
+                "price_vs_20_prior_pct": -0.0062,
+                "momentum_6_pct": -0.0557,
+                "volume_ratio": 0.342,
                 "evidence": {
                   "trend_vote": 0,
                   "momentum_vote": 0,
@@ -2130,177 +2130,6 @@
               "status": "ok",
               "data": {
                 "candles": [
-                  {
-                    "open_time_ms": 1792799100000,
-                    "open": 80949.9,
-                    "high": 81179.8,
-                    "low": 80935.8,
-                    "close": 81155.6,
-                    "base_volume_btc": 546.3637,
-                    "quote_volume_usdt": 44312736.76246
-                  },
-                  {
-                    "open_time_ms": 1792800000000,
-                    "open": 81155.6,
-                    "high": 81180.0,
-                    "low": 80910.0,
-                    "close": 80910.0,
-                    "base_volume_btc": 441.7266,
-                    "quote_volume_usdt": 35812262.262
-                  },
-                  {
-                    "open_time_ms": 1792800900000,
-                    "open": 80910.0,
-                    "high": 80958.1,
-                    "low": 80678.1,
-                    "close": 80757.4,
-                    "base_volume_btc": 712.6363,
-                    "quote_volume_usdt": 57575571.04195
-                  },
-                  {
-                    "open_time_ms": 1792801800000,
-                    "open": 80757.4,
-                    "high": 80818.0,
-                    "low": 80569.1,
-                    "close": 80619.8,
-                    "base_volume_btc": 464.0681,
-                    "quote_volume_usdt": 37435932.06552
-                  },
-                  {
-                    "open_time_ms": 1792802700000,
-                    "open": 80619.8,
-                    "high": 80733.0,
-                    "low": 80570.2,
-                    "close": 80586.8,
-                    "base_volume_btc": 260.1653,
-                    "quote_volume_usdt": 20978756.01681
-                  },
-                  {
-                    "open_time_ms": 1792803600000,
-                    "open": 80586.8,
-                    "high": 80751.2,
-                    "low": 80586.8,
-                    "close": 80736.3,
-                    "base_volume_btc": 229.4741,
-                    "quote_volume_usdt": 18504980.04479
-                  },
-                  {
-                    "open_time_ms": 1792804500000,
-                    "open": 80736.3,
-                    "high": 80839.9,
-                    "low": 80736.3,
-                    "close": 80782.3,
-                    "base_volume_btc": 130.6572,
-                    "quote_volume_usdt": 10556451.43889
-                  },
-                  {
-                    "open_time_ms": 1792805400000,
-                    "open": 80782.3,
-                    "high": 80840.0,
-                    "low": 80692.0,
-                    "close": 80815.0,
-                    "base_volume_btc": 89.2435,
-                    "quote_volume_usdt": 7207973.82088
-                  },
-                  {
-                    "open_time_ms": 1792806300000,
-                    "open": 80815.0,
-                    "high": 80948.6,
-                    "low": 80811.3,
-                    "close": 80895.2,
-                    "base_volume_btc": 214.4677,
-                    "quote_volume_usdt": 17351201.17082
-                  },
-                  {
-                    "open_time_ms": 1792807200000,
-                    "open": 80895.2,
-                    "high": 80948.3,
-                    "low": 80865.4,
-                    "close": 80907.0,
-                    "base_volume_btc": 82.759,
-                    "quote_volume_usdt": 6695238.82071
-                  },
-                  {
-                    "open_time_ms": 1792808100000,
-                    "open": 80907.0,
-                    "high": 80927.0,
-                    "low": 80808.0,
-                    "close": 80927.0,
-                    "base_volume_btc": 72.2594,
-                    "quote_volume_usdt": 5843026.96789
-                  },
-                  {
-                    "open_time_ms": 1792809000000,
-                    "open": 80927.0,
-                    "high": 80955.6,
-                    "low": 80894.8,
-                    "close": 80907.2,
-                    "base_volume_btc": 107.3456,
-                    "quote_volume_usdt": 8686912.69637
-                  },
-                  {
-                    "open_time_ms": 1792809900000,
-                    "open": 80907.2,
-                    "high": 80972.5,
-                    "low": 80900.0,
-                    "close": 80968.0,
-                    "base_volume_btc": 82.4898,
-                    "quote_volume_usdt": 6676135.71232
-                  },
-                  {
-                    "open_time_ms": 1792810800000,
-                    "open": 80968.0,
-                    "high": 81073.3,
-                    "low": 80905.8,
-                    "close": 80953.0,
-                    "base_volume_btc": 230.8058,
-                    "quote_volume_usdt": 18693964.8712
-                  },
-                  {
-                    "open_time_ms": 1792811700000,
-                    "open": 80953.0,
-                    "high": 81003.9,
-                    "low": 80920.2,
-                    "close": 80930.1,
-                    "base_volume_btc": 79.393,
-                    "quote_volume_usdt": 6427527.13156
-                  },
-                  {
-                    "open_time_ms": 1792812600000,
-                    "open": 80930.1,
-                    "high": 80992.8,
-                    "low": 80912.8,
-                    "close": 80917.7,
-                    "base_volume_btc": 49.4108,
-                    "quote_volume_usdt": 3999570.39122
-                  },
-                  {
-                    "open_time_ms": 1792813500000,
-                    "open": 80917.7,
-                    "high": 80947.9,
-                    "low": 80800.8,
-                    "close": 80936.4,
-                    "base_volume_btc": 185.8188,
-                    "quote_volume_usdt": 15027615.47189
-                  },
-                  {
-                    "open_time_ms": 1792814400000,
-                    "open": 80936.4,
-                    "high": 81071.5,
-                    "low": 80865.0,
-                    "close": 80870.1,
-                    "base_volume_btc": 262.887,
-                    "quote_volume_usdt": 21283354.90983
-                  },
-                  {
-                    "open_time_ms": 1792815300000,
-                    "open": 80870.1,
-                    "high": 80886.9,
-                    "low": 80810.4,
-                    "close": 80826.9,
-                    "base_volume_btc": 77.0077,
-                    "quote_volume_usdt": 6225094.80695
-                  },
                   {
                     "open_time_ms": 1792816200000,
                     "open": 80826.9,
@@ -3020,6 +2849,177 @@
                     "close": 80829.1,
                     "base_volume_btc": 74.3879,
                     "quote_volume_usdt": 6009285.39397
+                  },
+                  {
+                    "open_time_ms": 1792888200000,
+                    "open": 80829.1,
+                    "high": 80886.0,
+                    "low": 80818.5,
+                    "close": 80843.0,
+                    "base_volume_btc": 96.6897,
+                    "quote_volume_usdt": 7817589.05695
+                  },
+                  {
+                    "open_time_ms": 1792889100000,
+                    "open": 80843.0,
+                    "high": 80888.0,
+                    "low": 80826.1,
+                    "close": 80840.1,
+                    "base_volume_btc": 197.8543,
+                    "quote_volume_usdt": 15998710.89164
+                  },
+                  {
+                    "open_time_ms": 1792890000000,
+                    "open": 80840.1,
+                    "high": 80840.1,
+                    "low": 80760.0,
+                    "close": 80762.9,
+                    "base_volume_btc": 71.3032,
+                    "quote_volume_usdt": 5759609.76705
+                  },
+                  {
+                    "open_time_ms": 1792890900000,
+                    "open": 80762.9,
+                    "high": 80807.3,
+                    "low": 80751.8,
+                    "close": 80774.1,
+                    "base_volume_btc": 105.2303,
+                    "quote_volume_usdt": 8499365.85137
+                  },
+                  {
+                    "open_time_ms": 1792891800000,
+                    "open": 80774.1,
+                    "high": 80837.6,
+                    "low": 80747.2,
+                    "close": 80835.5,
+                    "base_volume_btc": 71.8811,
+                    "quote_volume_usdt": 5807405.54614
+                  },
+                  {
+                    "open_time_ms": 1792892700000,
+                    "open": 80835.5,
+                    "high": 80888.0,
+                    "low": 80810.6,
+                    "close": 80874.0,
+                    "base_volume_btc": 59.9014,
+                    "quote_volume_usdt": 4842851.33055
+                  },
+                  {
+                    "open_time_ms": 1792893600000,
+                    "open": 80874.0,
+                    "high": 80960.0,
+                    "low": 80824.8,
+                    "close": 80824.9,
+                    "base_volume_btc": 229.3749,
+                    "quote_volume_usdt": 18557139.61984
+                  },
+                  {
+                    "open_time_ms": 1792894500000,
+                    "open": 80824.9,
+                    "high": 80839.6,
+                    "low": 80769.0,
+                    "close": 80820.0,
+                    "base_volume_btc": 97.9052,
+                    "quote_volume_usdt": 7911343.39254
+                  },
+                  {
+                    "open_time_ms": 1792895400000,
+                    "open": 80820.0,
+                    "high": 80970.0,
+                    "low": 80819.9,
+                    "close": 80916.1,
+                    "base_volume_btc": 307.0556,
+                    "quote_volume_usdt": 24840405.58917
+                  },
+                  {
+                    "open_time_ms": 1792896300000,
+                    "open": 80916.1,
+                    "high": 80949.0,
+                    "low": 80880.0,
+                    "close": 80880.0,
+                    "base_volume_btc": 81.1038,
+                    "quote_volume_usdt": 6562298.03549
+                  },
+                  {
+                    "open_time_ms": 1792897200000,
+                    "open": 80880.0,
+                    "high": 80940.0,
+                    "low": 80871.2,
+                    "close": 80939.9,
+                    "base_volume_btc": 60.7776,
+                    "quote_volume_usdt": 4917026.92929
+                  },
+                  {
+                    "open_time_ms": 1792898100000,
+                    "open": 80939.9,
+                    "high": 80997.9,
+                    "low": 80896.7,
+                    "close": 80914.3,
+                    "base_volume_btc": 144.9799,
+                    "quote_volume_usdt": 11737291.48446
+                  },
+                  {
+                    "open_time_ms": 1792899000000,
+                    "open": 80914.3,
+                    "high": 80915.2,
+                    "low": 80882.1,
+                    "close": 80882.1,
+                    "base_volume_btc": 50.8467,
+                    "quote_volume_usdt": 4113287.90069
+                  },
+                  {
+                    "open_time_ms": 1792899900000,
+                    "open": 80882.1,
+                    "high": 80882.2,
+                    "low": 80808.5,
+                    "close": 80823.7,
+                    "base_volume_btc": 97.0736,
+                    "quote_volume_usdt": 7847700.83047
+                  },
+                  {
+                    "open_time_ms": 1792900800000,
+                    "open": 80823.7,
+                    "high": 80850.0,
+                    "low": 80780.2,
+                    "close": 80809.9,
+                    "base_volume_btc": 98.9376,
+                    "quote_volume_usdt": 7994987.77396
+                  },
+                  {
+                    "open_time_ms": 1792901700000,
+                    "open": 80809.9,
+                    "high": 80848.2,
+                    "low": 80804.8,
+                    "close": 80845.0,
+                    "base_volume_btc": 72.6171,
+                    "quote_volume_usdt": 5869762.61297
+                  },
+                  {
+                    "open_time_ms": 1792902600000,
+                    "open": 80845.0,
+                    "high": 80903.7,
+                    "low": 80835.0,
+                    "close": 80903.7,
+                    "base_volume_btc": 88.9546,
+                    "quote_volume_usdt": 7194254.16509
+                  },
+                  {
+                    "open_time_ms": 1792903500000,
+                    "open": 80903.7,
+                    "high": 80923.8,
+                    "low": 80887.7,
+                    "close": 80889.9,
+                    "base_volume_btc": 49.7812,
+                    "quote_volume_usdt": 4027568.9367
+                  },
+                  {
+                    "open_time_ms": 1792904400000,
+                    "open": 80889.9,
+                    "high": 80892.2,
+                    "low": 80865.0,
+                    "close": 80866.5,
+                    "base_volume_btc": 52.3444,
+                    "quote_volume_usdt": 4233463.64681
                   }
                 ],
                 "interval": "15m",
@@ -3027,16 +3027,16 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-10-25T00:32:35.896580+00:00",
+              "observed_at": "2026-10-25T05:21:31.019259+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "15m",
                 "grade": "neutral",
                 "score": 0,
-                "observed_at": "2026-10-25T00:30:00+00:00",
-                "price_vs_20_prior_pct": 0.3778,
-                "momentum_6_pct": 0.3262,
-                "volume_ratio": 0.5475,
+                "observed_at": "2026-10-25T05:15:00+00:00",
+                "price_vs_20_prior_pct": 0.0232,
+                "momentum_6_pct": -0.0193,
+                "volume_ratio": 0.4713,
                 "evidence": {
                   "trend_vote": 0,
                   "momentum_vote": 0,
@@ -3056,87 +3056,6 @@
               "status": "ok",
               "data": {
                 "candles": [
-                  {
-                    "open_time_ms": 1792710000000,
-                    "open": 81313.7,
-                    "high": 81376.9,
-                    "low": 81276.2,
-                    "close": 81285.8,
-                    "base_volume_btc": 203.5271,
-                    "quote_volume_usdt": 16551745.24118
-                  },
-                  {
-                    "open_time_ms": 1792711800000,
-                    "open": 81285.8,
-                    "high": 81398.7,
-                    "low": 81227.8,
-                    "close": 81384.1,
-                    "base_volume_btc": 287.9736,
-                    "quote_volume_usdt": 23411094.86643
-                  },
-                  {
-                    "open_time_ms": 1792713600000,
-                    "open": 81384.1,
-                    "high": 81384.1,
-                    "low": 81087.1,
-                    "close": 81174.7,
-                    "base_volume_btc": 1010.7168,
-                    "quote_volume_usdt": 82068272.88565
-                  },
-                  {
-                    "open_time_ms": 1792715400000,
-                    "open": 81174.7,
-                    "high": 81512.3,
-                    "low": 81174.7,
-                    "close": 81425.0,
-                    "base_volume_btc": 423.3643,
-                    "quote_volume_usdt": 34467066.32475
-                  },
-                  {
-                    "open_time_ms": 1792717200000,
-                    "open": 81425.0,
-                    "high": 81516.5,
-                    "low": 81210.0,
-                    "close": 81450.8,
-                    "base_volume_btc": 358.0805,
-                    "quote_volume_usdt": 29145016.65703
-                  },
-                  {
-                    "open_time_ms": 1792719000000,
-                    "open": 81450.8,
-                    "high": 81735.0,
-                    "low": 81170.9,
-                    "close": 81312.4,
-                    "base_volume_btc": 1095.8224,
-                    "quote_volume_usdt": 89290220.11417
-                  },
-                  {
-                    "open_time_ms": 1792720800000,
-                    "open": 81312.4,
-                    "high": 81637.9,
-                    "low": 81220.0,
-                    "close": 81597.0,
-                    "base_volume_btc": 484.1011,
-                    "quote_volume_usdt": 39406347.85923
-                  },
-                  {
-                    "open_time_ms": 1792722600000,
-                    "open": 81597.0,
-                    "high": 81976.8,
-                    "low": 81597.0,
-                    "close": 81938.7,
-                    "base_volume_btc": 1207.5778,
-                    "quote_volume_usdt": 98830647.13083
-                  },
-                  {
-                    "open_time_ms": 1792724400000,
-                    "open": 81938.7,
-                    "high": 81970.0,
-                    "low": 81671.0,
-                    "close": 81751.0,
-                    "base_volume_btc": 436.1314,
-                    "quote_volume_usdt": 35670363.45669
-                  },
                   {
                     "open_time_ms": 1792726200000,
                     "open": 81751.0,
@@ -3946,6 +3865,87 @@
                     "close": 80829.1,
                     "base_volume_btc": 238.967,
                     "quote_volume_usdt": 19303810.51257
+                  },
+                  {
+                    "open_time_ms": 1792888200000,
+                    "open": 80829.1,
+                    "high": 80888.0,
+                    "low": 80818.5,
+                    "close": 80840.1,
+                    "base_volume_btc": 294.544,
+                    "quote_volume_usdt": 23816299.94859
+                  },
+                  {
+                    "open_time_ms": 1792890000000,
+                    "open": 80840.1,
+                    "high": 80840.1,
+                    "low": 80751.8,
+                    "close": 80774.1,
+                    "base_volume_btc": 176.5335,
+                    "quote_volume_usdt": 14258975.61842
+                  },
+                  {
+                    "open_time_ms": 1792891800000,
+                    "open": 80774.1,
+                    "high": 80888.0,
+                    "low": 80747.2,
+                    "close": 80874.0,
+                    "base_volume_btc": 131.7825,
+                    "quote_volume_usdt": 10650256.87669
+                  },
+                  {
+                    "open_time_ms": 1792893600000,
+                    "open": 80874.0,
+                    "high": 80960.0,
+                    "low": 80769.0,
+                    "close": 80820.0,
+                    "base_volume_btc": 327.2801,
+                    "quote_volume_usdt": 26468483.01238
+                  },
+                  {
+                    "open_time_ms": 1792895400000,
+                    "open": 80820.0,
+                    "high": 80970.0,
+                    "low": 80819.9,
+                    "close": 80880.0,
+                    "base_volume_btc": 388.1594,
+                    "quote_volume_usdt": 31402703.62466
+                  },
+                  {
+                    "open_time_ms": 1792897200000,
+                    "open": 80880.0,
+                    "high": 80997.9,
+                    "low": 80871.2,
+                    "close": 80914.3,
+                    "base_volume_btc": 205.7575,
+                    "quote_volume_usdt": 16654318.41375
+                  },
+                  {
+                    "open_time_ms": 1792899000000,
+                    "open": 80914.3,
+                    "high": 80915.2,
+                    "low": 80808.5,
+                    "close": 80823.7,
+                    "base_volume_btc": 147.9203,
+                    "quote_volume_usdt": 11960988.73116
+                  },
+                  {
+                    "open_time_ms": 1792900800000,
+                    "open": 80823.7,
+                    "high": 80850.0,
+                    "low": 80780.2,
+                    "close": 80845.0,
+                    "base_volume_btc": 171.5547,
+                    "quote_volume_usdt": 13864750.38693
+                  },
+                  {
+                    "open_time_ms": 1792902600000,
+                    "open": 80845.0,
+                    "high": 80923.8,
+                    "low": 80835.0,
+                    "close": 80889.9,
+                    "base_volume_btc": 138.7358,
+                    "quote_volume_usdt": 11221823.10179
                   }
                 ],
                 "interval": "30m",
@@ -3953,21 +3953,21 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-10-25T00:32:36.180793+00:00",
+              "observed_at": "2026-10-25T05:21:31.236911+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "30m",
                 "grade": "neutral",
                 "score": 0,
-                "observed_at": "2026-10-25T00:30:00+00:00",
-                "price_vs_20_prior_pct": 0.6726,
-                "momentum_6_pct": 0.4938,
-                "volume_ratio": 0.2506,
+                "observed_at": "2026-10-25T05:00:00+00:00",
+                "price_vs_20_prior_pct": 0.2793,
+                "momentum_6_pct": 0.0197,
+                "volume_ratio": 0.507,
                 "evidence": {
-                  "trend_vote": 1,
+                  "trend_vote": 0,
                   "momentum_vote": 0,
                   "directional_agreement": false,
-                  "state": "partial_direction",
+                  "state": "no_direction",
                   "elevated_volume": false
                 },
                 "confidence": "low",
@@ -3982,51 +3982,6 @@
               "status": "ok",
               "data": {
                 "candles": [
-                  {
-                    "open_time_ms": 1792530000000,
-                    "open": 82802.7,
-                    "high": 82981.6,
-                    "low": 82763.6,
-                    "close": 82933.9,
-                    "base_volume_btc": 807.7879,
-                    "quote_volume_usdt": 66943871.86789
-                  },
-                  {
-                    "open_time_ms": 1792533600000,
-                    "open": 82933.9,
-                    "high": 83149.0,
-                    "low": 82889.5,
-                    "close": 83055.1,
-                    "base_volume_btc": 1075.9224,
-                    "quote_volume_usdt": 89327543.10117
-                  },
-                  {
-                    "open_time_ms": 1792537200000,
-                    "open": 83055.1,
-                    "high": 83055.1,
-                    "low": 82842.2,
-                    "close": 82983.9,
-                    "base_volume_btc": 579.2557,
-                    "quote_volume_usdt": 48042033.83526
-                  },
-                  {
-                    "open_time_ms": 1792540800000,
-                    "open": 82983.9,
-                    "high": 83191.8,
-                    "low": 82835.0,
-                    "close": 82987.3,
-                    "base_volume_btc": 588.3675,
-                    "quote_volume_usdt": 48879235.5344
-                  },
-                  {
-                    "open_time_ms": 1792544400000,
-                    "open": 82987.3,
-                    "high": 83192.2,
-                    "low": 82745.9,
-                    "close": 82963.7,
-                    "base_volume_btc": 871.6228,
-                    "quote_volume_usdt": 72267332.8219
-                  },
                   {
                     "open_time_ms": 1792548000000,
                     "open": 82963.7,
@@ -4872,6 +4827,51 @@
                     "close": 80844.5,
                     "base_volume_btc": 915.8756,
                     "quote_volume_usdt": 73972397.85826
+                  },
+                  {
+                    "open_time_ms": 1792886400000,
+                    "open": 80844.5,
+                    "high": 80888.0,
+                    "low": 80731.3,
+                    "close": 80840.1,
+                    "base_volume_btc": 533.511,
+                    "quote_volume_usdt": 43120110.46116
+                  },
+                  {
+                    "open_time_ms": 1792890000000,
+                    "open": 80840.1,
+                    "high": 80888.0,
+                    "low": 80747.2,
+                    "close": 80874.0,
+                    "base_volume_btc": 308.316,
+                    "quote_volume_usdt": 24909232.49511
+                  },
+                  {
+                    "open_time_ms": 1792893600000,
+                    "open": 80874.0,
+                    "high": 80970.0,
+                    "low": 80769.0,
+                    "close": 80880.0,
+                    "base_volume_btc": 715.4395,
+                    "quote_volume_usdt": 57871186.63704
+                  },
+                  {
+                    "open_time_ms": 1792897200000,
+                    "open": 80880.0,
+                    "high": 80997.9,
+                    "low": 80808.5,
+                    "close": 80823.7,
+                    "base_volume_btc": 353.6778,
+                    "quote_volume_usdt": 28615307.14491
+                  },
+                  {
+                    "open_time_ms": 1792900800000,
+                    "open": 80823.7,
+                    "high": 80923.8,
+                    "low": 80780.2,
+                    "close": 80889.9,
+                    "base_volume_btc": 310.2905,
+                    "quote_volume_usdt": 25086573.48872
                   }
                 ],
                 "interval": "1h",
@@ -4879,21 +4879,21 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-10-25T00:32:36.478631+00:00",
+              "observed_at": "2026-10-25T05:21:31.440426+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "1h",
                 "grade": "neutral",
                 "score": 0,
-                "observed_at": "2026-10-25T00:00:00+00:00",
-                "price_vs_20_prior_pct": 0.3911,
-                "momentum_6_pct": 0.7598,
-                "volume_ratio": 0.7457,
+                "observed_at": "2026-10-25T05:00:00+00:00",
+                "price_vs_20_prior_pct": 0.4293,
+                "momentum_6_pct": 0.4017,
+                "volume_ratio": 0.2503,
                 "evidence": {
                   "trend_vote": 0,
-                  "momentum_vote": 1,
+                  "momentum_vote": 0,
                   "directional_agreement": false,
-                  "state": "partial_direction",
+                  "state": "no_direction",
                   "elevated_volume": false
                 },
                 "confidence": "low",
@@ -4908,15 +4908,6 @@
               "status": "ok",
               "data": {
                 "candles": [
-                  {
-                    "open_time_ms": 1791460800000,
-                    "open": 82515.2,
-                    "high": 82795.4,
-                    "low": 80938.9,
-                    "close": 81025.0,
-                    "base_volume_btc": 19773.3543,
-                    "quote_volume_usdt": 1618877626.76581
-                  },
                   {
                     "open_time_ms": 1791475200000,
                     "open": 81025.0,
@@ -5798,6 +5789,15 @@
                     "close": 80844.5,
                     "base_volume_btc": 2305.5546,
                     "quote_volume_usdt": 185746974.37284
+                  },
+                  {
+                    "open_time_ms": 1792886400000,
+                    "open": 80844.5,
+                    "high": 80997.9,
+                    "low": 80731.3,
+                    "close": 80823.7,
+                    "base_volume_btc": 1910.9443,
+                    "quote_volume_usdt": 154515836.73822
                   }
                 ],
                 "interval": "4h",
@@ -5805,16 +5805,16 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-10-25T00:32:36.803964+00:00",
+              "observed_at": "2026-10-25T05:21:31.642545+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "4h",
                 "grade": "neutral",
                 "score": 0,
-                "observed_at": "2026-10-25T00:00:00+00:00",
-                "price_vs_20_prior_pct": -1.163,
-                "momentum_6_pct": -0.3833,
-                "volume_ratio": 0.3735,
+                "observed_at": "2026-10-25T04:00:00+00:00",
+                "price_vs_20_prior_pct": -0.9674,
+                "momentum_6_pct": -0.1392,
+                "volume_ratio": 0.3474,
                 "evidence": {
                   "trend_vote": -1,
                   "momentum_vote": 0,
@@ -6641,7 +6641,7 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-10-25T00:32:37.079741+00:00",
+              "observed_at": "2026-10-25T05:21:31.838976+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "1d",
@@ -7025,112 +7025,28 @@
                 "https://api.bitget.com/api/v2/mix/market/history-candles?symbol=BTCUSDT&productType=USDT-FUTURES&granularity=1Wutc&startTime=1777852800000&endTime=1785110400000&limit=100",
                 "https://api.bitget.com/api/v2/mix/market/history-candles?symbol=BTCUSDT&productType=USDT-FUTURES&granularity=1Wutc&startTime=1770595200000&endTime=1777852800000&limit=100"
               ],
-              "observed_at": "2026-10-25T00:32:35.598531+00:00"
+              "observed_at": "2026-10-25T05:21:30.815553+00:00"
             }
           },
-          "observed_at": "2026-10-25T00:32:38.243074+00:00",
+          "observed_at": "2026-10-25T05:21:32.701259+00:00",
           "scope": "Individual timeframe statuses are authoritative."
         }
       },
       "cvd_4h": {
-        "status": "ok",
+        "status": "not_collected",
         "value": null,
-        "coverage_verified": true,
-        "reason": "Both Bitget markets passed stored history coverage checks; deltas use the provider buy/sell convention.",
-        "schema_version": 2,
+        "coverage_verified": false,
+        "reason": "Local CVD journal is not configured.",
+        "schema_version": 1,
         "exchange": "bitget",
         "symbol": "BTCUSDT",
         "unit": "BTC",
-        "method": "provider_reported_buy_minus_sell",
-        "interval_start": "2026-10-24T20:00:00+00:00",
-        "interval_end": "2026-10-25T00:00:00+00:00",
+        "method": "observed_buy_minus_sell",
+        "interval_start": "2026-10-25T00:00:00+00:00",
+        "interval_end": "2026-10-25T04:00:00+00:00",
         "interval_convention": "[start,end)",
-        "observed_at": "2026-10-25T00:32:33.275045+00:00",
-        "markets": {
-          "spot": {
-            "status": "ok",
-            "value": "-67.739231",
-            "coverage_verified": true,
-            "reason": "Provider history exhausted and exact BTC/quote volumes reconciled; not independent proof of all exchange delivery or taker attribution.",
-            "unit": "BTC",
-            "observed_delta_btc": "-67.739231",
-            "observed_buy_btc": "89.108572",
-            "observed_sell_btc": "156.847803",
-            "trade_count": 14381,
-            "first_trade_at": "2026-10-24T20:00:00.051000+00:00",
-            "last_trade_at": "2026-10-24T23:59:54.845000+00:00",
-            "unresolved_overlapping_gaps": 49,
-            "open_overlapping_gaps": 49,
-            "latest_journal_trade_at": "2026-10-25T00:32:14+00:00",
-            "latest_journal_trade_age_seconds": 19.275,
-            "journal_trade_status": "recent",
-            "observed_trade_count": 14381,
-            "validated_delta_btc": "-67.739231",
-            "coverage_scope": "bitget_public_history_only",
-            "coverage_method": "bitget_history_exhaustion_and_exact_volume_v1",
-            "exchange": "bitget",
-            "symbol": "BTCUSDT",
-            "market": "spot",
-            "interval_start_ms": 1792872000000,
-            "interval_end_ms": 1792886400000,
-            "validated_buy_btc": "89.108572",
-            "validated_sell_btc": "156.847803",
-            "first_trade_ms": 1792872000051,
-            "last_trade_ms": 1792886394845,
-            "recovered_missing_trades": 0,
-            "timestamp_rounding_matches": 0,
-            "pagination_pages": 16,
-            "evidence_sha256": "e63af19815af32e2b272ca49b6d78b5f8a4e1337026364cd7f880d33b5783f25",
-            "source_run_id": "416a67829919480386ab00bbe5491e9f",
-            "history_response_at": "2026-10-25T00:31:24.686000+00:00",
-            "validated_at": "2026-10-25T00:32:33.275000+00:00",
-            "side_semantics": "provider_reported_buy_sell",
-            "taker_side_verified": false
-          },
-          "usdt_futures": {
-            "status": "ok",
-            "value": "-22.3428",
-            "coverage_verified": true,
-            "reason": "Provider history exhausted and exact BTC/quote volumes reconciled; not independent proof of all exchange delivery or taker attribution.",
-            "unit": "BTC",
-            "observed_delta_btc": "-22.3428",
-            "observed_buy_btc": "1141.6059",
-            "observed_sell_btc": "1163.9487",
-            "trade_count": 53135,
-            "first_trade_at": "2026-10-24T20:00:00.412000+00:00",
-            "last_trade_at": "2026-10-24T23:59:59.362000+00:00",
-            "unresolved_overlapping_gaps": 84,
-            "open_overlapping_gaps": 84,
-            "latest_journal_trade_at": "2026-10-25T00:32:36.735000+00:00",
-            "latest_journal_trade_age_seconds": 0,
-            "journal_trade_status": "recent",
-            "observed_trade_count": 53135,
-            "validated_delta_btc": "-22.3428",
-            "coverage_scope": "bitget_public_history_only",
-            "coverage_method": "bitget_history_exhaustion_and_exact_volume_v1",
-            "exchange": "bitget",
-            "symbol": "BTCUSDT",
-            "market": "usdt_futures",
-            "interval_start_ms": 1792872000000,
-            "interval_end_ms": 1792886400000,
-            "validated_buy_btc": "1141.6059",
-            "validated_sell_btc": "1163.9487",
-            "first_trade_ms": 1792872000412,
-            "last_trade_ms": 1792886399362,
-            "recovered_missing_trades": 0,
-            "timestamp_rounding_matches": 0,
-            "pagination_pages": 55,
-            "evidence_sha256": "c640717a3ee282e527dac3773cfd7fddceeb3ba31c25ab7384e5f3f83eef12d2",
-            "source_run_id": "b996436932c146f8b87b6ef95446e802",
-            "history_response_at": "2026-10-25T00:32:05.753000+00:00",
-            "validated_at": "2026-10-25T00:32:33.275000+00:00",
-            "side_semantics": "provider_reported_buy_sell",
-            "taker_side_verified": false
-          }
-        },
-        "coverage_scope": "bitget_public_history_only",
-        "side_semantics": "provider_reported_buy_sell",
-        "taker_side_verified": false
+        "observed_at": "2026-10-25T05:21:29.043233+00:00",
+        "markets": {}
       },
       "cycle_history_reference": {
         "schema_version": 1,
@@ -7143,7 +7059,7 @@
         "status": "partial",
         "requested_from": "2021-01-01T00:00:00+00:00",
         "required_through": "2026-10-25T00:00:00+00:00",
-        "checked_at": "2026-10-25T00:32:38.243147+00:00",
+        "checked_at": "2026-10-25T05:21:32.701325+00:00",
         "candle_count": 2122,
         "required_days": 2123,
         "missing_days": 1,
@@ -7156,7 +7072,7 @@
       "cycle_anchor_review": {
         "status": "unavailable",
         "model_version": "archive_cycle_context_v1",
-        "checked_at": "2026-10-25T00:32:38.243147+00:00",
+        "checked_at": "2026-10-25T05:21:32.701325+00:00",
         "activation": "draft",
         "reason": "Onvolledige daghistorie vanaf de gekozen vorige cyclustop.",
         "missing_days": 1,
@@ -7165,7 +7081,7 @@
       "scenario_snapshot": {
         "schema_version": 1,
         "model_version": "two_routes_daily_weekly_v4_anchors",
-        "as_of": "2026-10-25T00:32:38.243147+00:00",
+        "as_of": "2026-10-25T05:21:32.701325+00:00",
         "horizons": {
           "swing": {
             "schema_version": 1,
@@ -7174,12 +7090,12 @@
             "timeframe": "1d",
             "label": "Swing \u00b7 dagen tot weken",
             "status": "ready",
-            "recorded_at": "2026-10-25T00:32:38.243147+00:00",
-            "source_observed_at": "2026-10-25T00:32:37.079741+00:00",
-            "reference_price": 80842.2,
+            "recorded_at": "2026-10-25T05:21:32.701325+00:00",
+            "source_observed_at": "2026-10-25T05:21:31.838976+00:00",
+            "reference_price": 80850.8,
             "reference": "bitget/BTCUSDT/USDT-FUTURES",
             "unit": "USDT",
-            "valid_until": "2026-10-25T01:32:33.275000+00:00",
+            "valid_until": "2026-10-25T06:21:29.043000+00:00",
             "candle_closed_at": "2026-10-25T00:00:00+00:00",
             "last_close": 80844.5,
             "previous_close": 81155.6,
@@ -7487,39 +7403,39 @@
               "current_disagrees": false,
               "zone_timeframe": "1d",
               "confirmation_timeframe": "4h",
-              "confirmation_closed_at": "2026-10-25T00:00:00+00:00",
-              "confirmation_source_at": "2026-10-25T00:32:36.803964+00:00",
+              "confirmation_closed_at": "2026-10-25T04:00:00+00:00",
+              "confirmation_source_at": "2026-10-25T05:21:31.642545+00:00",
               "confirmation_bar": {
-                "open": 80446.6,
-                "high": 80889.2,
-                "low": 80259.7,
-                "close": 80844.5
+                "open": 80844.5,
+                "high": 80997.9,
+                "low": 80731.3,
+                "close": 80823.7
               },
-              "confirmation_previous_close": 80446.6,
-              "confirmation_prior_close": 79764.1,
+              "confirmation_previous_close": 80844.5,
+              "confirmation_prior_close": 80446.6,
               "reason": "Beoordeling op de laatste afgesloten broncandle; een huidige koers aan de andere kant maakt de uitkomst gemengd. Geen automatische voortzetting.",
               "next_higher": [
                 {
                   "price": 81455.4804,
                   "role": "Ondiepe terugname",
-                  "from_reference_pct": 0.7586141891239961
+                  "from_reference_pct": 0.7478966194521153
                 },
                 {
                   "price": 82508.7098,
                   "role": "Gematigde terugname",
-                  "from_reference_pct": 2.06143548790112
+                  "from_reference_pct": 2.050579338732561
                 }
               ],
               "next_lower": [
                 {
                   "price": 79753.0,
                   "role": "Eindpunt van de oorspronkelijke beweging",
-                  "from_zone_pct": -1.3473161294472402
+                  "from_zone_pct": -1.3578096939053208
                 },
                 {
                   "price": 77790.8192,
                   "role": "Tweepunts-extensie; extrapolatie",
-                  "from_zone_pct": -3.7744900559361305
+                  "from_zone_pct": -3.7847254448935663
                 }
               ],
               "all_levels": [
@@ -7671,7 +7587,7 @@
                   {
                     "price": 77464.91357142857,
                     "kind": "atr_projection",
-                    "from_reference_pct": -4.1776280563510575,
+                    "from_reference_pct": -4.187820564015987,
                     "rejection_to": [
                       {
                         "price": 75294.8098,
@@ -7688,7 +7604,7 @@
                   {
                     "price": 75384.83499999999,
                     "kind": "atr_projection",
-                    "from_reference_pct": -6.750638898990879,
+                    "from_reference_pct": -6.760557718662041,
                     "rejection_to": [
                       {
                         "price": 75294.8098,
@@ -7709,28 +7625,28 @@
                     "price": 77790.8192,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": -3.7744900559361305
+                    "distance_pct": -3.7847254448935663
                   },
                   {
                     "ratio": 1.618,
                     "price": 75294.8098,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": -6.861998065366848
+                    "distance_pct": -6.8719050399006605
                   },
                   {
                     "ratio": 2.618,
                     "price": 68080.90980000001,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": -15.785431618634805
+                    "distance_pct": -15.794389418533882
                   },
                   {
                     "ratio": 4.236,
                     "price": 56408.81960000002,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": -30.22354710782238
+                    "distance_pct": -30.230969143162444
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -7801,7 +7717,7 @@
                   {
                     "price": 79753.0,
                     "kind": "range_boundary",
-                    "from_reference_pct": -1.3473161294472402,
+                    "from_reference_pct": -1.3578096939053208,
                     "rejection_to": [
                       {
                         "price": 77790.8192,
@@ -7818,7 +7734,7 @@
                   {
                     "price": 77464.91357142857,
                     "kind": "atr_projection",
-                    "from_reference_pct": -4.1776280563510575,
+                    "from_reference_pct": -4.187820564015987,
                     "rejection_to": [
                       {
                         "price": 75294.8098,
@@ -7839,28 +7755,28 @@
                     "price": 82508.7098,
                     "role": "Gematigde terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": 2.06143548790112
+                    "distance_pct": 2.050579338732561
                   },
                   {
                     "ratio": 0.236,
                     "price": 81455.4804,
                     "role": "Ondiepe terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": 0.7586141891239961
+                    "distance_pct": 0.7478966194521153
                   },
                   {
                     "ratio": 0.0,
                     "price": 79753.0,
                     "role": "Eindpunt van de oorspronkelijke beweging",
                     "kind": "fib_retracement",
-                    "distance_pct": -1.3473161294472402
+                    "distance_pct": -1.3578096939053208
                   },
                   {
                     "ratio": 1.272,
                     "price": 77790.8192,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": -3.7744900559361305
+                    "distance_pct": -3.7847254448935663
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -7931,7 +7847,7 @@
                   {
                     "price": 86966.9,
                     "kind": "range_boundary",
-                    "from_reference_pct": 7.576117423820716,
+                    "from_reference_pct": 7.564674684727901,
                     "rejection_to": [
                       {
                         "price": 85423.12539999999,
@@ -7948,7 +7864,7 @@
                   {
                     "price": 89254.98642857143,
                     "kind": "atr_projection",
-                    "from_reference_pct": 10.406429350724533,
+                    "from_reference_pct": 10.394685554838578,
                     "rejection_to": [
                       {
                         "price": 86966.9,
@@ -7969,21 +7885,21 @@
                     "price": 84211.1902,
                     "role": "Diepe terugname; golden-ratio-zone",
                     "kind": "fib_retracement",
-                    "distance_pct": 4.167365806472367
+                    "distance_pct": 4.156285652090008
                   },
                   {
                     "ratio": 0.786,
                     "price": 85423.12539999999,
                     "role": "Verdere diepe terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": 5.666502643421367
+                    "distance_pct": 5.655263027700386
                   },
                   {
                     "ratio": 1.0,
                     "price": 86966.9,
                     "role": "Volledige terugname naar het beginpunt",
                     "kind": "fib_retracement",
-                    "distance_pct": 7.576117423820716
+                    "distance_pct": 7.564674684727901
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -8058,7 +7974,7 @@
                   {
                     "price": 89254.98642857143,
                     "kind": "atr_projection",
-                    "from_reference_pct": 10.406429350724533,
+                    "from_reference_pct": 10.394685554838578,
                     "rejection_to": [
                       {
                         "price": 86966.9,
@@ -8075,7 +7991,7 @@
                   {
                     "price": 91335.065,
                     "kind": "atr_projection",
-                    "from_reference_pct": 12.979440193364367,
+                    "from_reference_pct": 12.967422709484634,
                     "rejection_to": [
                       {
                         "price": 86966.9,
@@ -8193,7 +8109,7 @@
                   {
                     "price": 77464.91357142857,
                     "kind": "atr_projection",
-                    "from_reference_pct": -4.1776280563510575,
+                    "from_reference_pct": -4.187820564015987,
                     "rejection_to": [
                       {
                         "price": 75294.8098,
@@ -8210,7 +8126,7 @@
                   {
                     "price": 75384.83499999999,
                     "kind": "atr_projection",
-                    "from_reference_pct": -6.750638898990879,
+                    "from_reference_pct": -6.760557718662041,
                     "rejection_to": [
                       {
                         "price": 75294.8098,
@@ -8230,7 +8146,7 @@
                 "reason": "Dit scenario past nu niet: het broncandle-slot ligt voorbij zijn ongeldigverklaringsgrens. Bekijk het alternatief; geen automatische omgekeerde trade.",
                 "source_closed_at": "2026-10-25T00:00:00+00:00",
                 "confirmation_timeframe": "4h",
-                "confirmation_closed_at": "2026-10-25T00:00:00+00:00",
+                "confirmation_closed_at": "2026-10-25T04:00:00+00:00",
                 "basis": "current_snapshot_fixed_levels_not_a_tracked_trade",
                 "position_tracked": false,
                 "automatic_execution": false,
@@ -8258,7 +8174,7 @@
                   {
                     "price": 79753.0,
                     "kind": "range_boundary",
-                    "from_reference_pct": -1.3473161294472402,
+                    "from_reference_pct": -1.3578096939053208,
                     "rejection_to": [
                       {
                         "price": 77790.8192,
@@ -8275,7 +8191,7 @@
                   {
                     "price": 77464.91357142857,
                     "kind": "atr_projection",
-                    "from_reference_pct": -4.1776280563510575,
+                    "from_reference_pct": -4.187820564015987,
                     "rejection_to": [
                       {
                         "price": 75294.8098,
@@ -8295,7 +8211,7 @@
                 "reason": "De bearish slot-/momentumvoorwaarden zijn bevestigd en de actuele prijs blijft onder de trigger. Dit is een afbouwconditie, geen opdracht of bewijs van een bestaande positie.",
                 "source_closed_at": "2026-10-25T00:00:00+00:00",
                 "confirmation_timeframe": "4h",
-                "confirmation_closed_at": "2026-10-25T00:00:00+00:00",
+                "confirmation_closed_at": "2026-10-25T04:00:00+00:00",
                 "basis": "current_snapshot_fixed_levels_not_a_tracked_trade",
                 "position_tracked": false,
                 "automatic_execution": false,
@@ -8323,7 +8239,7 @@
                   {
                     "price": 86966.9,
                     "kind": "range_boundary",
-                    "from_reference_pct": 7.576117423820716,
+                    "from_reference_pct": 7.564674684727901,
                     "rejection_to": [
                       {
                         "price": 85423.12539999999,
@@ -8340,7 +8256,7 @@
                   {
                     "price": 89254.98642857143,
                     "kind": "atr_projection",
-                    "from_reference_pct": 10.406429350724533,
+                    "from_reference_pct": 10.394685554838578,
                     "rejection_to": [
                       {
                         "price": 86966.9,
@@ -8360,7 +8276,7 @@
                 "reason": "Dit scenario past nu niet: het broncandle-slot ligt voorbij zijn ongeldigverklaringsgrens. Bekijk het alternatief; geen automatische omgekeerde trade.",
                 "source_closed_at": "2026-10-25T00:00:00+00:00",
                 "confirmation_timeframe": "4h",
-                "confirmation_closed_at": "2026-10-25T00:00:00+00:00",
+                "confirmation_closed_at": "2026-10-25T04:00:00+00:00",
                 "basis": "current_snapshot_fixed_levels_not_a_tracked_trade",
                 "position_tracked": false,
                 "automatic_execution": false,
@@ -8388,7 +8304,7 @@
                   {
                     "price": 89254.98642857143,
                     "kind": "atr_projection",
-                    "from_reference_pct": 10.406429350724533,
+                    "from_reference_pct": 10.394685554838578,
                     "rejection_to": [
                       {
                         "price": 86966.9,
@@ -8405,7 +8321,7 @@
                   {
                     "price": 91335.065,
                     "kind": "atr_projection",
-                    "from_reference_pct": 12.979440193364367,
+                    "from_reference_pct": 12.967422709484634,
                     "rejection_to": [
                       {
                         "price": 86966.9,
@@ -8425,7 +8341,7 @@
                 "reason": "Dit scenario past nu niet: het broncandle-slot ligt voorbij zijn ongeldigverklaringsgrens. Bekijk het alternatief; geen automatische omgekeerde trade.",
                 "source_closed_at": "2026-10-25T00:00:00+00:00",
                 "confirmation_timeframe": "4h",
-                "confirmation_closed_at": "2026-10-25T00:00:00+00:00",
+                "confirmation_closed_at": "2026-10-25T04:00:00+00:00",
                 "basis": "current_snapshot_fixed_levels_not_a_tracked_trade",
                 "position_tracked": false,
                 "automatic_execution": false,
@@ -9069,7 +8985,7 @@
               "context": "Geen bevestigde reactie bij de huidige routezones. Wacht op een test; momentum alleen bevestigt geen volgende zone.",
               "zone_price": null,
               "confirmation_timeframe": "4h",
-              "confirmation_closed_at": "2026-10-25T00:00:00+00:00",
+              "confirmation_closed_at": "2026-10-25T04:00:00+00:00",
               "source_family": "bitget_price_volume",
               "independent_evidence": false,
               "news_status": "not_integrated",
@@ -9541,7 +9457,7 @@
               "position_tracked": false,
               "probability": null
             },
-            "scenario_set_id": "c85963a45934a2c06cd82b0a"
+            "scenario_set_id": "b07faeefaa295889db5f0773"
           },
           "position": {
             "schema_version": 1,
@@ -9550,12 +9466,12 @@
             "timeframe": "1w",
             "label": "Positietrade \u00b7 weken tot maanden of langer",
             "status": "ready",
-            "recorded_at": "2026-10-25T00:32:38.243147+00:00",
-            "source_observed_at": "2026-10-25T00:32:35.598531+00:00",
-            "reference_price": 80842.2,
+            "recorded_at": "2026-10-25T05:21:32.701325+00:00",
+            "source_observed_at": "2026-10-25T05:21:30.815553+00:00",
+            "reference_price": 80850.8,
             "reference": "bitget/BTCUSDT/USDT-FUTURES",
             "unit": "USDT",
-            "valid_until": "2026-10-25T01:32:33.275000+00:00",
+            "valid_until": "2026-10-25T06:21:29.043000+00:00",
             "candle_closed_at": "2026-10-19T00:00:00+00:00",
             "last_close": 82066.0,
             "previous_close": 83738.5,
@@ -9855,63 +9771,47 @@
               "reason": "Geen automatisch bevestigde huidige telling. Subgolven en alternatieve patroonfamilies niet vastgesteld."
             },
             "level_assessment": {
-              "status": "observed",
-              "selected": {
-                "ratio": 0.236,
-                "price": 80386.692,
-                "role": "Ondiepe terugname",
-                "kind": "fib_retracement",
-                "reaction": "undecided",
-                "closed_at": "2026-10-25T00:00:00+00:00"
-              },
-              "tested_levels": [
-                {
-                  "ratio": 0.236,
-                  "price": 80386.692,
-                  "role": "Ondiepe terugname",
-                  "kind": "fib_retracement",
-                  "reaction": "undecided",
-                  "closed_at": "2026-10-25T00:00:00+00:00"
-                }
-              ],
-              "reaction": "undecided",
+              "status": "awaiting_test",
+              "selected": null,
+              "tested_levels": [],
+              "reaction": "not_tested",
               "vote": 0,
               "current_disagrees": false,
               "zone_timeframe": "1w",
               "confirmation_timeframe": "4h",
-              "confirmation_closed_at": "2026-10-25T00:00:00+00:00",
-              "confirmation_source_at": "2026-10-25T00:32:36.803964+00:00",
+              "confirmation_closed_at": "2026-10-25T04:00:00+00:00",
+              "confirmation_source_at": "2026-10-25T05:21:31.642545+00:00",
               "confirmation_bar": {
-                "open": 80446.6,
-                "high": 80889.2,
-                "low": 80259.7,
-                "close": 80844.5
+                "open": 80844.5,
+                "high": 80997.9,
+                "low": 80731.3,
+                "close": 80823.7
               },
-              "confirmation_previous_close": 80446.6,
-              "confirmation_prior_close": 79764.1,
+              "confirmation_previous_close": 80844.5,
+              "confirmation_prior_close": 80446.6,
               "reason": "Beoordeling op de laatste afgesloten broncandle; een huidige koers aan de andere kant maakt de uitkomst gemengd. Geen automatische voortzetting.",
               "next_higher": [
                 {
                   "price": 87373.0,
                   "role": "Eindpunt van de oorspronkelijke beweging",
-                  "from_reference_pct": 8.078454074728292
+                  "from_reference_pct": 8.06695790270473
                 },
                 {
                   "price": 93422.33214286,
                   "role": "ATR-projectie",
-                  "from_reference_pct": 15.561343138682538
+                  "from_reference_pct": 15.54905102096702
                 }
               ],
               "next_lower": [
                 {
-                  "price": 76064.654,
-                  "role": "Gematigde terugname",
-                  "from_zone_pct": -5.37655909512983
+                  "price": 80386.692,
+                  "role": "Ondiepe terugname",
+                  "from_zone_pct": -0.5740301889406219
                 },
                 {
-                  "price": 72571.5,
-                  "role": "Halvering; geen Fibonacci-ratio",
-                  "from_zone_pct": -9.72199726790598
+                  "price": 76064.654,
+                  "role": "Gematigde terugname",
+                  "from_zone_pct": -5.919726211738174
                 }
               ],
               "all_levels": [
@@ -9975,7 +9875,7 @@
                   "price": 80386.692,
                   "role": "Ondiepe terugname",
                   "kind": "fib_retracement",
-                  "reaction": "undecided",
+                  "reaction": "not_tested",
                   "next_higher": 87373.0,
                   "next_lower": 76064.654,
                   "next_higher_role": "Eindpunt van de oorspronkelijke beweging",
@@ -10063,13 +9963,13 @@
                   {
                     "price": 51720.66785714286,
                     "kind": "atr_projection",
-                    "from_reference_pct": -36.02268634804241,
+                    "from_reference_pct": -36.02949153608517,
                     "rejection_to": []
                   },
                   {
                     "price": 46221.274999999994,
                     "kind": "atr_projection",
-                    "from_reference_pct": -42.825312769815774,
+                    "from_reference_pct": -42.83139437086585,
                     "rejection_to": []
                   }
                 ],
@@ -10142,13 +10042,13 @@
                   {
                     "price": 57770.0,
                     "kind": "range_boundary",
-                    "from_reference_pct": -28.539797284091716,
+                    "from_reference_pct": -28.547398417826418,
                     "rejection_to": []
                   },
                   {
                     "price": 51720.66785714286,
                     "kind": "atr_projection",
-                    "from_reference_pct": -36.02268634804241,
+                    "from_reference_pct": -36.02949153608517,
                     "rejection_to": []
                   }
                 ],
@@ -10158,21 +10058,21 @@
                     "price": 69078.346,
                     "role": "Diepe terugname; golden-ratio-zone",
                     "kind": "fib_retracement",
-                    "distance_pct": -14.551625265022473
+                    "distance_pct": -14.560714303383515
                   },
                   {
                     "ratio": 0.786,
                     "price": 64105.042,
                     "role": "Verdere diepe terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": -20.703491493304238
+                    "distance_pct": -20.711926165232754
                   },
                   {
                     "ratio": 1.0,
                     "price": 57770.0,
                     "role": "Volledige terugname naar het beginpunt",
                     "kind": "fib_retracement",
-                    "distance_pct": -28.539797284091716
+                    "distance_pct": -28.547398417826418
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -10243,7 +10143,7 @@
                   {
                     "price": 87373.0,
                     "kind": "range_boundary",
-                    "from_reference_pct": 8.078454074728292,
+                    "from_reference_pct": 8.06695790270473,
                     "rejection_to": [
                       {
                         "price": 80386.692,
@@ -10260,7 +10160,7 @@
                   {
                     "price": 93422.33214285714,
                     "kind": "atr_projection",
-                    "from_reference_pct": 15.561343138678986,
+                    "from_reference_pct": 15.549051020963468,
                     "rejection_to": [
                       {
                         "price": 87373.0,
@@ -10281,28 +10181,28 @@
                     "price": 76064.654,
                     "role": "Gematigde terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": -5.909717944340953
+                    "distance_pct": -5.919726211738174
                   },
                   {
                     "ratio": 0.236,
                     "price": 80386.692,
                     "role": "Ondiepe terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": -0.5634532459532271
+                    "distance_pct": -0.5740301889406219
                   },
                   {
                     "ratio": 0.0,
                     "price": 87373.0,
                     "role": "Eindpunt van de oorspronkelijke beweging",
                     "kind": "fib_retracement",
-                    "distance_pct": 8.078454074728292
+                    "distance_pct": 8.06695790270473
                   },
                   {
                     "ratio": 1.272,
                     "price": 95425.016,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": 18.038618444327348
+                    "distance_pct": 18.026062821889212
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -10377,7 +10277,7 @@
                   {
                     "price": 93422.33214285714,
                     "kind": "atr_projection",
-                    "from_reference_pct": 15.561343138678986,
+                    "from_reference_pct": 15.549051020963468,
                     "rejection_to": [
                       {
                         "price": 87373.0,
@@ -10394,7 +10294,7 @@
                   {
                     "price": 98921.72499999999,
                     "kind": "atr_projection",
-                    "from_reference_pct": 22.363969560452325,
+                    "from_reference_pct": 22.350953855744148,
                     "rejection_to": [
                       {
                         "price": 95425.016,
@@ -10415,28 +10315,28 @@
                     "price": 95425.016,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": 18.038618444327348
+                    "distance_pct": 18.026062821889212
                   },
                   {
                     "ratio": 1.618,
                     "price": 105667.65400000001,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": 30.708533414479078
+                    "distance_pct": 30.694630108792985
                   },
                   {
                     "ratio": 2.618,
                     "price": 135270.65399999998,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": 67.32678477329908
+                    "distance_pct": 67.30898642932411
                   },
                   {
                     "ratio": 4.236,
                     "price": 183168.308,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": 126.5751154718699
+                    "distance_pct": 126.55101495594354
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -10541,13 +10441,13 @@
                   {
                     "price": 51720.66785714286,
                     "kind": "atr_projection",
-                    "from_reference_pct": -36.02268634804241,
+                    "from_reference_pct": -36.02949153608517,
                     "rejection_to": []
                   },
                   {
                     "price": 46221.274999999994,
                     "kind": "atr_projection",
-                    "from_reference_pct": -42.825312769815774,
+                    "from_reference_pct": -42.83139437086585,
                     "rejection_to": []
                   }
                 ],
@@ -10556,7 +10456,7 @@
                 "reason": "Dit scenario past nu niet: het broncandle-slot ligt voorbij zijn ongeldigverklaringsgrens. Bekijk het alternatief; geen automatische omgekeerde trade.",
                 "source_closed_at": "2026-10-19T00:00:00+00:00",
                 "confirmation_timeframe": "4h",
-                "confirmation_closed_at": "2026-10-25T00:00:00+00:00",
+                "confirmation_closed_at": "2026-10-25T04:00:00+00:00",
                 "basis": "current_snapshot_fixed_levels_not_a_tracked_trade",
                 "position_tracked": false,
                 "automatic_execution": false,
@@ -10584,13 +10484,13 @@
                   {
                     "price": 57770.0,
                     "kind": "range_boundary",
-                    "from_reference_pct": -28.539797284091716,
+                    "from_reference_pct": -28.547398417826418,
                     "rejection_to": []
                   },
                   {
                     "price": 51720.66785714286,
                     "kind": "atr_projection",
-                    "from_reference_pct": -36.02268634804241,
+                    "from_reference_pct": -36.02949153608517,
                     "rejection_to": []
                   }
                 ],
@@ -10599,7 +10499,7 @@
                 "reason": "Dit scenario past nu niet: het broncandle-slot ligt voorbij zijn ongeldigverklaringsgrens. Bekijk het alternatief; geen automatische omgekeerde trade.",
                 "source_closed_at": "2026-10-19T00:00:00+00:00",
                 "confirmation_timeframe": "4h",
-                "confirmation_closed_at": "2026-10-25T00:00:00+00:00",
+                "confirmation_closed_at": "2026-10-25T04:00:00+00:00",
                 "basis": "current_snapshot_fixed_levels_not_a_tracked_trade",
                 "position_tracked": false,
                 "automatic_execution": false,
@@ -10627,7 +10527,7 @@
                   {
                     "price": 87373.0,
                     "kind": "range_boundary",
-                    "from_reference_pct": 8.078454074728292,
+                    "from_reference_pct": 8.06695790270473,
                     "rejection_to": [
                       {
                         "price": 80386.692,
@@ -10644,7 +10544,7 @@
                   {
                     "price": 93422.33214285714,
                     "kind": "atr_projection",
-                    "from_reference_pct": 15.561343138678986,
+                    "from_reference_pct": 15.549051020963468,
                     "rejection_to": [
                       {
                         "price": 87373.0,
@@ -10664,7 +10564,7 @@
                 "reason": "De bullish route blijft technisch ondersteund, maar er is geen nieuwe triggeroverschrijding of afwijzing. Geen nieuwe scenarioactie.",
                 "source_closed_at": "2026-10-19T00:00:00+00:00",
                 "confirmation_timeframe": "4h",
-                "confirmation_closed_at": "2026-10-25T00:00:00+00:00",
+                "confirmation_closed_at": "2026-10-25T04:00:00+00:00",
                 "basis": "current_snapshot_fixed_levels_not_a_tracked_trade",
                 "position_tracked": false,
                 "automatic_execution": false,
@@ -10692,7 +10592,7 @@
                   {
                     "price": 93422.33214285714,
                     "kind": "atr_projection",
-                    "from_reference_pct": 15.561343138678986,
+                    "from_reference_pct": 15.549051020963468,
                     "rejection_to": [
                       {
                         "price": 87373.0,
@@ -10709,7 +10609,7 @@
                   {
                     "price": 98921.72499999999,
                     "kind": "atr_projection",
-                    "from_reference_pct": 22.363969560452325,
+                    "from_reference_pct": 22.350953855744148,
                     "rejection_to": [
                       {
                         "price": 95425.016,
@@ -10729,7 +10629,7 @@
                 "reason": "Dit scenario past nu niet: het broncandle-slot ligt voorbij zijn ongeldigverklaringsgrens. Bekijk het alternatief; geen automatische omgekeerde trade.",
                 "source_closed_at": "2026-10-19T00:00:00+00:00",
                 "confirmation_timeframe": "4h",
-                "confirmation_closed_at": "2026-10-25T00:00:00+00:00",
+                "confirmation_closed_at": "2026-10-25T04:00:00+00:00",
                 "basis": "current_snapshot_fixed_levels_not_a_tracked_trade",
                 "position_tracked": false,
                 "automatic_execution": false,
@@ -11108,7 +11008,7 @@
               "context": "Koers in de zonebuffer. Nog geen duidelijke doorbraak, afwijzing of steunbevestiging.",
               "zone_price": 80379.0,
               "confirmation_timeframe": "4h",
-              "confirmation_closed_at": "2026-10-25T00:00:00+00:00",
+              "confirmation_closed_at": "2026-10-25T04:00:00+00:00",
               "source_family": "bitget_price_volume",
               "independent_evidence": false,
               "news_status": "not_integrated",
@@ -11315,7 +11215,7 @@
               "position_tracked": false,
               "probability": null
             },
-            "scenario_set_id": "304b9db59a15485f29130d86"
+            "scenario_set_id": "090e1d619e98221a0bf83fd0"
           }
         }
       }

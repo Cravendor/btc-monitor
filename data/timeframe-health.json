@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-25T00:33:00.070426+00:00",
+  "updated_at": "2026-10-25T05:21:32.832518+00:00",
   "exchange": "bitget",
   "market": "USDT-FUTURES",
   "symbol": "BTCUSDT",
@@ -13,9 +13,9 @@
       "confidence": "low",
       "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 80829.1,
+      "candle_close_price": 80854.8,
       "closed_candles": 99,
-      "observed_at": "2026-10-25T00:30:00+00:00",
+      "observed_at": "2026-10-25T05:20:00+00:00",
       "error": null
     },
     "15m": {
@@ -25,9 +25,9 @@
       "confidence": "low",
       "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 80829.1,
+      "candle_close_price": 80866.5,
       "closed_candles": 99,
-      "observed_at": "2026-10-25T00:30:00+00:00",
+      "observed_at": "2026-10-25T05:15:00+00:00",
       "error": null
     },
     "30m": {
@@ -35,11 +35,11 @@
       "signal_status": "provisional",
       "grade": "neutral",
       "confidence": "low",
-      "evidence_state": "partial_direction",
+      "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 80829.1,
+      "candle_close_price": 80889.9,
       "closed_candles": 99,
-      "observed_at": "2026-10-25T00:30:00+00:00",
+      "observed_at": "2026-10-25T05:00:00+00:00",
       "error": null
     },
     "1h": {
@@ -47,11 +47,11 @@
       "signal_status": "provisional",
       "grade": "neutral",
       "confidence": "low",
-      "evidence_state": "partial_direction",
+      "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 80844.5,
+      "candle_close_price": 80889.9,
       "closed_candles": 99,
-      "observed_at": "2026-10-25T00:00:00+00:00",
+      "observed_at": "2026-10-25T05:00:00+00:00",
       "error": null
     },
     "4h": {
@@ -61,9 +61,9 @@
       "confidence": "low",
       "evidence_state": "partial_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 80844.5,
+      "candle_close_price": 80823.7,
       "closed_candles": 99,
-      "observed_at": "2026-10-25T00:00:00+00:00",
+      "observed_at": "2026-10-25T04:00:00+00:00",
       "error": null
     },
     "1d": {

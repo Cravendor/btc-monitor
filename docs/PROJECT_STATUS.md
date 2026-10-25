@@ -49,3 +49,68 @@ Monitor schedules must be checked through their actual service. As read on
 archive paragraph still said 12:00. HANDOVER records that discrepancy without
 silently changing a schedule. Similar dated statements should never be treated
 as guaranteed live configuration.
+
+## Execution evidence checkpoint — 25 October 2026
+
+Prepared a strict minimal task receipt protocol in [TASK_EXECUTION.md](TASK_EXECUTION.md),
+reader/writer in scripts/task_execution.py and status-page integration. Each
+connected ChatGPT monitor/QI task gets its own card. The newest receipt controls
+status, including errors or invalid evidence; stale success expires. Startup
+receipts do not prove a running process. Existing Pages builds on receipt pushes.
+No new scheduled task, market alert, DSM script change or fabricated receipt.
+
+The actual automation service was read this session: the three BTC monitors and
+Quality & Improvement already contain protocol-gated receipt instructions; QI
+also includes operational failures/recovery in its existing review. Schedules
+were not changed. Protocol was not yet on main when checked, so public execution
+is not yet proven. VIX is outside this connection. No private automation IDs or
+prompts are included here.
+
+Next: merge/publish this change, then inspect real new receipts and live cards.
+NAS watchdog/storage/start hooks require the actual existing DSM script contents
+and task names, followed by reviewed staging/publication integration. Reader and
+writer support are prepared only; those tasks remain unconnected until then.
+
+Validation for this checkpoint: 386 Python tests, five Node status-transition
+tests, read-only status generation and git diff whitespace checks pass locally.
+PR/CI/deployment evidence must be checked separately.
+
+Open implementation PR: [#69](https://github.com/Cravendor/btc-monitor/pull/69).
+At creation, GitHub validation run 40165487142 was in progress; recheck its
+final result before claiming CI success. Not merged or deployed at this checkpoint.
+
+## Watchdog integration preparation — 25 October 2026
+
+PR #69 is merged; live status JSON has individual cards, with no execution
+receipts at the last check. The user supplied the actual DSM watchdog body.
+Prepared nas/cvd_watchdog.sh preserving its recorder/flock/runtime paths,
+adding process-presence confirmation and minimal completion/error receipts.
+External spool plus strict import/post-push acknowledgement is added to the
+existing NAS publisher. The watchdog freshness tolerance is now 45m because
+five-minute checks are published by the existing half-hour task; no new schedule.
+See TASK_EXECUTION.md for installation order and exact existing-task command.
+Not installed or observed on NAS yet. Storage/startup scripts still unknown.
+
+Validation: 392 Python tests, five Node status tests, shell syntax for both NAS
+scripts, read-only status generation and diff checks pass locally. CI, merge,
+DSM installation, first receipt and publication remain separate checkpoints.
+
+Implementation PR [#70](https://github.com/Cravendor/btc-monitor/pull/70) is open.
+Recheck its CI, merge and actual NAS installation before describing it as active.
+
+## Pending NAS upload recovery — 25 October 2026
+
+PR #70 is merged, but a supplied NAS diagnosis shows the publisher checkout has
+one pending snapshot commit and a clean tree diverged from upstream. It has not
+yet demonstrated receipt integration or watchdog installation. Prepared the
+explicit nas/recover_pending_snapshot.py helper; see NAS.md for safeguards and
+execution through the existing manually run diagnostic task. The original
+observation and both histories must remain intact. Local Git-fixture tests cover
+success and refusal/abort/rejected-push paths. No actual NAS repair or new upload
+is established by these tests. Next: review/helper execution, inspect repair log
+and a fresh ordinary NAS upload, then resume watchdog installation. No duplicate
+DSM task, force-push or collector/database restart.
+
+Recovery implementation is open in [PR #71](https://github.com/Cravendor/btc-monitor/pull/71).
+397 Python and five Node tests pass locally. Recheck current CI, merge and actual
+NAS repair outcome; none is implied by this preparation checkpoint.
