@@ -110,3 +110,31 @@ user and schedule and replace only its body with:
 /bin/sh /volume1/btc-monitor/repo/nas/cvd_storage_check.sh
 No new DSM task. Verify a real next execution, uploaded receipt and live card.
 The startup task remains unconnected until its actual body is supplied.
+
+## Active Storage Monitor: preserve its own history and free-space inspection
+
+The active DSM Storage Monitor is distinct from the disabled Storage Check.
+Its supplied body appends a timestamp, `du -sh`, journal/WAL file listing and
+`df -h` to `/volume1/btc-cvd/storage-history.txt`. Do not replace it with the
+older storage-check report or enable the disabled task to obtain receipts.
+
+`nas/cvd_storage_monitor.sh` preserves that append-only report and all three
+inspections. It records `storage/completed` only when the report and inspections
+succeed; any failed command/redirection records `storage/error` and returns
+nonzero. Receipt-writing failure is also nonzero, with existing report retained.
+The six-field receipt uses the existing external spool/import path. Disk sizes,
+free space and report contents remain private. This proves execution of these
+checks, not SQLite integrity, healthy capacity thresholds or continuous uptime.
+No database writes, recorder restart, new dependency or scheduled task.
+
+After the implementation is merged and the existing NAS publisher successfully
+updates its checkout, replace only the ENABLED Storage Monitor's body with:
+
+```sh
+/bin/sh /volume1/btc-monitor/repo/nas/cvd_storage_monitor.sh
+```
+
+Keep its existing user and daily 10:40 schedule; Storage Check stays disabled.
+Then run that existing monitor once manually, inspect its actual result and
+local receipt, and verify publication by the existing half-hour uploader and
+Pages. Preparation/merge alone is not installation or execution evidence.
