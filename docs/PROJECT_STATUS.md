@@ -1,135 +1,59 @@
 # BTC Monitor — current scope and open work
 
-Checkpoint: 24 October 2026, Europe/Amsterdam. Start with [HANDOVER.md](HANDOVER.md)
-and [DECISIONS.md](DECISIONS.md). This replaces earlier same-day wording such as
-"this change/in review" that no longer described merged releases accurately.
-Current GitHub code, actual original data, PR states and run results override this
-checkpoint when they change.
+Checkpoint: 25 October 2026, Europe/Amsterdam. Reconciled through 48191e8 and
+merged #76. Read [HANDOVER.md](HANDOVER.md) for the evidence ledger and NAS task
+inventory, and [DECISIONS.md](DECISIONS.md) for accepted constraints.
+This replaces the older accumulated preparation checkpoints in this file.
 
-| Component | State at checkpoint | Practical limit |
+| Component | Verified checkpoint | Open boundary |
 | --- | --- | --- |
-| Operational task status | Built in accompanying change; 378 Python + 5 Node tests and read-only generation pass | Not deployed yet; DSM watchdog/storage and ChatGPT runtime remain explicitly unconnected |
-| NAS publisher | Restored; successive NAS uploads and Pages publication verified | Concurrent upstream writes can still reject a push |
-| Continuous CVD / sessions / backfill | Existing implementation and earlier successful NAS operation | Verify each market/interval; no market-wide or independently verified aggressor-CVD claim |
-| Technical multi-timeframe signals/history | Implemented | Provisional price/volume rules; not integrated independent macro evidence |
-| Public meters | Two public routes with five directional states and combined interpretation, merged #60 | No private position state or calibrated probabilities |
-| Available-history route anchors | Merged #61; v4 records observed | Native day/week windows are not verified cycle extrema |
-| Cycle-top/running-low rule | Merged #62; 354-test CI success | Explicit cycle/phase required; producer merged #65, default remains draft |
-| Multi-year daily archive | Merged #63; 2,122 source-validated closed UTC days through 2026-10-23; NAS coverage metadata verified at 22:01:55 UTC | Fresh coverage required at each new UTC day |
-| Archive to cycle-context producer | Merged PR #65; ready draft review verified in original 00:40 Amsterdam NAS record | Macroanchor activation remains a separate reviewed change |
-| Original report archive | Protocol v2, real 4h-warning and psychology records observed | Read current protocol, not old automation prompt version claims |
-| News integration | Separate contextual reports | No validated numerical news contribution to route scores |
-| Elliott/psychology | Rule checks/candidates and phase hypotheses | No complete proved current wave count or automatic psychological phase |
-| Forward result evaluation | General technical/scenario tooling exists | Dedicated two-route/25-combination evidence and enough 7/30/90-day follow-up still needed |
-| Visual QA | Live 1348px desktop check: swing/position toggle, both position routes/ladders and timeframe navigation work; no whole-page horizontal overflow with routes open | iPhone/mobile QA, new-label verification and post-#65 deployment/original NAS review remain open |
-| Quality & Improvement | Existing enabled monthly task, with quarter/year levels | No recorded QI run at the checkpoint; old prompt clauses need version-aware interpretation |
+| Public meters/routes | #60–#62 implemented; two routes/five directional states, versioned source observations | No calibrated probabilities or personal position state |
+| Macroarchive/context | #63 / #65 merged; original automatic draft review observed | Config still draft; reference/phase activation requires separate review |
+| Operational task page | #68 / #69 merged; execution receipts and individual cards exist | Missing/expired evidence is unavailable/stale, not stopped/running proof |
+| Watchdog/storage | #70 / #72 merged; watchdog replacement reported | Current real receipts and storage installation need verification |
+| NAS upload recovery | #71 merged and actual repair c4e2e94 confirmed; subsequent ordinary uploads succeeded | General concurrent-writer races not solved |
+| CVD reconciliation | Original 08:32 UTC NAS record verifies both markets for 04–08 UTC, exact BTC/quote volumes | Original earlier mismatch cause unresolved; interval-by-interval proof required |
+| Quality/recovery gates | #73 merged; per-snapshot and periodic/dashboard checks implemented | New NAS fields and actual scheduled report compliance need inspection |
+| Elliott visuals | #74 merged; weekly/daily/4H/1H bull/bear candidates and eight charts | Provisional counts, nesting and psychological phase not proved |
+| Long Elliott sources | #75 merged; July 2025 onward, 68 weeks / 481 days / 2,889 4H / 11,558 1H, zero gaps at 14:25 UTC | Coverage must be recomputed as new candles close |
+| History completion to Pages | #76 merged; explicit trusted completion trigger present; post-merge Pages successful | Actual post-merge history-completion → Pages chain still to observe |
+| Original reports/history | Immutable archives and execution receipts have actual commits | Not proof that every planned report ran/delivered |
+| Macro/news and psychology | Contextual reports and candidate rules exist | No validated independent numerical macro/news vote or certified phase |
+| Forward evaluation | General technical/scenario tooling exists | Dedicated two-route/25-combination analysis and sufficient 7/30/90-day follow-up |
+| Visual QA | Prior desktop interaction, SVG checks and live quality checkpoint recorded | New full browser/mobile interaction QA remains open |
 
 ## Next concrete sequence
 
-1. Review/merge/publish the operational status page; verify live evidence/API access and mobile layout. Original #65 NAS draft review and #67 Dutch label are now verified; see HANDOVER.
-2. Review the proposed reference window/peak and operational phase; activate in a
-   separate reviewed configuration change when justified. Current anchors remain
-   active with the shipped draft; complete history alone does not activate it.
-3. Improve independent news/macro contribution, Elliott/psychology support,
-   dedicated forward evaluation, browser QA and upload race resilience.
-4. Keep this checkpoint and HANDOVER current with evidence at every phase.
+1. Verify the next real history-completion → Pages chain after #76.
+2. Inspect fresh original NAS quality/recovery fields and original mismatch
+   diagnostics; verify watchdog/storage receipt publication without duplicating tasks.
+3. Perform mobile/browser QA for Elliott and operational status.
+4. Separately review draft macroanchor reference/phase; improve independent
+   evidence, count substantiation, forward evaluation and upload race resilience.
 
-## Continuing constraints
+Recent evidence: Pages 40202767429 and 40202849481 succeeded. History
+40202144771 succeeded. Health 40201722831 failed, then 40202113500 succeeded;
+retain both results. Latest full implementation validation reported in #75:
+429 Python tests, five Node status tests, read-only staging and SVG inspection.
+#76 reported YAML/trigger checks and ten history tests. These are dated results,
+not tests newly executed for this documentation-only update.
 
-EUR 0; no paid services or trial activation. Bitget BTCUSDT USDT-FUTURES in USDT is
-the primary reference; USD spot comparisons stay separate. Missing values stay
-unavailable rather than becoming zero/neutral. Only appropriate closed candles
-confirm levels. Preserve original observations and versions, including older
-four-route internal records. General market context only; no personal trading
-positions or orders. Existing NAS tasks are documented in HANDOVER; do not
-recreate them based on an incomplete new chat.
+Open PRs when checked: #2, #3, #4, older proposals. #64–#76 are merged.
+Source details: [ELLIOTT_HISTORY.md](ELLIOTT_HISTORY.md),
+[CVD_RECONCILIATION.md](CVD_RECONCILIATION.md),
+[QUALITY_CONTROL.md](QUALITY_CONTROL.md), [TASK_EXECUTION.md](TASK_EXECUTION.md).
 
-Monitor schedules must be checked through their actual service. As read on
-24 October, psychology was scheduled for 08:00 from 25 October while an older
-archive paragraph still said 12:00. HANDOVER records that discrepancy without
-silently changing a schedule. Similar dated statements should never be treated
-as guaranteed live configuration.
+## Constraints and maintenance
 
-## Execution evidence checkpoint — 25 October 2026
+EUR 0; public APIs; Bitget BTCUSDT USDT-FUTURES in USDT primary. Missing is
+unavailable, never zero/neutral. Closed candles, explicit source/time provenance,
+exact CVD volume checks. Preserve snapshots, original reports, versions and NAS
+journal/runtime. General context only, no orders or private portfolio tracking.
+Schedules/runtime must be checked in their actual service; this document does
+not establish current automation settings.
 
-Prepared a strict minimal task receipt protocol in [TASK_EXECUTION.md](TASK_EXECUTION.md),
-reader/writer in scripts/task_execution.py and status-page integration. Each
-connected ChatGPT monitor/QI task gets its own card. The newest receipt controls
-status, including errors or invalid evidence; stale success expires. Startup
-receipts do not prove a running process. Existing Pages builds on receipt pushes.
-No new scheduled task, market alert, DSM script change or fabricated receipt.
-
-The actual automation service was read this session: the three BTC monitors and
-Quality & Improvement already contain protocol-gated receipt instructions; QI
-also includes operational failures/recovery in its existing review. Schedules
-were not changed. Protocol was not yet on main when checked, so public execution
-is not yet proven. VIX is outside this connection. No private automation IDs or
-prompts are included here.
-
-Next: merge/publish this change, then inspect real new receipts and live cards.
-NAS watchdog/storage/start hooks require the actual existing DSM script contents
-and task names, followed by reviewed staging/publication integration. Reader and
-writer support are prepared only; those tasks remain unconnected until then.
-
-Validation for this checkpoint: 386 Python tests, five Node status-transition
-tests, read-only status generation and git diff whitespace checks pass locally.
-PR/CI/deployment evidence must be checked separately.
-
-Open implementation PR: [#69](https://github.com/Cravendor/btc-monitor/pull/69).
-At creation, GitHub validation run 40165487142 was in progress; recheck its
-final result before claiming CI success. Not merged or deployed at this checkpoint.
-
-## Watchdog integration preparation — 25 October 2026
-
-PR #69 is merged; live status JSON has individual cards, with no execution
-receipts at the last check. The user supplied the actual DSM watchdog body.
-Prepared nas/cvd_watchdog.sh preserving its recorder/flock/runtime paths,
-adding process-presence confirmation and minimal completion/error receipts.
-External spool plus strict import/post-push acknowledgement is added to the
-existing NAS publisher. The watchdog freshness tolerance is now 45m because
-five-minute checks are published by the existing half-hour task; no new schedule.
-See TASK_EXECUTION.md for installation order and exact existing-task command.
-Not installed or observed on NAS yet. Storage/startup scripts still unknown.
-
-Validation: 392 Python tests, five Node status tests, shell syntax for both NAS
-scripts, read-only status generation and diff checks pass locally. CI, merge,
-DSM installation, first receipt and publication remain separate checkpoints.
-
-Implementation PR [#70](https://github.com/Cravendor/btc-monitor/pull/70) is open.
-Recheck its CI, merge and actual NAS installation before describing it as active.
-
-## Pending NAS upload recovery — 25 October 2026
-
-PR #70 is merged, but a supplied NAS diagnosis shows the publisher checkout has
-one pending snapshot commit and a clean tree diverged from upstream. It has not
-yet demonstrated receipt integration or watchdog installation. Prepared the
-explicit nas/recover_pending_snapshot.py helper; see NAS.md for safeguards and
-execution through the existing manually run diagnostic task. The original
-observation and both histories must remain intact. Local Git-fixture tests cover
-success and refusal/abort/rejected-push paths. No actual NAS repair or new upload
-is established by these tests. Next: review/helper execution, inspect repair log
-and a fresh ordinary NAS upload, then resume watchdog installation. No duplicate
-DSM task, force-push or collector/database restart.
-
-Recovery implementation is open in [PR #71](https://github.com/Cravendor/btc-monitor/pull/71).
-397 Python and five Node tests pass locally. Recheck current CI, merge and actual
-NAS repair outcome; none is implied by this preparation checkpoint.
-
-## Storage receipt preparation and recovery checkpoint — 25 October 2026
-
-The previous NAS recovery is confirmed by the external task result and remote
-merge c4e2e94: the original pending NAS snapshot is on main, together with both
-signal histories and new code. This closes one recovery incident, not the
-concurrent-writer resilience issue. The user confirmed replacing the watchdog
-body with the repository wrapper. First real watchdog receipt/new ordinary NAS
-upload was still unverified at the latest read; no process availability inferred.
-
-The user supplied the storage ls/du/date body. Prepared nas/cvd_storage_check.sh
-and execution tests with no database changes; see TASK_EXECUTION.md. Script/report
-failures must not become success via the last date command. Full existing task
-name/schedule still unknown; preserve them at installation. Storage installation,
-first public receipt and live status are unverified. Startup script remains needed.
-
-Prepared in [PR #72](https://github.com/Cravendor/btc-monitor/pull/72); not installed.
-401 Python tests, five Node status tests, shell syntax and diff checks pass locally.
-Recheck final CI, merge, original NAS receipt and live page separately.
+After every executed task, update HANDOVER and this status before reporting
+completion, including results of external runs. Update DECISIONS for changed
+accepted rules. Record implemented, merged, deployed and observed separately,
+with evidence, remaining uncertainty and next step. No private transcripts,
+IDs, credentials, raw journals or NAS logs in the public repository.

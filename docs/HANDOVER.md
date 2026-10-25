@@ -1,12 +1,103 @@
 # BTC monitor — agent handover
 
-Checkpoint: 24 October 2026, Europe/Amsterdam. This is a curated technical
+Current checkpoint: 25 October 2026, Europe/Amsterdam. This is a curated technical
 handover, not a complete transcript or private-chat export. Read together with
 [PROJECT_STATUS.md](PROJECT_STATUS.md), [DECISIONS.md](DECISIONS.md) and current
 code/data. Repository: [Cravendor/btc-monitor](https://github.com/Cravendor/btc-monitor).
 Dashboard: https://cravendor.github.io/btc-monitor/.
 
-## Resume from here
+## Current handover — 25 October 2026, Europe/Amsterdam
+
+This section and PROJECT_STATUS.md supersede older preparation/open-PR wording
+below. Original entry point was created in commit 0ab7fde on 24 October at
+21:31:28 UTC (23:31 Amsterdam). Reconciled against repository history through
+48191e8 and merged PRs #65–#76. This is a curated evidence record, not a transcript.
+
+### Completed since the entry point was created
+
+| Change | Confirmed result | Remaining boundary |
+| --- | --- | --- |
+| #64 / #66 handover | Mandatory entry point and technical handover merged; post-merge context refreshed | Read current repository evidence each session |
+| #65 cycle-context producer | Merged 46dd127; original 00:40 Amsterdam NAS draft review verified | Macroanchor configuration remains draft; no automatic cycle identification or activation |
+| #67 Dutch explanations | Merged 487310f; Pages run 40138890905 succeeded and translated labels observed | Does not change stored assessments |
+| #68 operational status | Merged 8b85900; task-status page and separate evidence states implemented | Colour is evidence/freshness, not continuous process proof |
+| #69 execution receipts | Merged 17f9698; minimal receipts and per-task cards implemented; actual monitor receipts subsequently committed | Not every scheduled run or DSM hook proven |
+| #70 watchdog wrapper | Merged cd884a5; receipt spool/import and process checks added; wrapper replacement reported | Recheck first/current public receipt; preserve existing task schedule |
+| #71 pending upload repair | Merged 79fc0bb; real NAS recovery c4e2e94 preserved original observation and both histories | One incident repaired; concurrent-writer resilience still open |
+| #72 storage wrapper | Merged 43fd3dc; safe storage-check receipt support | Installation and first receipt not established by merge |
+| Ordinary NAS uploads | Recovery followed by successful upload, EINDSTATUS 0, 401 tests in supplied result; commits 03ce980 and 57d7173 present | NAS collection and Pages publication remain separate |
+| #73 CVD diagnostics / quality gates | Merged 6d8b71d; exact validation, bounded same-candle retry, safe aggregate diagnostics, report/dashboard quality gates | Post-merge NAS uptake and real scheduled-task compliance need separate evidence |
+| #74 Elliott visuals | Merged 09be532; bull/bear candidates at week/day/4H/1H, eight charts, anchor/rule/zone evidence | Provisional candidates; not proved current count, nested subwaves or calibrated rejection strength |
+| #75 long Elliott history | Merged bf8a61e; complete native history from July 2025, resumable collection and incremental update observed | Longer source scope does not certify a count |
+| #76 history-to-Pages completion | Merged bd80bd3; Pages now watches BTC multi-year daily history completion | Observe a real post-merge history-completion-triggered Pages run to close acceptance |
+
+### Correct CVD interpretation
+
+The 08:02 UTC rejection for 04:00–08:00 UTC was followed by an original 08:32 UTC
+NAS snapshot (57d7173, data/2026/10/25/20261025T083216553390Z-local-1.json)
+verifying BOTH markets exactly. Independent public-history replay matched BTC
+and USDT volumes as well: spot 12,270 trades, delta -4.374325 BTC; futures
+47,160 trades, delta -223.2247 BTC. See CVD_RECONCILIATION.md.
+Do not carry the earlier mismatch forward as a current blanket failure.
+The original discrepancy remains unquantified until its saved numerical
+diagnostics are inspected; cache lag is only a hypothesis. Historical 49/84 gap
+counters are not new failures in every interval. Provider-side trade delta is
+not independently verified aggressor-side or market-wide CVD. Exact validation
+remains mandatory for each interval; no arbitrary tolerance.
+
+### Source and publication evidence
+
+coverage.json checked 2026-10-25T14:25:22.242273+00:00 records zero gaps:
+68 weeks, 481 days, 2,889 4H and 11,558 1H candles. Requested start is
+2025-07-01 UTC, with the weekly candle beginning 2025-06-30 included.
+All checked parent price/base-volume groups match; normalized quote differences
+are diagnostic only and do not relax CVD equality. Source end times differ by
+degree. See ELLIOTT_HISTORY.md and data/history/elliott/coverage.json.
+
+The earlier live checkpoint in ELLIOTT_HISTORY.md records complete sources and
+eight charts at 14:20:29 UTC. This session checked successful Pages runs
+40202767429 (head bd80bd3, after #76) and 40202849481 (head 48191e8).
+History runs 40201722874, 40201739696 and 40202144771 succeeded.
+Health run 40201722831 failed; later 40202113500 succeeded. Do not erase the
+failed execution or infer permanent recovery from one later success.
+A successful deployment is not new browser/mobile QA or proof of the exact
+workflow_run trigger path. No authenticated NAS access is available here.
+
+### Next concrete steps
+
+1. Inspect a real history completion after #76 and its resulting Pages trigger.
+2. Inspect a fresh original NAS snapshot for #73 quality/recovery diagnostics;
+   retrieve original mismatch totals if still missing. Verify current receipt
+   publication for watchdog/storage; obtain existing startup body only when needed.
+3. Actual mobile/browser QA of Elliott and status panels; existing desktop/SVG
+   checks do not close this.
+4. Separately review macroanchor activation, independent macro/news evidence,
+   Elliott nesting and psychology, forward evaluation and concurrent writers.
+5. Open PRs at this read: #2, #3, #4 (older proposals). They are not deployments;
+   compare scope before reusing. #64–#76 are merged, not pending review.
+
+### Maintenance after every executed task
+
+Before reporting a task complete, update this handover and PROJECT_STATUS in the
+same change, or immediately after an external execution/result is observed.
+Record task/result, changed files, validation, PR/commit, merged/deployed/observed
+states, blockers and next step. Update DECISIONS for changed accepted rules.
+A task producing no code still needs its outcome recorded when material.
+Never fabricate receipts, future results, deployment proof or retrospective tests.
+Preserve original observations; publish only public-safe technical summaries.
+
+Documentation reconciliation validation: read the current four handover files,
+PR #73–#76 records, history coverage, Pages workflow and recent Actions results;
+checked internal handover links and superseded-state consistency. No executable,
+schedule, NAS task or data changes; no new runtime tests claimed.
+
+## Historical checkpoints (superseded where the current section differs)
+
+The following sections retain earlier observations and preparation history.
+Their “open”, “not merged”, “next” and “not deployed” statements apply to their
+original checkpoint only; use the current section above to resume.
+
+## Earlier resume checkpoint
 
 Post-merge checkpoint: 25 October 2026, Europe/Amsterdam.
 

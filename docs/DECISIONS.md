@@ -1,5 +1,15 @@
 # Accepted project decisions
 
+## Immediate handover maintenance — 25 October 2026
+
+After every executed task, update HANDOVER.md and PROJECT_STATUS.md before
+reporting completion; use the same change or immediately record an observed
+external result. Record outcome/evidence, validation, PR/commit and the distinct
+implemented/merged/deployed/observed states, blockers and next step. Update this
+register for changed accepted decisions. This supersedes the weaker
+“after a substantive phase” cadence. Do not publish private conversations or logs.
+
+
 ## Operational status decision — 25 October 2026
 
 User requested a task-status page with coloured indicators. Show explicit text
