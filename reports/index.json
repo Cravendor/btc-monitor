@@ -221,6 +221,30 @@
     {
       "bias": {
         "30d_macro": {
+          "reason": "- **30D/macro: ONVOLDOENDE DATA** — macro-cyclusrichting is niet vast te stellen uit één uitgestelde aanval en één beursvenster; duurzame diplomatie, olie, rente, ETF-vraag en on-chain aanbod ontbreken als bevestiging.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "- **4H–1D: 0 NEUTRAAL/GEMENGD** — de bevestigde afwezigheid van een aanval vandaag is gunstig, maar BTC liet geen overtuigende vervolgrally zien. Positieve funding, oplopend open interest en de negatieve voorafgaande Bitget-spotdelta vormen het belangrijkste tegensignaal. Betrouwbaarheid: middelmatig voor deze beperkte scope; er is geen schone pre-eventmeting.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "- **7D: ONVOLDOENDE DATA** — de openbare meetreeks heeft over de laatste 24 uur slechts 19 van 48 halfuurvakken gedekt en levert geen complete, onafhankelijke zevendaagse combinatie van orderflow, ETF-flows en liquidaties.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        }
+      },
+      "content_sha256": "634b79602abd9d0bbb4d34c92c289b5f1ece9f62b40c0d5bc0b46c4015b1f5f2",
+      "has_report_text": true,
+      "monitor": "market-risk",
+      "path": "reports/2026/10/25/market-risk-191515.json",
+      "reported_at": "2026-10-25T19:15:15Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
           "reason": "30D/macro: **ONVOLDOENDE DATA** — geen passende LTH/aanbod-, macroliquiditeits- en historische sentimentcombinatie om een cyclusfase te bepalen. De zomerherstelreeks bewijst geen macro-bodem.",
           "score": null,
           "status": "ONVOLDOENDE DATA"
