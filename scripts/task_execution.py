@@ -9,7 +9,7 @@ TASKS = {
     ('chatgpt', 'psychology'): ('BTC psychologie en scenario’s', 30 * 3600),
     ('chatgpt', 'breaking-risk'): ('Breaking Market Risk Alert', 3 * 3600),
     ('chatgpt', 'quality-improvement'): ('BTC Quality & Improvement', 35 * 86400),
-    ('nas', 'watchdog'): ('BTC CVD Watchdog', 15 * 60),
+    ('nas', 'watchdog'): ('BTC CVD Watchdog', 45 * 60),
     ('nas', 'storage'): ('CVD-opslagcontrole', 36 * 3600),
     ('nas', 'startup'): ('CVD-opstarttaak', None),
 }
