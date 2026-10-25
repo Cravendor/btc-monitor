@@ -49,3 +49,28 @@ Monitor schedules must be checked through their actual service. As read on
 archive paragraph still said 12:00. HANDOVER records that discrepancy without
 silently changing a schedule. Similar dated statements should never be treated
 as guaranteed live configuration.
+
+## Execution evidence checkpoint — 25 October 2026
+
+Prepared a strict minimal task receipt protocol in [TASK_EXECUTION.md](TASK_EXECUTION.md),
+reader/writer in scripts/task_execution.py and status-page integration. Each
+connected ChatGPT monitor/QI task gets its own card. The newest receipt controls
+status, including errors or invalid evidence; stale success expires. Startup
+receipts do not prove a running process. Existing Pages builds on receipt pushes.
+No new scheduled task, market alert, DSM script change or fabricated receipt.
+
+The actual automation service was read this session: the three BTC monitors and
+Quality & Improvement already contain protocol-gated receipt instructions; QI
+also includes operational failures/recovery in its existing review. Schedules
+were not changed. Protocol was not yet on main when checked, so public execution
+is not yet proven. VIX is outside this connection. No private automation IDs or
+prompts are included here.
+
+Next: merge/publish this change, then inspect real new receipts and live cards.
+NAS watchdog/storage/start hooks require the actual existing DSM script contents
+and task names, followed by reviewed staging/publication integration. Reader and
+writer support are prepared only; those tasks remain unconnected until then.
+
+Validation for this checkpoint: 386 Python tests, five Node status-transition
+tests, read-only status generation and git diff whitespace checks pass locally.
+PR/CI/deployment evidence must be checked separately.
