@@ -74,3 +74,7 @@ writer support are prepared only; those tasks remain unconnected until then.
 Validation for this checkpoint: 386 Python tests, five Node status-transition
 tests, read-only status generation and git diff whitespace checks pass locally.
 PR/CI/deployment evidence must be checked separately.
+
+Open implementation PR: [#69](https://github.com/Cravendor/btc-monitor/pull/69).
+At creation, GitHub validation run 40165487142 was in progress; recheck its
+final result before claiming CI success. Not merged or deployed at this checkpoint.
