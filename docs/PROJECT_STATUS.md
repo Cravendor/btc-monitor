@@ -139,11 +139,85 @@ Validation: parsed two original JSON records and collector-health, inspected
 receipt paths in the complete tree and current publisher/protocol. Documentation
 only; no new tests, receipt generation, NAS execution or recovery claimed.
 
+### Fresh NAS publication restored — 25 October 2026
+
+Remote original NAS records now establish successful ordinary publication:
+data/2026/10/25/20261025T185943458441Z-local-1.json and
+data/2026/10/25/20261025T190211916703Z-local-1.json.
+Both collection_source=nas, snapshot status=ok, cvd_4h status=ok and coverage_verified=true.
+The shared CLOSED interval is 12:00–16:00 UTC (13:00–17:00 Amsterdam).
+Provider-side spot delta -20.620554 BTC and futures delta +12.8030 BTC are
+separate, verified cached evidence; no independent taker/market-wide flow claim.
+The newer record finished 19:02:16.902858 UTC (20:02:16 Amsterdam), with recent
+spot/futures journal trade timestamps at 19:02:10/19:02:15 UTC.
+
+Both originals contain #73 analysis_quality:
+ready_for_scoped_report, scenario_processing consistent, interval delta available,
+both markets verified and issues empty. Macro verdict still requires separate
+macro evidence; this is not a macro-bottom confirmation. Earlier original mismatch
+cause/aggregate investigation remains separate.
+
+The latest supplied log is a DIFFERENT invocation starting 19:00:40 UTC,
+not a continuation of the earlier 18:56:46 run. It reports 429 tests passed in
+61.040s and both markets verified_cached_evidence. The attached copy itself has
+no final EINDSTATUS; successful remote snapshot storage is independently verified.
+Do not mistake buffered test fixtures for actual failed NAS receipts or archive loss.
+
+First restored upload head eca11f2 has successful Pages run 40223936047.
+Newer head 748ba48 has Pages run 40224141712 in progress at inspection; its
+deployment outcome must be rechecked. The repository tree still has NO NAS
+watchdog/storage/startup receipt files. Upload/CVD restoration does not close
+those hooks, current schedule proof or permanent concurrent-writer resilience.
+Next: inspect next scheduled ordinary upload and newest Pages result; diagnose
+existing watchdog/storage wrappers/spool using a read-only check if receipts
+remain absent. Do not create duplicate tasks or restart the recorder.
+
+These results supersede the pending-upload checkpoints carried from the separate
+documentation branch below. Their interim observations are historical.
+Validation: two original JSON records, quality/CVD/source/journal times, repository
+receipt inventory and commit-specific Pages results. No new tests executed here.
+
+### Tests passed; final upload still pending — 25 October 2026
+
+The next partial log from the same 18:56:46 UTC run confirms 429 tests passed
+in 63.410 seconds (OK). It still contains no final EINDSTATUS, CVD pipeline
+result, new snapshot or successful push. Remote main remained fa8b1fc when read.
+Do not start another run or infer completion/failure from this partial output.
+
+The warning/error simulations, old 08:02 UTC quality JSON, fixture backup/recovery
+messages and invalid-receipt messages occur in the test output. In particular
+tests/test_task_receipt_sync.py deliberately covers conflicting/invalid receipts
+and emits the observed messages. They are not evidence of actual broken NAS
+receipts, deleted Elliott history, current source quality or another real repair.
+Buffered stdout may appear after unittest's stderr summary. Inspect actual
+post-test collection output and original published JSON before diagnosing them.
+
+Interim handover remains on docs/nas-upload-pending-20261025 to avoid moving
+main during the active upload. Incorporate both partial checkpoints when actual
+completion is known. Validation: partial user result, current runner order,
+receipt-test source and remote head; no new local tests or NAS action executed.
+
+### Ordinary NAS upload started; completion pending — 25 October 2026
+
+The supplied partial result starts at 18:56:46 UTC. It confirms successful
+synchronization to fa8b1fc and test progress, but ends in progress dots: no test
+summary, collection result, push or EINDSTATUS is present. Remote main was still
+fa8b1fc at inspection. Do not call this success or failure and do not start a
+second run. Await the same run's complete output, then inspect original NAS data
+and receipt publication.
+
+This interim checkpoint is saved on docs/nas-upload-pending-20261025, not main,
+while the existing NAS task may still be executing. Avoid advancing main during
+that task's collection/push window. Incorporate this checkpoint with the final
+result after completion; do not use it to trigger another task or recovery.
+No executable changes or tests performed here; only the actual partial log and
+remote head were inspected. Original private log is not published.
+
 ## Next concrete sequence
 
 1. History-to-Pages acceptance observed at 17:53 UTC; see evidence below.
-2. Recovery of 4795253 is verified; run the existing normal NAS publisher once,
-   then verify a fresh original, current quality/CVD diagnostics and receipts.
+2. Two fresh NAS uploads and both interval deltas verified; recheck newest Pages,
+   next scheduled upload and missing watchdog/storage receipts.
 3. Perform mobile/browser QA for Elliott and operational status.
 4. Separately review draft macroanchor reference/phase; improve independent
    evidence, count substantiation, forward evaluation and upload race resilience.
