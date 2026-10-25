@@ -139,6 +139,27 @@ Validation: parsed two original JSON records and collector-health, inspected
 receipt paths in the complete tree and current publisher/protocol. Documentation
 only; no new tests, receipt generation, NAS execution or recovery claimed.
 
+### Active Storage Monitor receipt integration prepared — 25 October 2026
+
+User supplied the active monitor's actual body: append timestamp, du, journal/WAL
+listing and df output to storage-history.txt. It has no receipt writer. Prepared
+nas/cvd_storage_monitor.sh preserving that report, history, all inspections and
+daily 10:40 schedule. It uses the existing six-field storage receipt identity
+and external spool; failed commands, append or receipt writing cannot be masked
+by the final echo. The disabled Storage Check remains disabled and unchanged.
+No database/runtime modification, new dependency, extra task or schedule.
+
+Six new isolated tests cover preserved originals/history, missing DB, df/du
+failures, failed report append and receipt-write failure. Local full suite:
+435 Python tests (Python 3.12.14) and five Node status tests pass; shell syntax
+and read-only dashboard staging/quality checks pass. Python 3.9.14/3.11 PR CI
+is still a separate required check.
+Not merged, installed or observed on NAS. See TASK_EXECUTION.md for exact
+installation order after merge and normal NAS checkout update.
+Implementation PR: [#77](https://github.com/Cravendor/btc-monitor/pull/77), open,\nnot merged or installed. Validation run 40226486119 was queued when inspected;\nrecheck its final result and current head. Next: verify required CI. After merge,
+replace only the active Storage Monitor body with the new wrapper, retain daily
+10:40 and execute that monitor once to verify a real receipt and publication.
+
 ### Storage task identities clarified — 25 October 2026
 
 User explicitly identifies Storage Monitor as enabled and Storage Check as
