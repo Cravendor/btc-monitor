@@ -305,3 +305,20 @@ DSM installation, first receipt and publication remain separate checkpoints.
 
 Implementation PR [#70](https://github.com/Cravendor/btc-monitor/pull/70) is open.
 Recheck its CI, merge and actual NAS installation before describing it as active.
+
+## Pending NAS upload recovery — 25 October 2026
+
+PR #70 is merged, but a supplied NAS diagnosis shows the publisher checkout has
+one pending snapshot commit and a clean tree diverged from upstream. It has not
+yet demonstrated receipt integration or watchdog installation. Prepared the
+explicit nas/recover_pending_snapshot.py helper; see NAS.md for safeguards and
+execution through the existing manually run diagnostic task. The original
+observation and both histories must remain intact. Local Git-fixture tests cover
+success and refusal/abort/rejected-push paths. No actual NAS repair or new upload
+is established by these tests. Next: review/helper execution, inspect repair log
+and a fresh ordinary NAS upload, then resume watchdog installation. No duplicate
+DSM task, force-push or collector/database restart.
+
+Recovery implementation is open in [PR #71](https://github.com/Cravendor/btc-monitor/pull/71).
+397 Python and five Node tests pass locally. Recheck current CI, merge and actual
+NAS repair outcome; none is implied by this preparation checkpoint.
