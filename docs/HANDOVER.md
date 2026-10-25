@@ -13,6 +13,48 @@ below. Original entry point was created in commit 0ab7fde on 24 October at
 21:31:28 UTC (23:31 Amsterdam). Reconciled against repository history through
 48191e8 and merged PRs #65–#76. This is a curated evidence record, not a transcript.
 
+### NAS evidence audit — 25 October 2026
+
+Read original immutable records and the complete repository tree. Newest published
+NAS original remains data/2026/10/25/20261025T083216553390Z-local-1.json
+(08:32 UTC / 09:32 Europe/Amsterdam). It verified BOTH provider-side deltas for
+04:00–08:00 UTC and had recent journal trades at that historical observation.
+It predates #73 and contains no analysis_quality field; no later NAS original
+or original numerical mismatch diagnostic was found. That is an evidence/publication
+gap, not proof that the recorder has stopped.
+
+Newest original at this read is instead
+data/2026/10/25/20261025T175236239465Z-40218548515-1.json:
+collection_source=github_fallback, status=ok, cvd_4h=not_collected, reason local
+journal not configured, for 12:00–16:00 UTC. Its quality status is degraded:
+price_structure available, interval delta unavailable, macro verdict requires
+separate evidence. Never reuse the morning NAS delta as this interval's value.
+
+collector-health checked at 17:52:40 UTC says current after reserve recovery
+(before stale, outcome uploaded), which establishes market-snapshot recovery
+only. Its 24h snapshot coverage was 19/48 half-hour slots (39.6%), with 29 missing.
+This is snapshot publication coverage, not trade-recorder uptime or CVD coverage.
+
+The repository tree has ChatGPT receipts but NO data/task-executions/nas receipt
+files for watchdog, storage or startup. Their current execution/installation
+cannot be confirmed remotely. Read TASK_EXECUTION.md: receipts require a
+successful existing NAS publisher import/push; a local spool is not public proof.
+Existing runner code preserves pending local commits on conflicts and refuses
+dirty trees. Do not reset/rebase manually, restart the recorder or rerun old
+incident-specific repairs based on these observations.
+
+Next required external evidence: manually run the EXISTING BTC NAS Collect
+Publish task in DSM and inspect its full current task result / first-upload.txt.
+If successful, verify a fresh immutable NAS original, #73 diagnostics and
+imported receipts. If failed, diagnose the actual error and local Git state
+before preparing a targeted repair. No duplicate task, new schedule or runtime
+change. No direct authenticated NAS session is available here.
+User-facing local time is CET on this date: 08:32 UTC is 09:32 Amsterdam.
+
+Validation: parsed two original JSON records and collector-health, inspected
+receipt paths in the complete tree and current publisher/protocol. Documentation
+only; no new tests, receipt generation, NAS execution or recovery claimed.
+
 ### History completion acceptance — 25 October 2026, 18:53 Amsterdam
 
 Observed history run [40218583040](https://github.com/Cravendor/btc-monitor/actions/runs/40218583040)
