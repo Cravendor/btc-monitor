@@ -72,3 +72,17 @@ refresh require separate verification after publication.
 Primary API method reference:
 https://www.bitget.com/docs/catalog/classic-contract-market/classic-contract-market
 (section Get Historical Candlestick).
+
+## Post-merge publication checkpoint
+
+PR #75 is merged. The first actual history workflow successfully added the next
+closed hour (11,558 total). Live quality at 2026-10-25 14:20:29 UTC reports all
+four source degrees complete, zero gaps and eight rendered charts. This is
+evidence for that run/window, not guaranteed future scheduling.
+
+Follow-up: Pages must also watch completion of `BTC multi-year daily history`.
+History commits use the built-in Actions token; their pushes do not themselves
+start other workflows. The first update happened to be included by another
+pending Pages run. An explicit completion trigger removes this timing dependency,
+reusing the existing trusted-default-branch guards and degraded-publication rules.
+No schedule, source data or collection code is changed by this follow-up.
