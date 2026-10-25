@@ -213,7 +213,7 @@ def audit(db, market, end_ms=None, now_ms=None, max_pages=400, seconds=180,
     start = end_ms - WINDOW
     run_id = resume or uuid.uuid4().hex
     report = dict(run_id=run_id, market=market, exchange='bitget', symbol='BTCUSDT',
-                  start_ms=start, end_ms=end_ms, status='incomplete', reason='in_progress',
+                  start_ms=start, end_ms=end_ms, attempted_at_ms=now_ms, status='incomplete', reason='in_progress',
                   coverage_verified=False, value=None, candidate_delta_btc=None,
                   pages=0, recovered_trades=0, pagination_exhausted=False,
                   candle_match=False, journal_missing=None, journal_extra=None,
@@ -300,6 +300,7 @@ def audit(db, market, end_ms=None, now_ms=None, max_pages=400, seconds=180,
             raise AuditError('closed_candle_missing_or_duplicated')
         candle = candles[0]
         # Keep exact provider evidence local; no raw trades or candles in GitHub.
+        report['candle_response_at_ms'] = candle_response.get('requestTime')
         report['candle_response_sha256'] = hashlib.sha256(
             json.dumps(candle_response, sort_keys=True).encode()).hexdigest()
         report['candle_row'] = candle
@@ -321,6 +322,29 @@ def audit(db, market, end_ms=None, now_ms=None, max_pages=400, seconds=180,
                           candidate_buy_btc=str(buy), candidate_sell_btc=str(sell))
             report['candle_match'] = base == candle_base and quote == candle_quote
             delta = str(buy - sell)
+            # A freshly closed candle can be served from a different cache than
+            # fills-history. Use another documented endTime, selecting the SAME
+            # closed candle by open timestamp; never accept another interval or
+            # loosen volume equality. Preserve both responses for inspection.
+            report['volume_reconciliation'] = volume_reconciliation(base, quote, candle_base, candle_quote)
+            if not report['candle_match']:
+                report['initial_candle_row'] = candle
+                report['initial_volume_reconciliation'] = report['volume_reconciliation']
+                refreshed = get('history-candles', dict(query, endTime=str(end_ms + 1)))
+                matches = [r for r in refreshed['data'] if isinstance(r, list) and
+                           len(r) >= 7 and integer(r[0]) == start]
+                if len(matches) != 1:
+                    raise AuditError('closed_candle_missing_or_duplicated')
+                candle = matches[0]
+                candle_base, candle_quote = decimal(candle[5], True), decimal(candle[6], True)
+                report.update(candle_row=candle,
+                              candle_base_btc=str(candle_base), candle_quote_usdt=str(candle_quote),
+                              candle_rechecked=True,
+                              candle_response_at_ms=refreshed.get('requestTime'),
+                              candle_response_sha256=hashlib.sha256(
+                                  json.dumps(refreshed, sort_keys=True).encode()).hexdigest())
+                report['candle_match'] = base == candle_base and quote == candle_quote
+            report['volume_reconciliation'] = volume_reconciliation(base, quote, candle_base, candle_quote)
 
         # One consistent read transaction for both directions of the journal comparison.
         with db:
@@ -357,6 +381,20 @@ def audit(db, market, end_ms=None, now_ms=None, max_pages=400, seconds=180,
         report.update(status='incomplete', reason=failure_reason(exc))
     save()
     return report
+
+
+def volume_reconciliation(base, quote, candle_base, candle_quote):
+    """Describe a discrepancy, never turn a small discrepancy into verification."""
+    with localcontext() as context:
+        context.prec = 100
+        def component(actual, reference):
+            difference = actual - reference
+            return dict(trades=str(actual), candle=str(reference), difference=str(difference),
+                        difference_pct=str(difference / reference * 100) if reference else None,
+                        exact=actual == reference)
+        return dict(rule='exact_decimal_equality',
+                    base_btc=component(base, candle_base),
+                    quote_usdt=component(quote, candle_quote))
 
 
 def main():

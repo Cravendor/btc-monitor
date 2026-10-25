@@ -28,6 +28,14 @@ function renderCvd(cvd){
       status.textContent='Gedeeltelijke waargenomen delta · geen gevalideerde CVD';
     }
     card.append(heading,delta,status);
+    if(m?.recovery && !verified){
+      const recovery=document.createElement('p');
+      recovery.textContent='Herstelcontrole: '+m.recovery.reason+'. ';
+      const volumes=m.recovery.volume_reconciliation;
+      if(volumes)recovery.textContent+='Verschil trades − candle: '+volumes.base_btc.difference+' BTC / '+volumes.quote_usdt.difference+' USDT. ';
+      recovery.textContent+='Opnieuw ophalen via de bestaande NAS-run; geen gevalideerde delta zolang de controle niet slaagt.';
+      card.append(recovery);
+    }
     if(cvd?.interval_start && cvd?.interval_end){
       const window=document.createElement('p');
       window.textContent='Interval [start, einde): '+cvd.interval_start+' tot '+cvd.interval_end;
@@ -35,7 +43,7 @@ function renderCvd(cvd){
     }
     const info=document.createElement('p');
     info.textContent=m ? 'Trades in interval: '+(m.trade_count??'onbekend')+
-      ' · Onopgeloste overlappende gaten: '+(m.unresolved_overlapping_gaps??'onbekend')+
+      ' · Historische onopgeloste gapmarkers (geen actuele uitvalteller): '+(m.unresolved_overlapping_gaps??'onbekend')+
       ' · Laatste opgeslagen trade: '+(m.latest_journal_trade_at??'onbekend')+
       (m.journal_trade_status==='stale'?' · VEROUDERD':'') : 'Geen lokale CVD-waarneming beschikbaar.';
     card.append(info);

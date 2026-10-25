@@ -367,3 +367,43 @@ class BackfillTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+class CandleRefreshTests(unittest.TestCase):
+    # Reuse the real SQLite fixture without rerunning inherited test methods.
+    setUp=BackfillTests.setUp
+    row=BackfillTests.row
+    add_journal=BackfillTests.add_journal
+    fetcher=BackfillTests.fetcher
+    audit=BackfillTests.audit
+    def test_stale_candle_is_rechecked_same_interval_without_tolerance(self):
+        row=self.row()
+        self.add_journal(row)
+        canonical=[str(self.start),'100','100','100','100','.125','12.5']
+        stale=list(canonical);stale[5]='.124'
+        pages=iter([[row],[]]);candles=iter([stale,canonical]);queries=[]
+        def fetch(path,query,timeout):
+            if path.endswith('history-candles'):
+                queries.append(query)
+                return dict(code='00000',data=[next(candles)])
+            return dict(code='00000',data=next(pages))
+        result=backfill.audit(self.db,'spot',self.end,now_ms=self.end+120000,fetch=fetch,pause=lambda _:None)
+        self.assertEqual(result['status'],'provider_consistent')
+        self.assertTrue(result['candle_rechecked'])
+        self.assertEqual(result['initial_candle_row'],stale)
+        self.assertEqual(result['candle_row'],canonical)
+        self.assertEqual(queries[1]['endTime'],str(self.end+1))
+        self.assertTrue(result['volume_reconciliation']['base_btc']['exact'])
+        from scripts.cvd_coverage import read_verified
+        self.assertIn('spot',read_verified(self.root/'candidates.sqlite3',self.journal,self.end,self.end+120000))
+
+    def test_tiny_unexplained_difference_still_rejected_and_quantified(self):
+        candle=[str(self.start),'100','100','100','100','.125','12.50000001']
+        result=self.audit([[self.row()],[]],candle=candle)
+        self.assertEqual(result['reason'],'candle_volume_mismatch')
+        self.assertFalse(result['volume_reconciliation']['quote_usdt']['exact'])
+        self.assertEqual(result['volume_reconciliation']['quote_usdt']['difference'],'-1E-8')
+        from scripts.cvd_coverage import read_diagnostics
+        public=read_diagnostics(self.root/'candidates.sqlite3',self.end)['spot']
+        self.assertEqual(public['volume_reconciliation']['quote_usdt']['difference'],'-1E-8')
+        self.assertEqual(public['status'],'unverified_recovery_diagnostics')
+        self.assertNotIn(str(self.journal),json.dumps(public))

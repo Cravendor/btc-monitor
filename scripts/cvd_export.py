@@ -124,9 +124,12 @@ def collect_cvd(path=None, now=None, backfill_path=None):
         backfill_path = os.environ.get('BTC_CVD_BACKFILL_STORE')
     if backfill_path:
         if __package__:
-            from .cvd_coverage import read_verified
+            from .cvd_coverage import read_verified, read_diagnostics
         else:
-            from cvd_coverage import read_verified
+            from cvd_coverage import read_verified, read_diagnostics
+        diagnostics = read_diagnostics(backfill_path, end)
+        for market, diagnostic in diagnostics.items():
+            result['markets'].setdefault(market, unavailable(REASON, 'partial'))['recovery'] = diagnostic
         verified = read_verified(backfill_path, path, end, now_ms)
         for market, proof in verified.items():
             observed = result['markets'].get(market, {})

@@ -23,6 +23,7 @@ on:
       - scripts/cycle_context.py
       - scripts/task_execution.py
       - 'data/task-executions/**'
+      - scripts/analysis_quality.py
       - scripts/operational_status.py
       - 'web/**'
       - config/cycle_anchors.json
@@ -101,6 +102,8 @@ jobs:
           PY
           python -m scripts.multi_timeframe_dashboard data/latest.json _site/btc-timeframes.html data/collector-health.json
           python -m scripts.timeframe_history_dashboard data/history/timeframe_signals.jsonl _site/btc-signal-history.html data/collector-health.json
+      - name: Quality gate for source processing and dashboard assets
+        run: python -m scripts.analysis_quality data/latest.json _site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
