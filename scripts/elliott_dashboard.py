@@ -7,7 +7,7 @@ from scripts.market_scenarios import time_ms, iso
 from scripts.native_timeframe_candles import PERIOD_MS
 
 TIMEFRAMES = ('1w', '1d', '4h', '1h')
-MODEL = 'elliott_visual_price_candidates_v1'
+MODEL = 'elliott_visual_long_history_v2'
 
 
 def zones(rows, tf):
@@ -38,9 +38,10 @@ def zones(rows, tf):
     return sorted(result, key=lambda z: z['anchor'])
 
 
-def build(feed, as_of):
+def build(feed, as_of, history=None):
     out = dict(model_version=MODEL, status='unavailable', as_of=as_of,
                current_wave=None, nested_count='unproven', horizons=[])
+    m = None
     try:
         m = feed['measurements'][0]
         observed = m['finished_at']
@@ -50,19 +51,43 @@ def build(feed, as_of):
         if age < -60000:
             raise ValueError('future observation')
     except (KeyError, ValueError, IndexError, TypeError):
-        return out
-    fresh = age < 3600000 and time_ms(as_of) < time_ms(m['started_at'])+3600000
-    out.update(status='current' if fresh else 'historical', observed_at=observed,
-               valid_until=iso(time_ms(m['started_at'])+3600000))
+        if history is None:
+            return out
+        m = None
+    fresh = m is not None and age < 3600000 and time_ms(as_of) < time_ms(m['started_at'])+3600000
+    if history is not None:
+        out.update(status='current' if all(history.get(tf,{}).get('status')=='complete' for tf in TIMEFRAMES) else 'partial',
+                   observed_at=as_of, valid_until=iso(time_ms(as_of)//3600000*3600000+3600000),
+                   history_mode=True)
+    else:
+        out.update(status='current' if fresh else 'historical', observed_at=observed,
+                   valid_until=iso(time_ms(m['started_at'])+3600000))
+    reference = None
+    if history is not None and history.get('1h',{}).get('status')=='complete' and history['1h'].get('rows'):
+        reference=history['1h']['rows'][-1]
     for tf in TIMEFRAMES:
         h = dict(timeframe=tf, status='unavailable', candidates=[], zones=[])
         try:
-            rows, source_at = native_rows(m, tf, observed)
+            if history is not None:
+                source = history.get(tf,{})
+                h['coverage'] = {k:v for k,v in source.items() if k != 'rows'}
+                if source.get('status') not in ('complete','partial') or not source.get('rows'):
+                    raise ValueError('requested long history incomplete')
+                rows, source_at = source['rows'], source['source_at']
+                if source.get('status')=='partial':
+                    # Keep a checked contiguous historical prefix visible. Do
+                    # not bridge a gap or advertise a complete current count.
+                    gap=time_ms(source['first_missing_at'])
+                    rows=[r for r in rows if r['open_time_ms']<gap]
+                h['source_path'] = source['source_path']
+            else:
+                rows, source_at = native_rows(m, tf, observed)
             if len(rows) < 24:
                 raise ValueError('insufficient contiguous source history')
             h.update(status='available', rows=rows, source_at=source_at,
                      closed_at=iso(rows[-1]['open_time_ms']+PERIOD_MS[tf]),
-                     price=current_price(m, as_of) if fresh else None,
+                     price=current_price(m, as_of) if fresh else reference['close'] if reference else None,
+                     price_label='Snapshot' if fresh else ('1H-slot '+iso(reference['open_time_ms']+PERIOD_MS['1h'])[:16]+' UTC' if reference else None),
                      candidates=assess_candidates(rows, tf)['candidates'],
                      zones=zones(rows, tf))
         except (KeyError, ValueError, TypeError, OverflowError):
@@ -87,6 +112,10 @@ def price(v):
 def chart(h, candidate, suffix):
     rows = h['rows']
     points = candidate['points'] if candidate else []
+    if h['timeframe'] in ('4h','1h') and len(rows)>400:
+        # Only the drawing is zoomed. Candidate selection uses the full source.
+        left=min(rows[-400]['open_time_ms'],points[0]['open_time_ms'] if points else rows[-400]['open_time_ms'])
+        rows=[r for r in rows if r['open_time_ms']>=left]
     # Retain every candle, including intermediate wicks used by rule checks.
     start, end = rows[0]['open_time_ms'], rows[-1]['open_time_ms']+PERIOD_MS[h['timeframe']]
     lower = min(r['low'] for r in rows)
@@ -120,10 +149,18 @@ def chart(h, candidate, suffix):
             label='start' if i==0 else str(i)+'?'
             parts.append(f'<circle cx="{xx:.2f}" cy="{yy:.2f}" r="3" fill="{color}"/><text x="{xx:.2f}" y="{yy+(19 if p["kind"]=="low" else -12):.2f}" text-anchor="middle">{label}</text>')
     last = rows[-1]
+    if h.get('coverage') and h['timeframe'] in ('1w','1d'):
+        top=max(rows,key=lambda r:r['high'])
+        later=[r for r in rows if r['open_time_ms']>top['open_time_ms']]
+        low=min(later,key=lambda r:r['low']) if later else None
+        for r,value,label,dy in [(top,top['high'],'Top periode',-12)]+([(low,low['low'],'Low na top',35)] if low else []):
+            xx=x(r['open_time_ms']+PERIOD_MS[h['timeframe']]/2)
+            yy=y(value)
+            parts.append(f'<circle cx="{xx:.2f}" cy="{yy:.2f}" r="5" fill="#f3b65d"/><text x="{xx:.2f}" y="{yy+dy:.2f}" text-anchor="middle">{label}</text>')
     # Last closed candle marker remains distinct from an optional fresh ticker.
     parts.append(f'<circle cx="{x(last["open_time_ms"]+PERIOD_MS[h["timeframe"]]/2):.2f}" cy="{y(last["close"]):.2f}" r="4" fill="white"/>')
     if h['price'] is not None:
-        parts.append(f'<path d="M70 {y(h["price"]):.2f}H830" stroke="white" stroke-dasharray="4 5"/><text x="75" y="{y(h["price"])-6:.2f}">Snapshot {price(h["price"])} USDT</text>')
+        parts.append(f'<path d="M70 {y(h["price"]):.2f}H830" stroke="white" stroke-dasharray="4 5"/><text x="75" y="{y(h["price"])-6:.2f}">{escape(h.get("price_label") or "Snapshot")} · {price(h["price"])} USDT</text>')
     for t,anchor in ((start,'start'),((start+end)/2,'middle'),(end,'end')):
         parts.append(f'<text x="{x(t):.2f}" y="316" text-anchor="{anchor}">{iso(t)[:10]} {iso(t)[11:16]}</text>')
     parts.append('<text x="70" y="335">UTC · lineair · witte stip = laatste gesloten candle</text></svg>')
@@ -134,15 +171,33 @@ def render(bundle):
     parts=['<section class="panel" id="elliott-scenarios"><h2>Elliott: van week naar uur</h2><p>Begin bij de grote structuur en zoom in. Bull en bear zijn mogelijke prijspatronen. Een steunzone helpt een draaipunt duiden; zij bewijst geen golfnummer of toekomstige afwijzing.</p>']
     if bundle['status']=='unavailable':
         return ''.join(parts)+'<p>Bron niet valideerbaar. Geen telling ingevuld.</p></section>'
-    parts.append('<p class="ew-freshness" data-until="'+escape(bundle['valid_until'])+'">'+('Bron actueel bij opbouw' if bundle['status']=='current' else 'HISTORISCH — bron verouderd, geen actuele telling')+' · meting '+escape(bundle['observed_at'])+'.</p>')
+    freshness = ('Volledige historie gecontroleerd' if bundle.get('history_mode') and bundle['status']=='current' else
+                 'Historie wordt aangevuld; gedateerde delen zichtbaar, geen volledige actuele telling' if bundle.get('history_mode') else
+                 'Bron actueel bij opbouw' if bundle['status']=='current' else 'HISTORISCH — bron verouderd, geen actuele telling')
+    parts.append('<p class="ew-freshness" data-until="'+escape(bundle['valid_until'])+'">'+freshness+' · controle '+escape(bundle['observed_at'])+'.</p>')
+    if bundle.get('history_mode'):
+        parts.append('<p>Gewenste historie: <b>1 juli 2025 tot de laatste gesloten candle</b>. Voor UTC-weken begint de eerste week op 30 juni 2025. Week/dag tonen de volledige periode; 4H/1H tonen een detailvenster, terwijl de kandidaatselectie de volledige opgeslagen reeks leest. Een ontbrekende lange reeks wordt niet stilzwijgend vervangen door een korte snapshotreeks.</p>')
+        parts.append('<p>Een gestippelde 1H-slotlijn is een apart referentiepunt uit de uurreeks, geen gesloten week-/dag-/4H-candle of live tick. De witte stip blijft het eigen laatste gesloten slot van elke timeframe.</p>')
     parts.append('<p><b>Huidige golf en samenhang tussen graden: nog niet bewezen.</b> De lijnen tonen de twee recentste zes-pivotkandidaten, geselecteerd vóór de regeltoets. Een ongeldige kandidaat blijft zichtbaar. Interne 5–3–5–3–5-opbouw is niet vastgesteld; het laatste label is geen claim over waar we nu zitten.</p>')
     for h in bundle['horizons']:
         tf=h['timeframe']
         parts.append('<details class="ew-timeframe"'+(' open' if tf=='1w' else '')+'><summary>'+tf.upper()+' · '+('Structurele zones' if tf in ('1w','1d') else 'Lokale zones')+'</summary>')
         if h['status']!='available':
+            q=h.get('coverage',{})
+            if q:
+                parts.append('<p>Historiedekking: '+escape(str(q.get('candle_count',0)))+' / '+escape(str(q.get('required_candles','?')))+' gesloten candles. Ontbrekend: '+escape(str(q.get('missing_candles','onbekend')))+'. Eerste gat: '+escape(str(q.get('first_missing_at',q.get('reason','onbekend'))))+'.</p>')
             parts.append('<p>ONVOLDOENDE DATA voor deze timeframe; geen lagere timeframe als vervanging.</p></details>')
             continue
         parts.append('<p>'+str(len(h['rows']))+' gesloten candles · bron '+escape(h['source_at'])+' · laatste slot '+price(h['rows'][-1]['close'])+' USDT op '+escape(h['closed_at'])+'.</p>')
+        if h.get('coverage',{}).get('status')!='complete' and bundle.get('history_mode'):
+            q=h['coverage']
+            parts.append('<p><b>ONVOLLEDIGE HISTORIE:</b> '+str(q.get('candle_count',0))+' / '+str(q.get('required_candles','?'))+' candles. Eerste gat '+escape(str(q.get('first_missing_at')))+'. Alleen het aaneengesloten beginstuk is getekend; geen telling door het ontbrekende deel heen.</p>')
+        parts.append('<p>Bronreeks vanaf '+escape(iso(h['rows'][0]['open_time_ms']))+'. '+('Detailgrafiek: minimaal de laatste 400 candles en het volledige getekende kandidaatvenster.' if tf in ('4h','1h') and len(h['rows'])>400 else 'Volledige bronreeks afgebeeld.')+'</p>')
+        if bundle.get('history_mode') and tf in ('1w','1d'):
+            top=max(h['rows'],key=lambda r:r['high'])
+            later=[r for r in h['rows'] if r['open_time_ms']>top['open_time_ms']]
+            low=min(later,key=lambda r:r['low']) if later else None
+            parts.append('<p>Grote prijsstructuur: hoogste high binnen deze bronperiode '+price(top['high'])+' USDT ('+escape(iso(top['open_time_ms']))+'); '+('laagste low op een latere candle '+price(low['low'])+' USDT ('+escape(iso(low['open_time_ms']))+').' if low else 'nog geen latere candle voor een low.')+' Dit zijn referentiepunten voor een grotere bull-/bearanalyse, geen automatisch bewezen golfnummers of lifetime-ATH.</p>')
         for direction,label in (('up','Bull'),('down','Bear')):
             candidate=next((c for c in h['candidates'] if c['direction']==direction),None)
             parts.append('<h3>'+label+' · '+('ONGELDIGE standaardimpuls' if candidate and candidate['status']=='invalid' else 'voorlopige prijspatroonkandidaat' if candidate else 'geen zes-pivotkandidaat')+'</h3>')

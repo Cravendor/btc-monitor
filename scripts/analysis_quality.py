@@ -231,7 +231,8 @@ def stage(feed_path, destination, as_of=None):
     if 'id="analysis-quality"' not in (folder/'index.html').read_text():
         raise ValueError('Dashboard quality panel missing')
     from scripts.elliott_dashboard import build as build_elliott
-    visual = build_elliott(feed, as_of)
+    from scripts.elliott_history import read as read_elliott_history
+    visual = build_elliott(feed, as_of, read_elliott_history(Path(feed_path).resolve().parent.parent,as_of))
     page = (folder/'index.html').read_text()
     if 'id="elliott-scenarios"' not in page:
         raise ValueError('Elliott visual panel missing')
@@ -239,7 +240,8 @@ def stage(feed_path, destination, as_of=None):
     if page.count('class="ew-chart"') != charts:
         raise ValueError('Elliott source/chart count mismatch')
     result['elliott_visuals'] = dict(source_status=visual['status'], charts=charts,
-                                    current_wave='unproven', nested_count='unproven')
+                                    current_wave='unproven', nested_count='unproven',
+                                    coverage={h['timeframe']:h.get('coverage',{}) for h in visual['horizons']})
     result['dashboard_assets']='checked'
     (folder/'btc-quality.json').write_text(json.dumps(result,ensure_ascii=False,allow_nan=False,indent=2)+'\n')
     print(json.dumps(result,ensure_ascii=False,allow_nan=False))

@@ -34,3 +34,12 @@ Validation: 419 Python tests and 5 Node tests; homepage generation with all four
 degrees and eight charts; weekly SVG rendered and visually inspected. Full
 browser/mobile interaction was not verified (browser executable unavailable).
 CI, merge, Pages deployment and fresh-source behavior remain separate checks.
+
+
+## Longer history adapter — 25 October 2026
+
+The accompanying [long-history change](ELLIOTT_HISTORY.md) replaces snapshot-only
+chart inputs with independently checked archives from July 2025. The previous
+36-week/89-day visual limit is superseded by that adapter; the provisional
+candidate-count limitations above remain. Publication/activation are separate
+from the local implementation and source retrieval evidence.
