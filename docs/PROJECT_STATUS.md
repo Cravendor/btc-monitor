@@ -139,6 +139,32 @@ Validation: parsed two original JSON records and collector-health, inspected
 receipt paths in the complete tree and current publisher/protocol. Documentation
 only; no new tests, receipt generation, NAS execution or recovery claimed.
 
+### Watchdog execution and local receipts observed — 25 October 2026
+
+New local diagnosis at 19:21:48 UTC confirms pending spool now exists, with TWO
+watchdog JSON files, newest 20261025T192002Z.json. Watchdog log has process-present
+checks at 19:15:01 and 19:20:02 UTC (20:15/20:20 Amsterdam), consistent with the
+reviewed all-day five-minute schedule after correction. This closes the earlier
+no-recent-execution/local-file-creation checkpoint for these observed runs.
+File contents/outcomes were not supplied; do not claim schema validation or
+continuous uptime solely from filename/count and process log.
+
+Checkout has zero NAS receipts; complete remote tree at d85ba58 also has zero.
+Normal uploader has not published another NAS original after 19:02 at this read.
+Await the next successful existing half-hour upload (nominal 19:30 UTC /
+20:30 Amsterdam), then verify imported immutable watchdog receipt and Pages card.
+No extra upload run or schedule is needed merely because the spool is pending.
+
+Storage/startup still have zero local receipt files. Startup is intentionally
+unconnected pending its actual body; do not fabricate it. Next user action:
+supply current Schedule and Task Settings of the existing BTC CVD Storage/
+storage-check task, including full task name and script, before changing its
+body or interpreting its frequency. Next agent check: receipt import/publication
+after the normal uploader and storage installation status.
+Validation: actual local diagnosis/log timestamps, current remote tree and dated
+NAS original inventory. No code changes, receipt writes or new tests here.
+Private diagnostic output remains outside the public repository.
+
 ### Watchdog corrected settings reviewed; save/execution pending — 25 October 2026
 
 New screenshot shows the enabled BTC CVD Watchdog row and editor schedule:
