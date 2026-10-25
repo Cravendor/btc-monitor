@@ -22,6 +22,28 @@ This replaces the older accumulated preparation checkpoints in this file.
 | Forward evaluation | General technical/scenario tooling exists | Dedicated two-route/25-combination analysis and sufficient 7/30/90-day follow-up |
 | Visual QA | Prior desktop interaction, SVG checks and live quality checkpoint recorded | New full browser/mobile interaction QA remains open |
 
+### Confirmed pending-upload conflict — 25 October 2026, 19:05 Amsterdam
+
+The supplied latest upload result confirms failure at 18:05:28–18:05:32 UTC:
+exit 1 while rebasing pending local snapshot commit 4795253 onto fetched main
+b918711. Conflicts affect collector-health.json, timeframe_signals.jsonl,
+latest.json and timeframe-health.json. Runner reported that local observations
+were preserved; this invocation stopped before new collection/tests/receipt
+import. This closes the unknown failure cause for publication, not recorder state.
+No raw NAS log is included in this repository.
+
+Next: run a read-only diagnosis via the existing manually executed BTC Git
+Diagnose task (keep its schedule disabled). Under the publisher lock, capture
+full HEAD, clean/active-operation state, origin/main divergence and HEAD changed
+paths. These determine the exact immutable archive and whether the existing
+backup-first recover_pending_snapshot.py contract applies. Current evidence is
+insufficient to supply --expected-head or --archive; do not guess them or rerun
+a previous incident's repair. No collector restart, reset/clean/force-push,
+conflict overwrite or new task. After diagnosis, prepare a guarded recovery;
+after actual repair verify a normal NAS upload, quality diagnostics and receipts.
+Only aggregate technical findings are public. Validation: actual upload log read
+and existing recovery helper prerequisites reviewed; no repair or tests executed.
+
 ### NAS evidence audit — 25 October 2026
 
 Read original immutable records and the complete repository tree. Newest published
@@ -67,8 +89,8 @@ only; no new tests, receipt generation, NAS execution or recovery claimed.
 ## Next concrete sequence
 
 1. History-to-Pages acceptance observed at 17:53 UTC; see evidence below.
-2. Inspect fresh original NAS quality/recovery fields and original mismatch
-   diagnostics; verify watchdog/storage receipt publication without duplicating tasks.
+2. Diagnose pending local commit 4795253 via the existing manual Git task;
+   prepare guarded recovery, then verify a fresh NAS original and receipts.
 3. Perform mobile/browser QA for Elliott and operational status.
 4. Separately review draft macroanchor reference/phase; improve independent
    evidence, count substantiation, forward evaluation and upload race resilience.

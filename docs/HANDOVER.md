@@ -13,6 +13,28 @@ below. Original entry point was created in commit 0ab7fde on 24 October at
 21:31:28 UTC (23:31 Amsterdam). Reconciled against repository history through
 48191e8 and merged PRs #65–#76. This is a curated evidence record, not a transcript.
 
+### Confirmed pending-upload conflict — 25 October 2026, 19:05 Amsterdam
+
+The supplied latest upload result confirms failure at 18:05:28–18:05:32 UTC:
+exit 1 while rebasing pending local snapshot commit 4795253 onto fetched main
+b918711. Conflicts affect collector-health.json, timeframe_signals.jsonl,
+latest.json and timeframe-health.json. Runner reported that local observations
+were preserved; this invocation stopped before new collection/tests/receipt
+import. This closes the unknown failure cause for publication, not recorder state.
+No raw NAS log is included in this repository.
+
+Next: run a read-only diagnosis via the existing manually executed BTC Git
+Diagnose task (keep its schedule disabled). Under the publisher lock, capture
+full HEAD, clean/active-operation state, origin/main divergence and HEAD changed
+paths. These determine the exact immutable archive and whether the existing
+backup-first recover_pending_snapshot.py contract applies. Current evidence is
+insufficient to supply --expected-head or --archive; do not guess them or rerun
+a previous incident's repair. No collector restart, reset/clean/force-push,
+conflict overwrite or new task. After diagnosis, prepare a guarded recovery;
+after actual repair verify a normal NAS upload, quality diagnostics and receipts.
+Only aggregate technical findings are public. Validation: actual upload log read
+and existing recovery helper prerequisites reviewed; no repair or tests executed.
+
 ### NAS evidence audit — 25 October 2026
 
 Read original immutable records and the complete repository tree. Newest published
