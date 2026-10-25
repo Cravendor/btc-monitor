@@ -115,6 +115,14 @@ def import_inbox(root='.', now=None):
                     path.name != ts.strftime('%Y%m%dT%H%M%SZ.json')):
                 raise ValueError('Inbox path and report identity disagree')
             target = reports / ts.strftime('%Y/%m/%d') / (raw['monitor'] + '-' + ts.strftime('%H%M%S') + '.json')
+            # Gate NEW reports; immutable previously accepted text remains intact.
+            if not target.exists():
+                if __package__:
+                    from .analysis_quality import report_text_findings
+                else:
+                    from analysis_quality import report_text_findings
+                if report_text_findings(raw['report_text']):
+                    raise ValueError('Report quality rejected: unsupported neutral macro verdict')
             record = dict(raw, bias=extract_bias(raw['report_text']), content_sha256=checksum(raw['report_text']))
             if target.exists():
                 if target.is_symlink() or json.loads(target.read_text(encoding='utf-8')) != record:

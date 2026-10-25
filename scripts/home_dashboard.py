@@ -9,6 +9,7 @@ from scripts.cycle_context import render as render_cycle_review
 from scripts import market_gauges, swing_dashboard, report_context, shb_dashboard
 from scripts.swing_scenarios import build_swing_scenarios
 from scripts.price_roadmap import build_roadmap
+from scripts.analysis_quality import render as render_quality
 from scripts.roadmap_dashboard import render as render_roadmap
 
 
@@ -129,7 +130,7 @@ table{width:100%;border-collapse:collapse}th,td{padding:8px;text-align:left;bord
 ''' + market_gauges.CSS + swing_dashboard.CSS + shb_dashboard.CSS + '''
 </style></head><body><main>
 <header class="hero"><div><div class="eyebrow">BTC Monitor / overzicht</div><h1>Eén plek voor je marktbeeld.</h1><p>Metingen, marktrichting en scenario’s met controleerbare prijsniveaus.</p><p><a href="btc-status.html">Taakstatus en laatste uitvoeringen →</a></p></div>
-<div class="quote" data-expires="''' + escape(quote_expiry) + '''"><small>Bitget futures · laatste momentopname</small><strong>''' + escape(price_line) + '''</strong></div></header>''' + market_gauges.render_all(feed, as_of, sentiment) + '''
+<div class="quote" data-expires="''' + escape(quote_expiry) + '''"><small>Bitget futures · laatste momentopname</small><strong>''' + escape(price_line) + '''</strong></div></header>''' + render_quality(feed,as_of) + market_gauges.render_all(feed, as_of, sentiment) + '''
 ''' + swing_dashboard.render(swing_bundle) + render_cycle_history(feed) + render_cycle_review(feed) + report_context.render(context) + '''
 <nav class="links" aria-label="BTC-pagina’s">
 <a class="link-card" href="btc-dashboard.html"><span>01 / METINGEN →</span><h2>Dashboard</h2><p>Prijs, funding, open interest, orderboek en gecontroleerde tradedelta.</p></a>
@@ -147,6 +148,10 @@ table{width:100%;border-collapse:collapse}th,td{padding:8px;text-align:left;bord
 <p><a href="bias.html">Monitorrapporten en vijfpuntsbias →</a> — oorspronkelijke rapportteksten en expliciete beoordelingen. Dit archief is apart van de technische signaaltijdlijn; niet-gerapporteerde scores worden niet ingevuld.</p></footer>
 </main><script>
 function refreshFreshness(){
+  const quality=document.querySelector('#analysis-quality');
+  if(quality && Date.now()>=Date.parse(quality.dataset.validUntil)){
+    document.querySelector('#quality-scope').textContent='Kwaliteitscontrole verouderd of nieuw 4H-venster. Vernieuw voor de actuele controle.';
+  }
   const section=document.querySelector('#scenarios');
   const expiry=Date.parse(section.dataset.validUntil);
   if(!Number.isFinite(expiry))return;

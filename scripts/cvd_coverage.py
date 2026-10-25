@@ -147,3 +147,80 @@ def read_verified(store, journal, end_ms, now_ms):
     finally:
         if db is not None:
             db.close()
+
+
+def read_diagnostics(store, end_ms):
+    """Public aggregates for the requested interval, no raw trades/logs/paths.
+
+    These are unverified recovery diagnostics, NOT alternative coverage proof.
+    Read the latest attempt, including failures, rather than an older green run.
+    """
+    if __package__:
+        from .cvd_backfill import volume_reconciliation
+    else:
+        from cvd_backfill import volume_reconciliation
+    result = {}
+    db = None
+    try:
+        path = Path(store).resolve()
+        if not path.is_file():
+            return result
+        db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+        db.execute('PRAGMA query_only=ON')
+        for market in MARKETS:
+            row = db.execute('SELECT rowid,report_json FROM cvd_backfill_runs WHERE market=? '
+                             'AND start_ms=? AND end_ms=? ORDER BY rowid DESC LIMIT 1',
+                             (market, end_ms-WINDOW, end_ms)).fetchone()
+            if row is None:
+                continue
+            report = json.loads(row[1])
+            if not isinstance(report, dict):
+                continue
+            if (report.get('exchange'), report.get('symbol'), report.get('market'),
+                report.get('start_ms'), report.get('end_ms')) != (
+                    'bitget', 'BTCUSDT', market, end_ms-WINDOW, end_ms):
+                continue
+            reason = report.get('reason', '')
+            # Stable codes only, never arbitrary remote/OS error strings.
+            if not isinstance(reason, str) or len(reason)>80 or not all(
+                    c in 'abcdefghijklmnopqrstuvwxyz0123456789_' for c in reason):
+                reason = 'invalid_diagnostic_reason'
+            item = dict(status='unverified_recovery_diagnostics', reason=reason,
+                        interval_start_ms=end_ms-WINDOW, interval_end_ms=end_ms,
+                        pagination_exhausted=report.get('pagination_exhausted') is True,
+                        candle_rechecked=report.get('candle_rechecked') is True)
+            for key in ('pages', 'recovered_trades', 'journal_missing', 'journal_extra',
+                        'journal_conflicts'):
+                value = report.get(key)
+                if type(value) is int and value >= 0:
+                    item[key] = value
+            if all(report.get(k) is not None for k in (
+                    'base_btc','quote_usdt','candle_base_btc','candle_quote_usdt')):
+                item['volume_reconciliation'] = volume_reconciliation(*[
+                    decimal(report[k], True) for k in
+                    ('base_btc','quote_usdt','candle_base_btc','candle_quote_usdt')])
+            # Retain prior aggregate failures for this SAME interval so the next
+            # successful NAS run can explain the original rejection automatically.
+            prior = []
+            for (payload,) in db.execute('SELECT report_json FROM cvd_backfill_runs '
+                    'WHERE market=? AND start_ms=? AND end_ms=? AND rowid<? '
+                    'ORDER BY rowid DESC LIMIT 3', (market,end_ms-WINDOW,end_ms,row[0])):
+                try:
+                    old = json.loads(payload)
+                    if not isinstance(old,dict) or old.get('reason') != 'candle_volume_mismatch':
+                        continue
+                    values = [decimal(old[k], True) for k in
+                              ('base_btc','quote_usdt','candle_base_btc','candle_quote_usdt')]
+                    prior.append(dict(reason='candle_volume_mismatch',
+                                      volume_reconciliation=volume_reconciliation(*values)))
+                except (KeyError,ValueError,TypeError,ArithmeticError):
+                    continue
+            if prior:
+                item['prior_volume_failures'] = prior
+            result[market] = item
+    except (OSError, sqlite3.Error, ValueError, TypeError, ArithmeticError):
+        return {}
+    finally:
+        if db is not None:
+            db.close()
+    return result

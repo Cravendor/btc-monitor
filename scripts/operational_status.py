@@ -95,6 +95,34 @@ def build(feed, health, as_of, execution_root="data/task-executions"):
     except (ValueError, TypeError, KeyError, OverflowError):
         rows.append(item('snapshot-health', 'Opgeslagen marktmetingen', 'unknown', 'Geen geldig actualiteitsbewijs',
                          'De actualiteitscontrole ontbreekt of is ongeldig.'))
+    from scripts.analysis_quality import assess as assess_quality
+    latest = measurements[0] if measurements else {}
+    quality = assess_quality(latest, as_of)
+    quality_state = 'unknown' if not latest else ('good' if quality['status']=='ready_for_scoped_report' else 'attention')
+    rows.append(item('analysis-quality', 'Datakwaliteit en verwerking', quality_state,
+                     'Gecontroleerd voor beperkte scope' if quality_state=='good' else
+                     ('Onderdelen afgekeurd' if latest else 'Geen kwaliteitsbewijs'),
+                     'Prijsstructuur: '+quality['price_structure']+'; Bitget-intervaldelta: '+
+                     quality['bitget_interval_delta']+'. '+
+                     ' '.join(i['code']+': '+i['action'] for i in quality['issues']),
+                     latest.get('finished_at') if isinstance(latest,dict) else None,
+                     quality['valid_until'] if latest else None))
+    report_state, report_label = 'unknown', 'Nog geen rapportcontrole'
+    findings = (health.get('analysis_quality') or {}).get('report_findings')
+    if isinstance(findings,list):
+        try:
+            checked, recent = fresh(health['checked_at'],now,5400)
+            report_state = 'good' if recent and not findings else 'attention'
+            report_label = ('Geen gevonden tekstconflicten' if report_state=='good' else
+                            'Rapportcontrole vraagt opvolging')
+        except (ValueError,TypeError,KeyError,OverflowError):
+            pass
+    rows.append(item('report-quality','Rapportconsistentie',report_state,report_label,
+                     'Controle op herkenbare tegenstrijdigheden in oorspronkelijke rapporten; '
+                     'geen volledige automatische factcheck. '+
+                     (' '.join(x.get('code','') for x in findings if isinstance(x,dict)) if isinstance(findings,list) else ''),
+                     health.get('checked_at') if findings is not None else None,
+                     iso(checked+5400000) if report_state!='unknown' else None))
     from scripts.task_execution import read_items
     rows.extend(read_items(execution_root, as_of))
     return dict(schema_version=1, generated_at=as_of, items=rows, workflows=WORKFLOWS,

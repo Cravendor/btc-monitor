@@ -94,3 +94,15 @@ task. New receipts expose only task kind, actual times and completed/error. They
 may be written after an actual no-alert check, without a user notification. No
 private identifiers, log details or retrospective runs. Missing proof stays
 unknown; runtime health and analysis quality remain separate. See TASK_EXECUTION.md.
+
+
+## Mandatory report and dashboard quality gates — 25 October 2026
+
+Latest user instruction requires a quality/recovery step in each existing
+scheduled financial report/alert, plus per-update and existing periodic dashboard
+checks. Monthly review alone is insufficient. Safe fixes may be prepared/tested
+in separate PRs; no automatic merge, paid services, NAS restarts/journal edits or
+new schedules. Reject unsupported claims while retaining explicitly usable
+components; unavailable macro evidence is not a neutral verdict. Preserve original
+reports and measurements. The live interval recovery and its remaining uncertainty
+are recorded in CVD_RECONCILIATION.md; exact matching remains the coverage rule.

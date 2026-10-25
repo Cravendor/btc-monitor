@@ -121,6 +121,11 @@ def main():
         from cycle_context import attach as attach_cycle_context
     attach_cycle_context(record)
     record['scenario_snapshot'] = freeze(record)
+    try:
+        from scripts.analysis_quality import assess as assess_quality
+    except ImportError:
+        from analysis_quality import assess as assess_quality
+    record['analysis_quality'] = assess_quality(record, record['finished_at'])
     run = os.environ.get('GITHUB_RUN_ID', 'local')
     attempt = os.environ.get('GITHUB_RUN_ATTEMPT', '1')
     destination = Path('data') / started.strftime('%Y/%m/%d')
