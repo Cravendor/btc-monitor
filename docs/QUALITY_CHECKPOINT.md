@@ -17,3 +17,7 @@ preparation is not proof of activation or predictive accuracy.
 Next: merge the tested change, verify a new original snapshot with quality and
 recovery diagnostics, verify published btc-quality.json and status/home panels,
 and inspect the next scheduled report's pre-publication quality result.
+
+Implementation PR: https://github.com/Cravendor/btc-monitor/pull/73 .
+At creation, GitHub validation was in progress; recheck its result and merge
+state before claiming publication or activation.
