@@ -337,3 +337,7 @@ and execution tests with no database changes; see TASK_EXECUTION.md. Script/repo
 failures must not become success via the last date command. Full existing task
 name/schedule still unknown; preserve them at installation. Storage installation,
 first public receipt and live status are unverified. Startup script remains needed.
+
+Prepared in [PR #72](https://github.com/Cravendor/btc-monitor/pull/72); not installed.
+401 Python tests, five Node status tests, shell syntax and diff checks pass locally.
+Recheck final CI, merge, original NAS receipt and live page separately.
