@@ -52,3 +52,9 @@ Run checks appropriate to the change. For executable changes the existing CI
 runs `python -m unittest discover -s tests -p 'test_*.py'` on Python 3.9.14 and
 3.11 plus read-only dashboard generation. Documentation-only edits need link,
 consistency and diff checks; do not add tests mirroring prose.
+
+## Completion communication
+
+End every user-facing task completion with **Volgende stap:** and a concrete
+next action, naming whether the agent or user performs it. State any evidence
+needed or blocker plainly. This is a standing user preference.

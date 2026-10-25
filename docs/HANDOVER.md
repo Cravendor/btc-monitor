@@ -13,6 +13,32 @@ below. Original entry point was created in commit 0ab7fde on 24 October at
 21:31:28 UTC (23:31 Amsterdam). Reconciled against repository history through
 48191e8 and merged PRs #65–#76. This is a curated evidence record, not a transcript.
 
+### Pages confirmed; NAS receipt diagnosis required — 25 October 2026
+
+Pages run 40224141712 at NAS head 748ba48 completed successfully; the prior
+in-progress deployment checkpoint is closed. Latest published NAS original
+remains 20261025T190211916703Z-local-1.json at this read.
+Complete current repository tree still contains NO NAS watchdog/storage/startup
+receipts. Snapshot/CVD publication works; receipt creation/import remains unproven.
+Do not mark these tasks stopped or infer a faulty script from absent evidence.
+
+Reviewed existing watchdog/storage wrappers, receipt writer and importer:
+expected private spool is /volume1/btc-monitor/task-executions-pending/nas/TASK;
+publisher imports validated six-field receipts and acknowledges after push.
+No demonstrated code defect from public evidence. Need read-only local inspection
+of spool and checkout receipt presence plus latest watchdog log before changing
+a DSM task, permissions or code. Use the existing manual BTC Git Diagnose task;
+keep its schedule disabled and preserve all operational tasks/runtime.
+No watchdog execution/restart or fabricated receipt is part of this diagnosis.
+Public summaries only; do not commit private logs or raw diagnostic output.
+
+Next user action: run the prepared read-only receipt diagnosis in that existing
+manual task and provide receipt-diagnose.txt. Next agent action: distinguish
+not-created, write/permission/validation failure, import failure or task wiring
+from actual evidence, then prepare the smallest justified correction.
+Validation: workflow results, complete receipt inventory and current wrapper/
+writer/importer source inspection. Documentation-only changes; no new tests.
+
 ### Fresh NAS publication restored — 25 October 2026
 
 Remote original NAS records now establish successful ordinary publication:

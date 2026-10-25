@@ -1,5 +1,11 @@
 # Accepted project decisions
 
+## Completion communication — 25 October 2026
+
+Every task completion ends with **Volgende stap:**, the concrete next action
+and who performs it. Record unresolved evidence plainly; do not imply work
+continues in the background after the turn.
+
 ## Immediate handover maintenance — 25 October 2026
 
 After every executed task, update HANDOVER.md and PROJECT_STATUS.md before
