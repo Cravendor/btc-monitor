@@ -110,3 +110,7 @@ success and refusal/abort/rejected-push paths. No actual NAS repair or new uploa
 is established by these tests. Next: review/helper execution, inspect repair log
 and a fresh ordinary NAS upload, then resume watchdog installation. No duplicate
 DSM task, force-push or collector/database restart.
+
+Recovery implementation is open in [PR #71](https://github.com/Cravendor/btc-monitor/pull/71).
+397 Python and five Node tests pass locally. Recheck current CI, merge and actual
+NAS repair outcome; none is implied by this preparation checkpoint.
