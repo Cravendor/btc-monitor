@@ -94,3 +94,6 @@ Not installed or observed on NAS yet. Storage/startup scripts still unknown.
 Validation: 392 Python tests, five Node status tests, shell syntax for both NAS
 scripts, read-only status generation and diff checks pass locally. CI, merge,
 DSM installation, first receipt and publication remain separate checkpoints.
+
+Implementation PR [#70](https://github.com/Cravendor/btc-monitor/pull/70) is open.
+Recheck its CI, merge and actual NAS installation before describing it as active.
