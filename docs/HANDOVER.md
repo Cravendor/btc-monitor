@@ -13,6 +13,31 @@ below. Original entry point was created in commit 0ab7fde on 24 October at
 21:31:28 UTC (23:31 Amsterdam). Reconciled against repository history through
 48191e8 and merged PRs #65–#76. This is a curated evidence record, not a transcript.
 
+### Recovery of 4795253 confirmed — 25 October 2026
+
+Actual supplied recovery result confirms verified external recovery-4795253.bundle
+and successful push. Remote merge 7f4e17d8219a5d1f51fa3cf3d3ac2ab7d645d9ce
+has parents 479525341c9d064f0930b6a533b339e00a001336 and 58c71a554debcfa1b1efbcbfe4dc622432938b0c.
+The original data/2026/10/25/20261025T090120972251Z-local-1.json blob is identical
+before/after recovery (767b3a6aeeda00ce3c22cccfeeaef111bb82d141).
+Parsed local/upstream/merged timeframe histories have 110/112/113 rows;
+every original row from BOTH inputs survives with identical content.
+Pages run 40223527403 at recovery head completed successfully.
+No raw private log was published.
+
+This supersedes earlier “recovery ready/not executed” status for this incident.
+It proves preservation/publication of the pending historical observation, not
+a new NAS collection, current CVD coverage or recorder availability.
+Next: manually execute the existing BTC NAS Collect Publish task once and inspect
+its complete fresh result. Then verify new immutable NAS original, #73 quality/
+recovery diagnostics, watchdog/storage receipts and associated Pages run.
+Keep BTC Git Diagnose disabled for scheduling and do not rerun incident recovery.
+Permanent NAS/GitHub concurrent-writer resilience remains open.
+
+Validation: actual recovery result, remote merge parentage, original blob equality,
+full original history-row union and successful Pages result. Documentation-only
+checkpoint; no new runtime tests, DSM execution or new receipts claimed.
+
 ### Guarded recovery ready for local 4795253 — 25 October 2026
 
 Read-only diagnosis confirms clean main, exactly one local commit and 36 upstream

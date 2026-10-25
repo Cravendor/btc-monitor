@@ -22,6 +22,31 @@ This replaces the older accumulated preparation checkpoints in this file.
 | Forward evaluation | General technical/scenario tooling exists | Dedicated two-route/25-combination analysis and sufficient 7/30/90-day follow-up |
 | Visual QA | Prior desktop interaction, SVG checks and live quality checkpoint recorded | New full browser/mobile interaction QA remains open |
 
+### Recovery of 4795253 confirmed — 25 October 2026
+
+Actual supplied recovery result confirms verified external recovery-4795253.bundle
+and successful push. Remote merge 7f4e17d8219a5d1f51fa3cf3d3ac2ab7d645d9ce
+has parents 479525341c9d064f0930b6a533b339e00a001336 and 58c71a554debcfa1b1efbcbfe4dc622432938b0c.
+The original data/2026/10/25/20261025T090120972251Z-local-1.json blob is identical
+before/after recovery (767b3a6aeeda00ce3c22cccfeeaef111bb82d141).
+Parsed local/upstream/merged timeframe histories have 110/112/113 rows;
+every original row from BOTH inputs survives with identical content.
+Pages run 40223527403 at recovery head completed successfully.
+No raw private log was published.
+
+This supersedes earlier “recovery ready/not executed” status for this incident.
+It proves preservation/publication of the pending historical observation, not
+a new NAS collection, current CVD coverage or recorder availability.
+Next: manually execute the existing BTC NAS Collect Publish task once and inspect
+its complete fresh result. Then verify new immutable NAS original, #73 quality/
+recovery diagnostics, watchdog/storage receipts and associated Pages run.
+Keep BTC Git Diagnose disabled for scheduling and do not rerun incident recovery.
+Permanent NAS/GitHub concurrent-writer resilience remains open.
+
+Validation: actual recovery result, remote merge parentage, original blob equality,
+full original history-row union and successful Pages result. Documentation-only
+checkpoint; no new runtime tests, DSM execution or new receipts claimed.
+
 ### Guarded recovery ready for local 4795253 — 25 October 2026
 
 Read-only diagnosis confirms clean main, exactly one local commit and 36 upstream
@@ -117,8 +142,8 @@ only; no new tests, receipt generation, NAS execution or recovery claimed.
 ## Next concrete sequence
 
 1. History-to-Pages acceptance observed at 17:53 UTC; see evidence below.
-2. Diagnose pending local commit 4795253 via the existing manual Git task;
-   prepare guarded recovery, then verify a fresh NAS original and receipts.
+2. Recovery of 4795253 is verified; run the existing normal NAS publisher once,
+   then verify a fresh original, current quality/CVD diagnostics and receipts.
 3. Perform mobile/browser QA for Elliott and operational status.
 4. Separately review draft macroanchor reference/phase; improve independent
    evidence, count substantiation, forward evaluation and upload race resilience.
