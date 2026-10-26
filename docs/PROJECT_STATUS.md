@@ -1,5 +1,48 @@
 # BTC Monitor — current scope and open work
 
+### PR 82 merged; Pages quality-gate regression fixed in review — 26 October 2026
+
+This is the current resume checkpoint and supersedes the earlier PR 82
+awaiting-merge instruction below. PR 82 merged at
+808c5a678812d43b43ea8304f38812bc81df0df2, 12:14:06 UTC.
+Its Pages run 40320966541 failed; subsequent run 40358938316 at main
+073ec45619406c9d46d640a01fcbeb9ffd808084 reproduced the same exception in
+scripts.analysis_quality.stage: Elliott source/chart count mismatch. Staging
+succeeded, upload/deploy were skipped. Do not claim the zoom layer is live.
+
+Root cause: the asset gate still assumed exactly two historical candidate
+charts per available timeframe. PR 82 adds source-derived zoom and optional
+parent-window charts. Release-validation CI rendered HTML but omitted the Pages
+quality stage, so its green checks missed this integration regression.
+The proposed fix derives expected SVGs from the same original Elliott sources
+and compares count AND content/order for all charts; missing, duplicate and
+replaced charts remain hard failures. It does not bypass source/data gates or
+loosen market tolerances. Release-validation CI now executes analysis_quality
+before artifact upload, matching the Pages gate.
+
+Local validation: all 458 Python tests, six Node tests and diff whitespace
+passed. New regression renders the actual home page with usable native candles,
+accepts extra zoom charts, and rejects removed, duplicated and same-count
+replaced SVGs. Full offline Pages staging plus quality gate passed against
+original main archive: 20 expected charts, data quality still explicitly
+DEGRADED. No external-source fetch, original-data edits or NAS changes.
+Python 3.9.14/3.11 CI and public deployment acceptance are pending the fix PR.
+
+Repair PR #83: https://github.com/Cravendor/btc-monitor/pull/83, branch
+fix/elliott-zoom-pages-gate-20261026. Executable commit
+23820b06dc056308ac1b234a9cfb28b7f88af01a passed Python 3.9.14 check
+121719512672 and Python 3.11 check 121719512273, including the newly added
+Pages quality gate and release preview. PR is open and mergeable; not deployed.
+This supersedes the pending-CI line above. User can review/merge immediately;
+public visual acceptance must wait for successful post-merge Pages execution.
+
+Next: user reviews/merges the repair after CI; agent verifies exact-merge Pages
+success and public zoom controls after publication. Source-conflict diagnosis
+and true linked wave-degree work can begin independently now; neither a
+certified current Elliott count nor calibrated probabilities are established.
+No extra NAS task/run requested.
+
+
 ### Linked price windows and Elliott zoom controls prepared — 26 October 2026
 
 Prepared PR #82 (https://github.com/Cravendor/btc-monitor/pull/82),

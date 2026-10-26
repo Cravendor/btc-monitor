@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+import re
+from unittest.mock import patch
 from scripts.analysis_quality import assess,review,stage,METHOD,WINDOW,report_findings
 
 END=1792915200000
@@ -24,6 +26,37 @@ def record():
 
 
 class QualityTests(unittest.TestCase):
+    def test_release_gate_accepts_zoom_and_checks_each_chart_against_sources(self):
+        from scripts.home_dashboard import build as build_home
+        from scripts.elliott_dashboard import build as build_visual
+        from tests.test_price_roadmap import fixture
+        from tests.test_elliott_dashboard import wave_rows
+        feed, now = fixture()
+        for metric in feed['measurements'][0]['metrics']['multi_timeframe']['data'].values():
+            metric['data']['candles'] = wave_rows(metric['data']['candles'])
+        with tempfile.TemporaryDirectory() as root, patch('scripts.elliott_history.read', return_value=None):
+            folder = Path(root)
+            source = folder/'data/latest.json'
+            source.parent.mkdir()
+            source.write_text(json.dumps(feed))
+            for name in ('btc-dashboard.html','btc-status.html','btc-timeframes.html',
+                         'btc-signal-history.html','status.mjs','status.css'):
+                (folder/name).write_text('fixture')
+            build_home(source, folder/'index.html', now)
+            page = (folder/'index.html').read_text()
+            svg = re.findall(r'<svg\b[^>]*\bclass="ew-chart"[^>]*>.*?</svg>', page, re.S)
+            available = sum(h['status']=='available' for h in build_visual(feed,now)['horizons'])
+            self.assertGreater(len(svg), 2*available)
+            self.assertEqual(stage(source,folder,now)['elliott_visuals']['charts'],len(svg))
+            for broken in (page.replace(svg[0],'',1), page.replace(svg[0],svg[0]*2,1)):
+                (folder/'index.html').write_text(broken)
+                with self.assertRaisesRegex(ValueError,'source/chart count mismatch'):
+                    stage(source,folder,now)
+            # Same count, wrong source window / geometry must still fail.
+            (folder/'index.html').write_text(page.replace(svg[0],svg[-1],1))
+            with self.assertRaisesRegex(ValueError,'source/chart content mismatch'):
+                stage(source,folder,now)
+
     def test_upload_success_does_not_hide_unverified_or_wrong_interval_cvd(self):
         r=record();self.assertEqual(assess(r,NOW)['status'],'ready_for_scoped_report')
         for change in ({'coverage_verified':False},{'interval_end_ms':END-WINDOW},
