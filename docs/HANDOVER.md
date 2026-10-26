@@ -1,5 +1,48 @@
 # BTC monitor — agent handover
 
+### Ordinary NAS publishing and Pages restored — 26 October 2026
+
+Latest supplied COMPLETE run is a different invocation: 07:00:02–07:06:24 UTC
+(08:00:02–08:06:24 Amsterdam), not the earlier partial 06:24 run.
+Successful rebase through 539774d, 439 tests passed on NAS Python 3.9.14 in
+66.586 seconds, original snapshot committed/pushed at
+ec1c062293c007f9e3de55c938fb09e72b3d2f9a and final EINDSTATUS=0.
+Read actual remote original data/2026/10/26/20261026T070337588635Z-local-1.json:
+collection_source=nas, status=ok, analysis_quality=ready_for_scoped_report,
+both interval deltas verified, issues empty. Macro verdict still requires
+separate evidence. Exact BTC and quote volumes reconcile for closed interval
+26 October 00:00–04:00 UTC (01:00–05:00 Amsterdam): provider-side spot
+-60.125345 BTC and futures -377.2812 BTC. These are separate public-history
+buy/sell deltas, not independently verified taker/market-wide flow.
+
+Original retains recovery diagnostics: 103 spot / 3306 futures journal-missing
+trades in this interval, reconciled from provider history. Journal recent-trade
+timestamps are around 07:03:42 UTC in this snapshot; do not infer continuous
+uptime. Historical open-gap markers 49/84 are not new per-window failure totals.
+Read actual immutable watchdog receipt 20261026T070502Z.json: six allowed
+fields, source nas/task watchdog, started 07:05:01 UTC, finished
+07:05:02.131078+00:00, outcome completed. Six new watchdog receipts were
+included in the successful publisher commit.
+
+Pages run 40283752951 at ec1c062 completed successfully. No new live browser QA.
+Dated collector health at 07:06:19 reports current but 24h snapshot coverage
+23/48 intervals = 47.9%, with 25 missing intervals; restoration does not erase
+the earlier publication gap. Existing report finding missing_macro_presented_as_neutral
+for reports/2026/10/25/daily-070200.json remains separate open quality work;
+retain the original report and do not substitute neutral for unknown macro state.
+
+This closes fresh ordinary publication acceptance after the 0146894 recovery
+and supersedes the awaiting-final-result checkpoint on
+docs/nas-post-recovery-pending-20261026 (partial run 06:24; 439 tests in 68.151s).
+That interim branch need not be merged separately; its evidence is incorporated.
+Next agent action: prepare/test a separate PR for the recurring NAS/GitHub writer
+race, preserving original snapshots, history and receipts. No further manual
+NAS run or recovery is needed for this completed acceptance. Keep schedules,
+recorder/runtime and storage configuration unchanged.
+Validation: complete private user result, actual original JSON and watchdog JSON,
+successful commit-specific Pages result; no new tests executed by agent.
+
+
 ### Pending snapshot recovery verified remotely — 26 October 2026
 
 Actual supplied recovery result confirms verified external bundle
