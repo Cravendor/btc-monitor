@@ -1,5 +1,56 @@
 # BTC Monitor — current scope and open work
 
+### Normal NAS publication and real writer-race acceptance passed — 26 October 2026
+
+Current resume checkpoint; supersedes pending one-off/normal-upload acceptance
+below. User supplied a complete normal 20:30:01–20:36:57 UTC (21:30–21:36 CET)
+run: Python 3.9.14, all 462 tests passed, normal collection, immutable archive,
+verified external publication bundle, uploaded message and EINDSTATUS 0.
+Warnings near the test output are negative-path test fixtures, not current
+collector-failure proof. Private raw log/backup identifiers remain unpublished.
+
+Actually read original public NAS record:
+data/2026/10/26/20261026T203503427003Z-local-1.json,
+finished 20:35:08.827175 UTC / 21:35:08 CET, schema 2, Bitget BTCUSDT
+USDT-FUTURES, collection_source=nas, status=ok. Current feed selects that record.
+For closed 16:00–20:00 UTC / 17:00–21:00 CET, both CVD legs are coverage_verified
+using history exhaustion plus exact BTC/USDT volume equality. Spot delta
+-0.847144 BTC, futures -122.7328 BTC. Prior mismatching native-volume diagnostics
+remain archived; no tolerance was relaxed. Provider buy/sell is not independently
+verified aggressor attribution. Journal has recent trades at this measurement;
+no claim of permanent gap-free recorder operation is made.
+
+Actual production writer race observed and handled by reviewed synchronizer:
+local snapshot commit 068e0be20db1ed11c1ccfc30622ac42e93ef56b2 merged concurrent
+upstream de62f89ed7308f6916938c52562c84a0a51e4fc8, producing
+87bd786919c388768e05fed810580347a4b97951. Compared every dated archive and NAS
+receipt blob from BOTH parents against the merge: 463/455 parent immutable files
+retained byte-for-byte. Both parents' 141/140 original signal-history rows remain
+semantically present in merged 141 rows. This closes the earlier 'real race not
+yet observed' limitation for this run. No reset, force push or recollection.
+
+Exact-commit Pages 40397225022 succeeded. Actual public Chrome overview shows
+fresh price, available 4H scenarios, both validated deltas and populated momentum
+panel. Previous synchronized baseline is an original NAS record finished
+19:39:10 UTC. Live label is tentative bearish momentum switch; no structural
+break/full flow-volume confirmation is established. Do not upgrade this into a
+strong signal or confirmed weekly wave. PR 84 exact discrepancy table is visibly
+live; weekly chart remains blocked on +6.3 USDT close / -0.0432 BTC volume
+conflict. Genuine iPhone visual acceptance still not performed here.
+
+Collector health at 20:36:19 UTC reports current age=2 AT THAT CHECK. Trailing
+24-hour measurement coverage is 19/48 intervals (39.6%), 29 missing; recovery
+of this upload does not recreate missed earlier observations. Do not describe
+that coverage as complete or treat a dated heartbeat as perpetual current.
+Next normal scheduled publication(s) provide continuity evidence; no extra manual
+run or new NAS task requested. Keep BTC Git Diagnose unscheduled; do not repeat
+one-off or old incident repairs. Independent linked wave-degree / completion
+criteria implementation can start immediately while waiting for those runs.
+
+Handover-only checkpoint: validation is completed original NAS run, raw stored
+record, parent/blob/history preservation, exact-commit Pages and actual live UI.
+No new executable change or redundant runtime test run in this checkpoint.
+
 ### Guarded one-off NAS synchronization succeeded; normal upload next — 26 October 2026
 
 Current resume checkpoint supersedes the failed one-off/merge-check blocker
