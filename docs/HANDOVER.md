@@ -1,5 +1,35 @@
 # BTC monitor — agent handover
 
+### One-off sync reached merge check; upstream whitespace corrected — 26 October 2026
+
+Current resume checkpoint. User supplied the completed manual repair result:
+fetch and verified external publication backup succeeded, then git diff --cached
+--check failed. The feed timestamp defect is past this point. The helper's error
+wrapper shows only stderr, whereas whitespace diagnostics are on stdout; an
+empty RuntimeError detail does not establish an empty diff or source corruption.
+No raw private result, temporary filename or backup identifier is published.
+
+Reproduced on actual public history: git diff --check from last published NAS
+commit e7b59616966767fb013bba4ac72501743eda3522 to fetched main
+23e0afb264ebf078620f3fa8127ac73f46256522 reports exit 2, solely AGENTS.md:76 new blank line at EOF.
+Removed exactly that extra final blank line, preserving every instruction.
+The entire cumulative diff from that NAS commit now passes --check, not just
+the one-line edit. This is the demonstrated upstream obstruction; without the
+NAS staged stdout, no claim is made that no additional local-only issue exists.
+The helper's exception path aborts its attempted merge; no force/reset/delete
+repair is appropriate. Keep the already verified external backup.
+
+No executable change; old reviewed pinned helper e13ff2756d43586c7d2f8e43f9899b69242ae7ce
+can fetch the corrected upstream tree. After this documentation correction is on
+main, user can immediately rerun the SAME existing BTC Git Diagnose task with
+the SAME pinned script once (manual only, user tony, same publisher lock).
+Send its full finished result. A successful Guarded synchronization completed
+line releases the next gate: one normal existing BTC NAS Collect Publish run,
+then original NAS snapshot and commit-specific Pages verification. Do not claim
+NAS/CVD recovery before that evidence. If another failure occurs, retain its
+full output; improve stdout diagnostics separately rather than bypassing checks.
+Linked Elliott model work remains independent and can begin now.
+
 ### PR 85 merged; pinned one-off NAS uptake ready — 26 October 2026
 
 Current resume checkpoint, superseding pending-merge wording below. PR 85 merged

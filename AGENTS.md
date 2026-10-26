@@ -73,4 +73,3 @@ Current readiness: NAS new-runner ordinary publication acceptance is closed;
 a future real writer race is observation only and does not block dashboard,
 Elliott mobile or operational-status QA. Those checks can begin immediately.
 No extra manual NAS run/log is needed now.
-
