@@ -1,5 +1,51 @@
 # Accepted project decisions
 
+## Multi-source momentum switch required — 26 October 2026
+
+User clarification: daily candles alone are insufficient for the stronger
+wave-end/new-wave confirmation label. Explicitly incorporate spot AND futures
+volume, validated buy/sell deltas, momentum changes and other relevant evidence.
+Detect the CHANGE through time, not just a static bullish indicator count.
+A bearish indicator becoming less negative is weakening bearish momentum,
+not yet an established bullish switch.
+
+Proposed evidence groups: (1) structural break, higher/lower swing and retest
+at stated degree; (2) price momentum group RSI/MACD/ROC (correlated derivatives,
+one group rather than three independent votes); (3) separately labeled spot
+and futures relative candle volume and same-window provider-side deltas;
+(4) derivatives positioning context: OI in BTC/price-adjusted notional, funding,
+basis and liquidation context where genuinely available; (5) optional independent
+demand/liquidity context such as ETF flows and premium with correct horizon.
+Volume growth alone has no buy/sell direction, rising OI alone has no directional
+sign, positive funding alone is not bullish confirmation. Futures-led moves may
+reflect leverage/short covering; classify using joint evidence, not an OI slogan.
+Our CVD uses provider buy/sell convention, not independently proved taker flow.
+OBV/CMF are candle-volume proxies and cannot substitute for actual trade delta.
+
+Record synchronized comparable closed windows, prior/current values, support,
+counterevidence, missing/stale inputs and degree-specific invalidation. Show
+price-only/pivot confirmation separately from multi-source momentum support.
+Do not label the strongest multi-source state when mandatory spot or futures
+evidence is missing; do not discard valid price observations either. Preserve
+a separate data-coverage state. Independent consistent groups can strengthen
+support; correlated indicator count cannot mechanically become a probability.
+Temporal persistence/follow-through matters, with thresholds to be tested and
+frozen before evaluation. Suggested UI states: bearish momentum, bearish
+pressure easing, tentative bullish switch, supported bullish switch (mirror
+for bearish), with explicit scope and contradictory evidence.
+
+This extends the preceding completion/probability specification; it does not
+claim this scoring/detection is implemented or calibrated. Actual local July
+pivot evidence remains a price-structure fact, not retroactive flow confirmation.
+Primary references checked: Fidelity technical indicator guide/OBV explanation,
+Bitget classic historical funding docs. No new data collection, paid service,
+NAS action, code or runtime tests. Next agent action can start immediately:
+implement/test synchronized evidence states and feature availability inventory.
+Numerical calibrated probabilities still wait for defined outcomes and proper
+historical/out-of-time validation. UI/zoom/source-discrepancy work can continue
+independently; no need to wait for NAS upload checks.
+
+
 ## Wave-completion evidence and scenario probabilities — 26 October 2026
 
 User asks for researched criteria for the most likely wave termination/new wave,
