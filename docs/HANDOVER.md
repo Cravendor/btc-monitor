@@ -32,9 +32,12 @@ success, conflicting receipts, rewritten history and unknown private paths.
 Additional local release dashboard generation was blocked by automatic approval
 review for a possible CoinMarketCap Pro network call. It was not retried or
 claimed successful; no credentials/paid service were introduced by this change.
-CI Python 3.9.14/3.11 must be checked before merge. Existing isolated tests pass.
+CI succeeded for executable commit 558f6b6370debda7e8818c97afbae3bef65f6279:
+Python 3.9.14 check 121446377998 and Python 3.11 check 121446378325, including
+the release dashboard generation in CI. This does not change the blocked local
+preview result. Subsequent commit only records this validation; code unchanged.
 
-Next agent action: inspect PR #79 CI. Next user action after
+PR #79 is open and awaiting user review/merge. Next user action after
 green review: merge the PR; then verify ordinary scheduled NAS code uptake and
 an actual concurrent-writer publication. Existing DSM body/schedule, CVD journal,
 recorder, locks/watchdog and storage monitor are unchanged. The last restoration
