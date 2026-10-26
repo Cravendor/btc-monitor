@@ -87,3 +87,11 @@ class MomentumTests(unittest.TestCase):
             selected=previous_record(root,f['measurements'][0])
             self.assertIsNotNone(selected)
             self.assertIn('spot',build(f,now,selected)['groups'])
+
+    def test_unrelated_partial_snapshot_does_not_hide_valid_evidence_groups(self):
+        f,p,now=fixture()
+        f['measurements'][0]['status']='partial'
+        f['measurements'][0]['metrics']['funding']={'status':'error'}
+        r=build(f,now,p)
+        self.assertEqual(r['state'],'bullish_supported')
+        self.assertEqual(r['context']['funding'],'unavailable')

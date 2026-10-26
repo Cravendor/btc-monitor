@@ -5,9 +5,11 @@
 Extended original-record selection to retain a separately valid spot baseline
 when only the prior futures leg is unavailable. Each leg is gated again during
 assessment; this never allows full corroboration from partial evidence.
-Revalidated all 453 Python tests locally (3.12.14), five Node status tests,
+Revalidated all 454 Python tests locally (3.12.14), five Node status tests,
 whitespace and offline overview generation without external sources. Current
-and prior partial-leg cases are tested. PR #81 is open, not merged/deployed;
+and prior partial-leg cases plus unrelated funding-source errors are tested.
+Individual price/flow gates, rather than a blanket overall snapshot status,
+determine usable momentum evidence; a failed context source stays unavailable. PR #81 is open, not merged/deployed;
 CI for the final code must pass before user merge. No NAS action needed.
 Next: user can review immediately; merge waits for CI. Independent Elliott
 linkage/zoom and source-discrepancy investigation need not wait for merge.

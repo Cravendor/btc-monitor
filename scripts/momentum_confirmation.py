@@ -86,8 +86,6 @@ def build(feed, as_of, previous=None):
                missing=[], contradictions=[])
     try:
         m = valid_market(feed, as_of)
-        if m.get('status') != 'ok':
-            raise ValueError('incomplete snapshot')
         rows, _ = native_rows(m, '4h', as_of)
         if len(rows) < 24:
             raise ValueError('insufficient contiguous candles')
