@@ -28,6 +28,14 @@ original main archive: 20 expected charts, data quality still explicitly
 DEGRADED. No external-source fetch, original-data edits or NAS changes.
 Python 3.9.14/3.11 CI and public deployment acceptance are pending the fix PR.
 
+Repair PR #83: https://github.com/Cravendor/btc-monitor/pull/83, branch
+fix/elliott-zoom-pages-gate-20261026. Executable commit
+23820b06dc056308ac1b234a9cfb28b7f88af01a passed Python 3.9.14 check
+121719512672 and Python 3.11 check 121719512273, including the newly added
+Pages quality gate and release preview. PR is open and mergeable; not deployed.
+This supersedes the pending-CI line above. User can review/merge immediately;
+public visual acceptance must wait for successful post-merge Pages execution.
+
 Next: user reviews/merges the repair after CI; agent verifies exact-merge Pages
 success and public zoom controls after publication. Source-conflict diagnosis
 and true linked wave-degree work can begin independently now; neither a
