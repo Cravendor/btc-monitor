@@ -203,7 +203,7 @@ def reconcile(source, parents, child, parent):
     These normalized values cannot establish raw feed rounding precision. This
     candle-price check does not change the separate exact CVD coverage rule.
     """
-    checked_count=0;skipped=0;bad=[];quote_delta=Decimal(0)
+    checked_count=0;skipped=0;bad=[];details=[];quote_delta=Decimal(0)
     for row in parents:
         start=row['open_time_ms']
         piece=[source.get(t) for t in range(start,start+PERIOD_MS[parent],PERIOD_MS[child])]
@@ -213,13 +213,23 @@ def reconcile(source, parents, child, parent):
         calculated=dict(open=piece[0]['open'],high=max(c['high'] for c in piece),
                         low=min(c['low'] for c in piece),close=piece[-1]['close'])
         base=sum(Decimal(str(c['base_volume_btc'])) for c in piece)
-        if any(row[k]!=v for k,v in calculated.items()) or base!=Decimal(str(row['base_volume_btc'])):
+        calculated['base_volume_btc']=base
+        differences={}
+        for field,value in calculated.items():
+            native=Decimal(str(row[field]));aggregated=Decimal(str(value))
+            if native!=aggregated:
+                differences[field]=dict(native=str(native),from_children=str(aggregated),
+                                        native_minus_children=str(native-aggregated))
+        if differences:
             bad.append(iso(start))
+            if len(details)<5:
+                details.append(dict(opened_at=iso(start),fields=differences))
         quote=sum(Decimal(str(c['quote_volume_usdt'])) for c in piece)
         quote_delta=max(quote_delta,abs(quote-Decimal(str(row['quote_volume_usdt']))))
     return dict(child=child,parent=parent,checked_candles=checked_count,
                 skipped_incomplete_groups=skipped,mismatch_candles=len(bad),
                 first_mismatch_at=bad[0] if bad else None,
+                mismatch_details=details,mismatch_details_truncated=len(bad)>len(details),
                 status='conflict' if bad else 'consistent_checked_groups' if checked_count else 'not_checked',
                 quote_volume_max_abs_difference_usdt=str(quote_delta),quote_volume_scope='diagnostic_only_normalized_values')
 
@@ -238,6 +248,9 @@ def main():
                      exchange='bitget',market='USDT-FUTURES',symbol='BTCUSDT',
                      timeframes={tf:{k:v for k,v in q.items() if k!='rows'} for tf,q in reviewed.items()})
         save(Path(DIRECTORY)/'coverage.json',summary)
+        # Coverage can be complete while reconciliation fails. Log the review
+        # responsible for the exit status, not only the successful fetch counts.
+        print(json.dumps(dict(source_review=summary),indent=2))
         return 0 if all(q['status']=='complete' for q in reviewed.values()) else 1
     return 0 if all(v['status']=='complete' for v in result.values()) else 1
 

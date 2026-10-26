@@ -244,6 +244,14 @@ def render(bundle):
                     parts.append('<p><b>BRONCONFLICT:</b> De '+tf.upper()+'-candles komen niet overeen met de onderliggende '+escape(str(check.get('child', 'lagere timeframe'))).upper()+'-candles in prijs of BTC-volume. Volledige dekking betekent niet dat de bronvergelijking klopt.</p>')
                     if check.get('first_mismatch_at'):
                         parts.append('<p>Eerste afwijkende candle-opening UTC: '+escape(str(check['first_mismatch_at']))+'.</p>')
+                    details=check.get('mismatch_details') or []
+                    if details:
+                        labels={'open':'Open (USDT)','high':'High (USDT)','low':'Low (USDT)',
+                                'close':'Slot (USDT)','base_volume_btc':'Volume (BTC)'}
+                        parts.append('<div class="ew-chart-scroll"><table><caption>Eerste bronafwijking: '+escape(str(details[0]['opened_at']))+'</caption><thead><tr><th>Meting</th><th>Native '+tf.upper()+'</th><th>Uit '+escape(str(check.get('child','onderliggende candles'))).upper()+'</th><th>Verschil native − onderliggend</th></tr></thead><tbody>')
+                        for field,values in details[0]['fields'].items():
+                            parts.append('<tr><th>'+escape(labels.get(field,field))+'</th>'+''.join('<td>'+escape(str(values[k]))+'</td>' for k in ('native','from_children','native_minus_children'))+'</tr>')
+                        parts.append('</tbody></table></div><p>Dit vergelijkt de opgeslagen bronnen exact; het bewijst niet welke aanbiederwaarde correct is. Geen afrondingstolerantie of vervangende weekcandle toegepast.</p>')
                     parts.append('<p>Grafieken voor deze timeframe geblokkeerd tot de broncontrole slaagt; geen lagere timeframe als vervanging.</p></details>')
                     continue
                 if q.get('first_missing_at'):
