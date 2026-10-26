@@ -317,6 +317,30 @@
     {
       "bias": {
         "30d_macro": {
+          "reason": "30D/macro: **ONVOLDOENDE DATA** — positieve totale NUPL, zomerherstel en gemengde macrocontext bepalen samen nog geen cyclusbodem of distributiefase. Actuele cohort- en onafhankelijke vraag-/liquiditeitsbevestiging ontbreken.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: **-1 ZWAK BEARISH** — lagere gesloten candle, 1,73× relatief dalingsvolume en negatieve Bitget-intervaldelta. Tegensignaal: de recente low houdt en de latere prijs herstelt. Eén directe beursfamilie; onafhankelijke agressor-/vraagbevestiging ontbreekt.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: **-1 ZWAK BEARISH** — dagslot 2,37% lager dan zeven dagen eerder en recente ETF-uitstroom. Tegensignaal: voorlopig positief ETF-weeksaldo; prijs en ETF vormen twee afzonderlijke, verschillend vertraagde bronfamilies. Vertrouwen beperkt door ontbrekende aanbod- en liquidatiereeksen.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "916d787a7750ed20ae325ab99b9a2fee6f66bcc17f4b20809e05f266213bfc69",
+      "has_report_text": true,
+      "monitor": "daily",
+      "path": "reports/2026/10/26/daily-071241.json",
+      "reported_at": "2026-10-26T07:12:41+00:00"
+    },
+    {
+      "bias": {
+        "30d_macro": {
           "reason": "30D/macro: ONVOLDOENDE DATA — een mogelijke aanval op olie-infrastructuur en een mogelijk diplomatiek overleg wijzen in tegengestelde richtingen; bevestigde schade, olie-export, rentereactie en duurzame diplomatie ontbreken.",
           "score": null,
           "status": "ONVOLDOENDE DATA"
