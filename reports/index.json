@@ -365,6 +365,30 @@
     {
       "bias": {
         "30d_macro": {
+          "reason": "30D/macro: **ONVOLDOENDE DATA** — geen nieuwe geïntegreerde macro-, ETF- en on-chainbeoordeling; cyclusbodem of distributiefase is niet vast te stellen.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: **-1 ZWAK BEARISH** — lager 4H-slot onder 80.000, iets bovengemiddeld dalingsvolume en negatieve futuresdelta; hogere candlelow en vrijwel vlakke spotdelta zijn tegenbewijs. Eén Bitget-bronfamilie, zonder onafhankelijke vraagbevestiging.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: **-1 ZWAK BEARISH** — laatste gesloten dagslot ligt **2,37%** onder zeven dagen eerder. De intacte recente bodem begrenst de overtuiging; ETF-/aanbodbevestiging is in deze korte controle niet vernieuwd.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "6bb17bcbed440511d41c4919f3cd655e275207feaaba53348d76c0be6988b3ad",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/10/26/4h-warning-230100.json",
+      "reported_at": "2026-10-26T23:01:00Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
           "reason": "30D/macro: **ONVOLDOENDE DATA** — positieve totale NUPL, zomerherstel en gemengde macrocontext bepalen samen nog geen cyclusbodem of distributiefase. Actuele cohort- en onafhankelijke vraag-/liquiditeitsbevestiging ontbreken.",
           "score": null,
           "status": "ONVOLDOENDE DATA"
