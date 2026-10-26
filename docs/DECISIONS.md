@@ -1,5 +1,167 @@
 # Accepted project decisions
 
+## Multi-source momentum switch required — 26 October 2026
+
+User clarification: daily candles alone are insufficient for the stronger
+wave-end/new-wave confirmation label. Explicitly incorporate spot AND futures
+volume, validated buy/sell deltas, momentum changes and other relevant evidence.
+Detect the CHANGE through time, not just a static bullish indicator count.
+A bearish indicator becoming less negative is weakening bearish momentum,
+not yet an established bullish switch.
+
+Proposed evidence groups: (1) structural break, higher/lower swing and retest
+at stated degree; (2) price momentum group RSI/MACD/ROC (correlated derivatives,
+one group rather than three independent votes); (3) separately labeled spot
+and futures relative candle volume and same-window provider-side deltas;
+(4) derivatives positioning context: OI in BTC/price-adjusted notional, funding,
+basis and liquidation context where genuinely available; (5) optional independent
+demand/liquidity context such as ETF flows and premium with correct horizon.
+Volume growth alone has no buy/sell direction, rising OI alone has no directional
+sign, positive funding alone is not bullish confirmation. Futures-led moves may
+reflect leverage/short covering; classify using joint evidence, not an OI slogan.
+Our CVD uses provider buy/sell convention, not independently proved taker flow.
+OBV/CMF are candle-volume proxies and cannot substitute for actual trade delta.
+
+Record synchronized comparable closed windows, prior/current values, support,
+counterevidence, missing/stale inputs and degree-specific invalidation. Show
+price-only/pivot confirmation separately from multi-source momentum support.
+Do not label the strongest multi-source state when mandatory spot or futures
+evidence is missing; do not discard valid price observations either. Preserve
+a separate data-coverage state. Independent consistent groups can strengthen
+support; correlated indicator count cannot mechanically become a probability.
+Temporal persistence/follow-through matters, with thresholds to be tested and
+frozen before evaluation. Suggested UI states: bearish momentum, bearish
+pressure easing, tentative bullish switch, supported bullish switch (mirror
+for bearish), with explicit scope and contradictory evidence.
+
+This extends the preceding completion/probability specification; it does not
+claim this scoring/detection is implemented or calibrated. Actual local July
+pivot evidence remains a price-structure fact, not retroactive flow confirmation.
+Primary references checked: Fidelity technical indicator guide/OBV explanation,
+Bitget classic historical funding docs. No new data collection, paid service,
+NAS action, code or runtime tests. Next agent action can start immediately:
+implement/test synchronized evidence states and feature availability inventory.
+Numerical calibrated probabilities still wait for defined outcomes and proper
+historical/out-of-time validation. UI/zoom/source-discrepancy work can continue
+independently; no need to wait for NAS upload checks.
+
+
+## Wave-completion evidence and scenario probabilities — 26 October 2026
+
+User asks for researched criteria for the most likely wave termination/new wave,
+and numerical scenario probabilities using all suitable available evidence.
+This requests probability estimation, not fabricated percentages or permission
+to relabel an arbitrary score as calibrated likelihood. Existing no-invented-
+probabilities constraint remains. No probability model is implemented/validated.
+
+Read actual current daily archive blob 00e28236282fe88a5b2eb43db103f31b7e55c240:
+Bitget BTCUSDT USDT-FUTURES low 57770 on 2026-07-01 UTC; prior daily lows
+58866 and 58160.1, next daily lows 59562.4 and 61223. Thus the archived low
+meets existing strict two-left/two-right daily pivot criterion after the second
+following candle closes (4 July 00:00 UTC). Subsequent stored high is 87373.
+This verifies a historical daily pivot and subsequent rise, not automatically
+a completed macro bear cycle or a specific weekly Elliott count. No snapshot
+or current CVD may be backfilled into July observations.
+
+Researched completion checklist to operationalize, with explicit degree:
+(1) acceptable same-market source data, valid proposed pattern and actual
+required subdivisions; impulse and corrective pattern endings are distinct;
+(2) reversal through preselected opposing structural swing/channel using
+closed candles for the defined confirmation condition;
+(3) new directional substructure, pullback holding the candidate origin and
+subsequent continuation; higher low alone is weaker than continuation;
+(4) parent-degree condition/closed-candle follow-through, no hourly move alone
+certifies weekly completion; (5) momentum divergence/volume/Fibonacci/orderflow
+as supporting evidence, never sufficient proof or independent duplicate votes.
+Hard intrabar rule violations still invalidate counts independently of closes.
+These are proposed operational evidence stages, not universal guaranteed rules.
+
+Probability target must specify degree, future horizon, immutable trigger/
+invalidation levels and mutually exclusive outcome definition (including
+neither/expired/unresolved; ambiguous same-candle ordering stays unresolved).
+Different degrees may both realize sequentially; bull+bear are not automatically
+complementary events. Fit/calibrate on point-in-time historical features, validate
+on later untouched periods with gap/purge for overlapping label horizons, compare
+base-rate forecasts and reliability curves/Brier/log-loss with sample counts
+and uncertainty. Existing frozen scenario evaluator is descriptive and does not
+provide calibrated Elliott probabilities. Macro effective samples may be few
+despite many candles. Missing features stay missing, not zero; no price/RSI/
+MACD/Fib double counting, future-confirmed pivots cannot be used before their
+confirmation time. Separate historical price-only model from enhanced model
+whose CVD/OI/news histories genuinely exist. No retroactive claims that we had
+all these inputs in 2021/July. Interim support score, if implemented, must be
+labeled uncalibrated and not displayed with a probability percent sign.
+
+Primary framework sources read: Elliott Wave International Waveopedia,
+Impulse, Channeling, Wave Personality, Extension (stock-market tendencies are
+not automatically validated for BTC). Statistical references: scikit-learn
+Probability calibration and TimeSeriesSplit docs. Framework descriptions are
+not independent evidence of forecast profitability. Research/context only,
+no runtime/code/data changes or new tests. Handover and decisions maintained.
+
+Next agent action can start immediately: implement explicit completion-evidence
+states and frozen evaluable scenario outcomes with provenance/tests, then assess
+point-in-time training coverage before fitting probabilities. UI/zoom work is
+independent. Numeric calibrated weekly chances must wait for sufficient valid
+history, source reconciliation and out-of-time validation; no extra NAS action.
+
+
+## Corrected Elliott dashboard intent — 26 October 2026
+
+Latest user clarification REPLACES always showing a bull and bear chart for every
+timeframe. Desired view: start with weekly context and the latest relevant
+completed/active wave; show its tentative endpoint/completion evidence, then zoom
+into its internal daily/4H/hour subdivisions. Use linked parent/child labels and
+shared timestamps/price anchors, not unrelated latest-six-pivot counts. Provide
+overview plus zoomed active-leg/detail views and zoom in/out. Do not claim the
+current implementation already proves this nesting or current-wave identity.
+
+Show a preferred conditional interpretation and a material valid alternate where
+the endpoint/next structure is unresolved. Alternates need not always point in
+opposite directions; distinct counts may share the same next direction. Do not
+hide a still-valid alternate just because one directional move is confirmed.
+If no defensible count exists or sources conflict, state unavailable, not a
+fabricated next wave. Distinguish observed pivots, tentative count and confirmed
+structural condition; a completed-looking pattern can extend or belong to a
+different degree. Timeframe and wave degree are related but not identical.
+
+User theory was checked against Elliott Wave International Waveopedia and
+Extension: https://www.elliottwave.com/waveopedia/ and
+https://www.elliottwave.com/waveopedia/extension/ . Treat as primary documentation
+of the Elliott framework, not independent proof of predictive accuracy.
+Higher structure constrains interpretation; lower subdivisions can provide
+earlier reversal/completion evidence, but a low-timeframe reversal alone cannot
+confirm a weekly endpoint. Define confirmation and invalidation per degree.
+Closed-candle confirmation is distinct from intrabar hard-rule invalidation.
+No invented probabilities, guaranteed direction or neutral for unavailable data.
+
+PR #80 merge verified: 351d1df3a1550aa44af0f59e00c6302aa86531c7. Its small
+conflict explanation is merged, not a complete redesign or a resolved source
+discrepancy. New linked active-wave/zoom behavior is a requirement, not implemented.
+Next agent work can begin immediately: specify/test linked wave-degree evidence
+and active-leg chart views, investigate preserved week/day conflict separately;
+no NAS wait. Weekly valid-count display must wait for acceptable source agreement.
+Independent UI/zoom work need not wait for that source resolution.
+Handover/status/decisions updated for this clarification. Validation: merged PR
+metadata, current docs, primary framework sources; no code or new runtime tests.
+
+
+## Next-step readiness and independent work — 26 October 2026
+
+Standing user instruction: every completion still ends with **Volgende stap:**,
+naming the actor and concrete action. Also state whether work can start NOW or
+must WAIT for a check/execution/result, identify the actual dependency and what
+evidence releases it. When waiting, explicitly name useful authorized work that
+can start independently, or say none is currently identified. Continue such work
+when appropriate; waiting for one result need not block unrelated project work.
+Do not imply background execution or spawn parallel agents without authorization.
+
+Current readiness: NAS new-runner ordinary publication acceptance is closed;
+a future real writer race is observation only and does not block dashboard,
+Elliott mobile or operational-status QA. Those checks can begin immediately.
+No extra manual NAS run/log is needed now.
+
+
 ## Completion communication — 25 October 2026
 
 Every task completion ends with **Volgende stap:**, the concrete next action

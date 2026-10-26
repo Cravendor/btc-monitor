@@ -1,5 +1,585 @@
 # BTC monitor — agent handover
 
+### One-off sync reached merge check; upstream whitespace corrected — 26 October 2026
+
+Current resume checkpoint. User supplied the completed manual repair result:
+fetch and verified external publication backup succeeded, then git diff --cached
+--check failed. The feed timestamp defect is past this point. The helper's error
+wrapper shows only stderr, whereas whitespace diagnostics are on stdout; an
+empty RuntimeError detail does not establish an empty diff or source corruption.
+No raw private result, temporary filename or backup identifier is published.
+
+Reproduced on actual public history: git diff --check from last published NAS
+commit e7b59616966767fb013bba4ac72501743eda3522 to fetched main
+23e0afb264ebf078620f3fa8127ac73f46256522 reports exit 2, solely AGENTS.md:76 new blank line at EOF.
+Removed exactly that extra final blank line, preserving every instruction.
+The entire cumulative diff from that NAS commit now passes --check, not just
+the one-line edit. This is the demonstrated upstream obstruction; without the
+NAS staged stdout, no claim is made that no additional local-only issue exists.
+The helper's exception path aborts its attempted merge; no force/reset/delete
+repair is appropriate. Keep the already verified external backup.
+
+No executable change; old reviewed pinned helper e13ff2756d43586c7d2f8e43f9899b69242ae7ce
+can fetch the corrected upstream tree. After this documentation correction is on
+main, user can immediately rerun the SAME existing BTC Git Diagnose task with
+the SAME pinned script once (manual only, user tony, same publisher lock).
+Send its full finished result. A successful Guarded synchronization completed
+line releases the next gate: one normal existing BTC NAS Collect Publish run,
+then original NAS snapshot and commit-specific Pages verification. Do not claim
+NAS/CVD recovery before that evidence. If another failure occurs, retain its
+full output; improve stdout diagnostics separately rather than bypassing checks.
+Linked Elliott model work remains independent and can begin now.
+
+### PR 85 merged; pinned one-off NAS uptake ready — 26 October 2026
+
+Current resume checkpoint, superseding pending-merge wording below. PR 85 merged
+at ff0b057f6309ea82e59181c07b94bac12b2b6fb7, 18:14:25 UTC / 19:14:25 Amsterdam.
+The documented helper is pinned to reviewed executable commit
+ e13ff2756d43586c7d2f8e43f9899b69242ae7ce, now included in main. The agent supplied
+the exact docs/NAS_SYNC_FEED_REPAIR.md procedure for the existing BTC Git Diagnose
+task, user tony, manual only: shared publisher lock, verified existing SSH settings,
+fetch, merged-ancestry check, external temporary helper and guarded sync/backups.
+No claim that user executed it or that NAS recovered. No NAS operation performed
+by agent; no raw private log published. No executable change or repeated tests.
+
+Next user action can begin now: preserve the diagnostic task's old script,
+replace it with the pinned procedure, save and run that existing task once.
+Keep its schedule disabled. Send the full completed task result. A success line
+Guarded synchronization completed permits one existing normal publisher run;
+fresh original NAS snapshot and commit-specific Pages still required for runtime
+acceptance. If publisher lock is busy, wait until that execution finishes before
+retrying the same one-off task. Unknown local changes or other failure need
+inspection, not reset or deleted files. Elliott wave-degree work remains independent.
+
+### NAS feed-envelope synchronization defect identified and repair prepared — 26 October 2026
+
+Current resume checkpoint. User's private completed 17:30:02–17:30:06 UTC
+(18:30 Amsterdam) publisher output establishes failure before collection:
+sync_publish.py reads latest.json['finished_at'], raises KeyError and exits 1.
+The actual collector writes feed_schema_version=1, with finished_at inside
+measurements[0]. Existing tests used an unrealistic standalone record and missed
+this schema error. No private log/transcript is committed here. This supersedes
+the earlier request for the latest publication log: that evidence is now read.
+It does not establish the continuous CVD recorder's current process state.
+
+Prepared fix reads the selected first observation's aware finished_at, rejects
+missing/malformed first observations, and never substitutes feed updated_at,
+a top-level timestamp or a later measurement. All three derived views still
+come from the same newer observation; ties retain remote. Existing immutable
+archive/receipt/history protections and verified backup remain unchanged.
+Integration fixtures now use the real envelope and exercise newer local, newer
+remote, equal-time selection, push races, pending original retention, and invalid
+feed rejection before any merge/backup. CI path filter now includes nas/**.
+
+IMPORTANT uptake dependency: merging alone does not repair this stuck NAS. Its
+old helper loads before fetch and fails while reconciling, so it cannot install
+its own update. After reviewed merge, use the EXISTING disabled/manual BTC Git
+Diagnose task as tony to execute a pinned fixed helper outside the checkout under
+the SAME publisher lock. It fetches main, checks the reviewed commit is an
+ancestor, runs guarded synchronization with external verified backups, and
+keeps pending observations. See docs/NAS_SYNC_FEED_REPAIR.md. No reset, checkout
+of individual tracked files, blind pull/rebase, force push or CVD restart.
+Agent will provide the fully pinned DSM command after merge; do not rerun the
+broken publisher as a proposed fix. Normal collection resumes only after the
+one-off sync succeeds. Actual NAS acceptance and fresh CVD remain pending.
+
+PR 84 merge confirmed at 9bacc0032ca390e0f77c91ec9dfc3fc49cc38a86; exact-merge
+Pages 40369628034 succeeded. Source-history 40369628045 still failed its weekly
+source review; this is separate from the NAS software defect. No fresh browser
+acceptance for its diagnostic table is claimed here. Weekly source conflict stays
+blocked; original candles remain unchanged.
+
+Validation: full 462 Python tests, six Node tests, shell procedure syntax and
+diff checks; Python 3.9.14/3.11 CI pending the repair PR. Current dashboard source
+and data unchanged; CI includes existing full generation/asset gate. Next user
+step can start now: review repair; NAS one-off waits for merge and the pinned
+command. Linked wave-degree development does not need to wait for NAS acceptance.
+
+Repair PR #85: https://github.com/Cravendor/btc-monitor/pull/85,
+branch fix/nas-sync-feed-timestamp-20261026. CI passed at
+78ffcbf737ec74d63f89d1cb8b4e78132d183774: Python 3.9.14 check 121743359931
+and Python 3.11 check 121743360445, including full dashboard generation and
+asset quality gate. Executable helper pinned in the uptake procedure to
+ e13ff2756d43586c7d2f8e43f9899b69242ae7ce; actual archived main feed also parses
+successfully with the fix. This supersedes pending-CI wording above. PR is open,
+not deployed on NAS; user can review/merge now. Agent then supplies the exact
+procedure through the existing manual task; wait for that one-off success before
+claiming normal publisher recovery. Final docs-only commit records this result.
+
+### Weekly conflict reproduced live; NAS publication gap isolated — 26 October 2026
+
+Current resume checkpoint. Fresh Bitget public 1Wutc, 1Dutc and 4H queries at
+17:21–17:22 UTC / 18:21–18:22 Amsterdam reproduce the October 19 weekly conflict:
+weekly close 80125.5 vs daily/4H 80119.2; base BTC 217958.4979 vs 217958.5411.
+All seven daily groups match their 42 fresh 4H children. Original strings disagree;
+not a local float or stale-cache explanation. Which source value is correct and
+the provider's underlying cause remain unknown. Weekly gate stays blocked; no
+original candle edits or relaxed tolerances.
+
+See docs/ELLIOTT_SOURCE_AUDIT.md and immutable public raw rechecks under
+ data/history/source-audits/20261026T172221Z-week-day-4h.json.
+Prepared diagnostic changes: reconcile returns bounded exact field differences,
+dashboard shows first mismatch, and history CLI prints final source review
+responsible for failure. History run 40367287095 committed new native rows then
+failed reconciliation, not Git push. Its 17:18 UTC archive checkpoint closed the
+earlier 4H gap (2896/2896; 1H 11585/11585). This supersedes the previous 4H-gap
+checkpoint; it does not make either source perpetually current.
+
+Latest 15:13 UTC measurement is github_fallback with CVD not_collected, not NAS.
+Last confirmed NAS publication remains 08:34:11 UTC / 09:34:11 Amsterdam.
+Health failure 40367246156 was a push check, deliberately ineligible for reserve
+collection. No current DSM task/process state is established. Do not restart or
+rerun incident recovery. Next user evidence: latest ALREADY FINISHED existing
+BTC NAS Collect Publish first-upload.txt, including EINDSTATUS when present;
+no extra execution or duplicate task requested. Agent can diagnose after receipt.
+
+Validation of proposed diagnostic PR: 460 Python tests, six Node tests, diff
+whitespace, and offline dashboard + actual asset quality gate against preserved
+main archive. Weekly table values appear; weekly SVG remains blocked. Public
+API probes were bounded to three requests; existing snapshots/history untouched.
+PR/CI/deployment status to be recorded after publication. Linked wave-degree
+model work can proceed immediately without waiting for the NAS log or source
+correction; calibrated percentages require separate point-in-time validation.
+
+Diagnostic PR #84: https://github.com/Cravendor/btc-monitor/pull/84,
+branch diagnose/elliott-week-source-conflict-20261026. Executable commit
+911c021f340c7d395860bb46e5df6f528a2d26df passed Python 3.9.14 check
+121733611167 and Python 3.11 check 121733611587, including release generation
+and the Pages asset gate. Open/mergeable, not merged or deployed. This
+supersedes the pending-PR/CI statement above. Review/merge can begin now;
+live acceptance waits for post-merge publication. Underlying weekly source
+conflict and NAS publication diagnosis remain open.
+
+### PR 83 merged and zoom verified live — 26 October 2026
+
+Current resume checkpoint; supersedes all pending-merge/deployment wording for
+PRs 82/83 below. PR 83 merged at 8acdb452a0cd87161d7049546611d62afba9203c,
+17:17:32 UTC (18:17:32 Europe/Amsterdam). Exact-merge Pages run 40367246132
+succeeded. Release CI also passed at final documentation head 23235c506bbe65351c5aaf642f371467b0988a27 (run 40365044191).
+
+Actual public Chrome UI verified at https://cravendor.github.io/btc-monitor/:
+1D opens on Last movement, five candles, October 21 00:00 to October 26 00:00 UTC;
+zoom-out switches to 32 candles, selector Overview shows 482 candles, and zoom-in
+returns to 96. Boundary buttons disable correctly at observed endpoints.
+4H opens on three candles; expanding Detail of 1D movement on 4H shows exactly
+October 21 00:00 to October 26 00:00 UTC from native 4H candles. Screenshot
+visually confirms detail chart/labels. Genuine iPhone/mobile QA is still open.
+No certified current count, wave-degree nesting or probabilities are implied.
+
+Separate data blockers remain visible and were not bypassed: weekly source
+conflict at October 19 blocks its chart; 4H archive has 2895/2896 candles,
+first missing opening October 26 12:00 UTC. Live momentum/current price panels
+reject stale input. Collector-health checked 17:17:46 UTC (18:17:46 Amsterdam)
+reports stale: last snapshot 15:13:12 UTC (16:13:12 Amsterdam), age 7473 seconds,
+21/48 observed intervals (43.8%). Both CVD legs are unverified for that snapshot.
+This supersedes the older last-known 08:34 record, without claiming healthy
+current NAS/CVD recording. Collector-health run 40367246156 failed separately;
+successful Pages is not evidence of data/recorder health. No NAS restart/edit.
+
+Next agent work can start immediately: inspect preserved weekly/daily source
+revisions and recent public collection evidence to diagnose the remaining data
+blockers. No deployment wait remains for zoom acceptance; fresh momentum
+acceptance must wait for a validated current snapshot. True wave-degree model
+work can proceed independently. No new manual NAS task/run requested.
+Only documentation changes in this checkpoint; validation is exact-merge Pages,
+actual live control state transitions, screenshot and dated health evidence.
+
+### PR 82 merged; Pages quality-gate regression fixed in review — 26 October 2026
+
+This is the current resume checkpoint and supersedes the earlier PR 82
+awaiting-merge instruction below. PR 82 merged at
+808c5a678812d43b43ea8304f38812bc81df0df2, 12:14:06 UTC.
+Its Pages run 40320966541 failed; subsequent run 40358938316 at main
+073ec45619406c9d46d640a01fcbeb9ffd808084 reproduced the same exception in
+scripts.analysis_quality.stage: Elliott source/chart count mismatch. Staging
+succeeded, upload/deploy were skipped. Do not claim the zoom layer is live.
+
+Root cause: the asset gate still assumed exactly two historical candidate
+charts per available timeframe. PR 82 adds source-derived zoom and optional
+parent-window charts. Release-validation CI rendered HTML but omitted the Pages
+quality stage, so its green checks missed this integration regression.
+The proposed fix derives expected SVGs from the same original Elliott sources
+and compares count AND content/order for all charts; missing, duplicate and
+replaced charts remain hard failures. It does not bypass source/data gates or
+loosen market tolerances. Release-validation CI now executes analysis_quality
+before artifact upload, matching the Pages gate.
+
+Local validation: all 458 Python tests, six Node tests and diff whitespace
+passed. New regression renders the actual home page with usable native candles,
+accepts extra zoom charts, and rejects removed, duplicated and same-count
+replaced SVGs. Full offline Pages staging plus quality gate passed against
+original main archive: 20 expected charts, data quality still explicitly
+DEGRADED. No external-source fetch, original-data edits or NAS changes.
+Python 3.9.14/3.11 CI and public deployment acceptance are pending the fix PR.
+
+Repair PR #83: https://github.com/Cravendor/btc-monitor/pull/83, branch
+fix/elliott-zoom-pages-gate-20261026. Executable commit
+23820b06dc056308ac1b234a9cfb28b7f88af01a passed Python 3.9.14 check
+121719512672 and Python 3.11 check 121719512273, including the newly added
+Pages quality gate and release preview. PR is open and mergeable; not deployed.
+This supersedes the pending-CI line above. User can review/merge immediately;
+public visual acceptance must wait for successful post-merge Pages execution.
+
+Next: user reviews/merges the repair after CI; agent verifies exact-merge Pages
+success and public zoom controls after publication. Source-conflict diagnosis
+and true linked wave-degree work can begin independently now; neither a
+certified current Elliott count nor calibrated probabilities are established.
+No extra NAS task/run requested.
+
+
+### Linked price windows and Elliott zoom controls prepared — 26 October 2026
+
+Prepared PR #82 (https://github.com/Cravendor/btc-monitor/pull/82),
+branch feat/elliott-linked-zoom-20261026. This implements a chart-navigation
+layer, not a certified current Elliott count or scenario probabilities.
+Each usable timeframe opens on the last confirmed pivot-to-last-closed-candle
+movement (recent window fallback explicitly allowed if no pivot exists).
+Accessible window selector and +/- controls offer last movement, 32/96 candles
+and context (full weekly/daily; last 400 intraday). No small-timeframe detail is
+forced to expand back across a long historical six-pivot candidate.
+
+Adjacent degree charts can show exactly the parent focus window using their own
+native candles only when the entire closed UTC window is covered. Missing
+child candles or blocked/conflicting parent prevent the link. Historical window
+references suppress a later current-price line. This is temporal/source linkage,
+not validation of subwave nesting. Parent opening/closing bounds are shown.
+Historical bull/bear six-pivot candidates remain inspectable in a separate
+collapsed section, with invalid labels/rule checks preserved; default detail
+does not fabricate wave numbers, preferred direction or future endpoints.
+The earlier weekly source conflict remains blocked and must be resolved before
+claiming a linked weekly count. Multi-source momentum remains scoped to 4H.
+
+Validation: 457 Python tests locally (3.12.14), six Node tests including actual
+generated zoom-script control transitions/boundaries, whitespace and offline
+full overview generation against original source files WITHOUT --ath passed.
+Three new Python cases verify exact parent/child boundaries, no link across a
+gap/conflicting parent and unchanged historical candidates; fixture was extended
+to genuinely cover the requested parent span after an initial short-fixture
+failure. Existing CI now includes the extra Node zoom test.
+Local preview HTML generated, but cloud browser navigation to local preview
+returned ERR_CONNECTION_REFUSED; no visual preview success or mobile/iPhone
+acceptance is claimed. No network-path workaround attempted. Public browser
+verification is pending merge/publication. No NAS/data/runtime modification.
+
+CI passed at executable commit 9c2b3d7ecebc7ef44d8633ed18af6f0f90999b27: Python 3.9.14
+check 121549256707 and Python 3.11 check 121549256891, including release
+preview generation. Subsequent commit records only this evidence.
+Next user action: review/merge PR #82; merge can proceed after green review. Afterwards inspect public controls,
+default focus and parent detail. Independent preserved-source week/day discrepancy
+investigation and true linked wave-degree model work can start now without
+waiting for this navigation PR. Calibrated probabilities remain separate.
+Current NAS publication diagnosis is independent; no extra NAS run requested.
+
+
+### PR 81 merged and live panel verified; fresh NAS evidence unavailable — 26 October 2026
+
+PR #81 merge confirmed at afea1e1fc7c2c122fdb8fa44fe608d9bcb374686,
+11:25:11 UTC (12:25:11 Amsterdam). Pages 40314937412 at that exact merge
+succeeded. Opened the public overview in cloud Chrome: momentum-confirmation
+section is present with the intended scope/uncalibrated limitation, no invented
+probability or wave-completion claim. #80 source-conflict explanation also visibly
+published for weekly chart. This supersedes unmerged/awaiting-publication wording.
+
+Live momentum panel says insufficient current evidence, with missing current
+4H price source. Other current-price/scenario panels also reject stale input.
+Last verified original NAS measurement remains the earlier 08:34:11 UTC record
+(09:34 Amsterdam), not a new post-81 observation. Stored collector-health is
+dated 08:35:01 UTC, reports age=2/current AT THAT CHECK; do not treat it as
+a current session heartbeat. No fresh NAS upload after that record is established
+by this checkpoint. No recorder-stop inference, no blind recovery, restart or
+new NAS task. Fresh-data rendering acceptance remains pending; deployed gating
+correctly keeps old evidence from appearing current. Actual iPhone QA still open.
+
+Next user action: provide the latest ALREADY FINISHED existing first-upload.txt
+if available, to distinguish failed publication, skipped task or source failure.
+No extra execution requested. Agent can inspect recent public evidence now.
+Linked Elliott active-wave/zoom and week/day source-discrepancy work can start
+immediately without waiting for NAS diagnosis; calibrated percentages still
+require separate historical validation. No new executable changes or runtime
+tests; validation is merged PR, successful Pages, actual browser DOM and dated
+collector-health. Handover/status updated; raw logs stay private.
+
+
+### PR 81 final prior-window evidence check — 26 October 2026
+
+Extended original-record selection to retain a separately valid spot baseline
+when only the prior futures leg is unavailable. Each leg is gated again during
+assessment; this never allows full corroboration from partial evidence.
+Revalidated all 454 Python tests locally (3.12.14), five Node status tests,
+whitespace and offline overview generation without external sources. Current
+and prior partial-leg cases plus unrelated funding-source errors are tested.
+Individual price/flow gates, rather than a blanket overall snapshot status,
+determine usable momentum evidence; a failed context source stays unavailable. PR #81 is open, not merged/deployed;
+CI passed for final executable commit 3156aa8493a7785b503e63a446ffbc4511a44e4d:
+Python 3.9.14 check 121543977907 and Python 3.11 check 121543978169,
+including release dashboard generation. Subsequent commit records only this
+validation; no executable changes. User review/merge is now the next gate. No NAS action needed.
+Next: user can review immediately; merge can proceed after review of the green checks. Independent Elliott
+linkage/zoom and source-discrepancy investigation need not wait for merge.
+
+
+## First synchronized 4H momentum evidence panel prepared — 26 October 2026
+
+PR #81 (https://github.com/Cravendor/btc-monitor/pull/81),
+implementation proposed on feat/multi-source-momentum-20261026; not yet merged
+or deployed. scripts/momentum_confirmation.py and overview integration assess
+one closed current 4H interval against the immediately preceding 4H flow window.
+Preserved archive lookup chooses the latest validated previous original available
+before the current observation started; future observations/ambiguous tied originals
+are excluded. Wrong-market, stale/future/missing price sources are unavailable.
+
+Evidence groups: three-candle closed structural break; one correlated price-
+momentum ROC(3) group with prior value; separately validated Bitget spot/futures
+buy-minus-sell and relative total BTC volume versus the previous interval.
+CVD windows, coverage flags/scope, market and buy/sell arithmetic must agree;
+futures total must also equal current closed candle BTC volume. Prior flow must
+be observed after its interval closed and before current measurement. Missing
+mandatory current/prior flow prevents full corroboration without hiding price
+momentum. Less-negative bearish ROC remains bearish pressure easing, not a
+bullish switch. Opposing flow/structure is explicit counterevidence.
+Both flow legs, non-weakening directional price momentum, structural break and
+volume ratio >=1 are needed for supported direction. These are transparent
+experimental thresholds, not calibrated probabilities or wave-end certification.
+A partial aggregate CVD result does not hide a separately valid spot leg;
+individual leg gates still prevent full corroboration. Current/prior deltas and volume ratios are shown, with client-side expiry.
+
+OI/funding/basis/premium are inventoried as snapshot context but NOT cast as
+direction votes because this first implementation does not validate synchronized
+historical changes in those inputs. No RSI/MACD triple-counting; no numerical
+scenario probability, week-wave or macro confirmation. Multi-degree linkage,
+retests/persistence and calibrated probability remain separate pending work.
+No NAS task/runtime or collection changes, no external source call introduced.
+
+Local validation: 453 Python tests (3.12.14), five Node status tests, whitespace
+and offline full overview generation WITHOUT --ath passed. Seven new tests cover
+bull/bear corroboration, missing/wrong-window/unverified/NaN/future evidence,
+futures candle mismatch, weakening rather than reversal, opposing flow,
+contracting volume, stale/wrong market and point-in-time original selection.
+Actual archived 04:00–08:00 UTC evidence renders bearish pressure easing:
+ROC(3) -0.6563% vs -1.2859%; spot volume ratio about 0.406, futures 0.529.
+This is a dated local rendering test, not a current trading forecast.
+CI Python 3.9.14/3.11 must pass; browser/mobile visual acceptance remains pending.
+
+Next agent action: review PR #81 and check CI. Next user action after green CI:
+review/merge; then inspect deployed panel from actual publication. Independent
+linked Elliott zoom/source-conflict and historical coverage work can start now
+without waiting for merge. Calibrated percentages still wait for labeled
+outcomes and out-of-time evaluation. No additional NAS action is needed.
+
+
+## Multi-source momentum switch required — 26 October 2026
+
+User clarification: daily candles alone are insufficient for the stronger
+wave-end/new-wave confirmation label. Explicitly incorporate spot AND futures
+volume, validated buy/sell deltas, momentum changes and other relevant evidence.
+Detect the CHANGE through time, not just a static bullish indicator count.
+A bearish indicator becoming less negative is weakening bearish momentum,
+not yet an established bullish switch.
+
+Proposed evidence groups: (1) structural break, higher/lower swing and retest
+at stated degree; (2) price momentum group RSI/MACD/ROC (correlated derivatives,
+one group rather than three independent votes); (3) separately labeled spot
+and futures relative candle volume and same-window provider-side deltas;
+(4) derivatives positioning context: OI in BTC/price-adjusted notional, funding,
+basis and liquidation context where genuinely available; (5) optional independent
+demand/liquidity context such as ETF flows and premium with correct horizon.
+Volume growth alone has no buy/sell direction, rising OI alone has no directional
+sign, positive funding alone is not bullish confirmation. Futures-led moves may
+reflect leverage/short covering; classify using joint evidence, not an OI slogan.
+Our CVD uses provider buy/sell convention, not independently proved taker flow.
+OBV/CMF are candle-volume proxies and cannot substitute for actual trade delta.
+
+Record synchronized comparable closed windows, prior/current values, support,
+counterevidence, missing/stale inputs and degree-specific invalidation. Show
+price-only/pivot confirmation separately from multi-source momentum support.
+Do not label the strongest multi-source state when mandatory spot or futures
+evidence is missing; do not discard valid price observations either. Preserve
+a separate data-coverage state. Independent consistent groups can strengthen
+support; correlated indicator count cannot mechanically become a probability.
+Temporal persistence/follow-through matters, with thresholds to be tested and
+frozen before evaluation. Suggested UI states: bearish momentum, bearish
+pressure easing, tentative bullish switch, supported bullish switch (mirror
+for bearish), with explicit scope and contradictory evidence.
+
+This extends the preceding completion/probability specification; it does not
+claim this scoring/detection is implemented or calibrated. Actual local July
+pivot evidence remains a price-structure fact, not retroactive flow confirmation.
+Primary references checked: Fidelity technical indicator guide/OBV explanation,
+Bitget classic historical funding docs. No new data collection, paid service,
+NAS action, code or runtime tests. Next agent action can start immediately:
+implement/test synchronized evidence states and feature availability inventory.
+Numerical calibrated probabilities still wait for defined outcomes and proper
+historical/out-of-time validation. UI/zoom/source-discrepancy work can continue
+independently; no need to wait for NAS upload checks.
+
+
+## Wave-completion evidence and scenario probabilities — 26 October 2026
+
+User asks for researched criteria for the most likely wave termination/new wave,
+and numerical scenario probabilities using all suitable available evidence.
+This requests probability estimation, not fabricated percentages or permission
+to relabel an arbitrary score as calibrated likelihood. Existing no-invented-
+probabilities constraint remains. No probability model is implemented/validated.
+
+Read actual current daily archive blob 00e28236282fe88a5b2eb43db103f31b7e55c240:
+Bitget BTCUSDT USDT-FUTURES low 57770 on 2026-07-01 UTC; prior daily lows
+58866 and 58160.1, next daily lows 59562.4 and 61223. Thus the archived low
+meets existing strict two-left/two-right daily pivot criterion after the second
+following candle closes (4 July 00:00 UTC). Subsequent stored high is 87373.
+This verifies a historical daily pivot and subsequent rise, not automatically
+a completed macro bear cycle or a specific weekly Elliott count. No snapshot
+or current CVD may be backfilled into July observations.
+
+Researched completion checklist to operationalize, with explicit degree:
+(1) acceptable same-market source data, valid proposed pattern and actual
+required subdivisions; impulse and corrective pattern endings are distinct;
+(2) reversal through preselected opposing structural swing/channel using
+closed candles for the defined confirmation condition;
+(3) new directional substructure, pullback holding the candidate origin and
+subsequent continuation; higher low alone is weaker than continuation;
+(4) parent-degree condition/closed-candle follow-through, no hourly move alone
+certifies weekly completion; (5) momentum divergence/volume/Fibonacci/orderflow
+as supporting evidence, never sufficient proof or independent duplicate votes.
+Hard intrabar rule violations still invalidate counts independently of closes.
+These are proposed operational evidence stages, not universal guaranteed rules.
+
+Probability target must specify degree, future horizon, immutable trigger/
+invalidation levels and mutually exclusive outcome definition (including
+neither/expired/unresolved; ambiguous same-candle ordering stays unresolved).
+Different degrees may both realize sequentially; bull+bear are not automatically
+complementary events. Fit/calibrate on point-in-time historical features, validate
+on later untouched periods with gap/purge for overlapping label horizons, compare
+base-rate forecasts and reliability curves/Brier/log-loss with sample counts
+and uncertainty. Existing frozen scenario evaluator is descriptive and does not
+provide calibrated Elliott probabilities. Macro effective samples may be few
+despite many candles. Missing features stay missing, not zero; no price/RSI/
+MACD/Fib double counting, future-confirmed pivots cannot be used before their
+confirmation time. Separate historical price-only model from enhanced model
+whose CVD/OI/news histories genuinely exist. No retroactive claims that we had
+all these inputs in 2021/July. Interim support score, if implemented, must be
+labeled uncalibrated and not displayed with a probability percent sign.
+
+Primary framework sources read: Elliott Wave International Waveopedia,
+Impulse, Channeling, Wave Personality, Extension (stock-market tendencies are
+not automatically validated for BTC). Statistical references: scikit-learn
+Probability calibration and TimeSeriesSplit docs. Framework descriptions are
+not independent evidence of forecast profitability. Research/context only,
+no runtime/code/data changes or new tests. Handover and decisions maintained.
+
+Next agent action can start immediately: implement explicit completion-evidence
+states and frozen evaluable scenario outcomes with provenance/tests, then assess
+point-in-time training coverage before fitting probabilities. UI/zoom work is
+independent. Numeric calibrated weekly chances must wait for sufficient valid
+history, source reconciliation and out-of-time validation; no extra NAS action.
+
+
+## Corrected Elliott dashboard intent — 26 October 2026
+
+Latest user clarification REPLACES always showing a bull and bear chart for every
+timeframe. Desired view: start with weekly context and the latest relevant
+completed/active wave; show its tentative endpoint/completion evidence, then zoom
+into its internal daily/4H/hour subdivisions. Use linked parent/child labels and
+shared timestamps/price anchors, not unrelated latest-six-pivot counts. Provide
+overview plus zoomed active-leg/detail views and zoom in/out. Do not claim the
+current implementation already proves this nesting or current-wave identity.
+
+Show a preferred conditional interpretation and a material valid alternate where
+the endpoint/next structure is unresolved. Alternates need not always point in
+opposite directions; distinct counts may share the same next direction. Do not
+hide a still-valid alternate just because one directional move is confirmed.
+If no defensible count exists or sources conflict, state unavailable, not a
+fabricated next wave. Distinguish observed pivots, tentative count and confirmed
+structural condition; a completed-looking pattern can extend or belong to a
+different degree. Timeframe and wave degree are related but not identical.
+
+User theory was checked against Elliott Wave International Waveopedia and
+Extension: https://www.elliottwave.com/waveopedia/ and
+https://www.elliottwave.com/waveopedia/extension/ . Treat as primary documentation
+of the Elliott framework, not independent proof of predictive accuracy.
+Higher structure constrains interpretation; lower subdivisions can provide
+earlier reversal/completion evidence, but a low-timeframe reversal alone cannot
+confirm a weekly endpoint. Define confirmation and invalidation per degree.
+Closed-candle confirmation is distinct from intrabar hard-rule invalidation.
+No invented probabilities, guaranteed direction or neutral for unavailable data.
+
+PR #80 merge verified: 351d1df3a1550aa44af0f59e00c6302aa86531c7. Its small
+conflict explanation is merged, not a complete redesign or a resolved source
+discrepancy. New linked active-wave/zoom behavior is a requirement, not implemented.
+Next agent work can begin immediately: specify/test linked wave-degree evidence
+and active-leg chart views, investigate preserved week/day conflict separately;
+no NAS wait. Weekly valid-count display must wait for acceptable source agreement.
+Independent UI/zoom work need not wait for that source resolution.
+Handover/status/decisions updated for this clarification. Validation: merged PR
+metadata, current docs, primary framework sources; no code or new runtime tests.
+
+
+PR #80: https://github.com/Cravendor/btc-monitor/pull/80. Both CI matrices
+passed at executable commit f42cb19fc151cc673e8a876ade847660ccbeb353: Python 3.9.14 check
+121485545446 and Python 3.11 check 121485545109, including release generation.
+Subsequent commit only records PR/evidence; no executable changes.
+Offline preserved-source comparison for week opening 2026-10-19 UTC: native
+weekly close 80125.5 and base volume 217958.4979 BTC; seven daily candles give
+close 80119.2 and base volume 217958.5411 BTC. Open/high/low agree. This identifies
+the discrepant fields but does not establish which original source is correct
+or authorize replacing either. Next investigation can start before PR merge.
+
+### Live dashboard QA; Elliott conflict explanation fix prepared — 26 October 2026
+
+Inspected public overview and btc-status.html in cloud Chrome, including live
+DOM, rendered daily chart and task-status screenshot. Desktop page is readable,
+daily bull/bear candidate charts are present, invalid candidates remain labeled,
+and status distinguishes recent NAS trades/upload proof from direct process
+control. GitHub cards completed loading and correctly show failed history run
+40288122222 (job 121456533031) and stale 4H archive evidence, rather than masking
+them with earlier success. History job logs show both archive commits pushed
+then exit 1; do not call this a Git push conflict or infer root cause from the
+status label alone. Quality/startup receipt absence remains explicit unknown.
+
+Found reproducible weekly explanation defect: published week panel shows 69/69
+candles, zero missing, 'Eerste gat: None', then 'ONVOLDOENDE DATA'. Actual
+read-only archive reconciliation rejects week 2026-10-19 because price or BTC
+volume differs from its underlying daily candles. Suppression is intentional
+and must stay. Prepared fix/elliott-conflict-explanation-20261026 explains
+BRONCONFLICT, affected source degrees and first mismatching candle, removes
+the misleading missing-data claim for conflicts and renders no week chart.
+Other available degrees stay visible. No archive rewrite, tolerance change,
+data-source fallback or invented valid count.
+
+Validation: all 446 Python tests locally (3.12.14), five Node status tests,
+whitespace and offline actual-archive rendering passed. Week remains unavailable
+while daily/4H/hour remain drawable. An initial offline check used the wrong
+root ('data' instead of repository '.'); corrected check passed. No external
+market fetch in this verification. CI 3.9.14/3.11 passed; see evidence below.
+Mobile CSS inspected: charts intentionally have a 680px minimum and local
+horizontal scrolling below 600px. No phone viewport/emulation control is exposed
+by this browser API, so this is NOT completed iPhone/mobile visual acceptance.
+No claim of responsive QA from desktop screenshot alone.
+
+Next user action after green CI: review/merge PR #80.
+Next agent work can start immediately without waiting for merge: diagnose
+week/day candle discrepancy and failing history collector using preserved
+source evidence, and complete remaining mobile QA when a phone viewport is
+available. No NAS operation or extra upload is needed. The explanation fix
+does not resolve the underlying source disagreement. No browser files/screenshots
+or private diagnostics copied to the public repository.
+
+
+## Next-step readiness and independent work — 26 October 2026
+
+Standing user instruction: every completion still ends with **Volgende stap:**,
+naming the actor and concrete action. Also state whether work can start NOW or
+must WAIT for a check/execution/result, identify the actual dependency and what
+evidence releases it. When waiting, explicitly name useful authorized work that
+can start independently, or say none is currently identified. Continue such work
+when appropriate; waiting for one result need not block unrelated project work.
+Do not imply background execution or spawn parallel agents without authorization.
+
+Current readiness: NAS new-runner ordinary publication acceptance is closed;
+a future real writer race is observation only and does not block dashboard,
+Elliott mobile or operational-status QA. Those checks can begin immediately.
+No extra manual NAS run/log is needed now.
+
+
 ### New publisher ordinary execution accepted — 26 October 2026
 
 Complete supplied run starts 08:30:02 UTC and ends 08:35:08 UTC

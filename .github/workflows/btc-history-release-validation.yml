@@ -6,6 +6,7 @@ on:
       - release/btc-4h-history
   pull_request:
     paths:
+      - 'nas/**'
       - 'scripts/**'
       - 'tests/**'
       - 'web/**'
@@ -42,7 +43,7 @@ jobs:
         with:
           node-version: '22'
       - name: Verify task status transitions
-        run: node --test tests/test_operational_status.mjs
+        run: node --test tests/test_operational_status.mjs tests/test_elliott_zoom.mjs
       - name: Generate read-only HTML from existing archive
         run: |
           mkdir -p output
@@ -61,6 +62,7 @@ jobs:
           PY
           python -m scripts.timeframe_history_dashboard data/history/timeframe_signals.jsonl output/btc-signal-history.html data/collector-health.json
           python -m scripts.multi_timeframe_dashboard data/latest.json output/btc-timeframes.html data/collector-health.json
+          python -m scripts.analysis_quality data/latest.json output
       - uses: actions/upload-artifact@v4
         if: matrix.python == '3.11'
         with:

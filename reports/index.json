@@ -317,6 +317,30 @@
     {
       "bias": {
         "30d_macro": {
+          "reason": "30D/macro: **ONVOLDOENDE DATA** — geen nieuwe geïntegreerde macro-, ETF- en on-chainbeoordeling; een macro-bodem of distributiefase is niet vast te stellen.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: **0 NEUTRAAL/GEMENGD** — twee betere gesloten 4H-candles tegenover zwakke dagstructuur en beperkte volumebevestiging. Eén Bitget-bronfamilie; actuele onafhankelijke orderflow ontbreekt.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: **-1 ZWAK BEARISH** — het opnieuw opgehaalde dagslot van 80.119,2 ligt **2,37%** onder zeven dagen eerder. Lokaal herstel is tegenbewijs; ETF-/aanbodbevestiging is in deze korte controle niet vernieuwd.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "1cd31dcda007e5e05b624f6769422dd0627cf6fac472263df78cb7834474de91",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/10/26/4h-warning-150106.json",
+      "reported_at": "2026-10-26T15:01:06Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
           "reason": "30D/macro: **ONVOLDOENDE DATA** — positieve totale NUPL, zomerherstel en gemengde macrocontext bepalen samen nog geen cyclusbodem of distributiefase. Actuele cohort- en onafhankelijke vraag-/liquiditeitsbevestiging ontbreken.",
           "score": null,
           "status": "ONVOLDOENDE DATA"
@@ -385,6 +409,30 @@
       "monitor": "market-risk",
       "path": "reports/2026/10/26/market-risk-073831.json",
       "reported_at": "2026-10-26T07:38:31Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "30D/macro: ONVOLDOENDE DATA — de machtiging kan zowel afschrikking als bredere militaire betrokkenheid betekenen. Zonder daadwerkelijke inzet, duurzame olie- en rentereactie en bredere spot- of on-chainbevestiging is de macro-cyclus niet vast te stellen.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: 0 NEUTRAAL/GEMENGD — de formele militaire machtiging verhoogt het geopolitieke staart­risico, maar de defensieve beperking en het ontbreken van een duidelijke BTC- of regionale risk-offreactie wegen daartegenin. Positieve funding en de licht negatieve premieproxy zijn het belangrijkste tegensignaal. Betrouwbaarheid: laag tot middelmatig door het ontbreken van een schone pre-eventmeting en actuele gecontroleerde orderflow.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: ONVOLDOENDE DATA — de openbare opslag dekt 21 van 48 halfuurvakken in de laatste 24 uur en bevat geen volledige onafhankelijke zevendaagse combinatie van orderflow, ETF-flows en liquidaties.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        }
+      },
+      "content_sha256": "43b5de6bb60fceac5db961037fe5a4093951b6dd6bf2a59153976646d8e2e6e6",
+      "has_report_text": true,
+      "monitor": "market-risk",
+      "path": "reports/2026/10/26/market-risk-161047.json",
+      "reported_at": "2026-10-26T16:10:47Z"
     },
     {
       "bias": {
