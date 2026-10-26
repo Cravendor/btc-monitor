@@ -1,5 +1,21 @@
 # BTC Monitor — current scope and open work
 
+## Next-step readiness and independent work — 26 October 2026
+
+Standing user instruction: every completion still ends with **Volgende stap:**,
+naming the actor and concrete action. Also state whether work can start NOW or
+must WAIT for a check/execution/result, identify the actual dependency and what
+evidence releases it. When waiting, explicitly name useful authorized work that
+can start independently, or say none is currently identified. Continue such work
+when appropriate; waiting for one result need not block unrelated project work.
+Do not imply background execution or spawn parallel agents without authorization.
+
+Current readiness: NAS new-runner ordinary publication acceptance is closed;
+a future real writer race is observation only and does not block dashboard,
+Elliott mobile or operational-status QA. Those checks can begin immediately.
+No extra manual NAS run/log is needed now.
+
+
 ### New publisher ordinary execution accepted — 26 October 2026
 
 Complete supplied run starts 08:30:02 UTC and ends 08:35:08 UTC
