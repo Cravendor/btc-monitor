@@ -1,5 +1,40 @@
 # BTC monitor — agent handover
 
+### Pending snapshot recovery verified remotely — 26 October 2026
+
+Actual supplied recovery result confirms verified external bundle
+/volume1/btc-monitor/recovery-0146894.bundle, successful normal push, preservation
+of seven NAS receipts and clean synchronized main at the END of that operation.
+Independent remote merge 9a58dacc3e08d5acd26a9bd54bf2a18b84f9e7ce has parents
+0146894e8e225be3d8ee3295205eae65e0c28ced and
+5e71b99a003c2e5d53293d42fd1acb11d0be2f79. The later documentation commits
+are descendants; do not interpret them as another failed NAS recovery.
+
+Compared all eight added immutable blobs: original
+data/2026/10/26/20261026T010719140483Z-local-1.json (18e657e1b8158c870b3f23d1c1a9d00f5114c523)
+and all seven watchdog receipts have unchanged Git blob IDs in the remote merge.
+All upstream dated archives and task receipts also remain unchanged.
+Local signal history 128 rows and upstream history 128 rows combine into 129;
+every source row survives semantically unchanged, compared by updated_at and
+canonical JSON, with zero missing/changed rows. Recovery Pages run 40279200918
+at 9a58dacc succeeded. No live browser/card QA or current recorder uptime claimed.
+
+This closes the pending 0146894 recovery and supersedes all awaiting-result
+checkpoints below. It restores the ORIGINAL historical observation, not proof
+of a fresh post-recovery NAS collection or permanent publisher reliability.
+The normal publisher may now pick up main and acknowledge receipt spool after
+its next successful push. No manual recovery rerun or recorder restart needed.
+
+Next user action: run the existing BTC NAS Collect Publish once, wait for final
+completion and provide its full first-upload.txt result; no task replacement,
+new schedule or duplicate run. Next agent action: inspect fresh original/source/
+quality and actual publication, then prepare the separate tested permanent
+publisher reconciliation PR. Known concurrent-writer race remains OPEN.
+Validation: actual private recovery output, remote commit parents, three complete
+trees/blob comparisons, three original history files and successful Pages result.
+Documentation-only checkpoint; no new runtime tests. Private raw log not published.
+
+
 ### Recovery result still awaiting correct file — 26 October 2026
 
 The newly supplied attachment repeats the previous 0146894 diagnosis exactly:
