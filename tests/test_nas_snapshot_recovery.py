@@ -11,6 +11,88 @@ spec.loader.exec_module(module)
 
 
 class RecoveryTests(unittest.TestCase):
+    def add_receipt(self, local, path=None, content='{"original_receipt":true}\n'):
+        path = path or 'data/task-executions/nas/watchdog/20261026T004002Z.json'
+        target = local / path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(content)
+        self.git(local, 'add', '--', path)
+        self.git(local, 'commit', '--amend', '--no-edit')
+        return path, self.git(local, 'rev-parse', 'HEAD')
+
+    def test_recovery_preserves_seven_receipts_and_identical_remote_copy(self):
+        with tempfile.TemporaryDirectory() as root:
+            local, remote, head, archive = self.setup_repo(root)
+            originals = {}
+            for minute in ('0040', '0045', '0050', '0055', '0100', '0105', '0110'):
+                path, head = self.add_receipt(local,
+                    'data/task-executions/nas/watchdog/20261026T' + minute + '02Z.json')
+                originals[path] = (local / path).read_bytes()
+            other = Path(root) / 'github'
+            same = other / path
+            same.parent.mkdir(parents=True, exist_ok=True)
+            same.write_bytes(originals[path])
+            self.git(other, 'add', '.'); self.git(other, 'commit', '-m', 'same receipt'); self.git(other, 'push')
+            module.recover(local, head, archive, Path(root) / 'backup.bundle', str(remote))
+            for path, raw in originals.items():
+                self.assertEqual((local / path).read_bytes(), raw)
+                self.assertEqual(self.git(local, 'rev-parse', 'HEAD:' + path),
+                                 self.git(remote, 'rev-parse', 'main:' + path))
+
+    def test_conflicting_receipt_aborts_and_preserves_pending_commit(self):
+        with tempfile.TemporaryDirectory() as root:
+            local, remote, head, archive = self.setup_repo(root)
+            path, head = self.add_receipt(local)
+            other = Path(root) / 'github'
+            target = other / path; target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text('{"different":true}\n')
+            self.git(other, 'add', '.'); self.git(other, 'commit', '-m', 'different receipt'); self.git(other, 'push')
+            with self.assertRaisesRegex(RuntimeError, 'Unexpected merge conflict'):
+                module.recover(local, head, archive, Path(root) / 'backup.bundle', str(remote))
+            self.assertEqual(self.git(local, 'rev-parse', 'HEAD'), head)
+            self.assertEqual(self.git(local, 'status', '--porcelain'), '')
+            self.assertTrue((Path(root) / 'backup.bundle').exists())
+            self.assertEqual(json.loads((local / path).read_text()), {'original_receipt': True})
+
+    def test_modified_deleted_or_symlink_receipt_is_rejected(self):
+        for kind in ('modified', 'deleted', 'symlink'):
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory() as root:
+                local, remote, head, archive = self.setup_repo(root)
+                path = 'data/task-executions/nas/storage/20261026T004002Z.json'
+                target = local / path; target.parent.mkdir(parents=True, exist_ok=True)
+                if kind == 'symlink':
+                    target.symlink_to('../../../latest.json')
+                else:
+                    # Put an existing receipt in the parent without changing the
+                    # pending snapshot's five required paths.
+                    parent = self.git(local, 'rev-parse', 'HEAD^')
+                    self.git(local, 'checkout', '-b', 'receipt-base', parent)
+                    target.write_text('{"old":true}\n')
+                    self.git(local, 'add', '.'); self.git(local, 'commit', '-m', 'old receipt')
+                    base = self.git(local, 'rev-parse', 'HEAD')
+                    self.git(local, 'checkout', 'main')
+                    self.git(local, 'rebase', '--onto', base, parent)
+                    if kind == 'deleted':
+                        target.unlink()
+                    else:
+                        target.write_text('{"changed":true}\n')
+                self.git(local, 'add', '.'); self.git(local, 'commit', '--amend', '--no-edit')
+                head = self.git(local, 'rev-parse', 'HEAD')
+                backup = Path(root) / 'backup.bundle'
+                with self.assertRaisesRegex(RuntimeError, 'newly added regular files'):
+                    module.recover(local, head, archive, backup, str(remote))
+                self.assertFalse(backup.exists())
+                self.assertEqual(self.git(local, 'rev-parse', 'HEAD'), head)
+
+    def test_unexpected_extra_file_is_rejected_before_backup(self):
+        with tempfile.TemporaryDirectory() as root:
+            local, remote, head, archive = self.setup_repo(root)
+            path, head = self.add_receipt(local, 'data/task-executions/nas/watchdog/private-log.json')
+            backup = Path(root) / 'backup.bundle'
+            with self.assertRaisesRegex(RuntimeError, 'Unexpected local files'):
+                module.recover(local, head, archive, backup, str(remote))
+            self.assertFalse(backup.exists())
+
     def git(self, folder, *args):
         return subprocess.check_output(['git', '-C', str(folder), *args], stderr=subprocess.DEVNULL, text=True).strip()
 

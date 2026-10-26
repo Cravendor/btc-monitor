@@ -1,19 +1,19 @@
 {
   "feed_schema_version": 1,
-  "updated_at": "2026-10-26T01:14:19.524148+00:00",
+  "updated_at": "2026-10-26T01:45:48.577680+00:00",
   "exchange": "bitget",
   "market": "USDT-FUTURES",
   "symbol": "BTCUSDT",
   "order": "newest_first",
   "measurements": [
     {
-      "collection_source": "nas",
+      "collection_source": "github_fallback",
       "schema_version": 2,
       "exchange": "bitget",
       "market": "USDT-FUTURES",
       "symbol": "BTCUSDT",
-      "started_at": "2026-10-26T01:07:19.140483+00:00",
-      "finished_at": "2026-10-26T01:07:25.358817+00:00",
+      "started_at": "2026-10-26T01:45:44.719867+00:00",
+      "finished_at": "2026-10-26T01:45:48.440017+00:00",
       "status": "ok",
       "metrics": {
         "futures_price": {
@@ -21,96 +21,96 @@
           "status": "ok",
           "data": {
             "symbol": "BTCUSDT",
-            "lastPr": "80004.7",
-            "askPr": "80004.8",
-            "bidPr": "80004.7",
-            "bidSz": "4.0614",
-            "askSz": "3.6636",
+            "lastPr": "79456.7",
+            "askPr": "79456.8",
+            "bidPr": "79456.7",
+            "bidSz": "1.0009",
+            "askSz": "15.5488",
             "high24h": "80997.9",
-            "low24h": "79800",
-            "ts": "1792976840011",
-            "change24h": "-0.00944",
-            "baseVolume": "17945.5272",
-            "quoteVolume": "1442928933.19046",
-            "usdtVolume": "1442928933.19046",
+            "low24h": "79439",
+            "ts": "1792979144950",
+            "change24h": "-0.01705",
+            "baseVolume": "19757.14",
+            "quoteVolume": "1587205015.47683",
+            "usdtVolume": "1587205015.47683",
             "openUtc": "80119.2",
-            "changeUtc24h": "-0.00143",
-            "indexPrice": "80040.1715",
-            "fundingRate": "0.000081",
-            "holdingAmount": "36515.9125999999726",
+            "changeUtc24h": "-0.00819",
+            "indexPrice": "79498.2675",
+            "fundingRate": "0.000084",
+            "holdingAmount": "36650.7893999999713",
             "deliveryStartTime": null,
             "deliveryTime": null,
             "deliveryStatus": "",
-            "open24h": "80767.1",
-            "markPrice": "80004.7"
+            "open24h": "80835.2",
+            "markPrice": "79464.1"
           },
           "error": null,
           "attempts": 1,
-          "observed_at": "2026-10-26T01:07:19.140521+00:00"
+          "observed_at": "2026-10-26T01:45:44.719873+00:00"
         },
         "open_interest": {
           "url": "https://api.bitget.com/api/v2/mix/market/ticker?symbol=BTCUSDT&productType=USDT-FUTURES",
           "status": "ok",
           "data": {
             "symbol": "BTCUSDT",
-            "lastPr": "80008.2",
-            "askPr": "80007.7",
-            "bidPr": "80007.6",
-            "bidSz": "1.0535",
-            "askSz": "0.001",
+            "lastPr": "79451.7",
+            "askPr": "79451.7",
+            "bidPr": "79451.6",
+            "bidSz": "2.457",
+            "askSz": "11.8383",
             "high24h": "80997.9",
-            "low24h": "79800",
-            "ts": "1792976840316",
-            "change24h": "-0.0094",
-            "baseVolume": "17947.7617",
-            "quoteVolume": "1443107703.91486",
-            "usdtVolume": "1443107703.91486",
+            "low24h": "79439",
+            "ts": "1792979145168",
+            "change24h": "-0.01712",
+            "baseVolume": "19757.14",
+            "quoteVolume": "1587205015.47683",
+            "usdtVolume": "1587205015.47683",
             "openUtc": "80119.2",
-            "changeUtc24h": "-0.00143",
-            "indexPrice": "80040.496",
-            "fundingRate": "0.000081",
-            "holdingAmount": "36515.9125999999726",
+            "changeUtc24h": "-0.00819",
+            "indexPrice": "79493.2355",
+            "fundingRate": "0.000084",
+            "holdingAmount": "36650.7893999999713",
             "deliveryStartTime": null,
             "deliveryTime": null,
             "deliveryStatus": "",
-            "open24h": "80767.1",
-            "markPrice": "80004.7"
+            "open24h": "80835.2",
+            "markPrice": "79457"
           },
           "error": null,
           "attempts": 1,
-          "observed_at": "2026-10-26T01:07:20.134832+00:00"
+          "observed_at": "2026-10-26T01:45:45.048271+00:00"
         },
         "funding": {
           "url": "https://api.bitget.com/api/v2/mix/market/ticker?symbol=BTCUSDT&productType=USDT-FUTURES",
           "status": "ok",
           "data": {
             "symbol": "BTCUSDT",
-            "lastPr": "80008.2",
-            "askPr": "80007.7",
-            "bidPr": "80007.6",
-            "bidSz": "1.0535",
-            "askSz": "0.001",
+            "lastPr": "79451.7",
+            "askPr": "79451.7",
+            "bidPr": "79451.6",
+            "bidSz": "2.457",
+            "askSz": "11.8383",
             "high24h": "80997.9",
-            "low24h": "79800",
-            "ts": "1792976840611",
-            "change24h": "-0.0094",
-            "baseVolume": "17947.7617",
-            "quoteVolume": "1443107703.91486",
-            "usdtVolume": "1443107703.91486",
+            "low24h": "79439",
+            "ts": "1792979145382",
+            "change24h": "-0.01712",
+            "baseVolume": "19757.14",
+            "quoteVolume": "1587205015.47683",
+            "usdtVolume": "1587205015.47683",
             "openUtc": "80119.2",
-            "changeUtc24h": "-0.00143",
-            "indexPrice": "80040.4865",
-            "fundingRate": "0.000081",
-            "holdingAmount": "36515.9125999999726",
+            "changeUtc24h": "-0.00819",
+            "indexPrice": "79493.2355",
+            "fundingRate": "0.000084",
+            "holdingAmount": "36650.7893999999713",
             "deliveryStartTime": null,
             "deliveryTime": null,
             "deliveryStatus": "",
-            "open24h": "80767.1",
-            "markPrice": "80004.7"
+            "open24h": "80835.2",
+            "markPrice": "79457"
           },
           "error": null,
           "attempts": 1,
-          "observed_at": "2026-10-26T01:07:20.441107+00:00"
+          "observed_at": "2026-10-26T01:45:45.266694+00:00"
         },
         "candles_4h": {
           "url": "https://api.bitget.com/api/v2/mix/market/candles?symbol=BTCUSDT&productType=USDT-FUTURES&granularity=4H&limit=100",
@@ -1014,34 +1014,34 @@
             "interval": "4H"
           },
           "attempts": 1,
-          "observed_at": "2026-10-26T01:07:20.729254+00:00"
+          "observed_at": "2026-10-26T01:45:45.487748+00:00"
         },
         "orderbook_depth": {
           "url": "https://api.bitget.com/api/v2/mix/market/merge-depth?symbol=BTCUSDT&productType=USDT-FUTURES&precision=scale0&limit=100",
           "status": "ok",
           "data": {
-            "source_ts_ms": 1792976841153,
-            "mid_usdt": 80008.25,
-            "spread_bps": 0.012498711071148383,
+            "source_ts_ms": 1792979145799,
+            "mid_usdt": 79461.15,
+            "spread_bps": 0.012584766265183536,
             "bands_pct": {
               "0.1": {
-                "bid_notional_usdt": 4456899.687710001,
-                "ask_notional_usdt": 9035255.23165,
-                "imbalance": -0.3393346408564047,
+                "bid_notional_usdt": 3910070.4366,
+                "ask_notional_usdt": 6052530.8542,
+                "imbalance": -0.21505030213127796,
                 "bid_band_covered": false,
                 "ask_band_covered": false
               },
               "0.5": {
-                "bid_notional_usdt": 4456899.687710001,
-                "ask_notional_usdt": 9035255.23165,
-                "imbalance": -0.3393346408564047,
+                "bid_notional_usdt": 3910070.4366,
+                "ask_notional_usdt": 6052530.8542,
+                "imbalance": -0.21505030213127796,
                 "bid_band_covered": false,
                 "ask_band_covered": false
               },
               "1.0": {
-                "bid_notional_usdt": 4456899.687710001,
-                "ask_notional_usdt": 9035255.23165,
-                "imbalance": -0.3393346408564047,
+                "bid_notional_usdt": 3910070.4366,
+                "ask_notional_usdt": 6052530.8542,
+                "imbalance": -0.21505030213127796,
                 "bid_band_covered": false,
                 "ask_band_covered": false
               }
@@ -1051,17 +1051,17 @@
             "scope": "Returned levels only; incomplete bands are lower bounds, not full market depth."
           },
           "attempts": 1,
-          "observed_at": "2026-10-26T01:07:21.007748+00:00"
+          "observed_at": "2026-10-26T01:45:45.696318+00:00"
         },
         "spot_price": {
           "url": "https://api.bitget.com/api/v2/spot/market/tickers?symbol=BTCUSDT",
           "status": "ok",
           "data": {
-            "price_usdt": 80040.1,
-            "source_ts_ms": 1792976840332
+            "price_usdt": 79500.0,
+            "source_ts_ms": 1792979144796
           },
           "attempts": 1,
-          "observed_at": "2026-10-26T01:07:21.277186+00:00"
+          "observed_at": "2026-10-26T01:45:45.908832+00:00"
         },
         "stablecoins": {
           "status": "ok",
@@ -1070,18 +1070,18 @@
               "url": "https://api.exchange.coinbase.com/products/USDT-USD/ticker",
               "status": "ok",
               "data": {
-                "price_usd": 0.99868,
-                "depeg_pct": -0.13199999999999878,
-                "source_time": "2026-10-26T01:07:16.494579048Z"
+                "price_usd": 0.99869,
+                "depeg_pct": -0.13100000000000334,
+                "source_time": "2026-10-26T01:45:42.373978523Z"
               },
               "attempts": 1,
-              "observed_at": "2026-10-26T01:07:21.970082+00:00"
+              "observed_at": "2026-10-26T01:45:46.177535+00:00"
             },
             "USDC": {
               "status": "ok",
               "data": {
-                "price_usd": 0.9997585743999999,
-                "depeg_pct": -0.024142560000006696,
+                "price_usd": 0.9997885590000001,
+                "depeg_pct": -0.02114409999999234,
                 "method": "Bitget USDC-USDT times Coinbase USDT-USD"
               },
               "sources": {
@@ -1089,22 +1089,22 @@
                   "url": "https://api.bitget.com/api/v2/spot/market/tickers?symbol=USDCUSDT",
                   "status": "ok",
                   "data": {
-                    "price_usdt": 1.00108,
-                    "source_ts_ms": 1792976840646
+                    "price_usdt": 1.0011,
+                    "source_ts_ms": 1792979144488
                   },
                   "attempts": 1,
-                  "observed_at": "2026-10-26T01:07:22.026232+00:00"
+                  "observed_at": "2026-10-26T01:45:46.202859+00:00"
                 },
                 "usdt": {
                   "url": "https://api.exchange.coinbase.com/products/USDT-USD/ticker",
                   "status": "ok",
                   "data": {
-                    "price_usd": 0.99868,
-                    "depeg_pct": -0.13199999999999878,
-                    "source_time": "2026-10-26T01:07:16.494579048Z"
+                    "price_usd": 0.99869,
+                    "depeg_pct": -0.13100000000000334,
+                    "source_time": "2026-10-26T01:45:42.373978523Z"
                   },
                   "attempts": 1,
-                  "observed_at": "2026-10-26T01:07:21.970082+00:00"
+                  "observed_at": "2026-10-26T01:45:46.177535+00:00"
                 }
               }
             }
@@ -1114,51 +1114,51 @@
         "coinbase_premium_proxy": {
           "status": "ok",
           "data": {
-            "premium_pct": 0.0034940280472905982,
+            "premium_pct": -0.02685908477211285,
             "method": "Coinbase BTC-USD versus Bitget BTC-USDT converted using Coinbase USDT-USD; proxy, not standard Coinbase/Binance index.",
-            "max_source_skew_seconds": 4.284090995788574
+            "max_source_skew_seconds": 2.868411064147949
           },
           "sources": {
             "spot": {
               "url": "https://api.bitget.com/api/v2/spot/market/tickers?symbol=BTCUSDT",
               "status": "ok",
               "data": {
-                "price_usdt": 80040.1,
-                "source_ts_ms": 1792976840332
+                "price_usdt": 79500.0,
+                "source_ts_ms": 1792979144796
               },
               "attempts": 1,
-              "observed_at": "2026-10-26T01:07:21.277186+00:00"
+              "observed_at": "2026-10-26T01:45:45.908832+00:00"
             },
             "coinbase": {
               "url": "https://api.exchange.coinbase.com/products/BTC-USD/ticker",
               "status": "ok",
               "data": {
-                "price_usd": 79937.24,
-                "source_time": "2026-10-26T01:07:20.778670612Z"
+                "price_usd": 79374.53,
+                "source_time": "2026-10-26T01:45:45.242389924Z"
               },
               "attempts": 1,
-              "observed_at": "2026-10-26T01:07:21.778452+00:00"
+              "observed_at": "2026-10-26T01:45:46.146344+00:00"
             },
             "usdt": {
               "url": "https://api.exchange.coinbase.com/products/USDT-USD/ticker",
               "status": "ok",
               "data": {
-                "price_usd": 0.99868,
-                "depeg_pct": -0.13199999999999878,
-                "source_time": "2026-10-26T01:07:16.494579048Z"
+                "price_usd": 0.99869,
+                "depeg_pct": -0.13100000000000334,
+                "source_time": "2026-10-26T01:45:42.373978523Z"
               },
               "attempts": 1,
-              "observed_at": "2026-10-26T01:07:21.970082+00:00"
+              "observed_at": "2026-10-26T01:45:46.177535+00:00"
             }
           }
         },
         "futures_basis": {
           "status": "ok",
           "data": {
-            "basis_pct": -0.04431712143445621,
-            "mark_price_usdt": 80004.7,
-            "index_price_usdt": 80040.1715,
-            "source_ts_ms": 1792976840011,
+            "basis_pct": -0.0429789240375511,
+            "mark_price_usdt": 79464.1,
+            "index_price_usdt": 79498.2675,
+            "source_ts_ms": 1792979144950,
             "method": "Bitget perpetual mark/index premium; not dated futures annualised basis."
           },
           "sources": {
@@ -1167,32 +1167,32 @@
               "status": "ok",
               "data": {
                 "symbol": "BTCUSDT",
-                "lastPr": "80004.7",
-                "askPr": "80004.8",
-                "bidPr": "80004.7",
-                "bidSz": "4.0614",
-                "askSz": "3.6636",
+                "lastPr": "79456.7",
+                "askPr": "79456.8",
+                "bidPr": "79456.7",
+                "bidSz": "1.0009",
+                "askSz": "15.5488",
                 "high24h": "80997.9",
-                "low24h": "79800",
-                "ts": "1792976840011",
-                "change24h": "-0.00944",
-                "baseVolume": "17945.5272",
-                "quoteVolume": "1442928933.19046",
-                "usdtVolume": "1442928933.19046",
+                "low24h": "79439",
+                "ts": "1792979144950",
+                "change24h": "-0.01705",
+                "baseVolume": "19757.14",
+                "quoteVolume": "1587205015.47683",
+                "usdtVolume": "1587205015.47683",
                 "openUtc": "80119.2",
-                "changeUtc24h": "-0.00143",
-                "indexPrice": "80040.1715",
-                "fundingRate": "0.000081",
-                "holdingAmount": "36515.9125999999726",
+                "changeUtc24h": "-0.00819",
+                "indexPrice": "79498.2675",
+                "fundingRate": "0.000084",
+                "holdingAmount": "36650.7893999999713",
                 "deliveryStartTime": null,
                 "deliveryTime": null,
                 "deliveryStatus": "",
-                "open24h": "80767.1",
-                "markPrice": "80004.7"
+                "open24h": "80835.2",
+                "markPrice": "79464.1"
               },
               "error": null,
               "attempts": 1,
-              "observed_at": "2026-10-26T01:07:19.140521+00:00"
+              "observed_at": "2026-10-26T01:45:44.719873+00:00"
             }
           }
         },
@@ -1204,78 +1204,6 @@
               "status": "ok",
               "data": {
                 "candles": [
-                  {
-                    "open_time_ms": 1792947000000,
-                    "open": 80590.1,
-                    "high": 80700.0,
-                    "low": 80590.1,
-                    "close": 80700.0,
-                    "base_volume_btc": 60.9353,
-                    "quote_volume_usdt": 4914502.95403
-                  },
-                  {
-                    "open_time_ms": 1792947300000,
-                    "open": 80700.0,
-                    "high": 80833.3,
-                    "low": 80699.9,
-                    "close": 80771.3,
-                    "base_volume_btc": 328.8476,
-                    "quote_volume_usdt": 26565950.87135
-                  },
-                  {
-                    "open_time_ms": 1792947600000,
-                    "open": 80771.3,
-                    "high": 80804.8,
-                    "low": 80742.2,
-                    "close": 80761.6,
-                    "base_volume_btc": 40.2001,
-                    "quote_volume_usdt": 3246841.13729
-                  },
-                  {
-                    "open_time_ms": 1792947900000,
-                    "open": 80761.6,
-                    "high": 80812.1,
-                    "low": 80751.4,
-                    "close": 80755.5,
-                    "base_volume_btc": 26.9894,
-                    "quote_volume_usdt": 2180044.5588
-                  },
-                  {
-                    "open_time_ms": 1792948200000,
-                    "open": 80755.5,
-                    "high": 80772.0,
-                    "low": 80743.6,
-                    "close": 80753.9,
-                    "base_volume_btc": 28.3796,
-                    "quote_volume_usdt": 2291892.87422
-                  },
-                  {
-                    "open_time_ms": 1792948500000,
-                    "open": 80753.9,
-                    "high": 80811.0,
-                    "low": 80749.9,
-                    "close": 80806.3,
-                    "base_volume_btc": 33.1809,
-                    "quote_volume_usdt": 2680892.49539
-                  },
-                  {
-                    "open_time_ms": 1792948800000,
-                    "open": 80806.3,
-                    "high": 80924.0,
-                    "low": 80766.8,
-                    "close": 80766.8,
-                    "base_volume_btc": 170.5857,
-                    "quote_volume_usdt": 13792194.75292
-                  },
-                  {
-                    "open_time_ms": 1792949100000,
-                    "open": 80766.8,
-                    "high": 80766.8,
-                    "low": 80703.7,
-                    "close": 80737.2,
-                    "base_volume_btc": 59.9057,
-                    "quote_volume_usdt": 4835965.31217
-                  },
                   {
                     "open_time_ms": 1792949400000,
                     "open": 80737.2,
@@ -2094,6 +2022,78 @@
                     "close": 80091.9,
                     "base_volume_btc": 135.721,
                     "quote_volume_usdt": 10882336.08919
+                  },
+                  {
+                    "open_time_ms": 1792976700000,
+                    "open": 80091.9,
+                    "high": 80107.1,
+                    "low": 79934.7,
+                    "close": 80047.8,
+                    "base_volume_btc": 96.248,
+                    "quote_volume_usdt": 7701434.30906
+                  },
+                  {
+                    "open_time_ms": 1792977000000,
+                    "open": 80047.8,
+                    "high": 80080.0,
+                    "low": 79927.0,
+                    "close": 80028.7,
+                    "base_volume_btc": 78.4511,
+                    "quote_volume_usdt": 6276450.65342
+                  },
+                  {
+                    "open_time_ms": 1792977300000,
+                    "open": 80028.7,
+                    "high": 80048.1,
+                    "low": 79870.4,
+                    "close": 79924.8,
+                    "base_volume_btc": 94.5469,
+                    "quote_volume_usdt": 7557818.71435
+                  },
+                  {
+                    "open_time_ms": 1792977600000,
+                    "open": 79924.8,
+                    "high": 80183.6,
+                    "low": 79887.8,
+                    "close": 80163.2,
+                    "base_volume_btc": 129.0953,
+                    "quote_volume_usdt": 10331718.17291
+                  },
+                  {
+                    "open_time_ms": 1792977900000,
+                    "open": 80163.2,
+                    "high": 80216.3,
+                    "low": 79942.1,
+                    "close": 79968.2,
+                    "base_volume_btc": 140.8818,
+                    "quote_volume_usdt": 11281950.42203
+                  },
+                  {
+                    "open_time_ms": 1792978200000,
+                    "open": 79968.2,
+                    "high": 79999.2,
+                    "low": 79860.0,
+                    "close": 79960.1,
+                    "base_volume_btc": 98.6069,
+                    "quote_volume_usdt": 7879934.18171
+                  },
+                  {
+                    "open_time_ms": 1792978500000,
+                    "open": 79960.1,
+                    "high": 79989.1,
+                    "low": 79627.7,
+                    "close": 79695.6,
+                    "base_volume_btc": 618.6095,
+                    "quote_volume_usdt": 49330575.46419
+                  },
+                  {
+                    "open_time_ms": 1792978800000,
+                    "open": 79695.6,
+                    "high": 79772.0,
+                    "low": 79452.9,
+                    "close": 79488.3,
+                    "base_volume_btc": 731.6435,
+                    "quote_volume_usdt": 58225211.05431
                   }
                 ],
                 "interval": "5m",
@@ -2101,22 +2101,22 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-10-26T01:07:22.655511+00:00",
+              "observed_at": "2026-10-26T01:45:46.416033+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "5m",
-                "grade": "neutral",
-                "score": 0,
-                "observed_at": "2026-10-26T01:05:00+00:00",
-                "price_vs_20_prior_pct": -0.0225,
-                "momentum_6_pct": -0.2254,
-                "volume_ratio": 0.6096,
+                "grade": "slightly_bearish",
+                "score": -1,
+                "observed_at": "2026-10-26T01:45:00+00:00",
+                "price_vs_20_prior_pct": -0.7126,
+                "momentum_6_pct": -0.6753,
+                "volume_ratio": 5.1504,
                 "evidence": {
-                  "trend_vote": 0,
-                  "momentum_vote": 0,
-                  "directional_agreement": false,
-                  "state": "no_direction",
-                  "elevated_volume": false
+                  "trend_vote": -1,
+                  "momentum_vote": -1,
+                  "directional_agreement": true,
+                  "state": "aligned",
+                  "elevated_volume": true
                 },
                 "confidence": "low",
                 "quality": "provisional_price_volume_only",
@@ -2130,33 +2130,6 @@
               "status": "ok",
               "data": {
                 "candles": [
-                  {
-                    "open_time_ms": 1792887300000,
-                    "open": 80746.0,
-                    "high": 80853.8,
-                    "low": 80731.3,
-                    "close": 80829.1,
-                    "base_volume_btc": 74.3879,
-                    "quote_volume_usdt": 6009285.39397
-                  },
-                  {
-                    "open_time_ms": 1792888200000,
-                    "open": 80829.1,
-                    "high": 80886.0,
-                    "low": 80818.5,
-                    "close": 80843.0,
-                    "base_volume_btc": 96.6897,
-                    "quote_volume_usdt": 7817589.05695
-                  },
-                  {
-                    "open_time_ms": 1792889100000,
-                    "open": 80843.0,
-                    "high": 80888.0,
-                    "low": 80826.1,
-                    "close": 80840.1,
-                    "base_volume_btc": 197.8543,
-                    "quote_volume_usdt": 15998710.89164
-                  },
                   {
                     "open_time_ms": 1792890000000,
                     "open": 80840.1,
@@ -3020,6 +2993,33 @@
                     "close": 80140.8,
                     "base_volume_btc": 489.5312,
                     "quote_volume_usdt": 39143719.76612
+                  },
+                  {
+                    "open_time_ms": 1792976400000,
+                    "open": 80140.8,
+                    "high": 80239.0,
+                    "low": 79927.0,
+                    "close": 80028.7,
+                    "base_volume_btc": 310.4201,
+                    "quote_volume_usdt": 24860221.05167
+                  },
+                  {
+                    "open_time_ms": 1792977300000,
+                    "open": 80028.7,
+                    "high": 80216.3,
+                    "low": 79870.4,
+                    "close": 79968.2,
+                    "base_volume_btc": 364.524,
+                    "quote_volume_usdt": 29171487.30929
+                  },
+                  {
+                    "open_time_ms": 1792978200000,
+                    "open": 79968.2,
+                    "high": 79999.2,
+                    "low": 79452.9,
+                    "close": 79488.3,
+                    "base_volume_btc": 1448.8599,
+                    "quote_volume_usdt": 115435720.70021
                   }
                 ],
                 "interval": "15m",
@@ -3027,21 +3027,21 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-10-26T01:07:22.931752+00:00",
+              "observed_at": "2026-10-26T01:45:46.642343+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "15m",
-                "grade": "neutral",
-                "score": 0,
-                "observed_at": "2026-10-26T01:00:00+00:00",
-                "price_vs_20_prior_pct": -0.2595,
-                "momentum_6_pct": 0.1179,
-                "volume_ratio": 1.4017,
+                "grade": "slightly_bearish",
+                "score": -1,
+                "observed_at": "2026-10-26T01:45:00+00:00",
+                "price_vs_20_prior_pct": -0.9807,
+                "momentum_6_pct": -0.7333,
+                "volume_ratio": 3.6335,
                 "evidence": {
-                  "trend_vote": 0,
-                  "momentum_vote": 0,
-                  "directional_agreement": false,
-                  "state": "no_direction",
+                  "trend_vote": -1,
+                  "momentum_vote": -1,
+                  "directional_agreement": true,
+                  "state": "aligned",
                   "elevated_volume": true
                 },
                 "confidence": "low",
@@ -3056,15 +3056,6 @@
               "status": "ok",
               "data": {
                 "candles": [
-                  {
-                    "open_time_ms": 1792798200000,
-                    "open": 80911.6,
-                    "high": 81179.8,
-                    "low": 80818.8,
-                    "close": 81155.6,
-                    "base_volume_btc": 673.4718,
-                    "quote_volume_usdt": 54595927.85745
-                  },
                   {
                     "open_time_ms": 1792800000000,
                     "open": 81155.6,
@@ -3946,6 +3937,15 @@
                     "close": 80140.8,
                     "base_volume_btc": 879.8134,
                     "quote_volume_usdt": 70448753.47858
+                  },
+                  {
+                    "open_time_ms": 1792976400000,
+                    "open": 80140.8,
+                    "high": 80239.0,
+                    "low": 79870.4,
+                    "close": 79968.2,
+                    "base_volume_btc": 674.9441,
+                    "quote_volume_usdt": 54031708.36096
                   }
                 ],
                 "interval": "30m",
@@ -3953,21 +3953,21 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-10-26T01:07:23.237370+00:00",
+              "observed_at": "2026-10-26T01:45:46.842608+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "30m",
-                "grade": "neutral",
-                "score": 0,
-                "observed_at": "2026-10-26T01:00:00+00:00",
-                "price_vs_20_prior_pct": -0.4398,
-                "momentum_6_pct": -0.1097,
-                "volume_ratio": 1.8135,
+                "grade": "slightly_bearish",
+                "score": -1,
+                "observed_at": "2026-10-26T01:30:00+00:00",
+                "price_vs_20_prior_pct": -0.6245,
+                "momentum_6_pct": -0.6263,
+                "volume_ratio": 1.3273,
                 "evidence": {
-                  "trend_vote": 0,
-                  "momentum_vote": 0,
-                  "directional_agreement": false,
-                  "state": "no_direction",
+                  "trend_vote": -1,
+                  "momentum_vote": -1,
+                  "directional_agreement": true,
+                  "state": "aligned",
                   "elevated_volume": true
                 },
                 "confidence": "low",
@@ -4879,7 +4879,7 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-10-26T01:07:23.610395+00:00",
+              "observed_at": "2026-10-26T01:45:47.064700+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "1h",
@@ -5805,7 +5805,7 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-10-26T01:07:23.911758+00:00",
+              "observed_at": "2026-10-26T01:45:47.286488+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "4h",
@@ -6641,7 +6641,7 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-10-26T01:07:24.195544+00:00",
+              "observed_at": "2026-10-26T01:45:47.505889+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "1d",
@@ -7025,216 +7025,28 @@
                 "https://api.bitget.com/api/v2/mix/market/history-candles?symbol=BTCUSDT&productType=USDT-FUTURES&granularity=1Wutc&startTime=1778457600000&endTime=1785715200000&limit=100",
                 "https://api.bitget.com/api/v2/mix/market/history-candles?symbol=BTCUSDT&productType=USDT-FUTURES&granularity=1Wutc&startTime=1771200000000&endTime=1778457600000&limit=100"
               ],
-              "observed_at": "2026-10-26T01:07:22.655330+00:00"
+              "observed_at": "2026-10-26T01:45:46.415998+00:00"
             }
           },
-          "observed_at": "2026-10-26T01:07:25.358749+00:00",
+          "observed_at": "2026-10-26T01:45:48.439996+00:00",
           "scope": "Individual timeframe statuses are authoritative."
         }
       },
       "cvd_4h": {
-        "status": "ok",
+        "status": "not_collected",
         "value": null,
-        "coverage_verified": true,
-        "reason": "Both Bitget markets passed stored history coverage checks; deltas use the provider buy/sell convention.",
-        "schema_version": 2,
+        "coverage_verified": false,
+        "reason": "Local CVD journal is not configured.",
+        "schema_version": 1,
         "exchange": "bitget",
         "symbol": "BTCUSDT",
         "unit": "BTC",
-        "method": "provider_reported_buy_minus_sell",
+        "method": "observed_buy_minus_sell",
         "interval_start": "2026-10-25T20:00:00+00:00",
         "interval_end": "2026-10-26T00:00:00+00:00",
         "interval_convention": "[start,end)",
-        "observed_at": "2026-10-26T01:07:19.140483+00:00",
-        "markets": {
-          "spot": {
-            "status": "ok",
-            "value": "-13.746537",
-            "coverage_verified": true,
-            "reason": "Provider history exhausted and exact BTC/quote volumes reconciled; not independent proof of all exchange delivery or taker attribution.",
-            "unit": "BTC",
-            "observed_delta_btc": "-13.746537",
-            "observed_buy_btc": "261.518276",
-            "observed_sell_btc": "275.264813",
-            "trade_count": 30881,
-            "first_trade_at": "2026-10-25T20:00:00.048000+00:00",
-            "last_trade_at": "2026-10-25T23:59:59.891000+00:00",
-            "unresolved_overlapping_gaps": 51,
-            "open_overlapping_gaps": 49,
-            "latest_journal_trade_at": "2026-10-26T01:07:23.581000+00:00",
-            "latest_journal_trade_age_seconds": 0,
-            "journal_trade_status": "recent",
-            "recovery": {
-              "status": "unverified_recovery_diagnostics",
-              "reason": "candidate_requires_coverage_validation",
-              "interval_start_ms": 1792958400000,
-              "interval_end_ms": 1792972800000,
-              "pagination_exhausted": true,
-              "candle_rechecked": false,
-              "pages": 32,
-              "recovered_trades": 30881,
-              "journal_missing": 0,
-              "journal_extra": 0,
-              "journal_conflicts": 0,
-              "volume_reconciliation": {
-                "rule": "exact_decimal_equality",
-                "base_btc": {
-                  "trades": "536.783089",
-                  "candle": "536.783089",
-                  "difference": "0.000000",
-                  "difference_pct": "0",
-                  "exact": true
-                },
-                "quote_usdt": {
-                  "trades": "43076286.95171002",
-                  "candle": "43076286.95171002",
-                  "difference": "0E-8",
-                  "difference_pct": "0",
-                  "exact": true
-                }
-              },
-              "prior_volume_failures": [
-                {
-                  "reason": "candle_volume_mismatch",
-                  "volume_reconciliation": {
-                    "rule": "exact_decimal_equality",
-                    "base_btc": {
-                      "trades": "536.783089",
-                      "candle": "425.277038",
-                      "difference": "111.506051",
-                      "difference_pct": "26.21962651084867648085904887251401520530718143310620029290177665317542961254352980139031160201035825",
-                      "exact": false
-                    },
-                    "quote_usdt": {
-                      "trades": "43076286.95171002",
-                      "candle": "34142216.05748443",
-                      "difference": "8934070.89422559",
-                      "difference_pct": "26.16722616711085534408626943642869960814713864455776329476166324194375088848689224253450440845674044",
-                      "exact": false
-                    }
-                  }
-                }
-              ]
-            },
-            "observed_trade_count": 30881,
-            "validated_delta_btc": "-13.746537",
-            "coverage_scope": "bitget_public_history_only",
-            "coverage_method": "bitget_history_exhaustion_and_exact_volume_v1",
-            "exchange": "bitget",
-            "symbol": "BTCUSDT",
-            "market": "spot",
-            "interval_start_ms": 1792958400000,
-            "interval_end_ms": 1792972800000,
-            "validated_buy_btc": "261.518276",
-            "validated_sell_btc": "275.264813",
-            "first_trade_ms": 1792958400048,
-            "last_trade_ms": 1792972799891,
-            "recovered_missing_trades": 0,
-            "timestamp_rounding_matches": 0,
-            "pagination_pages": 32,
-            "evidence_sha256": "fa17cb2e0fda65a4148c6b9c5b9bb8f5d371fd34821c1bfe3c209c9bdf2da5f3",
-            "source_run_id": "d4ace2d7e81e409b8e514bd38ef41af7",
-            "history_response_at": "2026-10-26T00:31:33.101000+00:00",
-            "validated_at": "2026-10-26T01:07:19.140000+00:00",
-            "side_semantics": "provider_reported_buy_sell",
-            "taker_side_verified": false
-          },
-          "usdt_futures": {
-            "status": "ok",
-            "value": "-166.5695",
-            "coverage_verified": true,
-            "reason": "Provider history exhausted and exact BTC/quote volumes reconciled; not independent proof of all exchange delivery or taker attribution.",
-            "unit": "BTC",
-            "observed_delta_btc": "-163.4544",
-            "observed_buy_btc": "2916.2262",
-            "observed_sell_btc": "3079.6806",
-            "trade_count": 150050,
-            "first_trade_at": "2026-10-25T20:00:00.470000+00:00",
-            "last_trade_at": "2026-10-25T23:59:59.973000+00:00",
-            "unresolved_overlapping_gaps": 86,
-            "open_overlapping_gaps": 84,
-            "latest_journal_trade_at": "2026-10-26T01:07:23.875000+00:00",
-            "latest_journal_trade_age_seconds": 0,
-            "journal_trade_status": "recent",
-            "recovery": {
-              "status": "unverified_recovery_diagnostics",
-              "reason": "candidate_requires_coverage_validation",
-              "interval_start_ms": 1792958400000,
-              "interval_end_ms": 1792972800000,
-              "pagination_exhausted": true,
-              "candle_rechecked": false,
-              "pages": 152,
-              "recovered_trades": 150050,
-              "journal_missing": 213,
-              "journal_extra": 0,
-              "journal_conflicts": 0,
-              "volume_reconciliation": {
-                "rule": "exact_decimal_equality",
-                "base_btc": {
-                  "trades": "5999.7937",
-                  "candle": "5999.7937",
-                  "difference": "0.0000",
-                  "difference_pct": "0",
-                  "exact": true
-                },
-                "quote_usdt": {
-                  "trades": "481351242.35496",
-                  "candle": "481351242.35496",
-                  "difference": "0.00000",
-                  "difference_pct": "0",
-                  "exact": true
-                }
-              },
-              "prior_volume_failures": [
-                {
-                  "reason": "candle_volume_mismatch",
-                  "volume_reconciliation": {
-                    "rule": "exact_decimal_equality",
-                    "base_btc": {
-                      "trades": "5999.7937",
-                      "candle": "4756.2725",
-                      "difference": "1243.5212",
-                      "difference_pct": "26.14486869707318073133951008904557087509178668799989908063509817824777701445827588726255697082116300",
-                      "exact": false
-                    },
-                    "quote_usdt": {
-                      "trades": "481351242.35496",
-                      "candle": "381838650.89364",
-                      "difference": "99512591.46132",
-                      "difference_pct": "26.06142443370378736952099389389015233702508707680823087102652537771086258937502726775013643183519552",
-                      "exact": false
-                    }
-                  }
-                }
-              ]
-            },
-            "observed_trade_count": 149837,
-            "validated_delta_btc": "-166.5695",
-            "coverage_scope": "bitget_public_history_only",
-            "coverage_method": "bitget_history_exhaustion_and_exact_volume_v1",
-            "exchange": "bitget",
-            "symbol": "BTCUSDT",
-            "market": "usdt_futures",
-            "interval_start_ms": 1792958400000,
-            "interval_end_ms": 1792972800000,
-            "validated_buy_btc": "2916.6121",
-            "validated_sell_btc": "3083.1816",
-            "first_trade_ms": 1792958400470,
-            "last_trade_ms": 1792972799973,
-            "recovered_missing_trades": 213,
-            "timestamp_rounding_matches": 0,
-            "pagination_pages": 152,
-            "evidence_sha256": "9f6b8f05170f8ce620e38e748e9b9db4e55fa9f0907ee71afcae633c9bcafb67",
-            "source_run_id": "30aecac2dbf347bf9874bb7acfef2cf4",
-            "history_response_at": "2026-10-26T00:33:26.698000+00:00",
-            "validated_at": "2026-10-26T01:07:19.140000+00:00",
-            "side_semantics": "provider_reported_buy_sell",
-            "taker_side_verified": false
-          }
-        },
-        "coverage_scope": "bitget_public_history_only",
-        "side_semantics": "provider_reported_buy_sell",
-        "taker_side_verified": false
+        "observed_at": "2026-10-26T01:45:44.719867+00:00",
+        "markets": {}
       },
       "cycle_history_reference": {
         "schema_version": 1,
@@ -7247,7 +7059,7 @@
         "status": "partial",
         "requested_from": "2021-01-01T00:00:00+00:00",
         "required_through": "2026-10-26T00:00:00+00:00",
-        "checked_at": "2026-10-26T01:07:25.358817+00:00",
+        "checked_at": "2026-10-26T01:45:48.440017+00:00",
         "candle_count": 2123,
         "required_days": 2124,
         "missing_days": 1,
@@ -7260,7 +7072,7 @@
       "cycle_anchor_review": {
         "status": "unavailable",
         "model_version": "archive_cycle_context_v1",
-        "checked_at": "2026-10-26T01:07:25.358817+00:00",
+        "checked_at": "2026-10-26T01:45:48.440017+00:00",
         "activation": "draft",
         "reason": "Onvolledige daghistorie vanaf de gekozen vorige cyclustop.",
         "missing_days": 1,
@@ -7269,7 +7081,7 @@
       "scenario_snapshot": {
         "schema_version": 1,
         "model_version": "two_routes_daily_weekly_v4_anchors",
-        "as_of": "2026-10-26T01:07:25.358817+00:00",
+        "as_of": "2026-10-26T01:45:48.440017+00:00",
         "horizons": {
           "swing": {
             "schema_version": 1,
@@ -7278,12 +7090,12 @@
             "timeframe": "1d",
             "label": "Swing \u00b7 dagen tot weken",
             "status": "ready",
-            "recorded_at": "2026-10-26T01:07:25.358817+00:00",
-            "source_observed_at": "2026-10-26T01:07:24.195544+00:00",
-            "reference_price": 80004.7,
+            "recorded_at": "2026-10-26T01:45:48.440017+00:00",
+            "source_observed_at": "2026-10-26T01:45:47.505889+00:00",
+            "reference_price": 79456.7,
             "reference": "bitget/BTCUSDT/USDT-FUTURES",
             "unit": "USDT",
-            "valid_until": "2026-10-26T02:07:19.140000+00:00",
+            "valid_until": "2026-10-26T02:45:44.719000+00:00",
             "candle_closed_at": "2026-10-26T00:00:00+00:00",
             "last_close": 80119.2,
             "previous_close": 80844.5,
@@ -7592,7 +7404,7 @@
               "zone_timeframe": "1d",
               "confirmation_timeframe": "4h",
               "confirmation_closed_at": "2026-10-26T00:00:00+00:00",
-              "confirmation_source_at": "2026-10-26T01:07:23.911758+00:00",
+              "confirmation_source_at": "2026-10-26T01:45:47.286488+00:00",
               "confirmation_bar": {
                 "open": 80531.9,
                 "high": 80720.7,
@@ -7606,24 +7418,24 @@
                 {
                   "price": 81010.2976,
                   "role": "Ondiepe terugname",
-                  "from_reference_pct": 1.2569231557646
+                  "from_reference_pct": 1.9552757665495912
                 },
                 {
                   "price": 82148.6012,
                   "role": "Gematigde terugname",
-                  "from_reference_pct": 2.67971906650486
+                  "from_reference_pct": 3.3878844704096744
                 }
               ],
               "next_lower": [
                 {
                   "price": 79170.3,
                   "role": "Eindpunt van de oorspronkelijke beweging",
-                  "from_zone_pct": -1.0429387273497626
+                  "from_zone_pct": -0.3604478917448084
                 },
                 {
                   "price": 77049.6248,
                   "role": "Tweepunts-extensie; extrapolatie",
-                  "from_zone_pct": -3.6936269994137794
+                  "from_zone_pct": -3.029417531812917
                 }
               ],
               "all_levels": [
@@ -7775,7 +7587,7 @@
                   {
                     "price": 76774.16214285715,
                     "kind": "atr_projection",
-                    "from_reference_pct": -4.037935092741862,
+                    "from_reference_pct": -3.3761002623351355,
                     "rejection_to": [
                       {
                         "price": 74352.00120000001,
@@ -7792,7 +7604,7 @@
                   {
                     "price": 74595.85500000001,
                     "kind": "atr_projection",
-                    "from_reference_pct": -6.760659061280139,
+                    "from_reference_pct": -6.117602417417267,
                     "rejection_to": [
                       {
                         "price": 74352.00120000001,
@@ -7813,28 +7625,28 @@
                     "price": 77049.6248,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": -3.6936269994137794
+                    "distance_pct": -3.029417531812917
                   },
                   {
                     "ratio": 1.618,
                     "price": 74352.00120000001,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": -7.065458404318726
+                    "distance_pct": -6.424503912193669
                   },
                   {
                     "ratio": 2.618,
                     "price": 66555.40120000002,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": -16.81063587514231
+                    "distance_pct": -16.236892294797013
                   },
                   {
                     "ratio": 4.236,
                     "price": 53940.502400000034,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": -32.578333022934856
+                    "distance_pct": -32.11333669784923
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -7905,7 +7717,7 @@
                   {
                     "price": 79170.3,
                     "kind": "range_boundary",
-                    "from_reference_pct": -1.0429387273497626,
+                    "from_reference_pct": -0.3604478917448084,
                     "rejection_to": [
                       {
                         "price": 77049.6248,
@@ -7922,7 +7734,7 @@
                   {
                     "price": 76774.16214285715,
                     "kind": "atr_projection",
-                    "from_reference_pct": -4.037935092741862,
+                    "from_reference_pct": -3.3761002623351355,
                     "rejection_to": [
                       {
                         "price": 74352.00120000001,
@@ -7943,28 +7755,28 @@
                     "price": 82148.6012,
                     "role": "Gematigde terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": 2.67971906650486
+                    "distance_pct": 3.3878844704096744
                   },
                   {
                     "ratio": 0.236,
                     "price": 81010.2976,
                     "role": "Ondiepe terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": 1.2569231557646
+                    "distance_pct": 1.9552757665495912
                   },
                   {
                     "ratio": 0.0,
                     "price": 79170.3,
                     "role": "Eindpunt van de oorspronkelijke beweging",
                     "kind": "fib_retracement",
-                    "distance_pct": -1.0429387273497626
+                    "distance_pct": -0.3604478917448084
                   },
                   {
                     "ratio": 1.272,
                     "price": 77049.6248,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": -3.6936269994137794
+                    "distance_pct": -3.029417531812917
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -8035,7 +7847,7 @@
                   {
                     "price": 86966.9,
                     "kind": "range_boundary",
-                    "from_reference_pct": 8.702238743473822,
+                    "from_reference_pct": 9.451940490858535,
                     "rejection_to": [
                       {
                         "price": 85298.4276,
@@ -8052,7 +7864,7 @@
                   {
                     "price": 89363.03785714284,
                     "kind": "atr_projection",
-                    "from_reference_pct": 11.697235108865911,
+                    "from_reference_pct": 12.467592861448873,
                     "rejection_to": [
                       {
                         "price": 86966.9,
@@ -8073,21 +7885,21 @@
                     "price": 83988.59879999999,
                     "role": "Diepe terugname; golden-ratio-zone",
                     "kind": "fib_retracement",
-                    "distance_pct": 4.979580949619211
+                    "distance_pct": 5.703608128704052
                   },
                   {
                     "ratio": 0.786,
                     "price": 85298.4276,
                     "role": "Verdere diepe terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": 6.616770764717561
+                    "distance_pct": 7.352089376981419
                   },
                   {
                     "ratio": 1.0,
                     "price": 86966.9,
                     "role": "Volledige terugname naar het beginpunt",
                     "kind": "fib_retracement",
-                    "distance_pct": 8.702238743473822
+                    "distance_pct": 9.451940490858535
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -8162,7 +7974,7 @@
                   {
                     "price": 89363.03785714284,
                     "kind": "atr_projection",
-                    "from_reference_pct": 11.697235108865911,
+                    "from_reference_pct": 12.467592861448873,
                     "rejection_to": [
                       {
                         "price": 86966.9,
@@ -8179,7 +7991,7 @@
                   {
                     "price": 91541.34499999999,
                     "kind": "atr_projection",
-                    "from_reference_pct": 14.419959077404187,
+                    "from_reference_pct": 15.209095016531005,
                     "rejection_to": [
                       {
                         "price": 86966.9,
@@ -8297,7 +8109,7 @@
                   {
                     "price": 76774.16214285715,
                     "kind": "atr_projection",
-                    "from_reference_pct": -4.037935092741862,
+                    "from_reference_pct": -3.3761002623351355,
                     "rejection_to": [
                       {
                         "price": 74352.00120000001,
@@ -8314,7 +8126,7 @@
                   {
                     "price": 74595.85500000001,
                     "kind": "atr_projection",
-                    "from_reference_pct": -6.760659061280139,
+                    "from_reference_pct": -6.117602417417267,
                     "rejection_to": [
                       {
                         "price": 74352.00120000001,
@@ -8362,7 +8174,7 @@
                   {
                     "price": 79170.3,
                     "kind": "range_boundary",
-                    "from_reference_pct": -1.0429387273497626,
+                    "from_reference_pct": -0.3604478917448084,
                     "rejection_to": [
                       {
                         "price": 77049.6248,
@@ -8379,7 +8191,7 @@
                   {
                     "price": 76774.16214285715,
                     "kind": "atr_projection",
-                    "from_reference_pct": -4.037935092741862,
+                    "from_reference_pct": -3.3761002623351355,
                     "rejection_to": [
                       {
                         "price": 74352.00120000001,
@@ -8427,7 +8239,7 @@
                   {
                     "price": 86966.9,
                     "kind": "range_boundary",
-                    "from_reference_pct": 8.702238743473822,
+                    "from_reference_pct": 9.451940490858535,
                     "rejection_to": [
                       {
                         "price": 85298.4276,
@@ -8444,7 +8256,7 @@
                   {
                     "price": 89363.03785714284,
                     "kind": "atr_projection",
-                    "from_reference_pct": 11.697235108865911,
+                    "from_reference_pct": 12.467592861448873,
                     "rejection_to": [
                       {
                         "price": 86966.9,
@@ -8492,7 +8304,7 @@
                   {
                     "price": 89363.03785714284,
                     "kind": "atr_projection",
-                    "from_reference_pct": 11.697235108865911,
+                    "from_reference_pct": 12.467592861448873,
                     "rejection_to": [
                       {
                         "price": 86966.9,
@@ -8509,7 +8321,7 @@
                   {
                     "price": 91541.34499999999,
                     "kind": "atr_projection",
-                    "from_reference_pct": 14.419959077404187,
+                    "from_reference_pct": 15.209095016531005,
                     "rejection_to": [
                       {
                         "price": 86966.9,
@@ -9645,7 +9457,7 @@
               "position_tracked": false,
               "probability": null
             },
-            "scenario_set_id": "379799e1fd644c77cf085910"
+            "scenario_set_id": "1c238d05360d2a1ddd49a731"
           },
           "position": {
             "schema_version": 1,
@@ -9654,12 +9466,12 @@
             "timeframe": "1w",
             "label": "Positietrade \u00b7 weken tot maanden of langer",
             "status": "ready",
-            "recorded_at": "2026-10-26T01:07:25.358817+00:00",
-            "source_observed_at": "2026-10-26T01:07:22.655330+00:00",
-            "reference_price": 80004.7,
+            "recorded_at": "2026-10-26T01:45:48.440017+00:00",
+            "source_observed_at": "2026-10-26T01:45:46.415998+00:00",
+            "reference_price": 79456.7,
             "reference": "bitget/BTCUSDT/USDT-FUTURES",
             "unit": "USDT",
-            "valid_until": "2026-10-26T02:07:19.140000+00:00",
+            "valid_until": "2026-10-26T02:45:44.719000+00:00",
             "candle_closed_at": "2026-10-26T00:00:00+00:00",
             "last_close": 80125.5,
             "previous_close": 82066.0,
@@ -9984,7 +9796,7 @@
               "zone_timeframe": "1w",
               "confirmation_timeframe": "4h",
               "confirmation_closed_at": "2026-10-26T00:00:00+00:00",
-              "confirmation_source_at": "2026-10-26T01:07:23.911758+00:00",
+              "confirmation_source_at": "2026-10-26T01:45:47.286488+00:00",
               "confirmation_bar": {
                 "open": 80531.9,
                 "high": 80720.7,
@@ -9998,12 +9810,12 @@
                 {
                   "price": 87373.0,
                   "role": "Eindpunt van de oorspronkelijke beweging",
-                  "from_reference_pct": 9.209833922257072
+                  "from_reference_pct": 9.963036471436638
                 },
                 {
                   "price": 93512.17857143,
                   "role": "ATR-projectie",
-                  "from_reference_pct": 16.883356317103893
+                  "from_reference_pct": 17.689481908297246
                 }
               ],
               "next_lower": [
@@ -10167,13 +9979,13 @@
                   {
                     "price": 51630.82142857143,
                     "kind": "atr_projection",
-                    "from_reference_pct": -35.4652646299887,
+                    "from_reference_pct": -35.0201790049531,
                     "rejection_to": []
                   },
                   {
                     "price": 46049.75,
                     "kind": "atr_projection",
-                    "from_reference_pct": -42.44119407984781,
+                    "from_reference_pct": -42.044220311188354,
                     "rejection_to": []
                   }
                 ],
@@ -10246,13 +10058,13 @@
                   {
                     "price": 57770.0,
                     "kind": "range_boundary",
-                    "from_reference_pct": -27.79174223514368,
+                    "from_reference_pct": -27.293733568094314,
                     "rejection_to": []
                   },
                   {
                     "price": 51630.82142857143,
                     "kind": "atr_projection",
-                    "from_reference_pct": -35.4652646299887,
+                    "from_reference_pct": -35.0201790049531,
                     "rejection_to": []
                   }
                 ],
@@ -10262,21 +10074,21 @@
                     "price": 69078.346,
                     "role": "Diepe terugname; golden-ratio-zone",
                     "kind": "fib_retracement",
-                    "distance_pct": -13.657140143016589
+                    "distance_pct": -13.061647412993482
                   },
                   {
                     "ratio": 0.786,
                     "price": 64105.042,
                     "role": "Verdere diepe terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": -19.873404937459917
+                    "distance_pct": -19.320784779634693
                   },
                   {
                     "ratio": 1.0,
                     "price": 57770.0,
                     "role": "Volledige terugname naar het beginpunt",
                     "kind": "fib_retracement",
-                    "distance_pct": -27.79174223514368
+                    "distance_pct": -27.293733568094314
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -10347,7 +10159,7 @@
                   {
                     "price": 87373.0,
                     "kind": "range_boundary",
-                    "from_reference_pct": 9.209833922257072,
+                    "from_reference_pct": 9.963036471436638,
                     "rejection_to": [
                       {
                         "price": 80386.692,
@@ -10364,7 +10176,7 @@
                   {
                     "price": 93512.17857142858,
                     "kind": "atr_projection",
-                    "from_reference_pct": 16.883356317102095,
+                    "from_reference_pct": 17.689481908295445,
                     "rejection_to": [
                       {
                         "price": 87373.0,
@@ -10385,28 +10197,28 @@
                     "price": 76064.654,
                     "role": "Gematigde terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": -4.92476816987002
+                    "distance_pct": -4.269049683664184
                   },
                   {
                     "ratio": 0.236,
                     "price": 80386.692,
                     "role": "Ondiepe terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": 0.47746194911049145
+                    "distance_pct": 1.1704387421073381
                   },
                   {
                     "ratio": 0.0,
                     "price": 87373.0,
                     "role": "Eindpunt van de oorspronkelijke beweging",
                     "kind": "fib_retracement",
-                    "distance_pct": 9.209833922257072
+                    "distance_pct": 9.963036471436638
                   },
                   {
                     "ratio": 1.272,
                     "price": 95425.016,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": 19.274262637070084
+                    "distance_pct": 20.096877922189083
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -10481,7 +10293,7 @@
                   {
                     "price": 93512.17857142858,
                     "kind": "atr_projection",
-                    "from_reference_pct": 16.883356317102095,
+                    "from_reference_pct": 17.689481908295445,
                     "rejection_to": [
                       {
                         "price": 87373.0,
@@ -10498,7 +10310,7 @@
                   {
                     "price": 99093.25,
                     "kind": "atr_projection",
-                    "from_reference_pct": 23.859285766961193,
+                    "from_reference_pct": 24.713523214530685,
                     "rejection_to": [
                       {
                         "price": 95425.016,
@@ -10519,28 +10331,28 @@
                     "price": 95425.016,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": 19.274262637070084
+                    "distance_pct": 20.096877922189083
                   },
                   {
                     "ratio": 1.618,
                     "price": 105667.65400000001,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": 32.07680798753074
+                    "distance_pct": 32.98772035586679
                   },
                   {
                     "ratio": 2.618,
                     "price": 135270.65399999998,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": 69.07838414493146
+                    "distance_pct": 70.24449039539773
                   },
                   {
                     "ratio": 4.236,
                     "price": 183168.308,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": 128.9469343676059
+                    "distance_pct": 130.52594431935884
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -10645,13 +10457,13 @@
                   {
                     "price": 51630.82142857143,
                     "kind": "atr_projection",
-                    "from_reference_pct": -35.4652646299887,
+                    "from_reference_pct": -35.0201790049531,
                     "rejection_to": []
                   },
                   {
                     "price": 46049.75,
                     "kind": "atr_projection",
-                    "from_reference_pct": -42.44119407984781,
+                    "from_reference_pct": -42.044220311188354,
                     "rejection_to": []
                   }
                 ],
@@ -10688,13 +10500,13 @@
                   {
                     "price": 57770.0,
                     "kind": "range_boundary",
-                    "from_reference_pct": -27.79174223514368,
+                    "from_reference_pct": -27.293733568094314,
                     "rejection_to": []
                   },
                   {
                     "price": 51630.82142857143,
                     "kind": "atr_projection",
-                    "from_reference_pct": -35.4652646299887,
+                    "from_reference_pct": -35.0201790049531,
                     "rejection_to": []
                   }
                 ],
@@ -10731,7 +10543,7 @@
                   {
                     "price": 87373.0,
                     "kind": "range_boundary",
-                    "from_reference_pct": 9.209833922257072,
+                    "from_reference_pct": 9.963036471436638,
                     "rejection_to": [
                       {
                         "price": 80386.692,
@@ -10748,7 +10560,7 @@
                   {
                     "price": 93512.17857142858,
                     "kind": "atr_projection",
-                    "from_reference_pct": 16.883356317102095,
+                    "from_reference_pct": 17.689481908295445,
                     "rejection_to": [
                       {
                         "price": 87373.0,
@@ -10796,7 +10608,7 @@
                   {
                     "price": 93512.17857142858,
                     "kind": "atr_projection",
-                    "from_reference_pct": 16.883356317102095,
+                    "from_reference_pct": 17.689481908295445,
                     "rejection_to": [
                       {
                         "price": 87373.0,
@@ -10813,7 +10625,7 @@
                   {
                     "price": 99093.25,
                     "kind": "atr_projection",
-                    "from_reference_pct": 23.859285766961193,
+                    "from_reference_pct": 24.713523214530685,
                     "rejection_to": [
                       {
                         "price": 95425.016,
@@ -11419,25 +11231,33 @@
               "position_tracked": false,
               "probability": null
             },
-            "scenario_set_id": "2f26c8f1c4b41401e0d186d4"
+            "scenario_set_id": "b5f4dbbbb05a1367a15a3d60"
           }
         }
       },
       "analysis_quality": {
         "schema_version": 1,
-        "checked_at": "2026-10-26T01:07:25.358817+00:00",
-        "measurement_at": "2026-10-26T01:07:25.358817+00:00",
+        "checked_at": "2026-10-26T01:45:48.440017+00:00",
+        "measurement_at": "2026-10-26T01:45:48.440017+00:00",
         "valid_until": "2026-10-26T04:00:00+00:00",
         "scenario_processing": "consistent",
-        "status": "ready_for_scoped_report",
+        "status": "degraded",
         "price_structure": "available",
-        "bitget_interval_delta": "available",
-        "verified_delta_markets": [
-          "spot",
-          "usdt_futures"
-        ],
+        "bitget_interval_delta": "unavailable",
+        "verified_delta_markets": [],
         "macro_cycle_verdict": "requires_separate_macro_evidence",
-        "issues": [],
+        "issues": [
+          {
+            "code": "cvd_spot",
+            "detail": "no_verified_history",
+            "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
+          },
+          {
+            "code": "cvd_usdt_futures",
+            "detail": "no_verified_history",
+            "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
+          }
+        ],
         "interpretation": "Gebruik geldige onderdelen met hun eigen scope; ontbrekend is geen neutraal oordeel."
       }
     },

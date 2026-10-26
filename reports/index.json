@@ -289,6 +289,54 @@
       "monitor": "psychology",
       "path": "reports/2026/10/25/psychology-130043.json",
       "reported_at": "2026-10-25T13:00:43Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "30D/macro: **ONVOLDOENDE DATA** — macro-bodem en distributiefase zijn niet vast te stellen zonder een actuele geïntegreerde macro-, ETF- en on-chaincontrole.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: **-1 ZWAK BEARISH** — gesloten steunverlies, hoger relatief dalingsvolume en latere koerszwakte; de recente bodem houdt vooralsnog als tegensignaal. Onderbouwing uit één Bitget-bronfamilie, zonder onafhankelijke vraagbevestiging.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: **-1 ZWAK BEARISH** — het laatste gesloten dagslot, 80.119,2, ligt **2,37%** onder zeven dagen eerder. Meer weekvolume bevestigt activiteit, geen verkoopidentiteit; onafhankelijke ETF-/aanbodbevestiging is in deze korte controle niet vernieuwd.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "0d86a6a4f07aa03e12081d63f8b5d404b08cccb352e65519a7681b153166afc4",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/10/26/4h-warning-030022.json",
+      "reported_at": "2026-10-26T03:00:22+00:00"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "30D/macro: ONVOLDOENDE DATA — een mogelijke aanval op olie-infrastructuur en een mogelijk diplomatiek overleg wijzen in tegengestelde richtingen; bevestigde schade, olie-export, rentereactie en duurzame diplomatie ontbreken.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: ONVOLDOENDE DATA — de geopolitieke claim verhoogt het neerwaartse staart­risico, maar is onbevestigd en er is geen gevalideerde post-eventmeting. De oudere Bitget-prijs, positieve funding en licht negatieve premieproxy zijn slechts context, geen reactie. Betrouwbaarheid: laag.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "7d": {
+          "reason": "7D: ONVOLDOENDE DATA — de openbare meetreeks dekt 22 van 48 halfuurvakken in de laatste 24 uur en bevat geen volledige onafhankelijke combinatie van orderflow, ETF-flows en liquidaties.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        }
+      },
+      "content_sha256": "ba8b01fc2548e98419fda769cec343dd3596dbdee2eaa14113a169f212d64c3a",
+      "has_report_text": true,
+      "monitor": "market-risk",
+      "path": "reports/2026/10/26/market-risk-042855.json",
+      "reported_at": "2026-10-26T04:28:55Z"
     }
   ],
   "schema_version": 2

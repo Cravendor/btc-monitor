@@ -1,5 +1,74 @@
 # BTC Monitor — current scope and open work
 
+### PR 78 merged; exact NAS recovery command prepared — 26 October 2026
+
+PR #78 is merged at bb53dfc64cd8e5ae31ea1917adacdb21d2aea25c
+(05:55:02 UTC / 06:55:02 Amsterdam). Current main helper blob is
+76a032838cd79a200ab120cca42cc2d18e3e8a9c, matching the reviewed receipt-preserving
+extension. This supersedes the unmerged/merge-next wording below.
+
+Prepared user operation through the existing manual BTC Git Diagnose: fetch
+under the publisher lock, extract ONLY nas/recover_pending_snapshot.py from that
+pinned merge into new external /volume1/btc-monitor/recover-0146894.py (noclobber),
+then let the helper acquire the same publisher lock. Expected local HEAD remains
+0146894e8e225be3d8ee3295205eae65e0c28ced; exact archive is
+data/2026/10/26/20261026T010719140483Z-local-1.json; new verified bundle target
+is /volume1/btc-monitor/recovery-0146894.bundle. Result log:
+ /volume1/btc-monitor/repair-result-0146894.txt.
+No rebase/pull/reset/force-push or CVD recorder/runtime changes are requested.
+Changed HEAD, existing helper/backup, busy lock or conflicting immutable data
+must stop; inspect the result rather than rerunning old recovery parameters.
+
+NAS execution and successful publication remain UNVERIFIED. Next user action:
+execute the prepared command once and supply repair-result-0146894.txt. Next
+agent action: verify remote merge, unchanged original snapshot and seven receipts,
+and union of both signal histories; then confirm ordinary publishing and prepare
+the separate permanent publisher-race fix. Validation this step: merged PR
+metadata and current helper source/blob; shell syntax checked locally; no NAS
+execution or newly claimed runtime tests. Original logs remain private.
+
+
+### Pending NAS snapshot and seven receipts diagnosed — 26 October 2026
+
+Actual lock-protected diagnosis establishes clean main at
+0146894e8e225be3d8ee3295205eae65e0c28ced, ahead 1 / behind 15 against
+874542bc592a5c71dd6b1b605b49b3df5030e5ff. Pending original archive:
+data/2026/10/26/20261026T010719140483Z-local-1.json.
+The commit changes the three derived views and timeframe signal history, and
+ADDS seven watchdog receipts at 00:40:02, 00:45:02, 00:50:02, 00:55:02,
+01:00:02, 01:05:10 and 01:10:05 UTC. This establishes paths/additions, not
+independent validation of those receipt contents or current recorder uptime.
+
+This supersedes the missing-full-HEAD/file-set diagnosis request below. No need
+to repeat that diagnosis unless the guarded recovery finds changed state.
+The existing one-off helper rejects these additional files. Prepared extension in PR #78
+(https://github.com/Cravendor/btc-monitor/pull/78), branch
+fix/nas-recovery-receipts-20261026 accepts ONLY newly added regular receipt
+files under the three known NAS task paths with timestamp filenames; it checks
+all original archive/receipt blob IDs after merge. Conflicting receipt contents,
+modified/deleted receipts, symlinks and unrelated paths stop safely. Existing
+backup verification, clean exact-HEAD/main guard, publisher lock, history union,
+upstream derived views and ordinary non-force push remain required. Receipt
+spool is not acknowledged by this recovery; normal publisher handles that later.
+
+Implementation is proposed, not yet merged/deployed; no NAS recovery executed.
+Local validation: 439 Python tests (Python 3.12.14), including nine real-Git
+recovery tests, and five Node status tests passed. Release read-only dashboard
+validation also passed. Both release CI matrix jobs passed for code commit
+7f7da0b42ac9cfc41a81acbf7bdcd99f54d28103: Python 3.9.14 check 121420627857
+and Python 3.11 check 121420627667. Subsequent changes only record PR/validation
+metadata in this handover and PROJECT_STATUS; no executable changes.
+Private diagnostic log is not copied to this public repository.
+
+Next user action after green review: merge PR #78. Next agent
+action: supply a pinned, lock-protected backup-first command for THIS exact HEAD
+and archive, then verify original snapshot, histories and all seven receipts on
+remote before running the normal publisher. Stop on changed HEAD; do not reuse
+old incident parameters. Permanent concurrent-writer resilience is still OPEN
+and must be handled in a separate tested publisher PR after this recovery;
+this extension does not solve the repeated upload race. No CVD journal/runtime,
+DSM schedule, storage task or recorder restart changes.
+
 Checkpoint: 25 October 2026, Europe/Amsterdam. Reconciled through 48191e8 and
 merged #76. Read [HANDOVER.md](HANDOVER.md) for the evidence ledger and NAS task
 inventory, and [DECISIONS.md](DECISIONS.md) for accepted constraints.
@@ -473,6 +542,67 @@ that task's collection/push window. Incorporate this checkpoint with the final
 result after completion; do not use it to trigger another task or recovery.
 No executable changes or tests performed here; only the actual partial log and
 remote head were inspected. Original private log is not published.
+
+### Recurrent NAS upload conflict confirmed — 26 October 2026
+
+Latest actual publisher result at 04:30:01–04:30:05 UTC failed with exit 1.
+Pending local snapshot commit 0146894 conflicts while rebasing onto fetched
+0de0c71 in collector-health, timeframe_signals, latest and timeframe-health.
+Runner reported local observations preserved and stopped before new collection.
+Do not diagnose a stopped CVD recorder from this publication failure.
+
+This is another occurrence of the known NAS/GitHub concurrent-writer failure;
+prior one-off recoveries did not fix its structural cause. Current full HEAD,
+archive path, complete changed-file set and possible NAS receipt additions are
+not known. The old helper has a strict exact-file contract; do not blindly reuse
+4795253 recovery parameters or omit receipt files to make it fit.
+
+Next user action: run a read-only diagnosis through existing manual BTC Git
+Diagnose, under publisher lock, writing git-diagnose-0146894.txt. Capture status,
+full HEAD/origin-main, divergence, local commit list and HEAD changed paths.
+Then prepare backup-first recovery for actual state and prioritize a tested,
+reviewed permanent reconciliation strategy preserving original observations,
+histories and immutable receipts. No reset/clean/force-push, recorder restart,
+new task or schedule. No actual recovery performed in this checkpoint.
+Validation: complete supplied upload failure log and current recovery contract;
+no new tests. Private log remains outside public repository.
+
+### Storage receipt publication verified; NAS publishing gap requires diagnosis — 26 October 2026
+
+Read original public storage receipt data/task-executions/nas/storage/
+20261025T201243Z.json: schema_version=1, source=nas, task=storage,
+started_at=2026-10-25T20:12:43Z, finished_at=20:12:43.308325+00:00,
+outcome=completed, exactly the six allowed fields and matching immutable path.
+This closes the missing storage receipt / observed execution → public repository
+acceptance for that run (21:12:43 Amsterdam on 25 October). It proves those
+inspections completed, not healthy free-space thresholds or SQLite integrity.
+Daily 10:40 remains the intended schedule; one receipt does not prove its next
+scheduled execution. No new task or repeated manual storage run is needed.
+
+Latest Pages 40269369283 at head 0de0c710 succeeded; no new browser/card QA
+claimed. Last observed NAS original is
+data/2026/10/26/20261026T003455876150Z-local-1.json, finished 00:35 UTC
+(01:35 Amsterdam), status=ok, both interval deltas verified, quality ready.
+Interval is 25 October 20:00–26 October 00:00 UTC; provider-side spot delta
+-13.746537 BTC and futures -166.5695 BTC. These are historical interval values,
+not valid substitutes for a new closed interval. Latest stored watchdog receipt
+path is 20261026T003502Z.json; current process state is not inferred.
+
+collector-health.json was checked 01:45:48 UTC, reporting successful reserve
+recovery after stale status and no verified local interval delta. Its stored
+current/age=0 describes THAT check, not the current session. At repository head
+0de0c710 (breaking-risk receipt 04:29 UTC), no NAS originals after 00:35 were
+found. Do not call primary NAS publication continuously restored or infer the
+recorder stopped. Diagnose the actual latest NAS publisher result before repairs.
+
+Next user action: provide the latest existing first-upload.txt / saved result
+of BTC NAS Collect Publish, without starting another run or reusing old repair.
+Next agent action: distinguish writer conflict, schedule, tests/runtime or source
+failure from actual evidence, preserving all local observations and CVD journal.
+Exact CVD validation remains required; current missing delta is unavailable.
+Validation: actual storage JSON, complete repository inventory, last original
+NAS JSON/quality, collector-health and recent successful Pages results; no new tests.
+This supersedes the prior awaiting-publication storage checkpoints.
 
 ## Next concrete sequence
 
