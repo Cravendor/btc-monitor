@@ -1,5 +1,30 @@
 # BTC Monitor — current scope and open work
 
+### Guarded one-off NAS synchronization succeeded; normal upload next — 26 October 2026
+
+Current resume checkpoint supersedes the failed one-off/merge-check blocker
+below. User supplied the completed existing BTC Git Diagnose result: fetch,
+verified external publication backup and Guarded synchronization completed.
+The reviewed helper returned normally. Keep that verified backup; no private
+backup identifier or full task log is committed here. Do not repeat this repair
+or change the pinned script. Keep the diagnostic task manual/unscheduled.
+
+This step synchronizes the checkout only; it deliberately does not collect or
+push. Public timeframe-health still has updated_at 2026-10-26T15:13:12.604618Z
+at this check (16:13 Amsterdam), the previously identified GitHub fallback.
+No new normal NAS publication or fresh CVD is established by the success line.
+
+Next user action can begin immediately: manually run the EXISTING BTC NAS
+Collect Publish task once, with its original normal script unchanged. Wait for
+that run's complete saved first-upload.txt / EINDSTATUS, then send its result.
+Agent verifies original NAS snapshot, immutable pending observations/history,
+source statuses and commit-specific Pages separately. If the already enabled
+periodic task is currently running, let that same run finish instead of launching
+a second. No new task or CVD restart. Elliott wave-degree work remains independent.
+Only handoff documentation changed; validation is the user's successful helper
+result and the current public health timestamp. Normal publication acceptance
+waits for the next completed normal task result.
+
 ### One-off sync reached merge check; upstream whitespace corrected — 26 October 2026
 
 Current resume checkpoint. User supplied the completed manual repair result:
