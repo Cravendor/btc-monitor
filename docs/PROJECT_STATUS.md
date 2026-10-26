@@ -1,5 +1,65 @@
 # BTC Monitor — current scope and open work
 
+## Wave-completion evidence and scenario probabilities — 26 October 2026
+
+User asks for researched criteria for the most likely wave termination/new wave,
+and numerical scenario probabilities using all suitable available evidence.
+This requests probability estimation, not fabricated percentages or permission
+to relabel an arbitrary score as calibrated likelihood. Existing no-invented-
+probabilities constraint remains. No probability model is implemented/validated.
+
+Read actual current daily archive blob 00e28236282fe88a5b2eb43db103f31b7e55c240:
+Bitget BTCUSDT USDT-FUTURES low 57770 on 2026-07-01 UTC; prior daily lows
+58866 and 58160.1, next daily lows 59562.4 and 61223. Thus the archived low
+meets existing strict two-left/two-right daily pivot criterion after the second
+following candle closes (4 July 00:00 UTC). Subsequent stored high is 87373.
+This verifies a historical daily pivot and subsequent rise, not automatically
+a completed macro bear cycle or a specific weekly Elliott count. No snapshot
+or current CVD may be backfilled into July observations.
+
+Researched completion checklist to operationalize, with explicit degree:
+(1) acceptable same-market source data, valid proposed pattern and actual
+required subdivisions; impulse and corrective pattern endings are distinct;
+(2) reversal through preselected opposing structural swing/channel using
+closed candles for the defined confirmation condition;
+(3) new directional substructure, pullback holding the candidate origin and
+subsequent continuation; higher low alone is weaker than continuation;
+(4) parent-degree condition/closed-candle follow-through, no hourly move alone
+certifies weekly completion; (5) momentum divergence/volume/Fibonacci/orderflow
+as supporting evidence, never sufficient proof or independent duplicate votes.
+Hard intrabar rule violations still invalidate counts independently of closes.
+These are proposed operational evidence stages, not universal guaranteed rules.
+
+Probability target must specify degree, future horizon, immutable trigger/
+invalidation levels and mutually exclusive outcome definition (including
+neither/expired/unresolved; ambiguous same-candle ordering stays unresolved).
+Different degrees may both realize sequentially; bull+bear are not automatically
+complementary events. Fit/calibrate on point-in-time historical features, validate
+on later untouched periods with gap/purge for overlapping label horizons, compare
+base-rate forecasts and reliability curves/Brier/log-loss with sample counts
+and uncertainty. Existing frozen scenario evaluator is descriptive and does not
+provide calibrated Elliott probabilities. Macro effective samples may be few
+despite many candles. Missing features stay missing, not zero; no price/RSI/
+MACD/Fib double counting, future-confirmed pivots cannot be used before their
+confirmation time. Separate historical price-only model from enhanced model
+whose CVD/OI/news histories genuinely exist. No retroactive claims that we had
+all these inputs in 2021/July. Interim support score, if implemented, must be
+labeled uncalibrated and not displayed with a probability percent sign.
+
+Primary framework sources read: Elliott Wave International Waveopedia,
+Impulse, Channeling, Wave Personality, Extension (stock-market tendencies are
+not automatically validated for BTC). Statistical references: scikit-learn
+Probability calibration and TimeSeriesSplit docs. Framework descriptions are
+not independent evidence of forecast profitability. Research/context only,
+no runtime/code/data changes or new tests. Handover and decisions maintained.
+
+Next agent action can start immediately: implement explicit completion-evidence
+states and frozen evaluable scenario outcomes with provenance/tests, then assess
+point-in-time training coverage before fitting probabilities. UI/zoom work is
+independent. Numeric calibrated weekly chances must wait for sufficient valid
+history, source reconciliation and out-of-time validation; no extra NAS action.
+
+
 ## Corrected Elliott dashboard intent — 26 October 2026
 
 Latest user clarification REPLACES always showing a bull and bear chart for every
