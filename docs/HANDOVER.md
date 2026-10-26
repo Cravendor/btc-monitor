@@ -1,5 +1,72 @@
 # BTC monitor — agent handover
 
+### PR 81 final prior-window evidence check — 26 October 2026
+
+Extended original-record selection to retain a separately valid spot baseline
+when only the prior futures leg is unavailable. Each leg is gated again during
+assessment; this never allows full corroboration from partial evidence.
+Revalidated all 454 Python tests locally (3.12.14), five Node status tests,
+whitespace and offline overview generation without external sources. Current
+and prior partial-leg cases plus unrelated funding-source errors are tested.
+Individual price/flow gates, rather than a blanket overall snapshot status,
+determine usable momentum evidence; a failed context source stays unavailable. PR #81 is open, not merged/deployed;
+CI passed for final executable commit 3156aa8493a7785b503e63a446ffbc4511a44e4d:
+Python 3.9.14 check 121543977907 and Python 3.11 check 121543978169,
+including release dashboard generation. Subsequent commit records only this
+validation; no executable changes. User review/merge is now the next gate. No NAS action needed.
+Next: user can review immediately; merge can proceed after review of the green checks. Independent Elliott
+linkage/zoom and source-discrepancy investigation need not wait for merge.
+
+
+## First synchronized 4H momentum evidence panel prepared — 26 October 2026
+
+PR #81 (https://github.com/Cravendor/btc-monitor/pull/81),
+implementation proposed on feat/multi-source-momentum-20261026; not yet merged
+or deployed. scripts/momentum_confirmation.py and overview integration assess
+one closed current 4H interval against the immediately preceding 4H flow window.
+Preserved archive lookup chooses the latest validated previous original available
+before the current observation started; future observations/ambiguous tied originals
+are excluded. Wrong-market, stale/future/missing price sources are unavailable.
+
+Evidence groups: three-candle closed structural break; one correlated price-
+momentum ROC(3) group with prior value; separately validated Bitget spot/futures
+buy-minus-sell and relative total BTC volume versus the previous interval.
+CVD windows, coverage flags/scope, market and buy/sell arithmetic must agree;
+futures total must also equal current closed candle BTC volume. Prior flow must
+be observed after its interval closed and before current measurement. Missing
+mandatory current/prior flow prevents full corroboration without hiding price
+momentum. Less-negative bearish ROC remains bearish pressure easing, not a
+bullish switch. Opposing flow/structure is explicit counterevidence.
+Both flow legs, non-weakening directional price momentum, structural break and
+volume ratio >=1 are needed for supported direction. These are transparent
+experimental thresholds, not calibrated probabilities or wave-end certification.
+A partial aggregate CVD result does not hide a separately valid spot leg;
+individual leg gates still prevent full corroboration. Current/prior deltas and volume ratios are shown, with client-side expiry.
+
+OI/funding/basis/premium are inventoried as snapshot context but NOT cast as
+direction votes because this first implementation does not validate synchronized
+historical changes in those inputs. No RSI/MACD triple-counting; no numerical
+scenario probability, week-wave or macro confirmation. Multi-degree linkage,
+retests/persistence and calibrated probability remain separate pending work.
+No NAS task/runtime or collection changes, no external source call introduced.
+
+Local validation: 453 Python tests (3.12.14), five Node status tests, whitespace
+and offline full overview generation WITHOUT --ath passed. Seven new tests cover
+bull/bear corroboration, missing/wrong-window/unverified/NaN/future evidence,
+futures candle mismatch, weakening rather than reversal, opposing flow,
+contracting volume, stale/wrong market and point-in-time original selection.
+Actual archived 04:00–08:00 UTC evidence renders bearish pressure easing:
+ROC(3) -0.6563% vs -1.2859%; spot volume ratio about 0.406, futures 0.529.
+This is a dated local rendering test, not a current trading forecast.
+CI Python 3.9.14/3.11 must pass; browser/mobile visual acceptance remains pending.
+
+Next agent action: review PR #81 and check CI. Next user action after green CI:
+review/merge; then inspect deployed panel from actual publication. Independent
+linked Elliott zoom/source-conflict and historical coverage work can start now
+without waiting for merge. Calibrated percentages still wait for labeled
+outcomes and out-of-time evaluation. No additional NAS action is needed.
+
+
 ## Multi-source momentum switch required — 26 October 2026
 
 User clarification: daily candles alone are insufficient for the stronger
