@@ -6,6 +6,30 @@ handover, not a complete transcript or private-chat export. Read together with
 code/data. Repository: [Cravendor/btc-monitor](https://github.com/Cravendor/btc-monitor).
 Dashboard: https://cravendor.github.io/btc-monitor/.
 
+### Recurrent NAS upload conflict confirmed — 26 October 2026
+
+Latest actual publisher result at 04:30:01–04:30:05 UTC failed with exit 1.
+Pending local snapshot commit 0146894 conflicts while rebasing onto fetched
+0de0c71 in collector-health, timeframe_signals, latest and timeframe-health.
+Runner reported local observations preserved and stopped before new collection.
+Do not diagnose a stopped CVD recorder from this publication failure.
+
+This is another occurrence of the known NAS/GitHub concurrent-writer failure;
+prior one-off recoveries did not fix its structural cause. Current full HEAD,
+archive path, complete changed-file set and possible NAS receipt additions are
+not known. The old helper has a strict exact-file contract; do not blindly reuse
+4795253 recovery parameters or omit receipt files to make it fit.
+
+Next user action: run a read-only diagnosis through existing manual BTC Git
+Diagnose, under publisher lock, writing git-diagnose-0146894.txt. Capture status,
+full HEAD/origin-main, divergence, local commit list and HEAD changed paths.
+Then prepare backup-first recovery for actual state and prioritize a tested,
+reviewed permanent reconciliation strategy preserving original observations,
+histories and immutable receipts. No reset/clean/force-push, recorder restart,
+new task or schedule. No actual recovery performed in this checkpoint.
+Validation: complete supplied upload failure log and current recovery contract;
+no new tests. Private log remains outside public repository.
+
 ### Storage receipt publication verified; NAS publishing gap requires diagnosis — 26 October 2026
 
 Read original public storage receipt data/task-executions/nas/storage/
