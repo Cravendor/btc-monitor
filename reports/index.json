@@ -413,6 +413,30 @@
     {
       "bias": {
         "30d_macro": {
+          "reason": "30D/macro: ONVOLDOENDE DATA — de machtiging kan zowel afschrikking als bredere militaire betrokkenheid betekenen. Zonder daadwerkelijke inzet, duurzame olie- en rentereactie en bredere spot- of on-chainbevestiging is de macro-cyclus niet vast te stellen.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: 0 NEUTRAAL/GEMENGD — de formele militaire machtiging verhoogt het geopolitieke staart­risico, maar de defensieve beperking en het ontbreken van een duidelijke BTC- of regionale risk-offreactie wegen daartegenin. Positieve funding en de licht negatieve premieproxy zijn het belangrijkste tegensignaal. Betrouwbaarheid: laag tot middelmatig door het ontbreken van een schone pre-eventmeting en actuele gecontroleerde orderflow.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: ONVOLDOENDE DATA — de openbare opslag dekt 21 van 48 halfuurvakken in de laatste 24 uur en bevat geen volledige onafhankelijke zevendaagse combinatie van orderflow, ETF-flows en liquidaties.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        }
+      },
+      "content_sha256": "43b5de6bb60fceac5db961037fe5a4093951b6dd6bf2a59153976646d8e2e6e6",
+      "has_report_text": true,
+      "monitor": "market-risk",
+      "path": "reports/2026/10/26/market-risk-161047.json",
+      "reported_at": "2026-10-26T16:10:47Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
           "reason": "30D/macro: **ONVOLDOENDE DATA** — zomerherstel en positieve totale NUPL beslissen de cyclus niet; onafhankelijk vraag-, cohort- en liquiditeitsbewijs is onvolledig.",
           "score": null,
           "status": "ONVOLDOENDE DATA"
