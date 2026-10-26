@@ -2,7 +2,8 @@
 
 ### Bounded publisher reconciliation prepared — 26 October 2026
 
-Prepared fix/nas-publisher-reconciliation-20261026 for review; not merged,
+Prepared PR #79 (https://github.com/Cravendor/btc-monitor/pull/79), branch
+fix/nas-publisher-reconciliation-20261026 for review; not merged,
 not deployed and no new NAS execution claimed. Replaces blind NAS rebase and
 single push with nas/sync_publish.py under the existing publisher lock. Before
 collection it fast-forwards or reconciles pending public observations. Final
@@ -12,7 +13,8 @@ retry exhaustion preserves local commits for the next scheduled attempt.
 
 Divergent local changes must be known derived views/history modifications plus
 new regular dated archives/known task receipts, with at least one original
-archive. No unknown code/logs, original modifications/deletions or symlinks.
+archive. No unknown code/logs, original modifications/deletions or symlinks; local-only
+commits are guarded even when no divergence exists.
 Before a merge, verify original history was not rewritten on either side, reject
 differing rows at the same identity, and write/verify an external unique bundle
 in /volume1/btc-monitor/publish-backups (BTC_PUBLISH_BACKUPS override). Bundles
@@ -23,7 +25,7 @@ newer aware finished_at observation (upstream on ties). Retain their actual
 source/check times; this does not regenerate health or backfill lost intervals.
 Normal receipt spool acknowledgement still occurs ONLY after successful push.
 
-Local validation: 444 Python tests on Python 3.12.14, five Node tests, shell syntax
+Local validation: 445 Python tests on Python 3.12.14, five Node tests, shell syntax
 and whitespace passed. Real Git tests cover both view timestamp orderings, a
 concurrent remote push, bounded repeated races, rejected push then next-run
 success, conflicting receipts, rewritten history and unknown private paths.
@@ -32,7 +34,7 @@ review for a possible CoinMarketCap Pro network call. It was not retried or
 claimed successful; no credentials/paid service were introduced by this change.
 CI Python 3.9.14/3.11 must be checked before merge. Existing isolated tests pass.
 
-Next agent action: create the review PR and inspect CI. Next user action after
+Next agent action: inspect PR #79 CI. Next user action after
 green review: merge the PR; then verify ordinary scheduled NAS code uptake and
 an actual concurrent-writer publication. Existing DSM body/schedule, CVD journal,
 recorder, locks/watchdog and storage monitor are unchanged. The last restoration

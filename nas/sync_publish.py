@@ -58,7 +58,7 @@ def synchronize(repo, backup_dir, push=False, expected_origin=ORIGIN, attempts=3
         remote = read('rev-parse', 'origin/main')
         if ancestor('HEAD', remote):
             git('merge', '--ff-only', remote)
-        elif not ancestor(remote, 'HEAD'):
+        else:
             base = read('merge-base', 'HEAD', remote)
             # Local branch may contain only public observations, never code or logs.
             changes = git('diff', '--name-status', '--no-renames', base, 'HEAD').stdout.splitlines()
@@ -79,50 +79,51 @@ def synchronize(repo, backup_dir, push=False, expected_origin=ORIGIN, attempts=3
                 archives += bool(archive)
             if not archives:
                 raise RuntimeError('No original NAS archive; preserve and inspect')
-            combined = rows('HEAD')
-            upstream = rows(remote)
-            original = rows(base)
-            for source in (combined, upstream):
-                if any(key not in source or source[key][0] != value[0]
-                       for key, value in original.items()):
-                    raise RuntimeError('Original signal history rewritten')
-            for key, value in upstream.items():
-                if key in combined and combined[key][0] != value[0]:
-                    raise RuntimeError('Conflicting original signal history')
-                combined.setdefault(key, value)
-            # Keep all three derived views together, from the newer observation.
-            def observed(ref):
-                value = json.loads(git('show', ref + ':data/latest.json').stdout)['finished_at']
-                stamp = datetime.fromisoformat(value.replace('Z', '+00:00'))
-                if stamp.tzinfo is None:
-                    raise ValueError('Aware observation time required')
-                return stamp
-            view_ref = 'HEAD' if observed('HEAD') > observed(remote) else remote
-            backup_dir.mkdir(parents=True, exist_ok=True)
-            backup = backup_dir / ('publish-' + uuid.uuid4().hex + '.bundle')
-            git('bundle', 'create', str(backup), '--all')
-            git('bundle', 'verify', str(backup))
-            print('Verified publication backup:', backup, flush=True)
-            try:
-                r = git('merge', '--no-commit', '--no-ff', remote, check=False)
-                if git('rev-parse', '--verify', 'MERGE_HEAD', check=False).returncode:
-                    raise RuntimeError('Merge did not start')
-                conflicts = set(read('diff', '--name-only', '--diff-filter=U').splitlines())
-                if r.returncode not in (0, 1) or conflicts - set(VIEWS + [HISTORY]):
-                    raise RuntimeError('Conflicting immutable files; preserve and inspect')
-                git('checkout', view_ref, '--', *VIEWS)
-                (repo / HISTORY).write_text('\n'.join(combined[k][1] for k in sorted(combined)) + '\n', encoding='utf-8')
-                git('add', '--', HISTORY)
-                for path, sha in immutable.items():
-                    if read('rev-parse', ':' + path) != sha:
-                        raise RuntimeError('Original observation changed')
-                git('diff', '--cached', '--check')
-                git('-c', 'user.name=BTC NAS collector', '-c', 'user.email=btc-nas@users.noreply.github.com',
-                    'commit', '-m', 'Reconcile NAS observations with concurrent publication')
-            except Exception:
-                if not git('rev-parse', '--verify', 'MERGE_HEAD', check=False).returncode:
-                    git('merge', '--abort')
-                raise
+            if not ancestor(remote, 'HEAD'):
+                combined = rows('HEAD')
+                upstream = rows(remote)
+                original = rows(base)
+                for source in (combined, upstream):
+                    if any(key not in source or source[key][0] != value[0]
+                           for key, value in original.items()):
+                        raise RuntimeError('Original signal history rewritten')
+                for key, value in upstream.items():
+                    if key in combined and combined[key][0] != value[0]:
+                        raise RuntimeError('Conflicting original signal history')
+                    combined.setdefault(key, value)
+                # Keep all three derived views together, from the newer observation.
+                def observed(ref):
+                    value = json.loads(git('show', ref + ':data/latest.json').stdout)['finished_at']
+                    stamp = datetime.fromisoformat(value.replace('Z', '+00:00'))
+                    if stamp.tzinfo is None:
+                        raise ValueError('Aware observation time required')
+                    return stamp
+                view_ref = 'HEAD' if observed('HEAD') > observed(remote) else remote
+                backup_dir.mkdir(parents=True, exist_ok=True)
+                backup = backup_dir / ('publish-' + uuid.uuid4().hex + '.bundle')
+                git('bundle', 'create', str(backup), '--all')
+                git('bundle', 'verify', str(backup))
+                print('Verified publication backup:', backup, flush=True)
+                try:
+                    r = git('merge', '--no-commit', '--no-ff', remote, check=False)
+                    if git('rev-parse', '--verify', 'MERGE_HEAD', check=False).returncode:
+                        raise RuntimeError('Merge did not start')
+                    conflicts = set(read('diff', '--name-only', '--diff-filter=U').splitlines())
+                    if r.returncode not in (0, 1) or conflicts - set(VIEWS + [HISTORY]):
+                        raise RuntimeError('Conflicting immutable files; preserve and inspect')
+                    git('checkout', view_ref, '--', *VIEWS)
+                    (repo / HISTORY).write_text('\n'.join(combined[k][1] for k in sorted(combined)) + '\n', encoding='utf-8')
+                    git('add', '--', HISTORY)
+                    for path, sha in immutable.items():
+                        if read('rev-parse', ':' + path) != sha:
+                            raise RuntimeError('Original observation changed')
+                    git('diff', '--cached', '--check')
+                    git('-c', 'user.name=BTC NAS collector', '-c', 'user.email=btc-nas@users.noreply.github.com',
+                        'commit', '-m', 'Reconcile NAS observations with concurrent publication')
+                except Exception:
+                    if not git('rev-parse', '--verify', 'MERGE_HEAD', check=False).returncode:
+                        git('merge', '--abort')
+                    raise
         if not push:
             return
         if git('push', 'origin', 'HEAD:main', check=False).returncode == 0:

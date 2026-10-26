@@ -99,3 +99,14 @@ class SyncTests(unittest.TestCase):
                     module.synchronize(local, Path(root)/'backups', True, str(remote))
                 self.assertEqual(self.git(local,'rev-parse','HEAD'),before)
                 self.assertEqual(self.git(local,'status','--porcelain'), '')
+
+    def test_unknown_local_only_commit_cannot_be_pushed_even_without_divergence(self):
+        with tempfile.TemporaryDirectory() as root:
+            local, remote, other, archive, receipt = self.setup(root)
+            module.synchronize(local, Path(root)/'backups', True, str(remote))
+            before = self.git(remote, 'rev-parse', 'main')
+            (local/'private.log').write_text('never publish')
+            self.git(local,'add','.'); self.git(local,'commit','-m','unknown')
+            with self.assertRaisesRegex(RuntimeError,'Unexpected local changes'):
+                module.synchronize(local, Path(root)/'backups', True, str(remote))
+            self.assertEqual(self.git(remote,'rev-parse','main'), before)
