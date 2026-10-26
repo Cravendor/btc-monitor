@@ -1,5 +1,39 @@
 # BTC monitor — agent handover
 
+### PR 83 merged and zoom verified live — 26 October 2026
+
+Current resume checkpoint; supersedes all pending-merge/deployment wording for
+PRs 82/83 below. PR 83 merged at 8acdb452a0cd87161d7049546611d62afba9203c,
+17:17:32 UTC (18:17:32 Europe/Amsterdam). Exact-merge Pages run 40367246132
+succeeded. Release CI also passed at final documentation head 23235c506bbe65351c5aaf642f371467b0988a27 (run 40365044191).
+
+Actual public Chrome UI verified at https://cravendor.github.io/btc-monitor/:
+1D opens on Last movement, five candles, October 21 00:00 to October 26 00:00 UTC;
+zoom-out switches to 32 candles, selector Overview shows 482 candles, and zoom-in
+returns to 96. Boundary buttons disable correctly at observed endpoints.
+4H opens on three candles; expanding Detail of 1D movement on 4H shows exactly
+October 21 00:00 to October 26 00:00 UTC from native 4H candles. Screenshot
+visually confirms detail chart/labels. Genuine iPhone/mobile QA is still open.
+No certified current count, wave-degree nesting or probabilities are implied.
+
+Separate data blockers remain visible and were not bypassed: weekly source
+conflict at October 19 blocks its chart; 4H archive has 2895/2896 candles,
+first missing opening October 26 12:00 UTC. Live momentum/current price panels
+reject stale input. Collector-health checked 17:17:46 UTC (18:17:46 Amsterdam)
+reports stale: last snapshot 15:13:12 UTC (16:13:12 Amsterdam), age 7473 seconds,
+21/48 observed intervals (43.8%). Both CVD legs are unverified for that snapshot.
+This supersedes the older last-known 08:34 record, without claiming healthy
+current NAS/CVD recording. Collector-health run 40367246156 failed separately;
+successful Pages is not evidence of data/recorder health. No NAS restart/edit.
+
+Next agent work can start immediately: inspect preserved weekly/daily source
+revisions and recent public collection evidence to diagnose the remaining data
+blockers. No deployment wait remains for zoom acceptance; fresh momentum
+acceptance must wait for a validated current snapshot. True wave-degree model
+work can proceed independently. No new manual NAS task/run requested.
+Only documentation changes in this checkpoint; validation is exact-merge Pages,
+actual live control state transitions, screenshot and dated health evidence.
+
 ### PR 82 merged; Pages quality-gate regression fixed in review — 26 October 2026
 
 This is the current resume checkpoint and supersedes the earlier PR 82
