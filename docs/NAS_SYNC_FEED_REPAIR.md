@@ -22,7 +22,7 @@ export TMPDIR=/volume1/btc-monitor/tmp
 export GIT_TERMINAL_PROMPT=0
 export PYTHONDONTWRITEBYTECODE=1
 export GIT_SSH_COMMAND="ssh -i /volume1/btc-monitor/keys/github_ed25519 -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=/volume1/btc-monitor/keys/known_hosts -o ConnectTimeout=15"
-BTC_REPAIR_COMMIT=REVIEWED_FIX_COMMIT_PENDING
+BTC_REPAIR_COMMIT=e13ff2756d43586c7d2f8e43f9899b69242ae7ce
 mkdir -p "$TMPDIR"
 chmod 700 "$TMPDIR"
 exec 9>"$BTC_LOCK"
