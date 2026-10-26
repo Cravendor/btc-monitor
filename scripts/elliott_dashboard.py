@@ -5,9 +5,10 @@ from scripts.elliott_rules import assess_candidates, confirmed_pivots
 from scripts.swing_scenarios import valid_market, native_rows, current_price
 from scripts.market_scenarios import time_ms, iso
 from scripts.native_timeframe_candles import PERIOD_MS
+from scripts.elliott_completion import assess as completion_evidence, lower_evidence, LABELS
 
 TIMEFRAMES = ('1w', '1d', '4h', '1h')
-MODEL = 'elliott_visual_linked_windows_v3'
+MODEL = 'elliott_visual_endpoint_evidence_v4'
 
 
 def zones(rows, tf):
@@ -95,6 +96,7 @@ def build(feed, as_of, history=None):
         out['horizons'].append(h)
     for h in out['horizons']:
         if h['status'] == 'available':
+            h['endpoint_evidence'] = completion_evidence(h['rows'],h['timeframe'],as_of)
             pivots = confirmed_pivots(h['rows'])
             h['focus_start'] = pivots[-1]['open_time_ms'] if pivots else h['rows'][-min(32,len(h['rows']))]['open_time_ms']
             h['focus_origin'] = 'confirmed_pivot' if pivots else 'recent_window'
@@ -102,6 +104,8 @@ def build(feed, as_of, history=None):
     for parent, child in zip(out['horizons'], out['horizons'][1:]):
         if parent['status'] != 'available' or child['status'] != 'available':
             continue
+        parent['lower_endpoint_evidence'] = lower_evidence(parent['endpoint_evidence'],
+                                                           child['rows'],child['timeframe'],as_of)
         start = parent['focus_start']
         end = time_ms(parent['closed_at'])
         selected = [r for r in child['rows'] if start <= r['open_time_ms'] < end]
@@ -220,6 +224,23 @@ def zoom_panel(h):
     return ''.join(parts)
 
 
+def render_completion(h):
+    evidence=h.get('endpoint_evidence',{})
+    if evidence.get('status')!='available':
+        return '<p>Geen toetsbaar pivot-eindpunt met voorafgaand swingniveau beschikbaar.</p>'
+    anchor=evidence['endpoint']
+    parts=['<div class="ew-completion"><h3>Eindpuntcontrole · prijsstructuur</h3><p>Laatste bevestigde '+('high' if anchor['kind']=='high' else 'low')+'-pivot: '+price(anchor['price'])+' USDT · candle '+escape(iso(anchor['open_time_ms']))+'. Als pivot bekend vanaf '+escape(iso(anchor['confirmed_at_ms']))+'. Geen vastgesteld Elliott-golfnummer.</p>']
+    parts.append('<div class="ew-chart-scroll"><table><thead><tr><th>Bron/timeframe</th><th>Koersvoorwaarde</th><th>Vooraf bepaald swingniveau</th><th>Gesloten data tot UTC</th></tr></thead><tbody>')
+    for e in [evidence]+([h['lower_endpoint_evidence']] if 'lower_endpoint_evidence' in h else []):
+        tf=escape(e['timeframe'].upper())
+        if e.get('status')!='available':
+            parts.append('<tr><th>'+tf+'</th><td colspan="3">Niet toetsbaar: hetzelfde hogere eindpunt is niet eenduidig herleidbaar tot een bevestigde lagere pivot met volledige candledekking.</td></tr>')
+            continue
+        parts.append('<tr><th>'+tf+(' · hetzelfde hogere eindpunt' if 'parent_timeframe' in e else '')+'</th><td>'+escape(LABELS[e['stage']])+'</td><td>'+price(e['opposing_swing']['price'])+' USDT · omslag '+('omlaag' if e['reversal_direction']=='down' else 'omhoog')+'</td><td>'+escape(e['closed_through'])+'</td></tr>')
+    parts.append('</tbody></table></div><p>Lagere structuur kan eerder omslaan; zij bevestigt geen hogere golf. Slotdoorbraak → eerste bevestigde tegenbeweging → bevestigde terugtest → volgend slot voorbij die eerste beweging zijn aparte stappen. Een wick voorbij het oude eindpunt verwerpt dat vaste eindpunt. Volgorde binnen één candle wordt niet afgeleid.</p><p><b>Golfafronding nog niet bewezen:</b> patroon en vereiste subgolven moeten afzonderlijk geldig zijn. Timeframe is geen vast golfniveau. Een alternatief vervalt niet door alleen een momentumomslag. Volume en delta worden uitsluitend in het afzonderlijke actuele 4H-venster getoetst; niet teruggeprojecteerd op dit pivotmoment. Geen gekalibreerde kanspercentages.</p></div>')
+    return ''.join(parts)
+
+
 def render(bundle):
     parts=['<section class="panel" id="elliott-scenarios"><h2>Elliott: van week naar uur</h2><p>Begin bij de grote structuur en zoom in. Bull en bear zijn mogelijke prijspatronen. Een steunzone helpt een draaipunt duiden; zij bewijst geen golfnummer of toekomstige afwijzing.</p>']
     if bundle['status']=='unavailable':
@@ -269,6 +290,7 @@ def render(bundle):
             low=min(later,key=lambda r:r['low']) if later else None
             parts.append('<p>Grote prijsstructuur: hoogste high binnen deze bronperiode '+price(top['high'])+' USDT ('+escape(iso(top['open_time_ms']))+'); '+('laagste low op een latere candle '+price(low['low'])+' USDT ('+escape(iso(low['open_time_ms']))+').' if low else 'nog geen latere candle voor een low.')+' Dit zijn referentiepunten voor een grotere bull-/bearanalyse, geen automatisch bewezen golfnummers of lifetime-ATH.</p>')
         parts.append(zoom_panel(h))
+        parts.append(render_completion(h))
         parts.append('<details class="ew-historical-counts"><summary>Historische telkandidaten · geen actuele scenarioselectie</summary>')
         for direction,label in (('up','Bull'),('down','Bear')):
             candidate=next((c for c in h['candidates'] if c['direction']==direction),None)

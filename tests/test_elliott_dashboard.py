@@ -101,9 +101,19 @@ class ElliottVisualTests(unittest.TestCase):
         self.assertIn('BRONCONFLICT', page)
         self.assertIn('2026-10-19T00:00:00Z', page)
         self.assertNotIn('Eerste gat: None', page)
+        self.assertNotIn('ew-1w-zoom',page)
         self.assertIn('80125.5',page);self.assertIn('80119.2',page)
         self.assertIn('-0.0432',page);self.assertIn('Volume (BTC)',page)
         self.assertIn('bewijst niet welke aanbiederwaarde correct is',page)
+
+    def test_completion_panel_does_not_turn_pivot_into_certified_wave(self):
+        feed,now=self.feed();b=build(feed,now);page=render(b)
+        self.assertIn('Eindpuntcontrole',page)
+        self.assertIn('Golfafronding nog niet bewezen',page)
+        self.assertIn('niet teruggeprojecteerd',page)
+        for h in b['horizons']:
+            if h['status']=='available':
+                self.assertEqual(h['endpoint_evidence']['wave_completion'],'unproven')
 
     def linked_history(self, now):
         from scripts.elliott_history import floor_time
