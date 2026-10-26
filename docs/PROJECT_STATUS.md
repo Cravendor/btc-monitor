@@ -43,6 +43,15 @@ reviewed PR publication still pending; record result/PR metadata after creation.
 User can review once CI passes. Public visual verification waits for merge/Pages;
 pattern and event-aligned flow development can begin independently now.
 
+PR #86: https://github.com/Cravendor/btc-monitor/pull/86, branch
+feat/elliott-endpoint-evidence-20261026. Executable commit
+7d4762c165063cd49c1a80e14e1143d267c897f4 passed Python 3.9.14 check
+121840713439 and Python 3.11 check 121840712553, including release rendering
+and the Pages asset gate. Open and mergeable, not deployed. This supersedes
+pending-PR/CI wording above. User review/merge can begin immediately. Live
+endpoint table verification waits for merge and successful Pages. Model/pattern
+and properly windowed flow work can proceed independently; no NAS action.
+
 ### Normal NAS publication and real writer-race acceptance passed — 26 October 2026
 
 Current resume checkpoint; supersedes pending one-off/normal-upload acceptance
