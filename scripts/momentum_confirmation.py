@@ -58,9 +58,16 @@ def previous_record(root, current):
                 continue
             if time_ms(r['cvd_4h']['interval_end']) != start:
                 continue
-            # Validate both legs before accepting this observation as the baseline.
+            # Preserve independently valid legs; build() gates each market.
+            valid = 0
             for market in ('spot', 'usdt_futures'):
-                flow(r, market, start-PERIOD, start)
+                try:
+                    flow(r, market, start-PERIOD, start)
+                    valid += 1
+                except (KeyError, TypeError, ValueError, InvalidOperation):
+                    pass
+            if not valid:
+                continue
             found.append((time_ms(r['finished_at']), path.as_posix(), r))
         except (OSError, KeyError, TypeError, ValueError, InvalidOperation):
             continue

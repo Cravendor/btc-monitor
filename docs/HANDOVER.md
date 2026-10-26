@@ -1,5 +1,18 @@
 # BTC monitor — agent handover
 
+### PR 81 final prior-window evidence check — 26 October 2026
+
+Extended original-record selection to retain a separately valid spot baseline
+when only the prior futures leg is unavailable. Each leg is gated again during
+assessment; this never allows full corroboration from partial evidence.
+Revalidated all 453 Python tests locally (3.12.14), five Node status tests,
+whitespace and offline overview generation without external sources. Current
+and prior partial-leg cases are tested. PR #81 is open, not merged/deployed;
+CI for the final code must pass before user merge. No NAS action needed.
+Next: user can review immediately; merge waits for CI. Independent Elliott
+linkage/zoom and source-discrepancy investigation need not wait for merge.
+
+
 ## First synchronized 4H momentum evidence panel prepared — 26 October 2026
 
 PR #81 (https://github.com/Cravendor/btc-monitor/pull/81),

@@ -78,3 +78,12 @@ class MomentumTests(unittest.TestCase):
         self.assertNotIn('usdt_futures',r['groups'])
         self.assertEqual(r['status'],'partial')
         self.assertNotEqual(r['state'],'bullish_supported')
+
+        p['cvd_4h'].update(status='partial',coverage_verified=False)
+        p['cvd_4h']['markets']['usdt_futures'].update(status='partial',coverage_verified=False)
+        with tempfile.TemporaryDirectory() as root:
+            folder=Path(root)/'2026/10/26';folder.mkdir(parents=True)
+            (folder/'partial.json').write_text(json.dumps(p))
+            selected=previous_record(root,f['measurements'][0])
+            self.assertIsNotNone(selected)
+            self.assertIn('spot',build(f,now,selected)['groups'])
