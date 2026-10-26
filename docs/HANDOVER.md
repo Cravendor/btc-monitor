@@ -1,5 +1,34 @@
 # BTC monitor — agent handover
 
+### PR 81 merged and live panel verified; fresh NAS evidence unavailable — 26 October 2026
+
+PR #81 merge confirmed at afea1e1fc7c2c122fdb8fa44fe608d9bcb374686,
+11:25:11 UTC (12:25:11 Amsterdam). Pages 40314937412 at that exact merge
+succeeded. Opened the public overview in cloud Chrome: momentum-confirmation
+section is present with the intended scope/uncalibrated limitation, no invented
+probability or wave-completion claim. #80 source-conflict explanation also visibly
+published for weekly chart. This supersedes unmerged/awaiting-publication wording.
+
+Live momentum panel says insufficient current evidence, with missing current
+4H price source. Other current-price/scenario panels also reject stale input.
+Last verified original NAS measurement remains the earlier 08:34:11 UTC record
+(09:34 Amsterdam), not a new post-81 observation. Stored collector-health is
+dated 08:35:01 UTC, reports age=2/current AT THAT CHECK; do not treat it as
+a current session heartbeat. No fresh NAS upload after that record is established
+by this checkpoint. No recorder-stop inference, no blind recovery, restart or
+new NAS task. Fresh-data rendering acceptance remains pending; deployed gating
+correctly keeps old evidence from appearing current. Actual iPhone QA still open.
+
+Next user action: provide the latest ALREADY FINISHED existing first-upload.txt
+if available, to distinguish failed publication, skipped task or source failure.
+No extra execution requested. Agent can inspect recent public evidence now.
+Linked Elliott active-wave/zoom and week/day source-discrepancy work can start
+immediately without waiting for NAS diagnosis; calibrated percentages still
+require separate historical validation. No new executable changes or runtime
+tests; validation is merged PR, successful Pages, actual browser DOM and dated
+collector-health. Handover/status updated; raw logs stay private.
+
+
 ### PR 81 final prior-window evidence check — 26 October 2026
 
 Extended original-record selection to retain a separately valid spot baseline
