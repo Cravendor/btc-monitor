@@ -1,5 +1,33 @@
 # BTC monitor — agent handover
 
+### PR 78 merged; exact NAS recovery command prepared — 26 October 2026
+
+PR #78 is merged at bb53dfc64cd8e5ae31ea1917adacdb21d2aea25c
+(05:55:02 UTC / 06:55:02 Amsterdam). Current main helper blob is
+76a032838cd79a200ab120cca42cc2d18e3e8a9c, matching the reviewed receipt-preserving
+extension. This supersedes the unmerged/merge-next wording below.
+
+Prepared user operation through the existing manual BTC Git Diagnose: fetch
+under the publisher lock, extract ONLY nas/recover_pending_snapshot.py from that
+pinned merge into new external /volume1/btc-monitor/recover-0146894.py (noclobber),
+then let the helper acquire the same publisher lock. Expected local HEAD remains
+0146894e8e225be3d8ee3295205eae65e0c28ced; exact archive is
+data/2026/10/26/20261026T010719140483Z-local-1.json; new verified bundle target
+is /volume1/btc-monitor/recovery-0146894.bundle. Result log:
+ /volume1/btc-monitor/repair-result-0146894.txt.
+No rebase/pull/reset/force-push or CVD recorder/runtime changes are requested.
+Changed HEAD, existing helper/backup, busy lock or conflicting immutable data
+must stop; inspect the result rather than rerunning old recovery parameters.
+
+NAS execution and successful publication remain UNVERIFIED. Next user action:
+execute the prepared command once and supply repair-result-0146894.txt. Next
+agent action: verify remote merge, unchanged original snapshot and seven receipts,
+and union of both signal histories; then confirm ordinary publishing and prepare
+the separate permanent publisher-race fix. Validation this step: merged PR
+metadata and current helper source/blob; shell syntax checked locally; no NAS
+execution or newly claimed runtime tests. Original logs remain private.
+
+
 ### Pending NAS snapshot and seven receipts diagnosed — 26 October 2026
 
 Actual lock-protected diagnosis establishes clean main at
