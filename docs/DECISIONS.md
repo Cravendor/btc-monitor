@@ -1,5 +1,45 @@
 # Accepted project decisions
 
+## Corrected Elliott dashboard intent — 26 October 2026
+
+Latest user clarification REPLACES always showing a bull and bear chart for every
+timeframe. Desired view: start with weekly context and the latest relevant
+completed/active wave; show its tentative endpoint/completion evidence, then zoom
+into its internal daily/4H/hour subdivisions. Use linked parent/child labels and
+shared timestamps/price anchors, not unrelated latest-six-pivot counts. Provide
+overview plus zoomed active-leg/detail views and zoom in/out. Do not claim the
+current implementation already proves this nesting or current-wave identity.
+
+Show a preferred conditional interpretation and a material valid alternate where
+the endpoint/next structure is unresolved. Alternates need not always point in
+opposite directions; distinct counts may share the same next direction. Do not
+hide a still-valid alternate just because one directional move is confirmed.
+If no defensible count exists or sources conflict, state unavailable, not a
+fabricated next wave. Distinguish observed pivots, tentative count and confirmed
+structural condition; a completed-looking pattern can extend or belong to a
+different degree. Timeframe and wave degree are related but not identical.
+
+User theory was checked against Elliott Wave International Waveopedia and
+Extension: https://www.elliottwave.com/waveopedia/ and
+https://www.elliottwave.com/waveopedia/extension/ . Treat as primary documentation
+of the Elliott framework, not independent proof of predictive accuracy.
+Higher structure constrains interpretation; lower subdivisions can provide
+earlier reversal/completion evidence, but a low-timeframe reversal alone cannot
+confirm a weekly endpoint. Define confirmation and invalidation per degree.
+Closed-candle confirmation is distinct from intrabar hard-rule invalidation.
+No invented probabilities, guaranteed direction or neutral for unavailable data.
+
+PR #80 merge verified: 351d1df3a1550aa44af0f59e00c6302aa86531c7. Its small
+conflict explanation is merged, not a complete redesign or a resolved source
+discrepancy. New linked active-wave/zoom behavior is a requirement, not implemented.
+Next agent work can begin immediately: specify/test linked wave-degree evidence
+and active-leg chart views, investigate preserved week/day conflict separately;
+no NAS wait. Weekly valid-count display must wait for acceptable source agreement.
+Independent UI/zoom work need not wait for that source resolution.
+Handover/status/decisions updated for this clarification. Validation: merged PR
+metadata, current docs, primary framework sources; no code or new runtime tests.
+
+
 ## Next-step readiness and independent work — 26 October 2026
 
 Standing user instruction: every completion still ends with **Volgende stap:**,
