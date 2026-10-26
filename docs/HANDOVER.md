@@ -1,5 +1,29 @@
 # BTC monitor — agent handover
 
+### New-run startup observed; 08:00 upload still pending — 26 October 2026
+
+Actual supplied partial invocation starts 08:00:02 UTC (09:00:02 Amsterdam),
+passes 445 tests on NAS Python 3.9.14 in 75.934 seconds, then ends in buffered
+receipt-test output. No actual collection/push result or EINDSTATUS is included.
+Absence of the old visible fetch/rebase output is consistent with installed #79
+synchronization capturing subprocess output, following confirmed code uptake
+in the preceding run. It is not independent proof of a production race repair.
+Temporary publication backup messages under tmp/... remain test fixtures.
+
+Latest remote head at inspection is f355d3135701a9700dd3327b41abb4b4b3850f36,
+with intervening GitHub history/health writes; no final outcome of this NAS run
+is inferred from those writers. Keep this pending checkpoint on
+docs/nas-new-sync-running-20261026 rather than moving main during publication.
+Incorporate it into main handover/status once actual result is known.
+
+Next user action: wait for the SAME 08:00 invocation and supply first-upload.txt
+after final EINDSTATUS. No second run, recovery or task changes. Next agent
+action: verify original snapshot/receipt publication, actual new synchronization
+use and Pages. Prior transition-run success remains valid; final #79 operational
+acceptance remains open. Validation: actual partial log, installed runner behavior
+and remote head; no new agent tests or NAS operations. Raw log stays private.
+
+
 ### PR 79 code uptake and transition upload confirmed — 26 October 2026
 
 Complete NAS run 07:30:02–07:36:34 UTC (08:30:02–08:36:34 Amsterdam) fetched
