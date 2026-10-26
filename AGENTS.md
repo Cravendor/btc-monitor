@@ -58,3 +58,19 @@ consistency and diff checks; do not add tests mirroring prose.
 End every user-facing task completion with **Volgende stap:** and a concrete
 next action, naming whether the agent or user performs it. State any evidence
 needed or blocker plainly. This is a standing user preference.
+
+## Next-step readiness and independent work — 26 October 2026
+
+Standing user instruction: every completion still ends with **Volgende stap:**,
+naming the actor and concrete action. Also state whether work can start NOW or
+must WAIT for a check/execution/result, identify the actual dependency and what
+evidence releases it. When waiting, explicitly name useful authorized work that
+can start independently, or say none is currently identified. Continue such work
+when appropriate; waiting for one result need not block unrelated project work.
+Do not imply background execution or spawn parallel agents without authorization.
+
+Current readiness: NAS new-runner ordinary publication acceptance is closed;
+a future real writer race is observation only and does not block dashboard,
+Elliott mobile or operational-status QA. Those checks can begin immediately.
+No extra manual NAS run/log is needed now.
+
