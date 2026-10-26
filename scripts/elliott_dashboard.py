@@ -185,7 +185,16 @@ def render(bundle):
         if h['status']!='available':
             q=h.get('coverage',{})
             if q:
-                parts.append('<p>Historiedekking: '+escape(str(q.get('candle_count',0)))+' / '+escape(str(q.get('required_candles','?')))+' gesloten candles. Ontbrekend: '+escape(str(q.get('missing_candles','onbekend')))+'. Eerste gat: '+escape(str(q.get('first_missing_at',q.get('reason','onbekend'))))+'.</p>')
+                parts.append('<p>Historiedekking: '+escape(str(q.get('candle_count',0)))+' / '+escape(str(q.get('required_candles','?')))+' gesloten candles. Ontbrekend: '+escape(str(q.get('missing_candles','onbekend')))+'.</p>')
+                if q.get('status') == 'conflict':
+                    check = q.get('cross_timeframe_check', {})
+                    parts.append('<p><b>BRONCONFLICT:</b> De '+tf.upper()+'-candles komen niet overeen met de onderliggende '+escape(str(check.get('child', 'lagere timeframe'))).upper()+'-candles in prijs of BTC-volume. Volledige dekking betekent niet dat de bronvergelijking klopt.</p>')
+                    if check.get('first_mismatch_at'):
+                        parts.append('<p>Eerste afwijkende candle-opening UTC: '+escape(str(check['first_mismatch_at']))+'.</p>')
+                    parts.append('<p>Grafieken voor deze timeframe geblokkeerd tot de broncontrole slaagt; geen lagere timeframe als vervanging.</p></details>')
+                    continue
+                if q.get('first_missing_at'):
+                    parts.append('<p>Eerste ontbrekende candle-opening UTC: '+escape(str(q['first_missing_at']))+'.</p>')
             parts.append('<p>ONVOLDOENDE DATA voor deze timeframe; geen lagere timeframe als vervanging.</p></details>')
             continue
         parts.append('<p>'+str(len(h['rows']))+' gesloten candles · bron '+escape(h['source_at'])+' · laatste slot '+price(h['rows'][-1]['close'])+' USDT op '+escape(h['closed_at'])+'.</p>')

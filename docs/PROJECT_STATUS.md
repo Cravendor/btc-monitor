@@ -1,5 +1,46 @@
 # BTC Monitor — current scope and open work
 
+### Live dashboard QA; Elliott conflict explanation fix prepared — 26 October 2026
+
+Inspected public overview and btc-status.html in cloud Chrome, including live
+DOM, rendered daily chart and task-status screenshot. Desktop page is readable,
+daily bull/bear candidate charts are present, invalid candidates remain labeled,
+and status distinguishes recent NAS trades/upload proof from direct process
+control. GitHub cards completed loading and correctly show failed history run
+40288122222 (job 121456533031) and stale 4H archive evidence, rather than masking
+them with earlier success. History job logs show both archive commits pushed
+then exit 1; do not call this a Git push conflict or infer root cause from the
+status label alone. Quality/startup receipt absence remains explicit unknown.
+
+Found reproducible weekly explanation defect: published week panel shows 69/69
+candles, zero missing, 'Eerste gat: None', then 'ONVOLDOENDE DATA'. Actual
+read-only archive reconciliation rejects week 2026-10-19 because price or BTC
+volume differs from its underlying daily candles. Suppression is intentional
+and must stay. Prepared fix/elliott-conflict-explanation-20261026 explains
+BRONCONFLICT, affected source degrees and first mismatching candle, removes
+the misleading missing-data claim for conflicts and renders no week chart.
+Other available degrees stay visible. No archive rewrite, tolerance change,
+data-source fallback or invented valid count.
+
+Validation: all 446 Python tests locally (3.12.14), five Node status tests,
+whitespace and offline actual-archive rendering passed. Week remains unavailable
+while daily/4H/hour remain drawable. An initial offline check used the wrong
+root ('data' instead of repository '.'); corrected check passed. No external
+market fetch in this verification. CI 3.9.14/3.11 pending PR review.
+Mobile CSS inspected: charts intentionally have a 680px minimum and local
+horizontal scrolling below 600px. No phone viewport/emulation control is exposed
+by this browser API, so this is NOT completed iPhone/mobile visual acceptance.
+No claim of responsive QA from desktop screenshot alone.
+
+Next user action after green CI: review/merge the small explanation PR.
+Next agent work can start immediately without waiting for merge: diagnose
+week/day candle discrepancy and failing history collector using preserved
+source evidence, and complete remaining mobile QA when a phone viewport is
+available. No NAS operation or extra upload is needed. The explanation fix
+does not resolve the underlying source disagreement. No browser files/screenshots
+or private diagnostics copied to the public repository.
+
+
 ## Next-step readiness and independent work — 26 October 2026
 
 Standing user instruction: every completion still ends with **Volgende stap:**,

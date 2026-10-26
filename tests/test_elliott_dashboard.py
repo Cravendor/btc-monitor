@@ -83,3 +83,18 @@ class ElliottVisualTests(unittest.TestCase):
         r=build(feed,now)
         self.assertEqual(r['horizons'][2]['status'],'unavailable')
         self.assertEqual(r['horizons'][1]['status'],'available')
+
+    def test_full_coverage_conflict_blocks_only_affected_degree_and_explains_why(self):
+        feed, now = self.feed()
+        bundle = build(feed, now)
+        week = bundle['horizons'][0]
+        week.update(status='unavailable', coverage={
+            'status': 'conflict', 'candle_count': 69, 'required_candles': 69,
+            'missing_candles': 0, 'first_missing_at': None,
+            'cross_timeframe_check': {'child': '1d', 'first_mismatch_at': '2026-10-19T00:00:00Z'}})
+        page = render(bundle)
+        self.assertNotIn('id="ew-1w-', page)
+        self.assertIn('id="ew-1d-', page)
+        self.assertIn('BRONCONFLICT', page)
+        self.assertIn('2026-10-19T00:00:00Z', page)
+        self.assertNotIn('Eerste gat: None', page)
