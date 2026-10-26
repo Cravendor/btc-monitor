@@ -6,6 +6,43 @@ handover, not a complete transcript or private-chat export. Read together with
 code/data. Repository: [Cravendor/btc-monitor](https://github.com/Cravendor/btc-monitor).
 Dashboard: https://cravendor.github.io/btc-monitor/.
 
+### Storage receipt publication verified; NAS publishing gap requires diagnosis — 26 October 2026
+
+Read original public storage receipt data/task-executions/nas/storage/
+20261025T201243Z.json: schema_version=1, source=nas, task=storage,
+started_at=2026-10-25T20:12:43Z, finished_at=20:12:43.308325+00:00,
+outcome=completed, exactly the six allowed fields and matching immutable path.
+This closes the missing storage receipt / observed execution → public repository
+acceptance for that run (21:12:43 Amsterdam on 25 October). It proves those
+inspections completed, not healthy free-space thresholds or SQLite integrity.
+Daily 10:40 remains the intended schedule; one receipt does not prove its next
+scheduled execution. No new task or repeated manual storage run is needed.
+
+Latest Pages 40269369283 at head 0de0c710 succeeded; no new browser/card QA
+claimed. Last observed NAS original is
+data/2026/10/26/20261026T003455876150Z-local-1.json, finished 00:35 UTC
+(01:35 Amsterdam), status=ok, both interval deltas verified, quality ready.
+Interval is 25 October 20:00–26 October 00:00 UTC; provider-side spot delta
+-13.746537 BTC and futures -166.5695 BTC. These are historical interval values,
+not valid substitutes for a new closed interval. Latest stored watchdog receipt
+path is 20261026T003502Z.json; current process state is not inferred.
+
+collector-health.json was checked 01:45:48 UTC, reporting successful reserve
+recovery after stale status and no verified local interval delta. Its stored
+current/age=0 describes THAT check, not the current session. At repository head
+0de0c710 (breaking-risk receipt 04:29 UTC), no NAS originals after 00:35 were
+found. Do not call primary NAS publication continuously restored or infer the
+recorder stopped. Diagnose the actual latest NAS publisher result before repairs.
+
+Next user action: provide the latest existing first-upload.txt / saved result
+of BTC NAS Collect Publish, without starting another run or reusing old repair.
+Next agent action: distinguish writer conflict, schedule, tests/runtime or source
+failure from actual evidence, preserving all local observations and CVD journal.
+Exact CVD validation remains required; current missing delta is unavailable.
+Validation: actual storage JSON, complete repository inventory, last original
+NAS JSON/quality, collector-health and recent successful Pages results; no new tests.
+This supersedes the prior awaiting-publication storage checkpoints.
+
 ## Current handover — 25 October 2026, Europe/Amsterdam
 
 This section and PROJECT_STATUS.md supersede older preparation/open-PR wording
