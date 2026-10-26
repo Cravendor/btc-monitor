@@ -42,6 +42,16 @@ waits for Pages. Active candidate generation and supported-family expansion can
 start independently now. No confirmed current/nested Elliott count or calibrated
 probabilities established; do not imply that checking this layer finishes them.
 
+PR #87: https://github.com/Cravendor/btc-monitor/pull/87, branch
+feat/elliott-anchored-subdivisions-20261026. Executable commit
+4a92f19143abf459a09991f9ca7571c51948846f passed Python 3.9.14 check
+121884345069 and Python 3.11 check 121884344777, including full release rendering
+and actual Pages asset gate. Open and mergeable, not deployed. This supersedes
+pending-PR/CI wording above. User review/merge can begin immediately; live
+disclosure QA waits for merge and successful Pages. Active candidate selection,
+more supported pattern families and degree inference can proceed independently.
+No NAS action required; no full certified count or calibrated probability claimed.
+
 ### PR 86 merged; linked endpoint evidence verified live — 26 October 2026
 
 Current resume checkpoint; supersedes awaiting-merge/deployment wording for PR86.
