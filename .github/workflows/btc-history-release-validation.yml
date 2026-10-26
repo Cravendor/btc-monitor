@@ -61,6 +61,7 @@ jobs:
           PY
           python -m scripts.timeframe_history_dashboard data/history/timeframe_signals.jsonl output/btc-signal-history.html data/collector-health.json
           python -m scripts.multi_timeframe_dashboard data/latest.json output/btc-timeframes.html data/collector-health.json
+          python -m scripts.analysis_quality data/latest.json output
       - uses: actions/upload-artifact@v4
         if: matrix.python == '3.11'
         with:
