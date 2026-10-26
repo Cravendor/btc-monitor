@@ -1,5 +1,60 @@
 # BTC Monitor — current scope and open work
 
+### NAS feed-envelope synchronization defect identified and repair prepared — 26 October 2026
+
+Current resume checkpoint. User's private completed 17:30:02–17:30:06 UTC
+(18:30 Amsterdam) publisher output establishes failure before collection:
+sync_publish.py reads latest.json['finished_at'], raises KeyError and exits 1.
+The actual collector writes feed_schema_version=1, with finished_at inside
+measurements[0]. Existing tests used an unrealistic standalone record and missed
+this schema error. No private log/transcript is committed here. This supersedes
+the earlier request for the latest publication log: that evidence is now read.
+It does not establish the continuous CVD recorder's current process state.
+
+Prepared fix reads the selected first observation's aware finished_at, rejects
+missing/malformed first observations, and never substitutes feed updated_at,
+a top-level timestamp or a later measurement. All three derived views still
+come from the same newer observation; ties retain remote. Existing immutable
+archive/receipt/history protections and verified backup remain unchanged.
+Integration fixtures now use the real envelope and exercise newer local, newer
+remote, equal-time selection, push races, pending original retention, and invalid
+feed rejection before any merge/backup. CI path filter now includes nas/**.
+
+IMPORTANT uptake dependency: merging alone does not repair this stuck NAS. Its
+old helper loads before fetch and fails while reconciling, so it cannot install
+its own update. After reviewed merge, use the EXISTING disabled/manual BTC Git
+Diagnose task as tony to execute a pinned fixed helper outside the checkout under
+the SAME publisher lock. It fetches main, checks the reviewed commit is an
+ancestor, runs guarded synchronization with external verified backups, and
+keeps pending observations. See docs/NAS_SYNC_FEED_REPAIR.md. No reset, checkout
+of individual tracked files, blind pull/rebase, force push or CVD restart.
+Agent will provide the fully pinned DSM command after merge; do not rerun the
+broken publisher as a proposed fix. Normal collection resumes only after the
+one-off sync succeeds. Actual NAS acceptance and fresh CVD remain pending.
+
+PR 84 merge confirmed at 9bacc0032ca390e0f77c91ec9dfc3fc49cc38a86; exact-merge
+Pages 40369628034 succeeded. Source-history 40369628045 still failed its weekly
+source review; this is separate from the NAS software defect. No fresh browser
+acceptance for its diagnostic table is claimed here. Weekly source conflict stays
+blocked; original candles remain unchanged.
+
+Validation: full 462 Python tests, six Node tests, shell procedure syntax and
+diff checks; Python 3.9.14/3.11 CI pending the repair PR. Current dashboard source
+and data unchanged; CI includes existing full generation/asset gate. Next user
+step can start now: review repair; NAS one-off waits for merge and the pinned
+command. Linked wave-degree development does not need to wait for NAS acceptance.
+
+Repair PR #85: https://github.com/Cravendor/btc-monitor/pull/85,
+branch fix/nas-sync-feed-timestamp-20261026. CI passed at
+78ffcbf737ec74d63f89d1cb8b4e78132d183774: Python 3.9.14 check 121743359931
+and Python 3.11 check 121743360445, including full dashboard generation and
+asset quality gate. Executable helper pinned in the uptake procedure to
+ e13ff2756d43586c7d2f8e43f9899b69242ae7ce; actual archived main feed also parses
+successfully with the fix. This supersedes pending-CI wording above. PR is open,
+not deployed on NAS; user can review/merge now. Agent then supplies the exact
+procedure through the existing manual task; wait for that one-off success before
+claiming normal publisher recovery. Final docs-only commit records this result.
+
 ### Weekly conflict reproduced live; NAS publication gap isolated — 26 October 2026
 
 Current resume checkpoint. Fresh Bitget public 1Wutc, 1Dutc and 4H queries at

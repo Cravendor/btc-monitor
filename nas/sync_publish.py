@@ -12,6 +12,26 @@ HISTORY = 'data/history/timeframe_signals.jsonl'
 ORIGIN = 'git@github.com:Cravendor/btc-monitor.git'
 
 
+def observation_time(feed):
+    """Time of the displayed observation, not feed generation or an older row.
+
+    collect.py writes a feed envelope; only measurements[0] supplies the views.
+    Reject an unusable head instead of choosing another measurement silently.
+    """
+    if not isinstance(feed, dict) or feed.get('feed_schema_version') != 1:
+        raise ValueError('Expected market feed schema 1')
+    measurements = feed.get('measurements')
+    if not isinstance(measurements, list) or not measurements or not isinstance(measurements[0], dict):
+        raise ValueError('Feed must contain a first observation')
+    value = measurements[0].get('finished_at')
+    if not isinstance(value, str):
+        raise ValueError('First observation finished_at required')
+    stamp = datetime.fromisoformat(value.replace('Z', '+00:00'))
+    if stamp.tzinfo is None:
+        raise ValueError('Aware observation time required')
+    return stamp
+
+
 def synchronize(repo, backup_dir, push=False, expected_origin=ORIGIN, attempts=3):
     repo, backup_dir = Path(repo).resolve(), Path(backup_dir).resolve()
     if backup_dir == repo or repo in backup_dir.parents:
@@ -93,11 +113,7 @@ def synchronize(repo, backup_dir, push=False, expected_origin=ORIGIN, attempts=3
                     combined.setdefault(key, value)
                 # Keep all three derived views together, from the newer observation.
                 def observed(ref):
-                    value = json.loads(git('show', ref + ':data/latest.json').stdout)['finished_at']
-                    stamp = datetime.fromisoformat(value.replace('Z', '+00:00'))
-                    if stamp.tzinfo is None:
-                        raise ValueError('Aware observation time required')
-                    return stamp
+                    return observation_time(json.loads(git('show', ref + ':data/latest.json').stdout))
                 view_ref = 'HEAD' if observed('HEAD') > observed(remote) else remote
                 backup_dir.mkdir(parents=True, exist_ok=True)
                 backup = backup_dir / ('publish-' + uuid.uuid4().hex + '.bundle')
