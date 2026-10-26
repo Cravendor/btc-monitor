@@ -1,5 +1,26 @@
 # BTC monitor — agent handover
 
+### PR 85 merged; pinned one-off NAS uptake ready — 26 October 2026
+
+Current resume checkpoint, superseding pending-merge wording below. PR 85 merged
+at ff0b057f6309ea82e59181c07b94bac12b2b6fb7, 18:14:25 UTC / 19:14:25 Amsterdam.
+The documented helper is pinned to reviewed executable commit
+ e13ff2756d43586c7d2f8e43f9899b69242ae7ce, now included in main. The agent supplied
+the exact docs/NAS_SYNC_FEED_REPAIR.md procedure for the existing BTC Git Diagnose
+task, user tony, manual only: shared publisher lock, verified existing SSH settings,
+fetch, merged-ancestry check, external temporary helper and guarded sync/backups.
+No claim that user executed it or that NAS recovered. No NAS operation performed
+by agent; no raw private log published. No executable change or repeated tests.
+
+Next user action can begin now: preserve the diagnostic task's old script,
+replace it with the pinned procedure, save and run that existing task once.
+Keep its schedule disabled. Send the full completed task result. A success line
+Guarded synchronization completed permits one existing normal publisher run;
+fresh original NAS snapshot and commit-specific Pages still required for runtime
+acceptance. If publisher lock is busy, wait until that execution finishes before
+retrying the same one-off task. Unknown local changes or other failure need
+inspection, not reset or deleted files. Elliott wave-degree work remains independent.
+
 ### NAS feed-envelope synchronization defect identified and repair prepared — 26 October 2026
 
 Current resume checkpoint. User's private completed 17:30:02–17:30:06 UTC
