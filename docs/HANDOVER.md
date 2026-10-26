@@ -1,5 +1,35 @@
 # BTC monitor — agent handover
 
+### PR 79 code uptake and transition upload confirmed — 26 October 2026
+
+Complete NAS run 07:30:02–07:36:34 UTC (08:30:02–08:36:34 Amsterdam) fetched
+e3f1d89 including #79, passed 445 tests on Python 3.9.14 in 77.119 seconds,
+published 63850658033ae2c6bd525018413a497918ecdef3 and ended EINDSTATUS=0.
+Actual original data/2026/10/26/20261026T073347988986Z-local-1.json has
+source=nas, status=ok, finished 07:33:53.106432 UTC, cvd=ok and analysis quality
+ready_for_scoped_report. Actual six-field watchdog receipt 20261026T073502Z.json
+has outcome completed at 07:35:02.249732 UTC; six new watchdog receipts included
+in this push. Pages 40286837132 at 6385065 succeeded. No live browser QA claimed.
+
+This proves new code is in the NAS checkout and its tests run there. The shell
+invocation initially loaded the old runner: it explicitly reports rebase and
+direct Git push. New publisher-specific backup messages under tmp/.../backups
+are isolated test output, not actual operational race recovery. Do not claim
+the new synchronization path or a real concurrent-writer repair was exercised
+by this transition run. Ordinary publishing is working at this checkpoint.
+
+This incorporates/supersedes docs/nas-post79-uptake-pending-20261026; its interim
+branch need not be merged separately. Next user action: let the next ordinary
+scheduled invocation run with the now-installed new shell runner and provide
+the full existing first-upload.txt after EINDSTATUS. No manual extra run,
+DSM edits or recovery. Next agent action: verify new path use and publication;
+observe any later real race without manufacturing operational failures.
+The structural fix is merged/installed/tested on NAS, operational race acceptance
+remains unobserved. Preserve all original evidence and schedules/CVD runtime.
+Validation: actual complete user log, original remote JSON, watchdog JSON and
+commit-specific successful Pages result; no new agent runtime tests.
+
+
 ### Bounded publisher reconciliation prepared — 26 October 2026
 
 Prepared PR #79 (https://github.com/Cravendor/btc-monitor/pull/79), branch
