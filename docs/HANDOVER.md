@@ -1,5 +1,34 @@
 # BTC monitor — agent handover
 
+### PR 79 merged; scheduled NAS uptake pending — 26 October 2026
+
+PR #79 merged at e3f1d894ac42e78f9b8a077ae2539543456f071a on 07:28:48 UTC
+(08:28:48 Amsterdam). This supersedes the open/merge-next wording below.
+Bounded reconciliation is now on main, but no post-merge NAS publication or
+actual production race reconciliation has yet been observed. Last dated NAS
+original in the merge tree predates this change; the earlier 07:00 run used
+the old publisher and is not deployment proof for #79.
+
+No DSM body/schedule change or new manual upload is needed now. Let the existing
+half-hour BTC NAS Collect Publish take up main at its next scheduled invocation;
+wait for full EINDSTATUS and supply its existing first-upload.txt result.
+The invocation initially loads the OLD shell runner before synchronization, so
+one successful code-fetch/publication alone may be an uptake transition. Verify
+a later invocation using the new reconciliation path (or unmistakable sync
+output), rather than claiming production race resilience from a green snapshot.
+If the old runner hits a conflict before fetching usable new code, inspect its
+actual log and state first; do not blindly repeat any earlier one-off recovery.
+
+This checkpoint is saved on docs/nas-post79-uptake-pending-20261026 to avoid
+advancing main near the imminent scheduled upload window. Incorporate it into
+main handover/status once actual uptake/result is established. Next user action:
+provide the complete next scheduled publisher result after EINDSTATUS appears.
+Next agent action: distinguish code fetch, new path use, fresh snapshot/receipt
+publication and Pages; only an observed race proves actual operational conflict
+recovery. Prior 445-test/CI validation remains dated implementation evidence.
+No new runtime tests, NAS operations or CVD/runtime changes performed here.
+
+
 ### Bounded publisher reconciliation prepared — 26 October 2026
 
 Prepared PR #79 (https://github.com/Cravendor/btc-monitor/pull/79), branch
