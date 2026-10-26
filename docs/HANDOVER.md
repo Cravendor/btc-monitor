@@ -1,6 +1,47 @@
 # BTC monitor — agent handover
 
-Current checkpoint: 25 October 2026, Europe/Amsterdam. This is a curated technical
+### Pending NAS snapshot and seven receipts diagnosed — 26 October 2026
+
+Actual lock-protected diagnosis establishes clean main at
+0146894e8e225be3d8ee3295205eae65e0c28ced, ahead 1 / behind 15 against
+874542bc592a5c71dd6b1b605b49b3df5030e5ff. Pending original archive:
+data/2026/10/26/20261026T010719140483Z-local-1.json.
+The commit changes the three derived views and timeframe signal history, and
+ADDS seven watchdog receipts at 00:40:02, 00:45:02, 00:50:02, 00:55:02,
+01:00:02, 01:05:10 and 01:10:05 UTC. This establishes paths/additions, not
+independent validation of those receipt contents or current recorder uptime.
+
+This supersedes the missing-full-HEAD/file-set diagnosis request below. No need
+to repeat that diagnosis unless the guarded recovery finds changed state.
+The existing one-off helper rejects these additional files. Prepared extension in PR #78
+(https://github.com/Cravendor/btc-monitor/pull/78), branch
+fix/nas-recovery-receipts-20261026 accepts ONLY newly added regular receipt
+files under the three known NAS task paths with timestamp filenames; it checks
+all original archive/receipt blob IDs after merge. Conflicting receipt contents,
+modified/deleted receipts, symlinks and unrelated paths stop safely. Existing
+backup verification, clean exact-HEAD/main guard, publisher lock, history union,
+upstream derived views and ordinary non-force push remain required. Receipt
+spool is not acknowledged by this recovery; normal publisher handles that later.
+
+Implementation is proposed, not yet merged/deployed; no NAS recovery executed.
+Local validation: 439 Python tests (Python 3.12.14), including nine real-Git
+recovery tests, and five Node status tests passed. Release read-only dashboard
+validation also passed. Both release CI matrix jobs passed for code commit
+7f7da0b42ac9cfc41a81acbf7bdcd99f54d28103: Python 3.9.14 check 121420627857
+and Python 3.11 check 121420627667. Subsequent changes only record PR/validation
+metadata in this handover and PROJECT_STATUS; no executable changes.
+Private diagnostic log is not copied to this public repository.
+
+Next user action after green review: merge PR #78. Next agent
+action: supply a pinned, lock-protected backup-first command for THIS exact HEAD
+and archive, then verify original snapshot, histories and all seven receipts on
+remote before running the normal publisher. Stop on changed HEAD; do not reuse
+old incident parameters. Permanent concurrent-writer resilience is still OPEN
+and must be handled in a separate tested publisher PR after this recovery;
+this extension does not solve the repeated upload race. No CVD journal/runtime,
+DSM schedule, storage task or recorder restart changes.
+
+Current checkpoint: 26 October 2026, Europe/Amsterdam. This is a curated technical
 handover, not a complete transcript or private-chat export. Read together with
 [PROJECT_STATUS.md](PROJECT_STATUS.md), [DECISIONS.md](DECISIONS.md) and current
 code/data. Repository: [Cravendor/btc-monitor](https://github.com/Cravendor/btc-monitor).

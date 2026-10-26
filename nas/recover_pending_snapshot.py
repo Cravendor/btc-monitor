@@ -39,9 +39,19 @@ def recover(repo, expected, archive, backup, expected_origin=ORIGIN):
         if (path if path.is_absolute() else repo / path).exists():
             raise RuntimeError('Another Git operation is active')
     changed = set(read('diff-tree', '--no-commit-id', '--name-only', '-r', 'HEAD').splitlines())
-    if changed != set(VIEWS + [HISTORY, archive]):
+    required = set(VIEWS + [HISTORY, archive])
+    receipts = changed - required
+    if not required <= changed or any(not re.fullmatch(
+            r'data/task-executions/nas/(watchdog|storage|startup)/\d{8}T\d{6}Z\.json',
+            path) for path in receipts):
         raise RuntimeError('Unexpected local files; no merge attempted')
-    original = read('rev-parse', 'HEAD:' + archive)
+    for path in receipts:
+        status = read('diff-tree', '--no-commit-id', '--name-status', '-r', 'HEAD', '--', path)
+        entry = read('ls-tree', 'HEAD', '--', path)
+        if status != 'A\t' + path or not entry.startswith('100644 blob '):
+            raise RuntimeError('NAS receipts must be newly added regular files')
+    immutable = {path: read('rev-parse', 'HEAD:' + path)
+                 for path in [archive] + sorted(receipts)}
     git('bundle', 'create', str(backup), '--all')
     git('bundle', 'verify', str(backup))
     print('Verified backup:', backup, flush=True)
@@ -72,8 +82,9 @@ def recover(repo, expected, archive, backup, expected_origin=ORIGIN):
         git('add', '--', HISTORY)
         if read('diff', '--name-only', '--diff-filter=U'):
             raise RuntimeError('Unresolved conflicts')
-        if read('rev-parse', ':' + archive) != original:
-            raise RuntimeError('Original NAS measurement changed')
+        for path, original in immutable.items():
+            if read('rev-parse', ':' + path) != original:
+                raise RuntimeError('Original NAS measurement or receipt changed')
         git('diff', '--cached', '--check')
         git('-c', 'user.name=BTC NAS collector', '-c', 'user.email=btc-nas@users.noreply.github.com',
             'commit', '-m', 'Preserve pending NAS observation and reconcile original signal history')
@@ -84,7 +95,8 @@ def recover(repo, expected, archive, backup, expected_origin=ORIGIN):
     # A concurrent remote push safely rejects this. Keep the merge and backup;
     # never repeat an old recovery or force-push to erase remote changes.
     git('push', 'origin', 'HEAD:main')
-    print('Recovery pushed: original snapshot and both signal histories preserved.', flush=True)
+    print('Recovery pushed: original snapshot, both signal histories and '
+          + str(len(receipts)) + ' NAS receipts preserved.', flush=True)
 
 
 if __name__ == '__main__':
