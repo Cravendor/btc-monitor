@@ -365,6 +365,30 @@
     {
       "bias": {
         "30d_macro": {
+          "reason": "30D/macro: ONVOLDOENDE DATA — diplomatie is begonnen, maar zonder akkoord, duurzame olie-normalisatie, rente-effect en bredere spot- of on-chainbevestiging is de macro-cyclus niet vast te stellen.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: 0 NEUTRAAL/GEMENGD — de bevestigde start van diplomatie en lagere olieprijs verzwakken het acute geopolitieke neerwaartse risico, maar BTC liet geen duidelijke risk-on-reactie zien. Positieve funding, licht stijgend open interest en negatieve eerdere Bitget-delta vormen het belangrijkste tegensignaal. Betrouwbaarheid: middelmatig voor deze beperkte scope; exacte eventtijd en onafhankelijke BTC-orderflow ontbreken.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: ONVOLDOENDE DATA — de openbare opslag dekt 23 van 48 halfuurvakken in de laatste 24 uur en levert geen volledige onafhankelijke zevendaagse reeks voor ETF-flows, liquidaties en orderflow.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        }
+      },
+      "content_sha256": "b04924b18965d4661c8d73de71d3b26eca0a298feac304f4a57af0b75d84422e",
+      "has_report_text": true,
+      "monitor": "market-risk",
+      "path": "reports/2026/10/26/market-risk-073831.json",
+      "reported_at": "2026-10-26T07:38:31Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
           "reason": "30D/macro: **ONVOLDOENDE DATA** — zomerherstel en positieve totale NUPL beslissen de cyclus niet; onafhankelijk vraag-, cohort- en liquiditeitsbewijs is onvolledig.",
           "score": null,
           "status": "ONVOLDOENDE DATA"
