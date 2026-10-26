@@ -1,5 +1,30 @@
 # BTC monitor — agent handover
 
+### Post-recovery ordinary upload tests passed; final result pending — 26 October 2026
+
+Actual supplied partial run starts 06:24:00 UTC (07:24 Amsterdam) on NAS
+Python 3.9.14. It successfully synchronized through 03fc7c7, then passed all
+439 tests in 68.151 seconds. Supplied copy was captured at 06:25:55 UTC and
+contains NO final EINDSTATUS, actual post-test collection result or push result.
+Remote main remained 03fc7c71475d35aa6b372edf6f4bf8193001180e at inspection;
+a fresh post-recovery NAS observation is not yet established.
+
+Warnings, dated 25 October quality JSON, temporary bundle/recovery messages and
+invalid/conflicting receipt messages in this output belong to isolated test
+fixtures. They do not establish current source failures, missing Elliott archive,
+another real recovery, or failed actual NAS receipts. Do not repeat the repair,
+restart the recorder or launch a second uploader from this partial log.
+
+This interim checkpoint is kept on docs/nas-post-recovery-pending-20261026 to
+avoid moving main during the active collection/push window. Incorporate it into
+main handover/status when final execution evidence arrives. Next user action:
+wait for the SAME run to finish and supply first-upload.txt after its final
+EINDSTATUS appears. Next agent action: inspect full result and fresh original
+snapshot/quality/receipt publication, then permanent publisher-race work.
+Validation: actual partial result and remote head only; no new tests by agent.
+Private raw log remains outside public repository.
+
+
 ### Pending snapshot recovery verified remotely — 26 October 2026
 
 Actual supplied recovery result confirms verified external bundle
