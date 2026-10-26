@@ -86,3 +86,9 @@ start other workflows. The first update happened to be included by another
 pending Pages run. An explicit completion trigger removes this timing dependency,
 reusing the existing trusted-default-branch guards and degraded-publication rules.
 No schedule, source data or collection code is changed by this follow-up.
+
+## Reproduced weekly conflict — 26 October 2026
+
+See [ELLIOTT_SOURCE_AUDIT.md](ELLIOTT_SOURCE_AUDIT.md) for preserved fresh API
+responses and exact field differences. Full row coverage does not establish
+cross-timeframe consistency. The weekly acceptance gate remains unchanged.

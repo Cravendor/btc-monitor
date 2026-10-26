@@ -1,5 +1,40 @@
 # BTC Monitor — current scope and open work
 
+### Weekly conflict reproduced live; NAS publication gap isolated — 26 October 2026
+
+Current resume checkpoint. Fresh Bitget public 1Wutc, 1Dutc and 4H queries at
+17:21–17:22 UTC / 18:21–18:22 Amsterdam reproduce the October 19 weekly conflict:
+weekly close 80125.5 vs daily/4H 80119.2; base BTC 217958.4979 vs 217958.5411.
+All seven daily groups match their 42 fresh 4H children. Original strings disagree;
+not a local float or stale-cache explanation. Which source value is correct and
+the provider's underlying cause remain unknown. Weekly gate stays blocked; no
+original candle edits or relaxed tolerances.
+
+See docs/ELLIOTT_SOURCE_AUDIT.md and immutable public raw rechecks under
+ data/history/source-audits/20261026T172221Z-week-day-4h.json.
+Prepared diagnostic changes: reconcile returns bounded exact field differences,
+dashboard shows first mismatch, and history CLI prints final source review
+responsible for failure. History run 40367287095 committed new native rows then
+failed reconciliation, not Git push. Its 17:18 UTC archive checkpoint closed the
+earlier 4H gap (2896/2896; 1H 11585/11585). This supersedes the previous 4H-gap
+checkpoint; it does not make either source perpetually current.
+
+Latest 15:13 UTC measurement is github_fallback with CVD not_collected, not NAS.
+Last confirmed NAS publication remains 08:34:11 UTC / 09:34:11 Amsterdam.
+Health failure 40367246156 was a push check, deliberately ineligible for reserve
+collection. No current DSM task/process state is established. Do not restart or
+rerun incident recovery. Next user evidence: latest ALREADY FINISHED existing
+BTC NAS Collect Publish first-upload.txt, including EINDSTATUS when present;
+no extra execution or duplicate task requested. Agent can diagnose after receipt.
+
+Validation of proposed diagnostic PR: 460 Python tests, six Node tests, diff
+whitespace, and offline dashboard + actual asset quality gate against preserved
+main archive. Weekly table values appear; weekly SVG remains blocked. Public
+API probes were bounded to three requests; existing snapshots/history untouched.
+PR/CI/deployment status to be recorded after publication. Linked wave-degree
+model work can proceed immediately without waiting for the NAS log or source
+correction; calibrated percentages require separate point-in-time validation.
+
 ### PR 83 merged and zoom verified live — 26 October 2026
 
 Current resume checkpoint; supersedes all pending-merge/deployment wording for

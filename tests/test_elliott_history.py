@@ -27,6 +27,35 @@ def provider(calls, missing=False, revision=False):
 
 
 class HistoryTests(unittest.TestCase):
+    def test_preserved_live_probe_isolates_week_close_and_base_conflict(self):
+        path=Path(__file__).resolve().parents[1]/'data/history/source-audits/20261026T172221Z-week-day-4h.json'
+        audit=json.loads(path.read_text());start=time_ms(audit['window_start']);end=time_ms(audit['window_end'])
+        rows={tf:{t:r for t,r in eh.rows_from(s['data'],tf,end).items() if start<=t<end}
+              for tf,s in audit['sources'].items()}
+        self.assertEqual([len(rows[tf]) for tf in ('1w','1d','4h')],[1,7,42])
+        q=eh.reconcile(rows['1d'],list(rows['1w'].values()),'1d','1w')
+        self.assertEqual(q['status'],'conflict')
+        fields=q['mismatch_details'][0]['fields']
+        self.assertEqual(set(fields),{'close','base_volume_btc'})
+        self.assertEqual(fields['close'],dict(native='80125.5',from_children='80119.2',native_minus_children='6.3'))
+        self.assertEqual(fields['base_volume_btc']['native_minus_children'],'-0.0432')
+        self.assertEqual(q['quote_volume_max_abs_difference_usdt'],'3461.34025')
+        lower=eh.reconcile(rows['4h'],list(rows['1d'].values()),'4h','1d')
+        self.assertEqual(lower['checked_candles'],7)
+        self.assertEqual(lower['mismatch_details'],[])
+        self.assertEqual(lower['status'],'consistent_checked_groups')
+
+    def test_conflict_detail_is_bounded_and_does_not_change_source_rows(self):
+        base=dict(open=100,high=110,low=90,close=105,base_volume_btc=10,quote_volume_usdt=1000)
+        source={t:dict(base,open_time_ms=t) for t in range(0,6*14400000,3600000)}
+        parents=[dict(base,open_time_ms=t,base_volume_btc=40,quote_volume_usdt=4000,high=111)
+                 for t in range(0,6*14400000,14400000)]
+        before=deepcopy((source,parents));q=eh.reconcile(source,parents,'1h','4h')
+        self.assertEqual(q['mismatch_candles'],6)
+        self.assertEqual(len(q['mismatch_details']),5)
+        self.assertTrue(q['mismatch_details_truncated'])
+        self.assertEqual((source,parents),before)
+
     def test_batch_checkpoints_resume_and_skip_completed_degrees(self):
         with tempfile.TemporaryDirectory() as folder:
             calls=[]

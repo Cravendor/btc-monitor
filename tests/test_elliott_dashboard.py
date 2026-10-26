@@ -91,13 +91,19 @@ class ElliottVisualTests(unittest.TestCase):
         week.update(status='unavailable', coverage={
             'status': 'conflict', 'candle_count': 69, 'required_candles': 69,
             'missing_candles': 0, 'first_missing_at': None,
-            'cross_timeframe_check': {'child': '1d', 'first_mismatch_at': '2026-10-19T00:00:00Z'}})
+            'cross_timeframe_check': {'child': '1d', 'first_mismatch_at': '2026-10-19T00:00:00Z',
+              'mismatch_details':[dict(opened_at='2026-10-19T00:00:00Z',fields={
+                'close':dict(native='80125.5',from_children='80119.2',native_minus_children='6.3'),
+                'base_volume_btc':dict(native='217958.4979',from_children='217958.5411',native_minus_children='-0.0432')})]}})
         page = render(bundle)
         self.assertNotIn('id="ew-1w-', page)
         self.assertIn('id="ew-1d-', page)
         self.assertIn('BRONCONFLICT', page)
         self.assertIn('2026-10-19T00:00:00Z', page)
         self.assertNotIn('Eerste gat: None', page)
+        self.assertIn('80125.5',page);self.assertIn('80119.2',page)
+        self.assertIn('-0.0432',page);self.assertIn('Volume (BTC)',page)
+        self.assertIn('bewijst niet welke aanbiederwaarde correct is',page)
 
     def linked_history(self, now):
         from scripts.elliott_history import floor_time
