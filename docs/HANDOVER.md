@@ -1,5 +1,22 @@
 # BTC monitor — agent handover
 
+### Recovery result still awaiting correct file — 26 October 2026
+
+The newly supplied attachment repeats the previous 0146894 diagnosis exactly:
+same local HEAD, origin/main 874542bc and ahead 1 / behind 15. It contains no
+bundle verification, recovery result or push output, and no timestamp proving
+it is a fresh local-state observation. Do not infer recovery failed, never ran,
+or succeeded from this repeated file. No recovery was executed by the agent.
+
+Next user action: provide /volume1/btc-monitor/repair-result-0146894.txt from
+the previously prepared command, rather than git-diagnose-0146894.txt. Do not
+rerun recovery merely because the wrong attachment was supplied. If the result
+file does not exist, establish whether the prepared script was saved/executed
+in the existing manual BTC Git Diagnose task before any retry. Validation:
+actual attachment compared with previous diagnosis; documentation only, no tests.
+Private log remains outside the public repository.
+
+
 ### PR 78 merged; exact NAS recovery command prepared — 26 October 2026
 
 PR #78 is merged at bb53dfc64cd8e5ae31ea1917adacdb21d2aea25c
