@@ -361,6 +361,30 @@
       "monitor": "market-risk",
       "path": "reports/2026/10/26/market-risk-042855.json",
       "reported_at": "2026-10-26T04:28:55Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "30D/macro: **ONVOLDOENDE DATA** — zomerherstel en positieve totale NUPL beslissen de cyclus niet; onafhankelijk vraag-, cohort- en liquiditeitsbewijs is onvolledig.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: **-1 ZWAK BEARISH** — lager 4H-slot met verhoogd volume en opnieuw lagere dagclose; recente low blijft het belangrijkste tegensignaal.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: **-1 ZWAK BEARISH** — dagclose 2,37% lager dan zeven dagen eerder; voorlopige positieve ETF-weekvraag begrenst de bearish overtuiging.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "364cec203cf5eab1969f77bc19abae1001898d6a63a52166c721893ae4d6cea1",
+      "has_report_text": true,
+      "monitor": "psychology",
+      "path": "reports/2026/10/26/psychology-072146.json",
+      "reported_at": "2026-10-26T07:21:46Z"
     }
   ],
   "schema_version": 2
