@@ -35,6 +35,15 @@ PR/CI/deployment status to be recorded after publication. Linked wave-degree
 model work can proceed immediately without waiting for the NAS log or source
 correction; calibrated percentages require separate point-in-time validation.
 
+Diagnostic PR #84: https://github.com/Cravendor/btc-monitor/pull/84,
+branch diagnose/elliott-week-source-conflict-20261026. Executable commit
+911c021f340c7d395860bb46e5df6f528a2d26df passed Python 3.9.14 check
+121733611167 and Python 3.11 check 121733611587, including release generation
+and the Pages asset gate. Open/mergeable, not merged or deployed. This
+supersedes the pending-PR/CI statement above. Review/merge can begin now;
+live acceptance waits for post-merge publication. Underlying weekly source
+conflict and NAS publication diagnosis remain open.
+
 ### PR 83 merged and zoom verified live — 26 October 2026
 
 Current resume checkpoint; supersedes all pending-merge/deployment wording for
