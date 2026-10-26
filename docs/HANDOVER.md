@@ -1,5 +1,45 @@
 # BTC monitor — agent handover
 
+### New publisher ordinary execution accepted — 26 October 2026
+
+Complete supplied run starts 08:30:02 UTC and ends 08:35:08 UTC
+(09:30:02–09:35:08 Amsterdam), EINDSTATUS=0. This invocation uses the installed
+#79 runner: no old visible rebase/direct-push output, 445 tests passed on NAS
+Python 3.9.14 in 77.546 seconds, and successful remote publication independently
+confirmed at e7b59616966767fb013bba4ac72501743eda3522. This closes ordinary
+new-runner execution/publication acceptance; no more manual upload is needed
+for installation proof. A real production race reconciliation remains unobserved;
+temporary backup messages in the test section do not establish one.
+
+Read actual original data/2026/10/26/20261026T083406016296Z-local-1.json:
+source nas, status ok, finished 08:34:11.197505 UTC, both CVD markets verified,
+analysis_quality ready_for_scoped_report with no current issues. Closed interval
+04:00–08:00 UTC (05:00–09:00 Amsterdam): provider-side spot delta -22.222392 BTC,
+futures -97.1830 BTC. Exact BTC and quote volumes now match, with zero journal
+missing/extra/conflicts for both markets. Prior mismatch diagnostics are retained:
+spot 329.039596 vs prior candle 286.021275 BTC; futures 3729.8742 vs prior
+3483.3817 BTC. Current candles match trade totals exactly; this indicates the
+earlier comparisons used different candle totals, not proved root cause of all
+historical mismatches. No relaxed tolerance or independent taker-side claim.
+
+Seven new watchdog receipt paths included in the successful push. Pages run
+40293281987 at e7b5961 completed successfully; no new live browser QA claimed.
+Dated health at 08:35:01 reports 24h coverage 47.9% (23/48 intervals), so earlier
+publication gaps remain. No macro-cycle verdict follows from verified CVD alone.
+
+This incorporates/supersedes docs/nas-new-sync-running-20261026, which recorded
+the DIFFERENT 08:00 partial invocation (445 tests in 75.934 seconds); do not
+mislabel the supplied 08:30 log as its continuation. That interim branch need
+not be merged separately. Earlier post79-uptake-pending branch was incorporated
+in the preceding checkpoint. Installation/ordinary publication work is closed;
+passively observe future actual races without manufacturing NAS failures.
+Next agent action: resume dashboard/Elliott mobile and operational-status QA and
+review current analysis evidence. No further user NAS task/log required now.
+Validation: complete actual log, original remote JSON/diagnostics and successful
+commit-specific Pages result. No new agent runtime tests or NAS modifications.
+Private raw log remains outside the repository.
+
+
 ### PR 79 code uptake and transition upload confirmed — 26 October 2026
 
 Complete NAS run 07:30:02–07:36:34 UTC (08:30:02–08:36:34 Amsterdam) fetched
