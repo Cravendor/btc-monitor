@@ -1,5 +1,42 @@
 # BTC Monitor — current scope and open work
 
+### PR 86 merged; linked endpoint evidence verified live — 26 October 2026
+
+Current resume checkpoint; supersedes awaiting-merge/deployment wording for PR86.
+Merge 49fc0e60a49da2d0c0f9244d8689e6be60115543 at 20:55:58 UTC / 21:55:58 CET.
+Exact-merge Pages 40400007294 succeeded. Final documentation-head release CI
+40399583117 also passed. No new executable change in this acceptance checkpoint.
+
+Actual public Chrome overview opened at https://cravendor.github.io/btc-monitor/.
+Expanded 1D: endpoint high 84870, candle October 21, recognized October 24 UTC;
+daily pivot-only with opposing swing 79753 and closed data through October 26
+00:00 UTC. Linked same-endpoint 4H row says pullback holds, continuation absent,
+opposing swing 81163, data through 20:00 UTC. Expanded 4H: low endpoint 79320.1,
+recognized 12:00 UTC; own and same-anchor 1H row both pivot-only, opposing swing
+80924, both through 20:00 UTC. Distinct endpoints/degrees are not mixed or
+promoted to a confirmed weekly wave. The live limitation text remains visible.
+Screenshot visually inspected: table readable on desktop, long ISO times wrap.
+No real iPhone/emulated mobile acceptance is claimed. A Playwright role lookup
+for native summary failed; refreshed AX state and clicked its actual AX control
+successfully. This was a locator issue, not a deployed feature failure.
+
+Weekly original-source conflict remains blocked; native parent count does not
+become valid because a lower price condition passes. Current flow/momentum panel
+remains separately scoped to the NAS 20:35 measurement; no historical CVD join or
+calibrated probability is introduced. Original snapshots/counts remain untouched.
+NAS normal-publication recovery and the accepted real writer race remain closed;
+continuity still needs subsequent ordinary scheduled outputs, no extra NAS run.
+
+Next agent development can start immediately: actual pattern and subdivision
+validation using shared anchors and point-in-time known pivots, preserving invalid
+counts and unsupported families as explicit. This does not require waiting for
+another NAS interval or pretending the weekly conflict is resolved. Fixed scenario
+identities/outcome history and calibrated probability evaluation remain separate
+open steps. Public acceptance of this first endpoint layer is complete; remaining
+mobile QA and weekly source repair are distinct, not grounds to rerun old repairs.
+Validation here: merged PR/exact Pages/final CI and actual live desktop controls,
+readable table and source-scope text, not another redundant full test suite.
+
 ### Linked endpoint price-evidence stages prepared — 26 October 2026
 
 Current resume checkpoint. NAS publication recovery and actual race acceptance
