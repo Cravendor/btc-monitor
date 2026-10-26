@@ -2,7 +2,8 @@
 
 ### Linked price windows and Elliott zoom controls prepared — 26 October 2026
 
-Prepared feat/elliott-linked-zoom-20261026. This implements a chart-navigation
+Prepared PR #82 (https://github.com/Cravendor/btc-monitor/pull/82),
+branch feat/elliott-linked-zoom-20261026. This implements a chart-navigation
 layer, not a certified current Elliott count or scenario probabilities.
 Each usable timeframe opens on the last confirmed pivot-to-last-closed-candle
 movement (recent window fallback explicitly allowed if no pivot exists).
@@ -33,8 +34,10 @@ returned ERR_CONNECTION_REFUSED; no visual preview success or mobile/iPhone
 acceptance is claimed. No network-path workaround attempted. Public browser
 verification is pending merge/publication. No NAS/data/runtime modification.
 
-Next agent action: open the PR and check Python 3.9.14/3.11 CI. User can review
-immediately; merge waits for green checks. Afterwards inspect public controls,
+CI passed at executable commit 9c2b3d7ecebc7ef44d8633ed18af6f0f90999b27: Python 3.9.14
+check 121549256707 and Python 3.11 check 121549256891, including release
+preview generation. Subsequent commit records only this evidence.
+Next user action: review/merge PR #82; merge can proceed after green review. Afterwards inspect public controls,
 default focus and parent detail. Independent preserved-source week/day discrepancy
 investigation and true linked wave-degree model work can start now without
 waiting for this navigation PR. Calibrated probabilities remain separate.
