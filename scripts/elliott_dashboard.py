@@ -6,9 +6,10 @@ from scripts.swing_scenarios import valid_market, native_rows, current_price
 from scripts.market_scenarios import time_ms, iso
 from scripts.native_timeframe_candles import PERIOD_MS
 from scripts.elliott_completion import assess as completion_evidence, lower_evidence, LABELS
+from scripts.elliott_subwaves import assess as subdivision_evidence
 
 TIMEFRAMES = ('1w', '1d', '4h', '1h')
-MODEL = 'elliott_visual_endpoint_evidence_v4'
+MODEL = 'elliott_visual_subdivision_evidence_v5'
 
 
 def zones(rows, tf):
@@ -104,6 +105,9 @@ def build(feed, as_of, history=None):
     for parent, child in zip(out['horizons'], out['horizons'][1:]):
         if parent['status'] != 'available' or child['status'] != 'available':
             continue
+        parent['subdivision_evidence'] = {c['id']:subdivision_evidence(c,parent['rows'],parent['timeframe'],
+                                                child['rows'],child['timeframe'],as_of)
+                                          for c in parent['candidates']}
         parent['lower_endpoint_evidence'] = lower_evidence(parent['endpoint_evidence'],
                                                            child['rows'],child['timeframe'],as_of)
         start = parent['focus_start']
@@ -241,6 +245,34 @@ def render_completion(h):
     return ''.join(parts)
 
 
+def render_subdivision(evidence):
+    if not evidence:
+        return '<p>Geen lagere bronschaal voor deze onderverdeling beschikbaar.</p>'
+    if evidence['status']=='blocked_invalid_parent':
+        return '<p><b>Onderverdeling geblokkeerd:</b> de hogere standaardimpuls schendt een prijsregel. Een lagere prijsvorm kan die hogere telling niet herstellen.</p>'
+    if evidence['status']!='assessed':
+        return '<p>Onderverdeling niet toetsbaar: hogere pivots of vergelijkbare lagere broncandles ontbreken, zijn nog niet bevestigd of spreken elkaar tegen.</p>'
+    labels={'price_outline_compatible':'Prijsvorm past; diepere interne bouw niet bewezen',
+            'price_rules_violated':'Prijsregel in deze subimpuls geschonden',
+            'unsupported_correction_outline':'Buiten de beperkte zigzagvorm; andere correcties niet getoetst',
+            'unresolved':'Onderverdeling op deze bronschaal niet eenduidig'}
+    parts=['<h4>Onderverdeling op '+escape(evidence['child_timeframe'].upper())+' · dezelfde hogere ankers</h4><div class="ew-chart-scroll"><table><thead><tr><th>Hoger been</th><th>Getoetste vorm</th><th>Lagere benen</th><th>Uitkomst</th></tr></thead><tbody>']
+    for leg in evidence['legs']:
+        parts.append('<tr><td>'+str(leg['leg'])+'</td><td>'+('Standaardimpuls' if leg['family']=='standard_impulse' else 'Beperkte A-B-C-zigzag')+'</td><td>'+str(leg.get('observed_legs','niet toetsbaar'))+' / '+str(leg.get('expected_legs',5 if leg['leg']%2 else 3))+'</td><td>'+escape(labels[leg['status']])+'</td></tr>')
+    parts.append('</tbody></table></div>')
+    for leg in evidence['legs']:
+        if not leg['points']:
+            continue
+        parts.append('<details><summary>Lagere pivots en regels · hoger been '+str(leg['leg'])+'</summary><p>Hogere ankerprijzen: '+price(leg['start_price'])+' → '+price(leg['end_price'])+' USDT. Lagere pivot-candles, geen exacte ticktijden:</p><ol>')
+        for p in leg['points']:
+            parts.append('<li>'+escape(iso(p['open_time_ms']))+' · '+price(p['price'])+' USDT · bevestigd '+escape(iso(p['confirmed_at_ms']))+'</li>')
+        parts.append('</ol><ul>')
+        parts.extend('<li>'+escape(c['rule'])+': '+escape(c['result'])+'</li>' for c in leg['checks'])
+        parts.append('</ul></details>')
+    parts.append('<p>Getoetst: '+str(evidence['compatible_legs'])+' van 5 hogere benen met passende lagere prijsvorm. Ook 5 van 5 is geen gecertificeerde Elliott-telling: de interne structuur van die lagere golven is nog niet volledig getoetst. Extra pivots worden niet overgeslagen om 5–3–5–3–5 te forceren. Diagonalen, flats, driehoeken en complexe correcties zijn hier niet ondersteund; geen kanspercentage.</p>')
+    return ''.join(parts)
+
+
 def render(bundle):
     parts=['<section class="panel" id="elliott-scenarios"><h2>Elliott: van week naar uur</h2><p>Begin bij de grote structuur en zoom in. Bull en bear zijn mogelijke prijspatronen. Een steunzone helpt een draaipunt duiden; zij bewijst geen golfnummer of toekomstige afwijzing.</p>']
     if bundle['status']=='unavailable':
@@ -303,6 +335,7 @@ def render(bundle):
                 parts.append('</tbody></table></div><p>Openingtijden van pivot-candles; geen exacte ticktijden. Startgrens '+price(candidate['invalidation_price'])+' USDT hoort bij deze historische kandidaat, niet bij een veronderstelde volgende golf.</p><ul>')
                 parts.extend('<li>'+escape(c['rule'])+': <b>'+escape(c['result'])+'</b> — '+escape(c['detail'])+'</li>' for c in candidate['checks'])
                 parts.append('</ul><p>Harde overlapregels gelden intrabar, inclusief wicks. Een slot kan een schending niet ongedaan maken.</p>')
+                parts.append(render_subdivision(h.get('subdivision_evidence',{}).get(candidate['id'])))
                 a,b=candidate['points'][-2:]
                 distance=abs(b['price']-a['price'])
                 fibs=[(r,b['price']-r*distance if b['price']>a['price'] else b['price']+r*distance) for r in (.236,.382,.5,.618,.786)]

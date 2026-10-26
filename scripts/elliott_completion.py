@@ -115,6 +115,32 @@ def assess(rows, tf, as_of, anchor=None):
         return out
 
 
+def resolve_anchor(anchor, parent_tf, rows, child_tf, as_of):
+    """Unique exact extreme inside a fully covered native parent candle."""
+    if anchor.get('kind') not in ('high','low') or PERIOD_MS[child_tf]>=PERIOD_MS[parent_tf]:
+        raise ValueError('invalid_anchor_or_scale')
+    start=anchor['open_time_ms']
+    if anchor['confirmed_at_ms'] > time_ms(as_of):
+        raise ValueError('parent_anchor_not_yet_known')
+    end = start+PERIOD_MS[parent_tf]
+    piece = [r for r in rows if start<=r['open_time_ms']<end]
+    period = PERIOD_MS[child_tf]
+    if (not piece or piece[0]['open_time_ms']!=start or piece[-1]['open_time_ms']+period!=end
+            or len(piece)*period!=end-start):
+        raise ValueError('parent_anchor_candle_not_fully_covered')
+    key = 'high' if anchor['kind']=='high' else 'low'
+    actual = max(r[key] for r in piece) if key=='high' else min(r[key] for r in piece)
+    if actual!=anchor['price']:
+        raise ValueError('parent_child_extreme_conflict')
+    matches = [r for r in piece if r[key]==anchor['price']]
+    if len(matches)!=1:
+        raise ValueError('parent_extreme_ambiguous_or_missing')
+    row = matches[0]
+    child_anchor = dict(open_time_ms=row['open_time_ms'],kind=anchor['kind'],
+                        price=anchor['price'],confirmed_at_ms=row['open_time_ms']+3*period)
+    return child_anchor
+
+
 def lower_evidence(parent, child_rows, child_tf, as_of):
     """Resolve a single parent extreme inside its native candle, without guessing.
 
@@ -126,25 +152,8 @@ def lower_evidence(parent, child_rows, child_tf, as_of):
         if parent.get('status')!='available':
             raise ValueError('parent_endpoint_unavailable')
         anchor = parent['endpoint'];start = anchor['open_time_ms']
-        if anchor['confirmed_at_ms'] > time_ms(as_of):
-            raise ValueError('parent_anchor_not_yet_known')
-        end = start+PERIOD_MS[parent['timeframe']]
         rows = closed_rows(child_rows,child_tf,as_of)
-        piece = [r for r in rows if start<=r['open_time_ms']<end]
-        period = PERIOD_MS[child_tf]
-        if (not piece or piece[0]['open_time_ms']!=start or piece[-1]['open_time_ms']+period!=end
-                or len(piece)*period!=end-start):
-            raise ValueError('parent_anchor_candle_not_fully_covered')
-        key = 'high' if anchor['kind']=='high' else 'low'
-        actual = max(r[key] for r in piece) if key=='high' else min(r[key] for r in piece)
-        if actual!=anchor['price']:
-            raise ValueError('parent_child_extreme_conflict')
-        matches = [r for r in piece if r[key]==anchor['price']]
-        if len(matches)!=1:
-            raise ValueError('parent_extreme_ambiguous_or_missing')
-        row = matches[0]
-        child_anchor = dict(open_time_ms=row['open_time_ms'],kind=anchor['kind'],
-                            price=anchor['price'],confirmed_at_ms=row['open_time_ms']+3*period)
+        child_anchor = resolve_anchor(anchor,parent['timeframe'],rows,child_tf,as_of)
         result = assess(rows,child_tf,as_of,child_anchor)
         result.update(parent_timeframe=parent['timeframe'],parent_anchor_at=iso(start),
                       shared_endpoint_price=anchor['price'],

@@ -1,5 +1,47 @@
 # BTC monitor — agent handover
 
+### Anchored pattern/subdivision validation prepared — 26 October 2026
+
+Current resume checkpoint. Added scripts/elliott_subwaves.py and rule disclosures
+for the existing historical candidates. Visual model now
+elliott_visual_subdivision_evidence_v5. Read docs/ELLIOTT_SUBWAVES.md for exact
+contract, limited pattern families, primary framework references and limitations.
+
+Validator recomputes parent price/wick rules and pivot recognition, verifies
+parent OHLC/BTC-volume against full child groups, maps exact unique child extreme
+anchors, and selects ALL lower confirmed pivots between them. Extra pivots are
+not skipped to force counts. Test standard-impulse outlines for legs 1/3/5 and
+restricted three-leg single-zigzag outlines for 2/4. Unsupported corrective
+families remain unsupported, not universally invalid. Invalid parent cannot be
+rescued by child patterns. Shared resolver and impulse price-check helpers keep
+the earlier endpoint/candidate semantics unchanged.
+
+Price_outlines compatible across all five legs STILL retain unproven wave
+certification and no probability: deeper internal wave rules are not recursively
+validated. This validates supplied candidates, does not generate a new active
+count or choose a preferred scenario. Current original daily/4H candidates remain
+invalid; preview displays subdivision blocked. The weekly source conflict stays
+blocked and originals/scores/candles are unchanged. Finer than 1H missing here.
+
+Validation: 481 Python tests, six Node tests, whitespace and full offline dashboard
+staging + actual asset gate passed (20 charts). Synthetic both-direction full
+shared-anchor fixtures fit all five outlines; genuine lower overlap, extra seven
+legs, ties, gap/duplicate, source contradiction and future data are tested. No
+local browser success or phone acceptance is claimed. CI/PR metadata to follow;
+reviewed merge and successful Pages required before live acceptance.
+
+NAS continuity evidence has advanced independently: public original NAS records
+at 21:02:36, 21:32:57 and 22:02:33 UTC October 26 (22:02,22:32,23:02 CET) all have
+status ok and cvd_4h ok. This supplements restored 20:35 run and supersedes waiting
+for any subsequent publication. These show actual half-hour-spaced publications,
+not direct inspection of DSM's current enabled settings. No extra NAS action,
+new task or repair requested. Current held snapshot expires under existing gates.
+
+Next: user reviews/merges this validator after green CI; public disclosure QA then
+waits for Pages. Active candidate generation and supported-family expansion can
+start independently now. No confirmed current/nested Elliott count or calibrated
+probabilities established; do not imply that checking this layer finishes them.
+
 ### PR 86 merged; linked endpoint evidence verified live — 26 October 2026
 
 Current resume checkpoint; supersedes awaiting-merge/deployment wording for PR86.
