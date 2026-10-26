@@ -1,8 +1,8 @@
 {
   "schema_version": 3,
   "coverage_24h": {
-    "window_start": "2026-10-25T19:06:59.267752+00:00",
-    "window_end": "2026-10-26T19:06:59.267752+00:00",
+    "window_start": "2026-10-25T19:42:53.195240+00:00",
+    "window_end": "2026-10-26T19:42:53.195240+00:00",
     "first_retained_at": "2026-10-22T15:34:27.047744+00:00",
     "interval_seconds": 1800,
     "expected_snapshots": 48,
@@ -15,32 +15,27 @@
     "max_window_gap_seconds": 22212,
     "status": "gaps_detected"
   },
-  "checked_at": "2026-10-26T19:06:59.267752+00:00",
-  "last_snapshot_at": "2026-10-26T19:06:57.471809+00:00",
+  "checked_at": "2026-10-26T19:42:53.195240+00:00",
+  "last_snapshot_at": "2026-10-26T19:42:51.391054+00:00",
   "age_seconds": 2,
   "max_age_seconds": 3600,
   "status": "current",
   "analysis_quality": {
     "current": {
       "schema_version": 1,
-      "checked_at": "2026-10-26T19:06:59.267752+00:00",
-      "measurement_at": "2026-10-26T19:06:25.946627+00:00",
+      "checked_at": "2026-10-26T19:42:53.195240+00:00",
+      "measurement_at": "2026-10-26T19:39:10.425970+00:00",
       "valid_until": "2026-10-26T20:00:00+00:00",
       "scenario_processing": "consistent",
-      "status": "degraded",
+      "status": "ready_for_scoped_report",
       "price_structure": "available",
-      "bitget_interval_delta": "unavailable",
+      "bitget_interval_delta": "available",
       "verified_delta_markets": [
-        "spot"
+        "spot",
+        "usdt_futures"
       ],
       "macro_cycle_verdict": "requires_separate_macro_evidence",
-      "issues": [
-        {
-          "code": "cvd_usdt_futures",
-          "detail": "time_budget_exhausted",
-          "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
-        }
-      ],
+      "issues": [],
       "interpretation": "Gebruik geldige onderdelen met hun eigen scope; ontbrekend is geen neutraal oordeel."
     },
     "recurring_blockers": [],
