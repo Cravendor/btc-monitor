@@ -44,6 +44,17 @@ and data unchanged; CI includes existing full generation/asset gate. Next user
 step can start now: review repair; NAS one-off waits for merge and the pinned
 command. Linked wave-degree development does not need to wait for NAS acceptance.
 
+Repair PR #85: https://github.com/Cravendor/btc-monitor/pull/85,
+branch fix/nas-sync-feed-timestamp-20261026. CI passed at
+78ffcbf737ec74d63f89d1cb8b4e78132d183774: Python 3.9.14 check 121743359931
+and Python 3.11 check 121743360445, including full dashboard generation and
+asset quality gate. Executable helper pinned in the uptake procedure to
+ e13ff2756d43586c7d2f8e43f9899b69242ae7ce; actual archived main feed also parses
+successfully with the fix. This supersedes pending-CI wording above. PR is open,
+not deployed on NAS; user can review/merge now. Agent then supplies the exact
+procedure through the existing manual task; wait for that one-off success before
+claiming normal publisher recovery. Final docs-only commit records this result.
+
 ### Weekly conflict reproduced live; NAS publication gap isolated — 26 October 2026
 
 Current resume checkpoint. Fresh Bitget public 1Wutc, 1Dutc and 4H queries at
