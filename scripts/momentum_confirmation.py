@@ -29,7 +29,7 @@ def flow(record, market, start, end):
         raise ValueError('wrong flow scope')
     if time_ms(cvd['interval_start']) != start or time_ms(cvd['interval_end']) != end:
         raise ValueError('different window')
-    if cvd.get('coverage_verified') is not True or cvd.get('status') != 'ok':
+    if cvd.get('status') not in ('ok', 'partial'):
         raise ValueError('unverified flow')
     data = cvd['markets'][market]
     if data.get('status') != 'ok' or data.get('coverage_verified') is not True or data.get('interval_start_ms') != start or data.get('interval_end_ms') != end:

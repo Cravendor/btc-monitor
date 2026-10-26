@@ -68,3 +68,13 @@ class MomentumTests(unittest.TestCase):
             future=deepcopy(p);future['finished_at']='2026-10-26T10:00:00Z'
             (folder/'b.json').write_text(json.dumps(future))
             self.assertEqual(previous_record(root,f['measurements'][0]),p)
+
+    def test_partial_combined_flow_retains_valid_spot_evidence(self):
+        f,p,now=fixture();cvd=f['measurements'][0]['cvd_4h']
+        cvd.update(status='partial',coverage_verified=False)
+        cvd['markets']['usdt_futures'].update(status='partial',coverage_verified=False)
+        r=build(f,now,p)
+        self.assertIn('spot',r['groups'])
+        self.assertNotIn('usdt_futures',r['groups'])
+        self.assertEqual(r['status'],'partial')
+        self.assertNotEqual(r['state'],'bullish_supported')

@@ -2,7 +2,8 @@
 
 ## First synchronized 4H momentum evidence panel prepared — 26 October 2026
 
-Implementation proposed on feat/multi-source-momentum-20261026; not yet merged
+PR #81 (https://github.com/Cravendor/btc-monitor/pull/81),
+implementation proposed on feat/multi-source-momentum-20261026; not yet merged
 or deployed. scripts/momentum_confirmation.py and overview integration assess
 one closed current 4H interval against the immediately preceding 4H flow window.
 Preserved archive lookup chooses the latest validated previous original available
@@ -21,7 +22,8 @@ bullish switch. Opposing flow/structure is explicit counterevidence.
 Both flow legs, non-weakening directional price momentum, structural break and
 volume ratio >=1 are needed for supported direction. These are transparent
 experimental thresholds, not calibrated probabilities or wave-end certification.
-Current/prior deltas and volume ratios are shown, with client-side expiry.
+A partial aggregate CVD result does not hide a separately valid spot leg;
+individual leg gates still prevent full corroboration. Current/prior deltas and volume ratios are shown, with client-side expiry.
 
 OI/funding/basis/premium are inventoried as snapshot context but NOT cast as
 direction votes because this first implementation does not validate synchronized
@@ -30,8 +32,8 @@ scenario probability, week-wave or macro confirmation. Multi-degree linkage,
 retests/persistence and calibrated probability remain separate pending work.
 No NAS task/runtime or collection changes, no external source call introduced.
 
-Local validation: 452 Python tests (3.12.14), five Node status tests, whitespace
-and offline full overview generation WITHOUT --ath passed. Six new tests cover
+Local validation: 453 Python tests (3.12.14), five Node status tests, whitespace
+and offline full overview generation WITHOUT --ath passed. Seven new tests cover
 bull/bear corroboration, missing/wrong-window/unverified/NaN/future evidence,
 futures candle mismatch, weakening rather than reversal, opposing flow,
 contracting volume, stale/wrong market and point-in-time original selection.
@@ -40,7 +42,7 @@ ROC(3) -0.6563% vs -1.2859%; spot volume ratio about 0.406, futures 0.529.
 This is a dated local rendering test, not a current trading forecast.
 CI Python 3.9.14/3.11 must pass; browser/mobile visual acceptance remains pending.
 
-Next agent action: open/review PR and check CI. Next user action after green CI:
+Next agent action: review PR #81 and check CI. Next user action after green CI:
 review/merge; then inspect deployed panel from actual publication. Independent
 linked Elliott zoom/source-conflict and historical coverage work can start now
 without waiting for merge. Calibrated percentages still wait for labeled
