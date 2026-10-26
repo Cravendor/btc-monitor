@@ -12,13 +12,49 @@ spec.loader.exec_module(module)
 
 
 class SyncTests(unittest.TestCase):
+    def test_feed_time_uses_first_observation_and_requires_explicit_timezone(self):
+        from datetime import datetime,timezone
+        feed=dict(feed_schema_version=1,updated_at='2099-01-01T00:00:00Z',
+                  finished_at='2099-01-01T00:00:00Z',measurements=[
+                      dict(finished_at='2026-10-26T04:00:00+01:00'),
+                      dict(finished_at='2099-01-01T00:00:00Z')])
+        self.assertEqual(module.observation_time(feed),datetime(2026,10,26,3,tzinfo=timezone.utc))
+        for bad in (None,{},dict(finished_at='2026-10-26T03:00:00Z'),
+                    dict(feed_schema_version=2,measurements=feed['measurements'])):
+            with self.assertRaises(ValueError):module.observation_time(bad)
+        for first in (None,{},dict(finished_at=None),dict(finished_at=42),
+                      dict(finished_at='garbage'),dict(finished_at='2026-10-26T03:00:00')):
+            with self.assertRaises(ValueError):
+                module.observation_time(dict(feed_schema_version=1,measurements=[first,feed['measurements'][0]]))
+        for measurements in (None,{},[]):
+            with self.assertRaises(ValueError):
+                module.observation_time(dict(feed_schema_version=1,measurements=measurements))
+
+    def test_invalid_first_observation_keeps_pending_originals_and_head_unchanged(self):
+        with tempfile.TemporaryDirectory() as root:
+            local,remote,other,archive,receipt=self.setup(root)
+            p=local/'data/latest.json';feed=json.loads(p.read_text())
+            feed['measurements'][0].pop('finished_at');p.write_text(json.dumps(feed))
+            self.git(local,'add','.');self.git(local,'commit','--amend','--no-edit')
+            before=self.git(local,'rev-parse','HEAD');raw=(local/archive).read_bytes()
+            with self.assertRaisesRegex(ValueError,'finished_at required'):
+                module.synchronize(local,Path(root)/'backups',True,str(remote))
+            self.assertEqual(self.git(local,'rev-parse','HEAD'),before)
+            self.assertEqual(self.git(local,'status','--porcelain'),'')
+            self.assertEqual((local/archive).read_bytes(),raw)
+            self.assertFalse((Path(root)/'backups').exists())
+
     def setup(self, root, newer='local'):
         self.fixture = fixtures.RecoveryTests()
         self.git = self.fixture.git
         local, remote, head, archive = self.fixture.setup_repo(root)
         other = Path(root) / 'github'
-        for folder, hour in ((local, '03' if newer == 'local' else '01'), (other, '02')):
-            (folder / 'data/latest.json').write_text(json.dumps({'finished_at': '2026-10-26T'+hour+':00:00Z', 'source': folder.name}))
+        for folder, hour in ((local, '03' if newer == 'local' else '02' if newer == 'tie' else '01'), (other, '02')):
+            (folder / 'data/latest.json').write_text(json.dumps({
+                'feed_schema_version':1,'updated_at':'2026-10-27T00:00:00Z' if hour=='01' else '2026-10-26T00:00:00Z',
+                'source':folder.name,'measurements':[
+                    {'finished_at':'2026-10-26T'+hour+':00:00Z'},
+                    {'finished_at':'2026-10-25T00:00:00Z'}]}))
             self.git(folder, 'add', '.')
             if folder == local:
                 self.git(folder, 'commit', '--amend', '--no-edit')
@@ -29,13 +65,17 @@ class SyncTests(unittest.TestCase):
         return local, remote, other, archive, path
 
     def test_both_view_orderings_preserve_originals_history_and_remote_code(self):
-        for newer in ('local', 'remote'):
+        for newer in ('local', 'remote', 'tie'):
             with self.subTest(newer=newer), tempfile.TemporaryDirectory() as root:
                 local, remote, other, archive, receipt = self.setup(root, newer)
                 originals = {p: (local/p).read_bytes() for p in (archive, receipt)}
+                selected = local if newer=='local' else other
+                views = {p:(selected/p).read_bytes() for p in module.VIEWS}
                 module.synchronize(local, Path(root)/'backups', True, str(remote))
                 for path, raw in originals.items():
                     self.assertEqual((local/path).read_bytes(), raw)
+                for path,raw in views.items():
+                    self.assertEqual((local/path).read_bytes(),raw)
                 self.assertEqual(json.loads((local/'data/latest.json').read_text())['source'], 'nas' if newer=='local' else 'github')
                 self.assertEqual({json.loads(l)['updated_at'] for l in (local/module.HISTORY).read_text().splitlines()}, {'a','local','remote'})
                 self.assertTrue((local/'new-code.py').exists())

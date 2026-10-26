@@ -6,6 +6,7 @@ on:
       - release/btc-4h-history
   pull_request:
     paths:
+      - 'nas/**'
       - 'scripts/**'
       - 'tests/**'
       - 'web/**'
