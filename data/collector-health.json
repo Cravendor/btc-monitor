@@ -1,41 +1,49 @@
 {
   "schema_version": 3,
   "coverage_24h": {
-    "window_start": "2026-10-25T00:36:15.998729+00:00",
-    "window_end": "2026-10-26T00:36:15.998729+00:00",
+    "window_start": "2026-10-25T01:45:48.781884+00:00",
+    "window_end": "2026-10-26T01:45:48.781884+00:00",
     "first_retained_at": "2026-10-22T15:34:27.047744+00:00",
     "interval_seconds": 1800,
     "expected_snapshots": 48,
-    "observed_snapshots": 24,
-    "observed_intervals": 21,
+    "observed_snapshots": 25,
+    "observed_intervals": 22,
     "history_unavailable_intervals": 0,
-    "missing_measurement_intervals": 27,
-    "coverage_percent": 43.8,
+    "missing_measurement_intervals": 26,
+    "coverage_percent": 45.8,
     "max_observed_gap_seconds": 15274,
-    "max_window_gap_seconds": 17117,
+    "max_window_gap_seconds": 15274,
     "status": "gaps_detected"
   },
-  "checked_at": "2026-10-26T00:36:15.998729+00:00",
-  "last_snapshot_at": "2026-10-26T00:36:14.015166+00:00",
-  "age_seconds": 2,
+  "checked_at": "2026-10-26T01:45:48.781884+00:00",
+  "last_snapshot_at": "2026-10-26T01:45:48.577680+00:00",
+  "age_seconds": 0,
   "max_age_seconds": 3600,
   "status": "current",
   "analysis_quality": {
     "current": {
       "schema_version": 1,
-      "checked_at": "2026-10-26T00:36:15.998729+00:00",
-      "measurement_at": "2026-10-26T00:35:00.760256+00:00",
+      "checked_at": "2026-10-26T01:45:48.781884+00:00",
+      "measurement_at": "2026-10-26T01:45:48.440017+00:00",
       "valid_until": "2026-10-26T04:00:00+00:00",
       "scenario_processing": "consistent",
-      "status": "ready_for_scoped_report",
+      "status": "degraded",
       "price_structure": "available",
-      "bitget_interval_delta": "available",
-      "verified_delta_markets": [
-        "spot",
-        "usdt_futures"
-      ],
+      "bitget_interval_delta": "unavailable",
+      "verified_delta_markets": [],
       "macro_cycle_verdict": "requires_separate_macro_evidence",
-      "issues": [],
+      "issues": [
+        {
+          "code": "cvd_spot",
+          "detail": "no_verified_history",
+          "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
+        },
+        {
+          "code": "cvd_usdt_futures",
+          "detail": "no_verified_history",
+          "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
+        }
+      ],
       "interpretation": "Gebruik geldige onderdelen met hun eigen scope; ontbrekend is geen neutraal oordeel."
     },
     "recurring_blockers": [],
@@ -48,5 +56,15 @@
       }
     ],
     "scope": "Engineering en rapportconsistentie; geen bewijs van voorspellende kwaliteit."
+  },
+  "recovery": {
+    "attempted": true,
+    "event": "schedule",
+    "before_status": "stale",
+    "scope": "periodic_market_snapshot_only",
+    "outcome": "uploaded",
+    "collection_exit_code": 0,
+    "snapshot_status": "ok",
+    "after_status": "current"
   }
 }
