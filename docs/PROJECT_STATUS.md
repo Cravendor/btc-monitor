@@ -1,5 +1,49 @@
 # BTC Monitor — current scope and open work
 
+### Linked price windows and Elliott zoom controls prepared — 26 October 2026
+
+Prepared PR #82 (https://github.com/Cravendor/btc-monitor/pull/82),
+branch feat/elliott-linked-zoom-20261026. This implements a chart-navigation
+layer, not a certified current Elliott count or scenario probabilities.
+Each usable timeframe opens on the last confirmed pivot-to-last-closed-candle
+movement (recent window fallback explicitly allowed if no pivot exists).
+Accessible window selector and +/- controls offer last movement, 32/96 candles
+and context (full weekly/daily; last 400 intraday). No small-timeframe detail is
+forced to expand back across a long historical six-pivot candidate.
+
+Adjacent degree charts can show exactly the parent focus window using their own
+native candles only when the entire closed UTC window is covered. Missing
+child candles or blocked/conflicting parent prevent the link. Historical window
+references suppress a later current-price line. This is temporal/source linkage,
+not validation of subwave nesting. Parent opening/closing bounds are shown.
+Historical bull/bear six-pivot candidates remain inspectable in a separate
+collapsed section, with invalid labels/rule checks preserved; default detail
+does not fabricate wave numbers, preferred direction or future endpoints.
+The earlier weekly source conflict remains blocked and must be resolved before
+claiming a linked weekly count. Multi-source momentum remains scoped to 4H.
+
+Validation: 457 Python tests locally (3.12.14), six Node tests including actual
+generated zoom-script control transitions/boundaries, whitespace and offline
+full overview generation against original source files WITHOUT --ath passed.
+Three new Python cases verify exact parent/child boundaries, no link across a
+gap/conflicting parent and unchanged historical candidates; fixture was extended
+to genuinely cover the requested parent span after an initial short-fixture
+failure. Existing CI now includes the extra Node zoom test.
+Local preview HTML generated, but cloud browser navigation to local preview
+returned ERR_CONNECTION_REFUSED; no visual preview success or mobile/iPhone
+acceptance is claimed. No network-path workaround attempted. Public browser
+verification is pending merge/publication. No NAS/data/runtime modification.
+
+CI passed at executable commit 9c2b3d7ecebc7ef44d8633ed18af6f0f90999b27: Python 3.9.14
+check 121549256707 and Python 3.11 check 121549256891, including release
+preview generation. Subsequent commit records only this evidence.
+Next user action: review/merge PR #82; merge can proceed after green review. Afterwards inspect public controls,
+default focus and parent detail. Independent preserved-source week/day discrepancy
+investigation and true linked wave-degree model work can start now without
+waiting for this navigation PR. Calibrated probabilities remain separate.
+Current NAS publication diagnosis is independent; no extra NAS run requested.
+
+
 ### PR 81 merged and live panel verified; fresh NAS evidence unavailable — 26 October 2026
 
 PR #81 merge confirmed at afea1e1fc7c2c122fdb8fa44fe608d9bcb374686,
