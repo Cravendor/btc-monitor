@@ -11,7 +11,7 @@ from scripts.swing_scenarios import build_swing_scenarios
 from scripts.price_roadmap import build_roadmap
 from scripts.analysis_quality import render as render_quality
 from scripts.roadmap_dashboard import render as render_roadmap
-from scripts import elliott_dashboard
+from scripts import elliott_dashboard, momentum_confirmation
 
 
 def escape(value):
@@ -23,7 +23,7 @@ def price(value):
     return format(value, ',.1f').replace(',', '_').replace('.', ',').replace('_', '.') + ' USDT'
 
 
-def render(feed, as_of, ath=None, sentiment=None, context=None, elliott_history=None):
+def render(feed, as_of, ath=None, sentiment=None, context=None, elliott_history=None, previous_momentum=None):
     result = build_scenarios(feed, as_of)
     swing_bundle = build_swing_scenarios(feed, as_of)
     ready = result['status'] == 'ready'
@@ -132,7 +132,7 @@ table{width:100%;border-collapse:collapse}th,td{padding:8px;text-align:left;bord
 </style></head><body><main>
 <header class="hero"><div><div class="eyebrow">BTC Monitor / overzicht</div><h1>Eén plek voor je marktbeeld.</h1><p>Metingen, marktrichting en scenario’s met controleerbare prijsniveaus.</p><p><a href="btc-status.html">Taakstatus en laatste uitvoeringen →</a></p></div>
 <div class="quote" data-expires="''' + escape(quote_expiry) + '''"><small>Bitget futures · laatste momentopname</small><strong>''' + escape(price_line) + '''</strong></div></header>''' + render_quality(feed,as_of) + market_gauges.render_all(feed, as_of, sentiment) + '''
-''' + swing_dashboard.render(swing_bundle) + elliott_dashboard.render(elliott_dashboard.build(feed, as_of, elliott_history)) + render_cycle_history(feed) + render_cycle_review(feed) + report_context.render(context) + '''
+''' + swing_dashboard.render(swing_bundle) + momentum_confirmation.render(momentum_confirmation.build(feed, as_of, previous_momentum)) + elliott_dashboard.render(elliott_dashboard.build(feed, as_of, elliott_history)) + render_cycle_history(feed) + render_cycle_review(feed) + report_context.render(context) + '''
 <nav class="links" aria-label="BTC-pagina’s">
 <a class="link-card" href="btc-dashboard.html"><span>01 / METINGEN →</span><h2>Dashboard</h2><p>Prijs, funding, open interest, orderboek en gecontroleerde tradedelta.</p></a>
 <a class="link-card" href="btc-timeframes.html"><span>02 / RICHTING →</span><h2>Multi-timeframe marktrichting</h2><p>Technische signalen van 5 minuten tot 1 week, met actualiteit per candle.</p></a>
@@ -168,7 +168,7 @@ function refreshAth(){const root=document.querySelector('#ath-reference');const 
 document.querySelectorAll('time').forEach(el=>{const value=Date.parse(el.textContent);if(Number.isFinite(value)){el.dateTime=el.textContent;el.textContent=new Date(value).toLocaleString('nl-NL',{timeZone:'Europe/Amsterdam',timeZoneName:'short'});}});
 function refreshQuote(){const q=document.querySelector('.quote');const t=Date.parse(q.dataset.expires);if(Number.isFinite(t)&&Date.now()>=t)q.querySelector('strong').textContent='Meting verouderd';}
 refreshFreshness();refreshAth();refreshQuote();setInterval(()=>{refreshFreshness();refreshAth();refreshQuote();},60000);
-''' + market_gauges.SCRIPT + swing_dashboard.SCRIPT + shb_dashboard.SCRIPT + elliott_dashboard.SCRIPT + '''
+''' + market_gauges.SCRIPT + swing_dashboard.SCRIPT + shb_dashboard.SCRIPT + elliott_dashboard.SCRIPT + momentum_confirmation.SCRIPT + '''
 </script></body></html>'''
 
 
@@ -185,7 +185,7 @@ def build(feed_path, output, as_of=None, include_ath=False):
     sentiment = fetch_sentiment(as_of) if include_ath else None
     from scripts.elliott_history import read as read_elliott_history
     root=Path(feed_path).resolve().parent.parent
-    Path(output).write_text(render(feed, as_of, ath, sentiment, report_context.read_context(root, as_of), read_elliott_history(root,as_of)), encoding='utf-8')
+    Path(output).write_text(render(feed, as_of, ath, sentiment, report_context.read_context(root, as_of), read_elliott_history(root,as_of), momentum_confirmation.previous_record(root/'data',feed['measurements'][0]) if feed.get('measurements') else None), encoding='utf-8')
 
 
 if __name__ == '__main__':
