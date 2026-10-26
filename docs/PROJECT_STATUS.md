@@ -1,5 +1,48 @@
 # BTC Monitor — current scope and open work
 
+### Linked endpoint price-evidence stages prepared — 26 October 2026
+
+Current resume checkpoint. NAS publication recovery and actual race acceptance
+remain closed by the preceding evidence; no extra NAS action or new schedule.
+Next analysis increment implements scripts/elliott_completion.py and integrates
+an endpoint-control table after each usable chart. Visual model is now
+elliott_visual_endpoint_evidence_v4. Read docs/ELLIOTT_COMPLETION.md for the
+experimental conditions, provenance and important limits.
+
+Own scale uses its latest confirmed two-left/two-right pivot, with opposing swing
+frozen at recognition. Stages: pivot only; opposite swing closed break; first
+confirmed reversal leg plus strictly holding confirmed pullback; subsequent
+closed continuation; or endpoint extended by any later wick. Equal retests do
+not establish lower high/higher low. Open/future candles are excluded, raw gaps/
+duplicates invalid, and intrabar event order is never invented. Lower scale must
+resolve the SAME parent extreme uniquely within its fully covered native candle;
+otherwise unavailable, never an unrelated latest lower count. Source-conflicted
+parents remain blocked. Times show known-at / data-through bounds.
+
+All states retain wave_completion=unproven and probability=None. This is a
+price-evidence layer, NOT a certified current wave, valid nested subdivisions,
+a preferred Elliott count or calibrated probabilities. Current original
+six-pivot candidates are invalid and remain visible as such. The existing
+synchronized current 4H momentum/spot/futures panel is separate, with no backcast
+to older pivots. Event-aligned flow joins, actual pattern/subdivision validation,
+persistent frozen scenario outcomes and probability calibration remain open.
+
+On preserved main data, daily endpoint 84870 is pivot-only while its same-anchor
+4H assessment reaches pullback-held. Demonstrates earlier lower evidence without
+promoting it to a higher-degree completion. Own-scale selected endpoint can
+change with a newly confirmed pivot; these outputs are not persistent scenario
+IDs. Original records/reports, native candles and NAS runtime remain unchanged.
+
+Validation: 472 Python tests, six Node tests, diff whitespace and offline full
+home/scenario/status/timeframe generation plus actual Pages asset quality gate
+passed (20 charts; weekly still blocked). Tests cover both directions, ordered
+stages, wick-only break, wick extension, equal retest, as-of leakage, gaps,
+duplicates, outside-candle ambiguity, unique shared extreme, child conflict and
+blocked parent. No local browser success/phone visual acceptance claimed. CI and
+reviewed PR publication still pending; record result/PR metadata after creation.
+User can review once CI passes. Public visual verification waits for merge/Pages;
+pattern and event-aligned flow development can begin independently now.
+
 ### Normal NAS publication and real writer-race acceptance passed — 26 October 2026
 
 Current resume checkpoint; supersedes pending one-off/normal-upload acceptance
