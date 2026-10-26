@@ -28,14 +28,9 @@ if [ "$MODE" = --check ]; then
   echo 'Read-only connection and runtime check passed. Write permission is not yet verified.'
   exit 0
 fi
-# Recover any previously committed but unpushed observations before collecting again.
-# On a conflict, abort the rebase; keep the local commit for manual recovery.
-git fetch origin main
-if ! git rebase origin/main; then
-  git rebase --abort
-  echo 'Upload conflict: local observations preserved. Inspect before retrying.' >&2
-  exit 1
-fi
+# Reconcile pending public observations before collecting; caller holds lock 9.
+BTC_PUBLISH_BACKUPS=${BTC_PUBLISH_BACKUPS:-/volume1/btc-monitor/publish-backups}
+"$BTC_PYTHON" "$BTC_REPO/nas/sync_publish.py" --repo "$BTC_REPO" --backup-dir "$BTC_PUBLISH_BACKUPS"
 # Check the exact fetched collector before it runs.
 "$BTC_PYTHON" -m unittest discover -s tests
 COLLECT_EXIT=0
@@ -66,8 +61,8 @@ done
 if ! git diff --cached --quiet; then
   git -c user.name='BTC NAS collector' -c user.email='btc-nas@users.noreply.github.com' commit -m 'Save NAS BTC market snapshot'
 fi
-# No force push: concurrent GitHub writes produce a safe failure. The commit stays local.
-git push origin HEAD:main
+# Bounded ordinary push retries reconcile concurrent writers without recollecting.
+"$BTC_PYTHON" "$BTC_REPO/nas/sync_publish.py" --repo "$BTC_REPO" --backup-dir "$BTC_PUBLISH_BACKUPS" --push
 # A failed push exits above and keeps every spool receipt for retry.
 "$BTC_PYTHON" -m scripts.task_receipt_sync "$BTC_TASK_RECEIPTS" data/task-executions --acknowledge || echo 'Receipt cleanup pending.'
 [ "$COLLECT_EXIT" -eq 0 ] || exit "$COLLECT_EXIT"

@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -29,6 +30,8 @@ class NasPublishTests(unittest.TestCase):
         for name in ('latest.json', 'timeframe-health.json', 'collector-health.json'):
             (self.repo / 'data' / name).write_text('{}\n')
         (self.repo / 'data/history/timeframe_signals.jsonl').write_text('')
+        (self.repo / 'nas').mkdir()
+        shutil.copy(RUNNER.parent / 'sync_publish.py', self.repo / 'nas/sync_publish.py')
         self.git('add', '.', cwd=self.repo)
         self.git('commit', '-m', 'Initial', cwd=self.repo)
         self.git('push', 'origin', 'main', cwd=self.repo)
@@ -36,6 +39,7 @@ class NasPublishTests(unittest.TestCase):
         # Stub only market calls and tests; use real git repositories and commits.
         self.python.write_text('''#!/bin/sh
 case "$1" in
+*/nas/sync_publish.py) exec "__REAL_PYTHON__" "$@" ;;
 -c)
   if [ -n "${NAS_TEST_SSH_CAPTURE:-}" ]; then
     printf '%s' "$GIT_SSH_COMMAND" > "$NAS_TEST_SSH_CAPTURE"
@@ -58,9 +62,10 @@ scripts/collect.py)
 -) [ "${NAS_TEST_STATUS:-ok}" = ok ]; exit $? ;;
 esac
 exit 9
-''')
+'''.replace('__REAL_PYTHON__', sys.executable))
         self.python.chmod(0o700)
-        self.env.update(BTC_REPO=str(self.repo), BTC_PYTHON=str(self.python), BTC_LOCK=str(self.root / 'lock'))
+        self.env.update(BTC_REPO=str(self.repo), BTC_PYTHON=str(self.python), BTC_LOCK=str(self.root / 'lock'),
+                        BTC_PUBLISH_BACKUPS=str(self.root / 'backups'))
 
     def git(self, *args, cwd=None):
         result = subprocess.run(['git', *args], cwd=cwd, env=self.env, text=True, capture_output=True)
