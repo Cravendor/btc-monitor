@@ -13,8 +13,9 @@ independent validation of those receipt contents or current recorder uptime.
 
 This supersedes the missing-full-HEAD/file-set diagnosis request below. No need
 to repeat that diagnosis unless the guarded recovery finds changed state.
-The existing one-off helper rejects these additional files. Prepared extension
-on fix/nas-recovery-receipts-20261026 accepts ONLY newly added regular receipt
+The existing one-off helper rejects these additional files. Prepared extension in PR #78
+(https://github.com/Cravendor/btc-monitor/pull/78), branch
+fix/nas-recovery-receipts-20261026 accepts ONLY newly added regular receipt
 files under the three known NAS task paths with timestamp filenames; it checks
 all original archive/receipt blob IDs after merge. Conflicting receipt contents,
 modified/deleted receipts, symlinks and unrelated paths stop safely. Existing
@@ -25,10 +26,13 @@ spool is not acknowledged by this recovery; normal publisher handles that later.
 Implementation is proposed, not yet merged/deployed; no NAS recovery executed.
 Local validation: 439 Python tests (Python 3.12.14), including nine real-Git
 recovery tests, and five Node status tests passed. Release read-only dashboard
-validation also passed. Python 3.9.14/3.11 CI must pass before merge.
+validation also passed. Both release CI matrix jobs passed for code commit
+7f7da0b42ac9cfc41a81acbf7bdcd99f54d28103: Python 3.9.14 check 121420627857
+and Python 3.11 check 121420627667. Subsequent changes only record PR/validation
+metadata in this handover and PROJECT_STATUS; no executable changes.
 Private diagnostic log is not copied to this public repository.
 
-Next user action after green review: merge the recovery extension PR. Next agent
+Next user action after green review: merge PR #78. Next agent
 action: supply a pinned, lock-protected backup-first command for THIS exact HEAD
 and archive, then verify original snapshot, histories and all seven receipts on
 remote before running the normal publisher. Stop on changed HEAD; do not reuse
@@ -36,8 +40,6 @@ old incident parameters. Permanent concurrent-writer resilience is still OPEN
 and must be handled in a separate tested publisher PR after this recovery;
 this extension does not solve the repeated upload race. No CVD journal/runtime,
 DSM schedule, storage task or recorder restart changes.
-
-
 
 Current checkpoint: 26 October 2026, Europe/Amsterdam. This is a curated technical
 handover, not a complete transcript or private-chat export. Read together with
