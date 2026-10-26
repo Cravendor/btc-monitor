@@ -10,8 +10,11 @@ whitespace and offline overview generation without external sources. Current
 and prior partial-leg cases plus unrelated funding-source errors are tested.
 Individual price/flow gates, rather than a blanket overall snapshot status,
 determine usable momentum evidence; a failed context source stays unavailable. PR #81 is open, not merged/deployed;
-CI for the final code must pass before user merge. No NAS action needed.
-Next: user can review immediately; merge waits for CI. Independent Elliott
+CI passed for final executable commit 3156aa8493a7785b503e63a446ffbc4511a44e4d:
+Python 3.9.14 check 121543977907 and Python 3.11 check 121543978169,
+including release dashboard generation. Subsequent commit records only this
+validation; no executable changes. User review/merge is now the next gate. No NAS action needed.
+Next: user can review immediately; merge can proceed after review of the green checks. Independent Elliott
 linkage/zoom and source-discrepancy investigation need not wait for merge.
 
 
