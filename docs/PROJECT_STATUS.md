@@ -1,5 +1,15 @@
 # BTC Monitor — current scope and open work
 
+PR #80: https://github.com/Cravendor/btc-monitor/pull/80. Both CI matrices
+passed at executable commit f42cb19fc151cc673e8a876ade847660ccbeb353: Python 3.9.14 check
+121485545446 and Python 3.11 check 121485545109, including release generation.
+Subsequent commit only records PR/evidence; no executable changes.
+Offline preserved-source comparison for week opening 2026-10-19 UTC: native
+weekly close 80125.5 and base volume 217958.4979 BTC; seven daily candles give
+close 80119.2 and base volume 217958.5411 BTC. Open/high/low agree. This identifies
+the discrepant fields but does not establish which original source is correct
+or authorize replacing either. Next investigation can start before PR merge.
+
 ### Live dashboard QA; Elliott conflict explanation fix prepared — 26 October 2026
 
 Inspected public overview and btc-status.html in cloud Chrome, including live
@@ -26,13 +36,13 @@ Validation: all 446 Python tests locally (3.12.14), five Node status tests,
 whitespace and offline actual-archive rendering passed. Week remains unavailable
 while daily/4H/hour remain drawable. An initial offline check used the wrong
 root ('data' instead of repository '.'); corrected check passed. No external
-market fetch in this verification. CI 3.9.14/3.11 pending PR review.
+market fetch in this verification. CI 3.9.14/3.11 passed; see evidence below.
 Mobile CSS inspected: charts intentionally have a 680px minimum and local
 horizontal scrolling below 600px. No phone viewport/emulation control is exposed
 by this browser API, so this is NOT completed iPhone/mobile visual acceptance.
 No claim of responsive QA from desktop screenshot alone.
 
-Next user action after green CI: review/merge the small explanation PR.
+Next user action after green CI: review/merge PR #80.
 Next agent work can start immediately without waiting for merge: diagnose
 week/day candle discrepancy and failing history collector using preserved
 source evidence, and complete remaining mobile QA when a phone viewport is
