@@ -98,3 +98,45 @@ class ElliottVisualTests(unittest.TestCase):
         self.assertIn('BRONCONFLICT', page)
         self.assertIn('2026-10-19T00:00:00Z', page)
         self.assertNotIn('Eerste gat: None', page)
+
+    def linked_history(self, now):
+        from scripts.elliott_history import floor_time
+        from scripts.native_timeframe_candles import PERIOD_MS
+        history={}
+        for tf in ('1w','1d','4h','1h'):
+            period=PERIOD_MS[tf];end=floor_time(time_ms(now),tf)
+            rows=wave_rows([{'open_time_ms':end-2*period},{'open_time_ms':end-period}])
+            prefix=[dict(rows[0],open_time_ms=rows[0]['open_time_ms']-(200-i)*period) for i in range(200)]
+            rows=prefix+rows
+            history[tf]=dict(status='complete',rows=rows,source_at=now,source_path='fixture/'+tf)
+        return history
+
+    def test_zoom_does_not_change_candidates_and_preserves_exact_parent_window(self):
+        now='2026-10-26T08:30:00Z';history=self.linked_history(now)
+        bundle=build({},now,history)
+        from scripts.elliott_dashboard import zoom_panel
+        from scripts.native_timeframe_candles import PERIOD_MS
+        for parent,child in zip(bundle['horizons'],bundle['horizons'][1:]):
+            linked=child['parent_window']
+            self.assertEqual(linked['start'],parent['focus_start'])
+            self.assertEqual(linked['end'],time_ms(parent['closed_at']))
+            selected=[r for r in child['rows'] if linked['start']<=r['open_time_ms']<linked['end']]
+            self.assertEqual(len(selected)*PERIOD_MS[child['timeframe']],linked['end']-linked['start'])
+            before=deepcopy(child['candidates']);page=zoom_panel(child)
+            self.assertEqual(child['candidates'],before)
+            self.assertIn('ew-zoom-in',page);self.assertIn('ew-zoom-out',page)
+            self.assertIn('data-view="0"',page)
+            self.assertNotIn('<polyline',page)
+
+    def test_parent_link_not_created_across_a_missing_child_candle(self):
+        now='2026-10-26T08:30:00Z';history=self.linked_history(now)
+        history['1h']['rows'].pop(-8)
+        bundle=build({},now,history)
+        self.assertNotIn('parent_window',bundle['horizons'][-1])
+
+    def test_conflicting_parent_never_generates_linked_child_chart(self):
+        now='2026-10-26T08:30:00Z';history=self.linked_history(now)
+        history['1w']['status']='conflict'
+        bundle=build({},now,history)
+        self.assertNotIn('parent_window',bundle['horizons'][1])
+        self.assertIn('parent_window',bundle['horizons'][2])

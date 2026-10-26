@@ -7,7 +7,7 @@ from scripts.market_scenarios import time_ms, iso
 from scripts.native_timeframe_candles import PERIOD_MS
 
 TIMEFRAMES = ('1w', '1d', '4h', '1h')
-MODEL = 'elliott_visual_long_history_v2'
+MODEL = 'elliott_visual_linked_windows_v3'
 
 
 def zones(rows, tf):
@@ -93,6 +93,21 @@ def build(feed, as_of, history=None):
         except (KeyError, ValueError, TypeError, OverflowError):
             pass
         out['horizons'].append(h)
+    for h in out['horizons']:
+        if h['status'] == 'available':
+            pivots = confirmed_pivots(h['rows'])
+            h['focus_start'] = pivots[-1]['open_time_ms'] if pivots else h['rows'][-min(32,len(h['rows']))]['open_time_ms']
+            h['focus_origin'] = 'confirmed_pivot' if pivots else 'recent_window'
+    # Link an exact, closed parent price window; never assert wave nesting.
+    for parent, child in zip(out['horizons'], out['horizons'][1:]):
+        if parent['status'] != 'available' or child['status'] != 'available':
+            continue
+        start = parent['focus_start']
+        end = time_ms(parent['closed_at'])
+        selected = [r for r in child['rows'] if start <= r['open_time_ms'] < end]
+        expected = (end-start)//PERIOD_MS[child['timeframe']]
+        if selected and len(selected) == expected and selected[0]['open_time_ms'] == start and selected[-1]['open_time_ms']+PERIOD_MS[child['timeframe']] == end:
+            child['parent_window'] = dict(timeframe=parent['timeframe'],start=start,end=end)
     # Temporal containment is useful to inspect, but NOT proof of wave nesting.
     for parent, child in zip(out['horizons'], out['horizons'][1:]):
         for c in child['candidates']:
@@ -109,10 +124,14 @@ def price(v):
     return f'{v:,.1f}'.replace(',', '_').replace('.', ',').replace('_', '.')
 
 
-def chart(h, candidate, suffix):
+def chart(h, candidate, suffix, window=None):
     rows = h['rows']
+    if window is not None:
+        rows = [r for r in rows if window[0] <= r['open_time_ms'] < window[1]]
+        if not rows:
+            raise ValueError('empty chart window')
     points = candidate['points'] if candidate else []
-    if h['timeframe'] in ('4h','1h') and len(rows)>400:
+    if window is None and h['timeframe'] in ('4h','1h') and len(rows)>400:
         # Only the drawing is zoomed. Candidate selection uses the full source.
         left=min(rows[-400]['open_time_ms'],points[0]['open_time_ms'] if points else rows[-400]['open_time_ms'])
         rows=[r for r in rows if r['open_time_ms']>=left]
@@ -167,6 +186,40 @@ def chart(h, candidate, suffix):
     return ''.join(parts)
 
 
+
+def zoom_panel(h):
+    rows=h['rows'];end=rows[-1]['open_time_ms']+PERIOD_MS[h['timeframe']]
+    choices=[('Laatste beweging',h.get('focus_start',rows[-min(32,len(rows))]['open_time_ms']),end),
+             ('Laatste 32 candles',rows[-min(32,len(rows))]['open_time_ms'],end),
+             ('Laatste 96 candles',rows[-min(96,len(rows))]['open_time_ms'],end),
+             ('Overzicht' if h['timeframe'] in ('1w','1d') else 'Overzicht · laatste 400 candles',rows[0 if h['timeframe'] in ('1w','1d') else -min(400,len(rows))]['open_time_ms'],end)]
+    unique=[];seen=set()
+    for label,a,b in choices:
+        if (a,b) not in seen:
+            seen.add((a,b));unique.append((label,a,b))
+    # Count-based order makes +/- consistently narrow/widen the time window.
+    unique.sort(key=lambda v:v[2]-v[1])
+    default=next(i for i,v in enumerate(unique) if v[0]=='Laatste beweging')
+    parts=['<div class="ew-zoom" data-tf="'+h['timeframe']+'"><h3>Laatste prijsbeweging · '+h['timeframe'].upper()+'</h3><p>Vanaf de laatste bevestigde pivot, waar beschikbaar. Het lopende eindpunt en Elliott-golfnummer zijn niet bevestigd. Meer detail is geen extra onafhankelijk bewijs.</p><div class="ew-zoom-controls"><button type="button" class="ew-zoom-in" aria-label="Inzoomen '+h['timeframe'].upper()+'">+ Inzoomen</button><label>Venster <select class="ew-zoom-select" aria-label="Grafiekvenster '+h['timeframe'].upper()+'">']
+    for i,(label,a,b) in enumerate(unique):
+        parts.append('<option value="'+str(i)+'"'+(' selected' if i==default else '')+'>'+label+'</option>')
+    parts.append('</select></label><button type="button" class="ew-zoom-out" aria-label="Uitzoomen '+h['timeframe'].upper()+'">− Uitzoomen</button></div>')
+    for i,(label,a,b) in enumerate(unique):
+        visible=[r for r in rows if a<=r['open_time_ms']<b]
+        parts.append('<div class="ew-zoom-view" data-view="'+str(i)+'"'+(' hidden' if i!=default else '')+'><p>'+label+' · '+str(len(visible))+' candles · '+escape(iso(a))+' tot '+escape(iso(b))+'.</p><div class="ew-chart-scroll">'+chart(h,None,'zoom-'+str(i),(a,b))+'</div></div>')
+    parts.append('</div>')
+    parent=h.get('parent_window')
+    if parent:
+        a,b=parent['start'],parent['end']
+        linked=dict(h)
+        if b<end:
+            linked['price']=None
+        parts.append('<details class="ew-parent-detail"><summary>Detail van de '+parent['timeframe'].upper()+'-beweging op '+h['timeframe'].upper()+'</summary><p>Exact hetzelfde gesloten tijdvenster: '+escape(iso(a))+' tot '+escape(iso(b))+'. Alleen tijd- en bronkoppeling; subgolftelling nog niet bewezen. De broncandles kunnen later herzien zijn.</p><div class="ew-chart-scroll">'+chart(linked,None,'parent',(a,b))+'</div></details>')
+    elif h['timeframe']!='1w':
+        parts.append('<p>Geen volledig controleerbaar hoger tijdvenster beschikbaar; geen bovenliggende telling ingevuld.</p>')
+    return ''.join(parts)
+
+
 def render(bundle):
     parts=['<section class="panel" id="elliott-scenarios"><h2>Elliott: van week naar uur</h2><p>Begin bij de grote structuur en zoom in. Bull en bear zijn mogelijke prijspatronen. Een steunzone helpt een draaipunt duiden; zij bewijst geen golfnummer of toekomstige afwijzing.</p>']
     if bundle['status']=='unavailable':
@@ -176,9 +229,9 @@ def render(bundle):
                  'Bron actueel bij opbouw' if bundle['status']=='current' else 'HISTORISCH — bron verouderd, geen actuele telling')
     parts.append('<p class="ew-freshness" data-until="'+escape(bundle['valid_until'])+'">'+freshness+' · controle '+escape(bundle['observed_at'])+'.</p>')
     if bundle.get('history_mode'):
-        parts.append('<p>Gewenste historie: <b>1 juli 2025 tot de laatste gesloten candle</b>. Voor UTC-weken begint de eerste week op 30 juni 2025. Week/dag tonen de volledige periode; 4H/1H tonen een detailvenster, terwijl de kandidaatselectie de volledige opgeslagen reeks leest. Een ontbrekende lange reeks wordt niet stilzwijgend vervangen door een korte snapshotreeks.</p>')
+        parts.append('<p>Gewenste historie: <b>1 juli 2025 tot de laatste gesloten candle</b>. Voor UTC-weken begint de eerste week op 30 juni 2025. De zoomkeuze opent bij de laatste beweging. Kies Overzicht voor de volledige week-/dagreeks of de laatste 400 lagere candles. Historische telkandidaten lezen de volledige opgeslagen reeks. Een ontbrekende lange reeks wordt niet stilzwijgend vervangen door een korte snapshotreeks.</p>')
         parts.append('<p>Een gestippelde 1H-slotlijn is een apart referentiepunt uit de uurreeks, geen gesloten week-/dag-/4H-candle of live tick. De witte stip blijft het eigen laatste gesloten slot van elke timeframe.</p>')
-    parts.append('<p><b>Huidige golf en samenhang tussen graden: nog niet bewezen.</b> De lijnen tonen de twee recentste zes-pivotkandidaten, geselecteerd vóór de regeltoets. Een ongeldige kandidaat blijft zichtbaar. Interne 5–3–5–3–5-opbouw is niet vastgesteld; het laatste label is geen claim over waar we nu zitten.</p>')
+    parts.append('<p><b>Huidige golf en samenhang tussen graden: nog niet bewezen.</b> De afzonderlijk uitklapbare historische tellingen tonen de twee recentste zes-pivotkandidaten, geselecteerd vóór de regeltoets. De zoomgrafieken tonen de koersbeweging zonder een golfnummer te verzinnen. Een ongeldige kandidaat blijft zichtbaar. Interne 5–3–5–3–5-opbouw is niet vastgesteld; het laatste label is geen claim over waar we nu zitten.</p>')
     for h in bundle['horizons']:
         tf=h['timeframe']
         parts.append('<details class="ew-timeframe"'+(' open' if tf=='1w' else '')+'><summary>'+tf.upper()+' · '+('Structurele zones' if tf in ('1w','1d') else 'Lokale zones')+'</summary>')
@@ -207,6 +260,8 @@ def render(bundle):
             later=[r for r in h['rows'] if r['open_time_ms']>top['open_time_ms']]
             low=min(later,key=lambda r:r['low']) if later else None
             parts.append('<p>Grote prijsstructuur: hoogste high binnen deze bronperiode '+price(top['high'])+' USDT ('+escape(iso(top['open_time_ms']))+'); '+('laagste low op een latere candle '+price(low['low'])+' USDT ('+escape(iso(low['open_time_ms']))+').' if low else 'nog geen latere candle voor een low.')+' Dit zijn referentiepunten voor een grotere bull-/bearanalyse, geen automatisch bewezen golfnummers of lifetime-ATH.</p>')
+        parts.append(zoom_panel(h))
+        parts.append('<details class="ew-historical-counts"><summary>Historische telkandidaten · geen actuele scenarioselectie</summary>')
         for direction,label in (('up','Bull'),('down','Bear')):
             candidate=next((c for c in h['candidates'] if c['direction']==direction),None)
             parts.append('<h3>'+label+' · '+('ONGELDIGE standaardimpuls' if candidate and candidate['status']=='invalid' else 'voorlopige prijspatroonkandidaat' if candidate else 'geen zes-pivotkandidaat')+'</h3>')
@@ -226,6 +281,7 @@ def render(bundle):
                     links=candidate.get('parent_legs',[])
                     parts.append('<p>'+('Tijdvenster past binnen bovenliggend been: '+escape('; '.join(x['direction']+' '+str(x['leg'])+' ('+x['parent_status']+')' for x in links))+'. Alleen tijdsoverlap; interne golfstructuur niet bewezen.' if links else 'Geen volledig omvattend bovenliggend kandidaatbeen gevonden. Deze lokale kandidaat bewijst de hogere telling niet.')+'</p>')
                 parts.append('</details>')
+        parts.append('</details>')
         parts.append('<details><summary>Prijstijdlijn: steun, weerstand en bewijs</summary><p>Van laag naar hoog, geen voorspelde aankomstdata. Bandbreedte: ±0,15 × ATR(14) rond de eerste pivot. Herhaalde pivotgebieden hebben meer waargenomen reacties dan een enkele pivot; dit is geen gekalibreerde steunkracht of kans op rejection. Een Fib-ratio uit dezelfde koersdata is geen extra onafhankelijke bevestiging.</p><div class="ew-table"><table><thead><tr><th>Zone USDT</th><th>Rol bij laatste slot</th><th>Bewijs op '+tf.upper()+'</th></tr></thead><tbody>')
         for z in h['zones']:
             parts.append('<tr><td>'+price(z['low'])+'–'+price(z['high'])+'</td><td>'+escape(z['role'])+'</td><td>'+escape(z['evidence'])+' · '+str(z['events'])+' bevestigde pivot(s)</td></tr>')
@@ -236,3 +292,6 @@ def render(bundle):
 
 CSS = '''.ew-chart{display:block;width:100%;height:auto;background:#10202e;border-radius:10px;margin:12px 0}.ew-chart text{fill:#e7edf4;font-size:12px;font-family:system-ui,sans-serif}.ew-timeframe{border-top:1px solid #415465;padding:14px 0}.ew-table{overflow:auto}.ew-table td,.ew-table th{white-space:nowrap}.ew-freshness{padding:10px;border-left:3px solid #e5b56f}@media(max-width:600px){.ew-chart{min-width:680px}.ew-timeframe{overflow-x:auto}}'''
 SCRIPT = '''document.querySelectorAll('.ew-freshness').forEach(el=>{function check(){if(Date.now()>=Date.parse(el.dataset.until))el.textContent='HISTORISCH — bron verouderd; grafieken tonen de gedateerde observatie, geen actuele telling.';}check();setInterval(check,60000);});'''
+
+CSS += '.ew-zoom-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.ew-zoom-controls button,.ew-zoom-controls select{font:inherit;padding:8px;border-radius:6px}.ew-chart-scroll{overflow-x:auto;max-width:100%}.ew-zoom-view[hidden]{display:none}'
+SCRIPT += """document.querySelectorAll('.ew-zoom').forEach(root=>{const select=root.querySelector('select');const plus=root.querySelector('.ew-zoom-in');const minus=root.querySelector('.ew-zoom-out');function show(){root.querySelectorAll('.ew-zoom-view').forEach(el=>{el.hidden=el.dataset.view!==select.value;});plus.disabled=select.selectedIndex===0;minus.disabled=select.selectedIndex===select.options.length-1;}select.addEventListener('change',show);plus.addEventListener('click',()=>{if(select.selectedIndex>0)select.selectedIndex--;show();});minus.addEventListener('click',()=>{if(select.selectedIndex<select.options.length-1)select.selectedIndex++;show();});show();});"""
