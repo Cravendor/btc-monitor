@@ -313,6 +313,30 @@
       "monitor": "4h-warning",
       "path": "reports/2026/10/26/4h-warning-030022.json",
       "reported_at": "2026-10-26T03:00:22+00:00"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "30D/macro: ONVOLDOENDE DATA — een mogelijke aanval op olie-infrastructuur en een mogelijk diplomatiek overleg wijzen in tegengestelde richtingen; bevestigde schade, olie-export, rentereactie en duurzame diplomatie ontbreken.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: ONVOLDOENDE DATA — de geopolitieke claim verhoogt het neerwaartse staart­risico, maar is onbevestigd en er is geen gevalideerde post-eventmeting. De oudere Bitget-prijs, positieve funding en licht negatieve premieproxy zijn slechts context, geen reactie. Betrouwbaarheid: laag.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "7d": {
+          "reason": "7D: ONVOLDOENDE DATA — de openbare meetreeks dekt 22 van 48 halfuurvakken in de laatste 24 uur en bevat geen volledige onafhankelijke combinatie van orderflow, ETF-flows en liquidaties.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        }
+      },
+      "content_sha256": "ba8b01fc2548e98419fda769cec343dd3596dbdee2eaa14113a169f212d64c3a",
+      "has_report_text": true,
+      "monitor": "market-risk",
+      "path": "reports/2026/10/26/market-risk-042855.json",
+      "reported_at": "2026-10-26T04:28:55Z"
     }
   ],
   "schema_version": 2
