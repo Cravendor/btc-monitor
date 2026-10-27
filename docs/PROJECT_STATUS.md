@@ -1,5 +1,29 @@
 # BTC Monitor — current scope and open work
 
+## Current checkpoint — PR89 merged; 4H source conflict investigated, 27 October 2026
+
+PR #89 merged as 67a2bcda0e69679a5ef1ee423006521219a6248f. Release CI
+40554888188 succeeded at final PR head ed99c9ee43e6af2166c1191e30e5cadc05bb5435;
+exact-merge Pages 40555066975 succeeded. This establishes publication, not a
+manual mobile or current expanded-flat visual acceptance.
+
+The 12:00–16:00 UTC native 4H/1H conflict occurred in the original 16:02 UTC
+provider responses and the 4H close plus final 1H close were reproduced by the
+revision audit seconds later. Its unchanged tail verdict is not cross-timeframe
+validation. The history workflow failed on the source conflict but preserved
+checkpoints and its audit artifact. The cause and correct final values are unknown.
+An attempted fresh Bitget request in this environment was unavailable. Detailed
+source evidence, audit scope, cutoff distinction and next decision are documented
+in [ELLIOTT_20261027_SOURCE_CONFLICT.md](ELLIOTT_20261027_SOURCE_CONFLICT.md).
+No data, rules, NAS runtime or schedules were changed. This documentation is
+proposed in PR #90 (https://github.com/Cravendor/btc-monitor/pull/90); do not call the conflict repaired.
+
+Next: inspect a fresh exact-window native 4H and four hourly responses, retain raw
+values and timestamps and review a separate source correction only if supported.
+The existing workflow may produce new evidence; later unchanged audit tails alone
+do not cover the old interval. Independent work may proceed now on frozen
+outcome histories or other correction families. No manual NAS task is required.
+
 ## Current development — expanded-flat endpoint geometry, 27 October 2026
 
 PR #89 (https://github.com/Cravendor/btc-monitor/pull/89) proposes a narrowly scoped expanded-flat endpoint check for
