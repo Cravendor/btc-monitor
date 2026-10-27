@@ -1,29 +1,29 @@
 {
   "schema_version": 3,
   "coverage_24h": {
-    "window_start": "2026-10-26T15:32:59.496712+00:00",
-    "window_end": "2026-10-27T15:32:59.496712+00:00",
+    "window_start": "2026-10-26T16:01:56.572580+00:00",
+    "window_end": "2026-10-27T16:01:56.572580+00:00",
     "first_retained_at": "2026-10-22T15:34:27.047744+00:00",
     "interval_seconds": 1800,
     "expected_snapshots": 48,
     "observed_snapshots": 41,
-    "observed_intervals": 38,
+    "observed_intervals": 41,
     "history_unavailable_intervals": 0,
-    "missing_measurement_intervals": 10,
-    "coverage_percent": 79.2,
+    "missing_measurement_intervals": 7,
+    "coverage_percent": 85.4,
     "max_observed_gap_seconds": 3551,
-    "max_window_gap_seconds": 12838,
+    "max_window_gap_seconds": 11101,
     "status": "gaps_detected"
   },
-  "checked_at": "2026-10-27T15:32:59.496712+00:00",
+  "checked_at": "2026-10-27T16:01:56.572580+00:00",
   "last_snapshot_at": "2026-10-27T15:32:57.670274+00:00",
-  "age_seconds": 2,
+  "age_seconds": 1739,
   "max_age_seconds": 3600,
   "status": "current",
   "analysis_quality": {
     "current": {
       "schema_version": 1,
-      "checked_at": "2026-10-27T15:32:59.496712+00:00",
+      "checked_at": "2026-10-27T16:01:56.572580+00:00",
       "measurement_at": "2026-10-27T15:32:18.781202+00:00",
       "valid_until": "2026-10-27T16:00:00+00:00",
       "scenario_processing": "consistent",
@@ -41,5 +41,13 @@
     "recurring_blockers": [],
     "report_findings": [],
     "scope": "Engineering en rapportconsistentie; geen bewijs van voorspellende kwaliteit."
+  },
+  "recovery": {
+    "attempted": false,
+    "event": "schedule",
+    "before_status": "current",
+    "scope": "periodic_market_snapshot_only",
+    "outcome": "not_needed",
+    "after_status": "current"
   }
 }
