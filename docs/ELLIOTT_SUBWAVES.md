@@ -1,5 +1,53 @@
 # Anchored one-level subdivision validator — proposed v1
 
+## Corrective-outline extension — 27 October 2026
+
+This section supersedes earlier statements that all flats are unsupported and
+that the completed validator remains v1. New models:
+`elliott_anchored_subdivision_v2`, `elliott_anchored_prefix_subdivision_v2`, and
+`elliott_visual_corrective_outlines_v8`.
+
+For an eligible formed corrective parent leg, keep the same uniquely mapped
+anchors and ALL confirmed lower pivots. Exactly three lower legs are required.
+Test each geometry independently and preserve every alternative and failed test:
+
+- Existing restricted non-truncated single zigzag (unchanged price conditions).
+- Expanded-flat outline: alternating A/B/C, B beyond A's origin, C beyond A's end.
+- Running-flat outline: alternating A/B/C, B beyond A's origin, C strictly short
+  of A's end. It remains an unconfirmed possibility, especially without internal
+  structure and surrounding trend context; no frequency becomes a probability.
+
+Flat tests also require all strictly intervening candle wicks to stay inside
+that individual leg's fixed endpoints. This is a conservative implementation
+screen, not a universal Elliott axiom. Wicks beyond those endpoints leave the
+specific fixed outline unsupported; no anchor substitution is made. Exact-touch
+flat boundaries remain unsupported rather than silently rounded. Regular flats
+are deferred: Waveopedia describes proximity qualitatively, and this increment
+does not invent a numerical 'near' threshold or classify them by 90/105% cutoffs.
+
+Primary definition reviewed: https://www.elliottwave.com/waveopedia/flats/ .
+Paraphrased geometry above is distinct from a complete flat's required internal
+3-3-5. That deeper structure remains NOT TESTABLE here, as does a zigzag's deeper
+5-3-5. No current count, degree, completion, ranking or probability is certified.
+`wave_certification=unproven` and `probability=null` remain mandatory.
+
+An unsupported alternative does not reject another compatible geometry. Each
+corrective leg includes `correction_alternatives` and `compatible_families`;
+aggregate compatibility means at least one geometry passes, never that all
+families or internal counts pass. Dashboard shows the family outcomes and limits.
+
+No higher pivot selection, fixed-anchor rule or source gate is relaxed. In
+particular, forming-prefix fixed-anchor checks can reject an anchor exceeded by
+a later B wave before lower analysis starts. This increment does NOT rescue such
+a prefix or assert that every flat can appear in the current proposal inventory.
+Ongoing parent legs still lack a confirmed endpoint and remain untested. More
+or fewer lower pivots remain an unresolved degree; no thinning to three.
+
+Six new tests cover mirrored expanded/running/zigzag geometry, strict boundary
+cases, concealed wicks, real reconciled parent/child integration, visible failed
+alternatives, source/invalid-parent blocking and open-candle exclusion. Existing
+prefix and subdivision tests retain extra-pivot, future and ambiguity coverage.
+
 ## Forming-prefix extension — 27 October 2026
 
 New `assess_prefix` model `elliott_anchored_prefix_subdivision_v1` uses the same

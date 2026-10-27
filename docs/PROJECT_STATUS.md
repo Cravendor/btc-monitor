@@ -1,5 +1,29 @@
 # BTC Monitor — current scope and open work
 
+## Current checkpoint — corrective flat outlines prepared, 27 October 2026
+
+Supersedes the earlier next-development instruction below. PR88 acceptance is
+CLOSED; do not repeat it. This separate change adds expanded-flat and running-flat
+PRICE OUTLINES alongside the existing zigzag for eligible formed corrective legs.
+Each family and failed test stays visible; internal 3-3-5 remains unproven and no
+probability/current count is produced. Regular flats, triangles and recursive
+certification are deferred. Contract: docs/ELLIOTT_SUBWAVES.md, corrective extension.
+
+Same native source reconciliation, exact anchors, all lower pivots and higher
+invalidity/fixed-anchor gates remain in force. Some forming prefixes therefore
+remain blocked even if a flat could fit independently; no automatic rescue.
+No source-cache, stored observation, schedule or runtime changes. Models advance
+to anchored subdivision/prefix v2 and visual corrective outlines v8.
+
+Local validation passed:514 Python tests,6 Node tests and full offline dashboard
+generation with exact42 source-SVG content/count checks. Required two-version
+release CI is pending on the new PR. This is prepared code, NOT merged/deployed/live-accepted. Next: user reviews the separate PR after
+its required CI passes; agent checks that new deployment once after merge.
+No NAS action or waiting for a fresh measurement is needed for review. Independent
+next work can begin immediately: explicit frozen scenario/outcome definitions
+before empirical probability calibration; no additional family in this PR.
+
+
 ## Current checkpoint — PR88 deployed and accepted, 27 October 2026
 
 This supersedes all PR88 open/pending-publication checkpoints below. User merged

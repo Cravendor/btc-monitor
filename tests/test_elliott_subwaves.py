@@ -8,13 +8,14 @@ H=3600000
 START=1790006400000
 
 
-def fixture(mirror=False):
+def fixture(mirror=False, correction=None, stride=4):
     targets=[100,130,115,170,145,190]
     vertices=[(14,targets[0])];anchors=[14]
     for n,(a,b) in enumerate(zip(targets,targets[1:]),1):
         fractions=[.35,.2,.75,.6,1] if n%2 else [.6,.3,1]
+        if n==2 and correction is not None:fractions=correction
         begin=vertices[-1][0]
-        for j,x in enumerate(fractions,1):vertices.append((begin+j*4,a+(b-a)*x))
+        for j,x in enumerate(fractions,1):vertices.append((begin+j*stride,a+(b-a)*x))
         anchors.append(vertices[-1][0])
     lookup=dict(vertices);last=vertices[-1][0];rows=[]
     for i in range(last+15):

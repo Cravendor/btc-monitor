@@ -284,3 +284,15 @@ new schedules. Reject unsupported claims while retaining explicitly usable
 components; unavailable macro evidence is not a neutral verdict. Preserve original
 reports and measurements. The live interval recovery and its remaining uncertainty
 are recorded in CVD_RECONCILIATION.md; exact matching remains the coverage rule.
+
+
+## Corrective geometry remains separate from certification — 27 October 2026
+
+Support strict expanded/running flat endpoint outlines as additional alternatives
+inside eligible shared-anchor corrective legs; preserve rejected alternatives.
+Do not invent numerical regular-flat proximity thresholds from qualitative
+Waveopedia descriptions. Required internal 3-3-5 remains untested, especially
+important for running flats. A geometry match never certifies a flat, higher wave,
+degree, momentum switch or probability. Retain existing higher fixed-anchor and
+source gates even when they exclude a potentially compatible flat. See
+ELLIOTT_SUBWAVES.md for the conservative wick screen and precise boundaries.

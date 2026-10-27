@@ -5,7 +5,7 @@ from scripts.market_scenarios import time_ms, iso
 from scripts.native_timeframe_candles import PERIOD_MS
 from scripts.elliott_history import reconcile
 
-MODEL='elliott_anchored_subdivision_v1'
+MODEL='elliott_anchored_subdivision_v2'
 
 
 def same(a,b):
@@ -31,11 +31,45 @@ def zigzag_checks(rows,points,direction):
                                          detail='Vereist nog een lagere gevalideerde golfgraad.')]
 
 
+def correction_outlines(rows,points,direction):
+    """Test independent endpoint geometries, never certify internal wave counts.
+
+    Flat variants use strict B-origin/C-A relations from Waveopedia. Regular
+    flats require an undefined 'near' relation and are intentionally not scored.
+    """
+    sign=1 if direction=='up' else -1
+    p=[x['price']*sign for x in points]
+    alternating=p[1]>p[0] and p[2]<p[1] and p[3]>p[2]
+    # Any hidden excursion beyond an endpoint makes that fixed flat outline
+    # unresolved. Do not replace anchors, tolerate wicks or thin extra pivots.
+    contained=True
+    for a,b in zip(points,points[1:]):
+        part=[r for r in rows if a['open_time_ms']<r['open_time_ms']<b['open_time_ms']]
+        lo,hi=sorted((a['price'],b['price']))
+        if not part or any(r['low']<lo or r['high']>hi for r in part):
+            contained=False
+    variants=[dict(family='single_zigzag_outline',checks=zigzag_checks(rows,points,direction))]
+    for family,endpoint in [('expanded_flat_outline',p[3]>p[1]),
+                            ('running_flat_outline',p[2]<p[3]<p[1])]:
+        conditions=[('ABC_richting',alternating),('B_voorbij_begin_A',p[2]<p[0]),
+                    ('C_voorbij_A' if family=='expanded_flat_outline' else 'C_blijft_voor_A',endpoint),
+                    ('vaste_eindpunten_alle_tussenliggende_wicks',contained)]
+        checks=[dict(rule=k,result='getoetst' if ok else 'geschonden',
+                     detail='Alleen geometrie tussen dezelfde bevestigde ankers; geen gecertificeerde flat.')
+                for k,ok in conditions]
+        checks.append(dict(rule='interne_A_B_C_3_3_5',result='niet toetsbaar',
+                           detail='Interne 3-3-5 en context ontbreken; vooral running flats blijven een onbevestigde mogelijkheid.'))
+        variants.append(dict(family=family,checks=checks))
+    for v in variants:
+        v['status']='price_outline_compatible' if not any(c['result']=='geschonden' for c in v['checks']) else 'unsupported_correction_outline'
+    return variants
+
+
 def _assess(candidate,parent_rows,parent_tf,child_rows,child_tf,as_of,forming=False):
     out=dict(model_version=MODEL,status='unavailable',parent_timeframe=parent_tf,
              child_timeframe=child_tf,legs=[],wave_certification='unproven',probability=None)
     if forming:
-        out.update(model_version='elliott_anchored_prefix_subdivision_v1',
+        out.update(model_version='elliott_anchored_prefix_subdivision_v2',
                    ongoing_leg_status='unconfirmed_parent_endpoint_not_tested')
     if candidate.get('status')=='invalid':
         out.update(status='blocked_invalid_parent',reason='invalid_parent_not_rescued_by_children')
@@ -78,7 +112,7 @@ def _assess(candidate,parent_rows,parent_tf,child_rows,child_tf,as_of,forming=Fa
             raise ValueError('parent_child_source_conflict_or_missing_group')
         out.update(status='assessed',evidence_known_at=iso(max(p['confirmed_at_ms'] for p in points)))
         for i,(a,b) in enumerate(zip(points,points[1:]),1):
-            family='standard_impulse' if i%2 else 'single_zigzag_outline'
+            family='standard_impulse' if i%2 else 'corrective_outlines'
             leg_direction=direction if i%2 else ('down' if direction=='up' else 'up')
             leg=dict(leg=i,family=family,direction=leg_direction,status='unresolved',
                      start_price=a['price'],end_price=b['price'],points=[],checks=[])
@@ -100,9 +134,17 @@ def _assess(candidate,parent_rows,parent_tf,child_rows,child_tf,as_of,forming=Fa
                            mapped_start_at=iso(left['open_time_ms']),mapped_end_at=iso(right['open_time_ms']))
                 if len(selected)!=expected:
                     raise ValueError('different_or_unresolved_child_degree')
-                tested=price_checks(children,selected,leg_direction) if i%2 else zigzag_checks(children,selected,leg_direction)
+                if i%2:
+                    tested=price_checks(children,selected,leg_direction)
+                else:
+                    alternatives=correction_outlines(children,selected,leg_direction)
+                    leg['correction_alternatives']=alternatives
+                    leg['compatible_families']=[v['family'] for v in alternatives if v['status']=='price_outline_compatible']
+                    tested=[dict(c,rule=v['family']+' · '+c['rule']) for v in alternatives for c in v['checks']]
+                # A rejected alternative does not invalidate a different matching
+                # geometry; all alternatives and their failures remain visible.
                 leg['checks']=tested
-                if any(c['result']=='geschonden' for c in tested):
+                if (any(c['result']=='geschonden' for c in tested) if i%2 else not leg['compatible_families']):
                     leg['status']='price_rules_violated' if i%2 else 'unsupported_correction_outline'
                 else:
                     leg['status']='price_outline_compatible'
