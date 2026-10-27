@@ -11,6 +11,7 @@ from scripts.market_scenarios import iso, time_ms
 from scripts.native_timeframe_candles import PERIOD_MS
 
 MODEL = 'elliott_frozen_observation_v1'
+EVALUATION_MODEL = 'elliott_invalidation_evaluation_v2'
 
 
 def canonical(value):
@@ -67,17 +68,24 @@ def evaluate(snapshot, later_rows, evaluated_at, source_state):
     for candidate in original['candidates']:
         result=dict(candidate_id=candidate['id'],initial_status=candidate['status'],
                     status='already_invalid' if candidate['status']=='invalid' else 'unresolved',
-                    first_invalid_known_at=None,violated_rules=[])
+                    first_invalid_candle_closed_at=None,violated_rules=[])
         if candidate['status'] != 'invalid':
             for end in range(len(old)+1,len(rows)+1):
                 current=hypothesis(rows[:end],candidate['points'],tf)
                 broken=[c['rule'] for c in current['checks'] if c['result']=='geschonden']
                 if broken:
-                    result.update(status='invalidated',first_invalid_known_at=iso(rows[end-1]['open_time_ms']+PERIOD_MS[tf]),
+                    if rows[end-1]['open_time_ms'] < time_ms(snapshot['observed_at']):
+                        # OHLC wicks of the candle already in progress at the
+                        # observation may have occurred before that observation.
+                        result.update(status='ambiguous_first_candle',violated_rules=broken,
+                                      ambiguity='intracandle_event_order_unknown')
+                        break
+                    result.update(status='invalidated',first_invalid_candle_closed_at=iso(rows[end-1]['open_time_ms']+PERIOD_MS[tf]),
                                   violated_rules=broken)
                     break
         results.append(result)
-    return dict(model_version=MODEL, snapshot_sha256=digest(snapshot),evaluated_at=evaluated_at,
+    return dict(model_version=MODEL, evaluation_model_version=EVALUATION_MODEL,
+                snapshot_sha256=digest(snapshot),source_cutoff_at=evaluated_at,
                 source_rows_sha256=digest(rows),closed_through=iso(rows[-1]['open_time_ms']+PERIOD_MS[tf]),
                 results=results,probability=None,wave_certification='unproven')
 
