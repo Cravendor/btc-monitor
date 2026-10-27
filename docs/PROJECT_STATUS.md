@@ -1,5 +1,27 @@
 # BTC Monitor — current scope and open work
 
+## Current development — expanded-flat endpoint geometry, 27 October 2026
+
+PR #89 (https://github.com/Cravendor/btc-monitor/pull/89) proposes a narrowly scoped expanded-flat endpoint check for
+confirmed lower pivots. Both directions require B strictly beyond the start of A
+and C strictly beyond its end. Interior 3-3-5 remains unverified; a matching
+outline is not a certified wave, proven degree or probability. Other flat types
+remain unsupported. The existing source, anchor and parent validity gates remain
+unchanged. No NAS, historical input, schedule or original report is changed.
+Offline validation: 510 Python tests and six Node tests passed; actual asset
+quality gate passed with 30 charts. At the 17:51 UTC build, the input reported
+one 4H/1H conflict for the 12:00 UTC candle (4H close 80459.3 vs hourly
+aggregate 80523.4; base volume 6965.3543 vs 7626.8427 BTC) and one missing 1H
+candle at 16:00 UTC. These are recorded source states, not proof of cause or
+collector failure; the affected 4H source remains blocked. Recheck original
+source evidence before any source repair. Required Python 3.9/3.11 CI and
+exact-merge live acceptance remain pending.
+See ELLIOTT_SUBWAVES.md for the contract and limitations. This branch is not yet
+merged or deployed. Review and merge follow successful required CI; afterward
+verify exact-merge Pages. Frozen outcome histories and further families/degree
+validation can proceed independently; no new manual NAS task is required.
+
+
 ## Current checkpoint — PR88 deployed and accepted, 27 October 2026
 
 This supersedes all PR88 open/pending-publication checkpoints below. User merged

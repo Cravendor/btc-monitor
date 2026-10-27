@@ -10,7 +10,7 @@ from scripts.elliott_completion import assess as completion_evidence, lower_evid
 from scripts.elliott_subwaves import assess as subdivision_evidence, assess_prefix as prefix_evidence
 
 TIMEFRAMES = ('1w', '1d', '4h', '1h')
-MODEL = 'elliott_visual_anchored_prefix_v7'
+MODEL = 'elliott_visual_anchored_prefix_v8'
 
 
 def zones(rows, tf):
@@ -259,11 +259,12 @@ def render_subdivision(evidence):
         return '<p>Onderverdeling niet toetsbaar: hogere pivots of vergelijkbare lagere broncandles ontbreken, zijn nog niet bevestigd of spreken elkaar tegen.</p>'
     labels={'price_outline_compatible':'Prijsvorm past; diepere interne bouw niet bewezen',
             'price_rules_violated':'Prijsregel in deze subimpuls geschonden',
-            'unsupported_correction_outline':'Buiten de beperkte zigzagvorm; andere correcties niet getoetst',
+            'unsupported_correction_outline':'Geen passende beperkte zigzag of expanded-flat-eindpunten; andere correcties niet getoetst',
             'unresolved':'Onderverdeling op deze bronschaal niet eenduidig'}
     parts=['<h4>Onderverdeling op '+escape(evidence['child_timeframe'].upper())+' · dezelfde hogere ankers</h4><div class="ew-chart-scroll"><table><thead><tr><th>Hoger been</th><th>Getoetste vorm</th><th>Lagere benen</th><th>Uitkomst</th></tr></thead><tbody>']
     for leg in evidence['legs']:
-        parts.append('<tr><td>'+str(leg['leg'])+'</td><td>'+('Standaardimpuls' if leg['family']=='standard_impulse' else 'Beperkte A-B-C-zigzag')+'</td><td>'+str(leg.get('observed_legs','niet toetsbaar'))+' / '+str(leg.get('expected_legs',5 if leg['leg']%2 else 3))+'</td><td>'+escape(labels[leg['status']])+'</td></tr>')
+        family={'standard_impulse':'Standaardimpuls','single_zigzag_outline':'Beperkte A-B-C-zigzag','expanded_flat_endpoint_outline':'Expanded flat: alleen eindpunten'}
+        parts.append('<tr><td>'+str(leg['leg'])+'</td><td>'+escape(family[leg['family']])+'</td><td>'+str(leg.get('observed_legs','niet toetsbaar'))+' / '+str(leg.get('expected_legs',5 if leg['leg']%2 else 3))+'</td><td>'+escape(labels[leg['status']])+'</td></tr>')
     parts.append('</tbody></table></div>')
     for leg in evidence['legs']:
         if not leg['points']:
@@ -277,7 +278,7 @@ def render_subdivision(evidence):
     if 'formed_legs' in evidence:
         parts.append('<p>Gevormde hogere benen: '+str(evidence['formed_legs'])+'. Lopend hoger been '+str(evidence['ongoing_leg'])+'? heeft geen bevestigd eindanker en is niet onderverdeeld. Alleen de gevormde benen zijn hierboven tussen dezelfde ankers getoetst; passende prijsvormen certificeren geen hogere telling of golfgraad.</p>')
         return ''.join(parts)
-    parts.append('<p>Getoetst: '+str(evidence['compatible_legs'])+' van 5 hogere benen met passende lagere prijsvorm. Ook 5 van 5 is geen gecertificeerde Elliott-telling: de interne structuur van die lagere golven is nog niet volledig getoetst. Extra pivots worden niet overgeslagen om 5–3–5–3–5 te forceren. Diagonalen, flats, driehoeken en complexe correcties zijn hier niet ondersteund; geen kanspercentage.</p>')
+    parts.append('<p>Getoetst: '+str(evidence['compatible_legs'])+' van 5 hogere benen met passende lagere prijsvorm. Ook 5 van 5 is geen gecertificeerde Elliott-telling: de interne structuur van die lagere golven is nog niet volledig getoetst. Extra pivots worden niet overgeslagen om 5–3–5–3–5 te forceren. Alleen eindpunten van expanded flats zijn getoetst; andere flats, diagonalen, driehoeken en complexe correcties ontbreken. Geen kanspercentage.</p>')
     return ''.join(parts)
 
 
