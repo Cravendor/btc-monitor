@@ -16,7 +16,7 @@ An attempted fresh Bitget request in this environment was unavailable. Detailed
 source evidence, audit scope, cutoff distinction and next decision are documented
 in [ELLIOTT_20261027_SOURCE_CONFLICT.md](ELLIOTT_20261027_SOURCE_CONFLICT.md).
 No data, rules, NAS runtime or schedules were changed. This documentation is
-proposed in a separate PR; do not call the conflict repaired.
+proposed in PR #90 (https://github.com/Cravendor/btc-monitor/pull/90); do not call the conflict repaired.
 
 Next: inspect a fresh exact-window native 4H and four hourly responses, retain raw
 values and timestamps and review a separate source correction only if supported.
