@@ -1,5 +1,20 @@
 # BTC monitor — agent handover
 
+### Concurrent main update reconciled — 27 October 2026
+
+PR88 conflicted with the advancing main branch before new CI could run. Merge
+main8d7637b5bfd207b4b7776a42985d63e16e42b041 normally, preserving both parents.
+Only3 overlapping candle differences exist:the same already-audited native
+revisions. Keep those reviewed values and all original evidence. Preserve every
+other candle and all page provenance from both sides, including5 newer main1H
+candles;hourly cache now11602 rows, other counts unchanged. All newly published
+snapshots/reports/receipts and signal/context histories from main are preserved.
+
+Recomputed strict review has zero source mismatches;4H/hourly coverage is still
+partial (first missing Oct27 04UTC/10UTC), explicitly not current completeness.
+No forced push, source-rule relaxation or unrelated data deletion. Revalidate
+full merged input and exact dashboard assets;new merge CI metadata follows.
+
 ## Current checkpoint — formed-prefix lower linkage prepared, 27 October 2026
 
 Authoritative current resume point; supersedes older awaiting-next-development

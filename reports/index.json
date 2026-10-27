@@ -505,6 +505,54 @@
       "monitor": "psychology",
       "path": "reports/2026/10/26/psychology-072146.json",
       "reported_at": "2026-10-26T07:21:46Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "30D/macro: **ONVOLDOENDE DATA** — geen nieuwe geïntegreerde macro-, ETF- en on-chainbeoordeling; macro-bodem en distributiefase zijn niet vast te stellen.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: **-1 ZWAK BEARISH** — lagere candlehigh, laag herstelvolume en latere prijs onder 80.000; intacte grotere low en het positieve vorige 4H-slot zijn tegenbewijs. Eén Bitget-bronfamilie; uiteenlopende delta’s bieden geen onafhankelijke bevestiging.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: **-1 ZWAK BEARISH** — het nieuwe dagslot van **80.117,1** ligt **2,19%** onder zeven dagen eerder. De recente bodem houdt; actuele ETF-/aanbodbevestiging is in deze korte controle niet vernieuwd.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "a529445acbae9575ef4da54155f3145d7808185cf0add4c00c093fd8e750e771",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/10/27/4h-warning-030547.json",
+      "reported_at": "2026-10-27T03:05:47Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "30D/macro: **ONVOLDOENDE DATA** — geen nieuwe geïntegreerde macro-, ETF- en on-chainbeoordeling; cyclusbodem en distributiefase zijn niet vast te stellen.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: **-1 ZWAK BEARISH** — lagere 4H-high en low binnen dagzwakte, met negatieve futuresdelta. Vrijwel vlak slot, beperkt volume en intacte grotere low zijn tegenbewijs. Eén Bitget-bronfamilie; onafhankelijke vraagbevestiging ontbreekt.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: **-1 ZWAK BEARISH** — laatste gesloten dagslot **80.117,1** ligt **2,19%** onder zeven dagen eerder. Steunbehoud begrenst de overtuiging; ETF-/aanbodbevestiging is in deze korte controle niet vernieuwd.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "0fbbff50be3d98dd6f3737ccbda63bb4ff28583ead7e3ca95aa0a0e1b38a86b1",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/10/27/4h-warning-110200.json",
+      "reported_at": "2026-10-27T11:02:00Z"
     }
   ],
   "schema_version": 2
