@@ -24,7 +24,10 @@ External ATH/sentiment preview invocation was rejected by automatic approval
 review over a possible paid CoinMarketCap Pro API; offline generation was used
 as the safer alternative, with no need for external reference data for this task.
 No runtime/NAS task, original archive, tolerance or credentials changed. No live
-or phone QA claim. Updated executable commit and CI metadata follow publication.
+or phone QA claim. Executable commit dcaf774310f4198539df9af75e9ec2a7f4562414 passed both required release CI jobs:
+Python3.9.14 check122024263765 and Python3.11 check122024263861, including full
+dashboard generation and actual asset gate. Reviewed merge/live acceptance still
+wait; no deployed or phone-tested claim.
 
 Real-data check pinned to main81702449f631b26374871ca4eedd4d20f36b3f79 at as-of
 2026-10-27T05:10:00Z: weekly conflict remains Oct19; daily-vs4H now conflicts on
