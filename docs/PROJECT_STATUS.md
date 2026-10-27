@@ -1,5 +1,26 @@
 # BTC Monitor — current scope and open work
 
+## Current development — source-validated Elliott observation capture, 27 October 2026
+
+PR91 merged as 6adee4875b9400e10972ba9765c89c5e74f08178; release validation
+40556022121 succeeded for final head edd3ff044e5c07e6d9f4fa147bd779374c69ae3d.
+PR #92 (https://github.com/Cravendor/btc-monitor/pull/92) proposes a capture step in the existing history workflow: pin exact committed
+source bytes and hashes, require complete and reconciled linked native sources
+plus a recent matching unchanged revision audit, then create immutable first
+available/unavailable manifests per timeframe/boundary. A workflow artifact
+preserves new manifests if publication fails; real failed-push recovery is not
+accepted yet. No new schedule or NAS action. See ELLIOTT_OBSERVATION_RUNNER.md.
+
+The actual current-source dry run yielded four unavailable manifests because the
+linked 4H source remains conflicted and the 1H archive is incomplete. These are
+local test artifacts, not published history. The gate is conservative. This PR
+does not evaluate outcomes or calculate probabilities. Git-source references are
+required for reconstruction and retention. Live activation requires user merge
+and a subsequent actual existing workflow result; inspect publication and artifact
+then. Independent work may start now on reconstructing frozen inputs and future
+outcomes; no extra NAS action is required.
+
+
 ## Current development — experimental frozen Elliott ledger, 27 October 2026
 
 PR #91 (https://github.com/Cravendor/btc-monitor/pull/91) proposes opt-in observation and first-invalidation primitives in
