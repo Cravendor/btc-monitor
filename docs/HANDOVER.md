@@ -9,7 +9,7 @@ committed four unavailable manifests in be2cb82a505a097f3aba8bf8461fa316565cd865
 and uploaded artifact 12758056673. Original evidence and audit were preserved.
 This is not a successful available-scenario capture, and no NAS failure follows.
 
-A separate PR prepares read-only reconstruction from manifest-pinned Git sources,
+PR #93 (https://github.com/Cravendor/btc-monitor/pull/93) prepares read-only reconstruction from manifest-pinned Git sources,
 byte hashes, bounded audit and original inventory. It fails closed on unavailable,
 missing, revised, inconsistent or changed-model inputs; see
 ELLIOTT_OBSERVATION_RESTORE.md. Also fix the prior weekly evaluator boundary to
