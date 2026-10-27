@@ -32,3 +32,10 @@ Future work includes outcome definitions beyond rule invalidation, bounded
 availability and missing-evidence records, non-overlapping evaluation, source
 revision-aware as-observed histories and statistically defensible out-of-time
 calibration. No accuracy or predictive usefulness follows from this foundation.
+
+## Seven-day workflow proposal
+
+See [ELLIOTT_SEVEN_DAY_OUTCOMES.md](ELLIOTT_SEVEN_DAY_OUTCOMES.md). The new
+evaluation model explicitly marks a violation in the first partially observed
+candle as ambiguous, and reports candle-close time separately from actual
+processing time. Existing fixed-anchor snapshot model remains unchanged.
