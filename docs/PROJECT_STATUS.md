@@ -1,5 +1,31 @@
 # BTC Monitor — current scope and open work
 
+## Current development — fixed-anchor seven-day outcomes, 27 October 2026
+
+PR93 merged as 2cb7da4698b18051384255fdb251285497c6057e and final-head release
+validation 40557948203 succeeded. Proposed next PR connects bounded prospective
+seven-day outcome recording to the existing history workflow; see
+ELLIOTT_SEVEN_DAY_OUTCOMES.md. It reconstructs original committed evidence,
+validates later source and audit, rejects original source revisions and saves
+immutable first rule outcomes with the actual evaluation time and source version.
+An intrabar violation in the candle already open at observation is ambiguous,
+not a known post-observation invalidation. No backfill, trading, probability,
+new schedule or NAS task. Local validation: 526 Python tests, six Node tests
+and the offline dashboard asset gate (30 charts) passed; targeted tests were
+rerun after the cutoff field clarification. Python 3.9/3.11 CI remains pending.
+Full Git history is fetched; checkout cost grows.
+
+At most four due records per run are attempted. Errors are surfaced and the oldest
+batch may require intervention before later work; failed-push artifact recovery
+has not been induced. A local actual-input dry run returned unavailable linked
+source, zero eligible observations and no outcomes. No live outcome acceptance
+is possible before a valid observation plus its complete seven-day horizon.
+Next: after CI and reviewed merge inspect the existing workflow's first run; a
+future valid capture and full horizon are necessary for an actual outcome.
+Independent work can continue on the source conflict and additional pattern
+families without a new NAS task.
+
+
 ## Current development — reconstruct captured Elliott inputs, 27 October 2026
 
 PR92 merged as 78ce59fe4c8c923673b2473c2bdc89247a1d854d; final-head release
