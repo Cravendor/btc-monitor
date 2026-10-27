@@ -4,7 +4,7 @@
 
 PR91 merged as 6adee4875b9400e10972ba9765c89c5e74f08178; release validation
 40556022121 succeeded for final head edd3ff044e5c07e6d9f4fa147bd779374c69ae3d.
-The existing history workflow has a proposed capture step: pin exact committed
+PR #92 (https://github.com/Cravendor/btc-monitor/pull/92) proposes a capture step in the existing history workflow: pin exact committed
 source bytes and hashes, require complete and reconciled linked native sources
 plus a recent matching unchanged revision audit, then create immutable first
 available/unavailable manifests per timeframe/boundary. A workflow artifact
