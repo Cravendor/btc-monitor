@@ -9,6 +9,7 @@ on:
       - scripts/cycle_history.py
       - scripts/elliott_history.py
       - scripts/source_revision_audit.py
+      - scripts/elliott_observation_runner.py
       - .github/workflows/cycle-history.yml
   workflow_run:
     workflows: [BTC market snapshots, BTC collector health check]
@@ -40,7 +41,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Validate bounded history collector
-        run: python -m unittest tests.test_cycle_history tests.test_elliott_history tests.test_source_revision_audit -v
+        run: python -m unittest tests.test_cycle_history tests.test_elliott_history tests.test_source_revision_audit tests.test_elliott_observation_runner -v
       - name: Resume history and preserve checkpoints
         run: |
           history_status=0
@@ -70,6 +71,16 @@ jobs:
               git push origin HEAD:main
             fi
           fi
+          observation_status=0
+          python -m scripts.elliott_observation_runner || observation_status=$?
+          if [ -d data/history/elliott-observations ]; then
+            git add -- data/history/elliott-observations
+            if ! git diff --cached --quiet; then
+              git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Preserve Elliott observation manifests'
+              git push origin HEAD:main
+            fi
+          fi
+          [ "$observation_status" -eq 0 ] || exit "$observation_status"
           [ "$revision_status" -eq 0 ] || exit "$revision_status"
           [ "$elliott_status" -eq 0 ] || exit "$elliott_status"
           exit "$history_status"
@@ -79,5 +90,13 @@ jobs:
         with:
           name: bitget-source-revision-audits
           path: output/source-revision-audit.json
+          retention-days: 30
+          if-no-files-found: ignore
+      - name: Preserve current Elliott manifests if publication fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: elliott-observation-manifests
+          path: output/elliott-observation-current
           retention-days: 30
           if-no-files-found: ignore
