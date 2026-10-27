@@ -2,7 +2,7 @@
 
 ## Current development — expanded-flat endpoint geometry, 27 October 2026
 
-A new separate PR proposes a narrowly scoped expanded-flat endpoint check for
+PR #89 (https://github.com/Cravendor/btc-monitor/pull/89) proposes a narrowly scoped expanded-flat endpoint check for
 confirmed lower pivots. Both directions require B strictly beyond the start of A
 and C strictly beyond its end. Interior 3-3-5 remains unverified; a matching
 outline is not a certified wave, proven degree or probability. Other flat types
