@@ -1,5 +1,46 @@
 # BTC Monitor — current scope and open work
 
+## Current checkpoint — PR88 deployed and accepted, 27 October 2026
+
+This supersedes all PR88 open/pending-publication checkpoints below. User merged
+PR88 as7b7262bf8fef4d83e45494b370d86a34de4623d1 at11:52:31UTC/12:52:31CET.
+Exact-merge Pages40499412625 succeeded. First existing history workflow
+40499413684 also succeeded:collection/checkpoint and revision-evidence artifact
+steps both green. Post-history Pages40499452388 at169777db1202c4de4e9f9236110fd142e0a0f753
+succeeded. No further waiting for this initial deployment or normal audit run.
+
+Actually read the new committed automatic audit:
+data/history/source-revision-audits/20261027T115245Z-54fc7da1e52921eefdecd4604d6e82b8901a3db960116af855505efc4c057f10.json.
+At11:52:45UTC/12:52:45CET all four tested windows were unchanged and their cached
+tails current for the selection cut-off. All four cache-file SHA256 values match
+the audit. Native coverage at that cut-off:69 weeks,483 days,2900 four-hour and
+11603 hourly candles;all complete,zero cross-timeframe source mismatches.
+Closed bounds:weekOct26 00UTC,dayOct27 00UTC,4HOct27 08UTC,1HOct27 11UTC.
+These are timestamped results,not a guarantee after new intervals close.
+The bitget-source-revision-audits artifact is present,not expired,id12731224359,
+1881 compressed bytes. Normal execution/upload accepted;an actual failed-push
+artifact fallback was not induced or claimed.
+
+Actual public Chrome acceptance at https://cravendor.github.io/btc-monitor/:
+all1W/1D/4H/1H disclosures open and source charts available. Weekly corrected
+close80119.2 displays;daily80117.1,4H79784.0,hourly79942.5 at their stated bounds.
+Expanded weekly forming proposal shows the same-anchor daily subdivision table:
+1 observed lower leg versus5 required,unresolved. Ongoing higher leg2? explicitly
+has no confirmed endpoint and is not subdivided. Desktop chart/table screenshot
+inspected and readable;no iPhone acceptance claimed. Current wave/degree and
+probabilities remain unproven,even though source/deployment acceptance is closed.
+
+No executable changes or redundant full test suite in this acceptance task.
+Prior508 Python/6 Node/two-version release validation remains recorded below;
+this task verifies the new merge,actual publication,normal workflow/audit/artifact
+and live controls. No extra manual collection,operational repair or user action
+required. Future development must use a NEW separate PR;do not reopen/extend PR88.
+Do not repeat this completed acceptance without a relevant change or incident.
+User asks for efficient progress,immediate direct result links and no repeated
+status loops. Next agent work can start immediately:additional corrective pattern
+families and degree validation,then frozen outcome histories before probability
+calibration. No need to wait for another routine observation to start that work.
+
 ### Concurrent main update reconciled — 27 October 2026
 
 PR88 conflicted with the advancing main branch before new CI could run. Prepared and committed a normal merge of
