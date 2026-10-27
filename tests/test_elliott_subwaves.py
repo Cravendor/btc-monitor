@@ -154,3 +154,30 @@ class SubwaveTests(unittest.TestCase):
         checks=sw.zigzag_checks(rows,pts,'down')
         self.assertTrue(any(x['result']=='geschonden' for x in checks))
         self.assertTrue(any(x['result']=='niet toetsbaar' for x in checks))
+
+    def test_expanded_flat_endpoints_in_both_directions_and_strict_boundaries(self):
+        for direction,values in [('down',[150,120,155,110]),('up',[150,180,145,190])]:
+            def check(v):
+                return sw.expanded_flat_checks([{'price':x} for x in v],direction)
+            result=check(values)
+            self.assertFalse(any(c['result']=='geschonden' for c in result))
+            self.assertEqual(result[-1]['result'],'niet toetsbaar')
+            points=[dict(open_time_ms=i*H,price=v) for i,v in enumerate(values)]
+            rows=[dict(open_time_ms=i*H,high=v,low=v) for i,v in enumerate(values)]
+            family,selected=sw.correction_outline(rows,points,direction)
+            self.assertEqual(family,'expanded_flat_endpoint_outline')
+            self.assertEqual(selected,result)
+            for index,replacement in [(2,values[0]),(3,values[1])]:
+                boundary=values.copy();boundary[index]=replacement
+                self.assertTrue(any(c['result']=='geschonden' for c in check(boundary)))
+
+    def test_expanded_flat_dashboard_does_not_claim_certification(self):
+        from scripts.elliott_dashboard import render_subdivision
+        c,p,r,now=fixture();q=sw.assess(c,p,'4h',r,'1h',now)
+        q['legs'][1]['family']='expanded_flat_endpoint_outline'
+        q['legs'][1]['checks']=sw.expanded_flat_checks(
+            [{'price':x} for x in [150,120,155,110]],'down')
+        page=render_subdivision(q)
+        self.assertIn('Expanded flat: alleen eindpunten',page)
+        self.assertIn('interne_A_B_C_3_3_5: niet toetsbaar',page)
+        self.assertIn('geen gecertificeerde Elliott-telling',page)
