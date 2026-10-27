@@ -1,5 +1,101 @@
 # BTC monitor — agent handover
 
+### Forming-candidate inventory added to open PR 87 — 27 October 2026
+
+Current resume checkpoint; supersedes awaiting-new-work wording below. PR87 is
+still OPEN, not merged or deployed, at this check. Its previous documentation
+head 1a802f217fc047f05d959a831ed653660aed242a passed release CI on Python3.9.14
+(check121885057946) and3.11 (121885058217). This task extends that SAME reviewed
+PR with scripts/elliott_candidates.py, per-timeframe disclosure and focused charts;
+visual model now elliott_visual_forming_inventory_v6. Read docs/ELLIOTT_CANDIDATES.md.
+
+Every 2..5-pivot suffix ending at the latest confirmed pivot becomes a fixed
+standard-impulse-prefix hypothesis, regardless of validity. Next live leg and
+assumed whole-impulse direction are separate. Recheck formed rules, every wick,
+fixed anchor extension and live second/fourth/shortest-third constraints. IDs
+remain repeatable for unchanged anchors; no frozen forecast ledger is claimed.
+Unsupported pattern families, actual degree, substructure and parent linkage
+remain unproven; no preferred/current wave or invented percentages. PR87's
+completed-parent subdivision layer remains separately scoped and tested.
+
+Combined local validation: 490 Python tests, six Node tests, whitespace and full
+OFFLINE dashboard + real SVG content/count gate passed (10 charts on this input).
+External ATH/sentiment preview invocation was rejected by automatic approval
+review over a possible paid CoinMarketCap Pro API; offline generation was used
+as the safer alternative, with no need for external reference data for this task.
+No runtime/NAS task, original archive, tolerance or credentials changed. No live
+or phone QA claim. Executable commit dcaf774310f4198539df9af75e9ec2a7f4562414 passed both required release CI jobs:
+Python3.9.14 check122024263765 and Python3.11 check122024263861, including full
+dashboard generation and actual asset gate. Reviewed merge/live acceptance still
+wait; no deployed or phone-tested claim.
+
+Real-data check pinned to main81702449f631b26374871ca4eedd4d20f36b3f79 at as-of
+2026-10-27T05:10:00Z: weekly conflict remains Oct19; daily-vs4H now conflicts on
+Oct26 and4H-vs1H on Oct26 20UTC. Missing lower history starts Oct27 00UTC. All
+conflicted scales block proposals; only historical 1H prefix is eligible (four
+hypotheses: three invalid, one unresolved downward impulse prefix proposing third
+leg down). This is NOT a current/preferred count. Do not claim this resolves the
+weekly source issue or re-label missing history as neutral. Source repair/extension
+remains independent work. Latest original NAS snapshot at05:02:17UTC/06:02:17CET
+is collection_source nas,status ok; normal publication recovery stays closed.
+
+Next user action can start immediately: review/merge updated PR87 after its NEW
+CI passes. Public acceptance waits for that merge and successful exact-commit
+Pages. Agent can independently investigate same-market source revisions and
+anchor-linked prefix validation; no extra manual NAS repair or task needed.
+
+### Anchored pattern/subdivision validation prepared — 26 October 2026
+
+Current resume checkpoint. Added scripts/elliott_subwaves.py and rule disclosures
+for the existing historical candidates. Visual model now
+elliott_visual_subdivision_evidence_v5. Read docs/ELLIOTT_SUBWAVES.md for exact
+contract, limited pattern families, primary framework references and limitations.
+
+Validator recomputes parent price/wick rules and pivot recognition, verifies
+parent OHLC/BTC-volume against full child groups, maps exact unique child extreme
+anchors, and selects ALL lower confirmed pivots between them. Extra pivots are
+not skipped to force counts. Test standard-impulse outlines for legs 1/3/5 and
+restricted three-leg single-zigzag outlines for 2/4. Unsupported corrective
+families remain unsupported, not universally invalid. Invalid parent cannot be
+rescued by child patterns. Shared resolver and impulse price-check helpers keep
+the earlier endpoint/candidate semantics unchanged.
+
+Price_outlines compatible across all five legs STILL retain unproven wave
+certification and no probability: deeper internal wave rules are not recursively
+validated. This validates supplied candidates, does not generate a new active
+count or choose a preferred scenario. Current original daily/4H candidates remain
+invalid; preview displays subdivision blocked. The weekly source conflict stays
+blocked and originals/scores/candles are unchanged. Finer than 1H missing here.
+
+Validation: 481 Python tests, six Node tests, whitespace and full offline dashboard
+staging + actual asset gate passed (20 charts). Synthetic both-direction full
+shared-anchor fixtures fit all five outlines; genuine lower overlap, extra seven
+legs, ties, gap/duplicate, source contradiction and future data are tested. No
+local browser success or phone acceptance is claimed. CI/PR metadata to follow;
+reviewed merge and successful Pages required before live acceptance.
+
+NAS continuity evidence has advanced independently: public original NAS records
+at 21:02:36, 21:32:57 and 22:02:33 UTC October 26 (22:02,22:32,23:02 CET) all have
+status ok and cvd_4h ok. This supplements restored 20:35 run and supersedes waiting
+for any subsequent publication. These show actual half-hour-spaced publications,
+not direct inspection of DSM's current enabled settings. No extra NAS action,
+new task or repair requested. Current held snapshot expires under existing gates.
+
+Next: user reviews/merges this validator after green CI; public disclosure QA then
+waits for Pages. Active candidate generation and supported-family expansion can
+start independently now. No confirmed current/nested Elliott count or calibrated
+probabilities established; do not imply that checking this layer finishes them.
+
+PR #87: https://github.com/Cravendor/btc-monitor/pull/87, branch
+feat/elliott-anchored-subdivisions-20261026. Executable commit
+4a92f19143abf459a09991f9ca7571c51948846f passed Python 3.9.14 check
+121884345069 and Python 3.11 check 121884344777, including full release rendering
+and actual Pages asset gate. Open and mergeable, not deployed. This supersedes
+pending-PR/CI wording above. User review/merge can begin immediately; live
+disclosure QA waits for merge and successful Pages. Active candidate selection,
+more supported pattern families and degree inference can proceed independently.
+No NAS action required; no full certified count or calibrated probability claimed.
+
 ### PR 86 merged; linked endpoint evidence verified live — 26 October 2026
 
 Current resume checkpoint; supersedes awaiting-merge/deployment wording for PR86.

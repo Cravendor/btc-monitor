@@ -50,6 +50,24 @@ def confirmed_pivots(rows):
     return pivots
 
 
+def price_checks(rows, points, direction):
+    """Standard-impulse outline plus every intervening wick at this scale."""
+    checks = impulse_checks(points, direction)
+    # Inspect ALL intermediate extrema, not just selected pivot endpoints.
+    sign = 1 if direction == 'up' else -1
+    p = [x['price']*sign for x in points]
+    def extreme(lo, hi):
+        values = [r['low'] if sign==1 else -r['high'] for r in rows
+                  if points[lo]['open_time_ms'] < r['open_time_ms'] <= points[hi]['open_time_ms']]
+        return min(values)
+    for rule, passed, detail in (
+        ('golf_2_interval', extreme(1,2)>p[0], 'Alle candle-extremen tussen golf 1 en 2 tegen beginpunt gecontroleerd.'),
+        ('golf_4_interval', extreme(3,4)>p[1], 'Alle candle-extremen tussen golf 3 en 4 tegen golf-1-prijsgebied gecontroleerd.'),
+    ):
+        checks.append(dict(rule=rule, result='getoetst' if passed else 'geschonden', detail=detail))
+    return checks
+
+
 def assess_candidates(rows, timeframe):
     pivots = confirmed_pivots(rows)
     candidates = []
@@ -58,19 +76,7 @@ def assess_candidates(rows, timeframe):
         end = len(pivots)-offset
         points = pivots[end-6:end]
         direction = 'up' if points[0]['kind']=='low' else 'down'
-        checks = impulse_checks(points, direction)
-        # Inspect ALL intermediate extrema, not just selected pivot endpoints.
-        sign = 1 if direction == 'up' else -1
-        p = [x['price']*sign for x in points]
-        def extreme(lo, hi):
-            values = [r['low'] if sign==1 else -r['high'] for r in rows
-                      if points[lo]['open_time_ms'] < r['open_time_ms'] <= points[hi]['open_time_ms']]
-            return min(values)
-        for rule, passed, detail in (
-            ('golf_2_interval', extreme(1,2)>p[0], 'Alle candle-extremen tussen golf 1 en 2 tegen beginpunt gecontroleerd.'),
-            ('golf_4_interval', extreme(3,4)>p[1], 'Alle candle-extremen tussen golf 3 en 4 tegen golf-1-prijsgebied gecontroleerd.'),
-        ):
-            checks.append(dict(rule=rule, result='getoetst' if passed else 'geschonden', detail=detail))
+        checks = price_checks(rows, points, direction)
         violated = any(c['result']=='geschonden' for c in checks)
         candidates.append(dict(id='candidate_'+str(offset+1), pattern='standard_impulse', timeframe=timeframe,
                                direction=direction, points=points, checks=checks,
