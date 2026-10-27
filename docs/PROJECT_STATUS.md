@@ -1,5 +1,41 @@
 # BTC Monitor — current scope and open work
 
+## Current checkpoint — automatic revision audit prepared, 27 October 2026
+
+This checkpoint supersedes the older PR88 validation metadata below. PR88 is
+still OPEN at the pre-publication check, not merged/deployed. Extend that same
+PR with scripts/source_revision_audit.py,11 focused tests and integration in the
+EXISTING history workflow. No new schedule or active-cache revision activation.
+Read docs/SOURCE_REVISION_AUDIT.md for the exact contract and limitations.
+
+Recheck the last2 validated cached closed candles for1W/1D/4H/1H, at most4 public
+requests within75seconds. Retain both values, validated original row strings,
+source/cache hashes, selection/observation times and current-vs-historical tail
+scope. Unknown requester metadata and local filesystem locations never enter the
+audit. Unavailable/invalid/budget-skipped checks cannot become unchanged. Exact
+normalized comparison includes quote volume, without changing the chart gate.
+
+Audits are immutable/content-addressed, staged completely and linked atomically
+without overwrite. Existing cached files remain byte-identical. Current audit
+is copied to one output JSON;workflow configured to preserve that single file
+as an always-run30-day artifact even if Git publication fails. Actual workflow
+execution/artifact acceptance remains pending;do not describe it as operational.
+
+Live local public probe at07:56:15UTC/08:56:15CET onOct27:four selected windows
+unchanged.1H cache tail is historical through05UTC (required07UTC), explicitly
+not complete/current. Other tails current at this probe cut-off. Evidence in
+new data/history/source-revision-audits/ timestamped file; no original snapshot,
+report, current-cache candle, tolerance or operational runtime changed by auditor.
+The proposed3-row source repair from earlier PR88 work remains separately scoped.
+
+501 Python tests,6 Node tests, YAML parse,diff and full OFFLINE dashboard/source
+SVG gate pass (42 charts). New code/CI commit metadata follows publication. Public
+PR88 correction acceptance still waits for user merge and successful exact-commit
+Pages. Then inspect first existing history workflow's new audit/result/artifact.
+No extra manual run or task is needed. Independent work can begin now:exact
+parent-anchor linkage for forming prefixes and supported pattern families;
+frozen outcomes before probability calibration. No certified current count.
+
 ### PR87 live acceptance and reviewed native-candle correction — 27 October 2026
 PR88: https://github.com/Cravendor/btc-monitor/pull/88 — open, mergeable, not deployed.
 Executable/data commit 27117179d1270e711848f83c1274270f78b60f2b passed both release CI versions:
