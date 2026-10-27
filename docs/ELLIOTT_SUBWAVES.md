@@ -1,4 +1,18 @@
-# Anchored one-level subdivision validator — proposed v1
+# Anchored one-level subdivision validator
+
+## Expanded-flat endpoint geometry — 27 October 2026
+
+The correction selector additionally recognizes an expanded-flat endpoint outline:
+A moves in the correction direction, B ends strictly beyond A's start and C
+ends strictly beyond A's end, in either direction. This tests necessary endpoint
+geometry only, without an arbitrary Fibonacci threshold. The internal 3-3-5
+structure and degree remain untested; this is not a certified flat or a forecast.
+Equal boundaries, other flat types and other unsupported patterns remain unresolved.
+Existing parent validity, original anchors, source reconciliation, pivot selection,
+and no-skipping requirements continue to apply. Earlier zigzag matches retain their
+existing behavior. Models: `elliott_anchored_subdivision_v2`,
+`elliott_anchored_prefix_subdivision_v2`, `elliott_visual_anchored_prefix_v8`.
+Reference: https://www.elliottwave.com/waveopedia/flats/
 
 ## Forming-prefix extension — 27 October 2026
 
@@ -76,8 +90,8 @@ wave-2 origin, wave-3 progress/length and wave-4 overlap checks on intervening
 wicks. Higher legs 2/4 are checked for one restricted non-truncated single zigzag
 outline: three alternating legs, B strictly inside A including its wicks, C beyond
 A. An unsupported zigzag outline does NOT invalidate every corrective pattern.
-Flats, triangles, diagonals, combinations and other/truncated corrections are not
-implemented. No rule is relaxed to rescue an unavailable family.
+Regular and running flats, triangles, diagonals, combinations and other/truncated corrections are not
+implemented; expanded flats have only the endpoint check documented above. No rule is relaxed to rescue an unavailable family.
 
 Primary framework definitions reviewed:
 - https://www.elliottwave.com/waveopedia/impulse/
