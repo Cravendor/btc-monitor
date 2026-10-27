@@ -1,7 +1,7 @@
 # Experimental frozen Elliott observations
 
-This is an opt-in library foundation, not a running collector or a historical
-backtest. `freeze` records the exact closed normalized candles and complete
+This is an opt-in library foundation, not a historical backtest. A separately
+proposed workflow capture is described in ELLIOTT_OBSERVATION_RUNNER.md. `freeze` records the exact closed normalized candles and complete
 forming-inventory output as supplied at an observation time, with content hash.
 `evaluate` rebuilds that original inventory and checks the same fixed candidate
 anchors against each subsequent closed candle in order, retaining the first
