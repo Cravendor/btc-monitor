@@ -2,8 +2,8 @@
 
 ### Concurrent main update reconciled — 27 October 2026
 
-PR88 conflicted with the advancing main branch before new CI could run. Merge
-main8d7637b5bfd207b4b7776a42985d63e16e42b041 normally, preserving both parents.
+PR88 conflicted with the advancing main branch before new CI could run. Prepared and committed a normal merge of
+main8d7637b5bfd207b4b7776a42985d63e16e42b041 into PR88, preserving both parents.
 Only3 overlapping candle differences exist:the same already-audited native
 revisions. Keep those reviewed values and all original evidence. Preserve every
 other candle and all page provenance from both sides, including5 newer main1H
@@ -12,8 +12,8 @@ snapshots/reports/receipts and signal/context histories from main are preserved.
 
 Recomputed strict review has zero source mismatches;4H/hourly coverage is still
 partial (first missing Oct27 04UTC/10UTC), explicitly not current completeness.
-No forced push, source-rule relaxation or unrelated data deletion. Revalidate
-full merged input and exact dashboard assets;new merge CI metadata follows.
+No forced push, source-rule relaxation or unrelated data deletion. Full merged input passed508 Python tests,6 Node tests and the exact42-chart
+asset gate;both required release CI versions also passed at the commit below.
 
 ## Current checkpoint — formed-prefix lower linkage prepared, 27 October 2026
 
@@ -42,8 +42,9 @@ Current 4H flow/momentum stays separate;no historical delta or volume backcast.
 508 Python tests,6 Node tests,diff and full OFFLINE dashboard/source-SVG gate
 passed (42 charts). Seven new tests cover exact one-to-four leg linkage in both
 directions, invalid/forged/obsolete/future parents, source gaps/conflicts, ambiguous
-extremes, future exclusion, no mutation and UI boundaries. New executable/CI
-metadata follows publication;do not reuse older CI as proof of new code.
+extremes, future exclusion, no mutation and UI boundaries. Merged executable/input commit 7a99090dc54201ff987ebfdcb61c51eb25ded966 passed required release CI:
+Python3.9.14 check122169677364 and Python3.11 check122169676929, including actual
+dashboard staging and asset comparison. This documentation update records those results.
 
 The earlier three-candle source correction and bounded automatic audit remain
 part of PR88. They are NOT deployed or scheduled-audit-accepted yet. No new
