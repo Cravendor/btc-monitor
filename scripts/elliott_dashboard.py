@@ -7,10 +7,10 @@ from scripts.market_scenarios import time_ms, iso
 from scripts.native_timeframe_candles import PERIOD_MS
 from scripts.elliott_candidates import build as candidate_inventory
 from scripts.elliott_completion import assess as completion_evidence, lower_evidence, LABELS
-from scripts.elliott_subwaves import assess as subdivision_evidence
+from scripts.elliott_subwaves import assess as subdivision_evidence, assess_prefix as prefix_evidence
 
 TIMEFRAMES = ('1w', '1d', '4h', '1h')
-MODEL = 'elliott_visual_forming_inventory_v6'
+MODEL = 'elliott_visual_anchored_prefix_v7'
 
 
 def zones(rows, tf):
@@ -110,6 +110,9 @@ def build(feed, as_of, history=None):
         parent['subdivision_evidence'] = {c['id']:subdivision_evidence(c,parent['rows'],parent['timeframe'],
                                                 child['rows'],child['timeframe'],as_of)
                                           for c in parent['candidates']}
+        parent['forming_subdivision_evidence'] = {c['id']:prefix_evidence(c,parent['rows'],parent['timeframe'],
+                                                     child['rows'],child['timeframe'],as_of)
+                                                   for c in parent['forming_candidates']['candidates']}
         parent['lower_endpoint_evidence'] = lower_evidence(parent['endpoint_evidence'],
                                                            child['rows'],child['timeframe'],as_of)
         start = parent['focus_start']
@@ -271,6 +274,9 @@ def render_subdivision(evidence):
         parts.append('</ol><ul>')
         parts.extend('<li>'+escape(c['rule'])+': '+escape(c['result'])+'</li>' for c in leg['checks'])
         parts.append('</ul></details>')
+    if 'formed_legs' in evidence:
+        parts.append('<p>Gevormde hogere benen: '+str(evidence['formed_legs'])+'. Lopend hoger been '+str(evidence['ongoing_leg'])+'? heeft geen bevestigd eindanker en is niet onderverdeeld. Alleen de gevormde benen zijn hierboven tussen dezelfde ankers getoetst; passende prijsvormen certificeren geen hogere telling of golfgraad.</p>')
+        return ''.join(parts)
     parts.append('<p>Getoetst: '+str(evidence['compatible_legs'])+' van 5 hogere benen met passende lagere prijsvorm. Ook 5 van 5 is geen gecertificeerde Elliott-telling: de interne structuur van die lagere golven is nog niet volledig getoetst. Extra pivots worden niet overgeslagen om 5–3–5–3–5 te forceren. Diagonalen, flats, driehoeken en complexe correcties zijn hier niet ondersteund; geen kanspercentage.</p>')
     return ''.join(parts)
 
@@ -296,8 +302,9 @@ def render_forming_candidates(inventory, horizon=None):
             start=c['points'][0]['open_time_ms']
             end=horizon['rows'][-1]['open_time_ms']+PERIOD_MS[horizon['timeframe']]
             parts.append('<div class="ew-chart-scroll">'+chart(horizon,c,'forming-'+c['id'],(start,end))+'</div>')
+            parts.append(render_subdivision(horizon.get('forming_subdivision_evidence',{}).get(c['id'])))
         parts.append('</details>')
-    parts.append('<p>Een regelbreuk verwerpt alleen deze vaste variant. Niet geschonden betekent geen bewezen patroon. Nog geen gecontroleerde koppeling van deze voorstellen aan een hogere telling of aan spot-/futuresvolume. De bestaande eindpunt- en actuele 4H-momentumcontrole blijven afzonderlijk zichtbaar. Variant-ID is herleidbaar tot de ankers; uitkomsten worden nog niet als vaste historie opgeslagen.</p></div>')
+    parts.append('<p>Een regelbreuk verwerpt alleen deze vaste variant. Niet geschonden betekent geen bewezen patroon. Waar een lagere bronschaal beschikbaar is, tonen de regels de gevormde benen tussen dezelfde ankers. Dit bewijst geen bovenliggende telling. Spot-/futuresvolume bij deze ankers is nog niet getoetst. De bestaande eindpunt- en actuele 4H-momentumcontrole blijven afzonderlijk zichtbaar. Variant-ID is herleidbaar tot de ankers; uitkomsten worden nog niet als vaste historie opgeslagen.</p></div>')
     return ''.join(parts)
 
 

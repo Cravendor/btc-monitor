@@ -1,5 +1,43 @@
 # BTC Monitor — current scope and open work
 
+## Current checkpoint — formed-prefix lower linkage prepared, 27 October 2026
+
+Authoritative current resume point; supersedes older awaiting-next-development
+and validation metadata below. PR88 remains OPEN, not merged or deployed at this
+check. Extend that same PR with explicit shared-anchor lower-outline evidence for
+formed prefixes. Visual model elliott_visual_anchored_prefix_v7. Contract and
+limitations are in docs/ELLIOTT_SUBWAVES.md (forming-prefix extension).
+
+New assess_prefix rebuilds the exact as-of prefix inventory, verifies ID/anchors/
+direction and recomputes all prefix rules before accepting it. Invalid parents
+cannot be rescued. Existing strict source-group comparison, unique native lower
+extreme mapping and ALL lower pivots between shared anchors now apply to one-to-
+four FORMED higher legs. Odd/even legs use the existing limited impulse/zigzag
+outlines. The next ongoing parent leg has no confirmed end anchor and is NOT
+subdivided. No full nested count, wave degree, preferred scenario or probability
+is certified. Completed-outline validator semantics/model remain unchanged.
+
+Each forming disclosure now shows its lower pivot/rule evidence when available;
+1H has no finer source and conflicts stay blocked. Actual PR88 archive at11:30UTC/
+12:30CET:week/day/4H unresolved one-leg prefixes have1/3/1 mapped lower legs,
+respectively, rather than required5;no passing interpretation invented. Lower
+cached source remains historical at that later cut-off;no fresh data implied.
+Current 4H flow/momentum stays separate;no historical delta or volume backcast.
+
+508 Python tests,6 Node tests,diff and full OFFLINE dashboard/source-SVG gate
+passed (42 charts). Seven new tests cover exact one-to-four leg linkage in both
+directions, invalid/forged/obsolete/future parents, source gaps/conflicts, ambiguous
+extremes, future exclusion, no mutation and UI boundaries. New executable/CI
+metadata follows publication;do not reuse older CI as proof of new code.
+
+The earlier three-candle source correction and bounded automatic audit remain
+part of PR88. They are NOT deployed or scheduled-audit-accepted yet. No new
+source-cache edits, original report/snapshot revisions, extra task or runtime
+change in this increment. Review/merge after NEW CI passes can start immediately;
+public chart/revision checks wait for merge, exact-commit Pages and first existing
+history workflow. Independent work:additional corrective families and explicit
+outcome/availability histories for later calibration;no extra manual action needed.
+
 ## Current checkpoint — automatic revision audit prepared, 27 October 2026
 
 This checkpoint supersedes the older PR88 validation metadata below. PR88 is

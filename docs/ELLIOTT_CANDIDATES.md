@@ -72,7 +72,9 @@ asset comparison pass locally. Current main archive at 81702449f631b26374871ca4e
 has source conflicts for 1W/1D/4H and a historical 1H prefix: only that prefix
 produces four proposals (three invalid, one unresolved). It is not a live count.
 
-Next: merge/release acceptance, then link eligible forming prefixes to exact
-parent anchors and lower substructures, expand supported pattern families, and
-create frozen event/outcome histories before out-of-time probability calibration.
+Formed-prefix shared-anchor lower-outline checks are now prepared in PR88; see
+[ELLIOTT_SUBWAVES.md](ELLIOTT_SUBWAVES.md). The next ongoing parent leg still has
+no confirmed end anchor and remains untested. Next: merge/release acceptance,
+expand supported pattern families and validated degrees, and create frozen
+event/outcome histories before out-of-time probability calibration.
 No extra NAS action is needed. Phone rendering/live deployment not yet accepted.
