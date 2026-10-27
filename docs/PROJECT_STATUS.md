@@ -3,7 +3,7 @@
 ## Current development — fixed-anchor seven-day outcomes, 27 October 2026
 
 PR93 merged as 2cb7da4698b18051384255fdb251285497c6057e and final-head release
-validation 40557948203 succeeded. Proposed next PR connects bounded prospective
+validation 40557948203 succeeded. PR #94 (https://github.com/Cravendor/btc-monitor/pull/94) connects bounded prospective
 seven-day outcome recording to the existing history workflow; see
 ELLIOTT_SEVEN_DAY_OUTCOMES.md. It reconstructs original committed evidence,
 validates later source and audit, rejects original source revisions and saves
