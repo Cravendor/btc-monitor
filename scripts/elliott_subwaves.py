@@ -31,21 +31,40 @@ def zigzag_checks(rows,points,direction):
                                          detail='Vereist nog een lagere gevalideerde golfgraad.')]
 
 
-def assess(candidate,parent_rows,parent_tf,child_rows,child_tf,as_of):
+def _assess(candidate,parent_rows,parent_tf,child_rows,child_tf,as_of,forming=False):
     out=dict(model_version=MODEL,status='unavailable',parent_timeframe=parent_tf,
              child_timeframe=child_tf,legs=[],wave_certification='unproven',probability=None)
+    if forming:
+        out.update(model_version='elliott_anchored_prefix_subdivision_v1',
+                   ongoing_leg_status='unconfirmed_parent_endpoint_not_tested')
     if candidate.get('status')=='invalid':
         out.update(status='blocked_invalid_parent',reason='invalid_parent_not_rescued_by_children')
         return out
     try:
-        if candidate.get('status')!='provisional_price_pattern':
-            raise ValueError('unsupported_parent_state')
-        if candidate.get('pattern')!='standard_impulse':
-            raise ValueError('unsupported_parent_family')
+        if forming:
+            from scripts.elliott_candidates import build as inventory
+            if candidate.get('pattern')!='standard_impulse_prefix' or candidate.get('status')!='unresolved_price_prefix':
+                raise ValueError('unsupported_prefix_family_or_state')
+            # Rebuild the exact current suffix inventory, including ongoing wick
+            # constraints. An ID or caller-supplied passing verdict alone is not
+            # sufficient to accept fabricated, changed or obsolete anchors.
+            current=inventory(parent_rows,parent_tf,as_of)
+            actual=next((c for c in current['candidates'] if c['id']==candidate.get('id')),None)
+            if actual is None or actual['points']!=candidate.get('points') or actual['direction']!=candidate.get('direction'):
+                raise ValueError('prefix_not_in_as_of_inventory')
+            points=actual['points'];direction=actual['direction'];checks=actual['checks']
+            out.update(formed_legs=actual['completed_pivot_legs'],
+                       ongoing_leg=actual['proposed_live_leg'],parent_scope=current['scope'])
+        else:
+            if candidate.get('status')!='provisional_price_pattern':
+                raise ValueError('unsupported_parent_state')
+            if candidate.get('pattern')!='standard_impulse':
+                raise ValueError('unsupported_parent_family')
+            points=candidate['points'];direction=candidate['direction']
         parents=closed_rows(parent_rows,parent_tf,as_of)
         children=closed_rows(child_rows,child_tf,as_of)
-        points=candidate['points'];direction=candidate['direction']
-        checks=price_checks(parents,points,direction)
+        if not forming:
+            checks=price_checks(parents,points,direction)
         if any(c['result']=='geschonden' for c in checks):
             out.update(status='blocked_invalid_parent',reason='recomputed_parent_rules_violated')
             return out
@@ -91,8 +110,22 @@ def assess(candidate,parent_rows,parent_tf,child_rows,child_tf,as_of):
             except (ValueError,KeyError,TypeError,OverflowError) as exc:
                 leg['reason']=str(exc)
         out['compatible_legs']=sum(l['status']=='price_outline_compatible' for l in out['legs'])
-        out['price_subdivision_status']='compatible_outlines' if out['compatible_legs']==5 else 'incomplete_or_rejected'
+        out['price_subdivision_status']='compatible_outlines' if out['compatible_legs']==len(points)-1 else 'incomplete_or_rejected'
         return out
     except (ValueError,KeyError,TypeError,OverflowError,IndexError) as exc:
         out.update(status='unavailable',reason=str(exc))
         return out
+
+
+def assess(candidate,parent_rows,parent_tf,child_rows,child_tf,as_of):
+    """A supplied completed standard-impulse outline; original contract."""
+    return _assess(candidate,parent_rows,parent_tf,child_rows,child_tf,as_of)
+
+
+def assess_prefix(candidate,parent_rows,parent_tf,child_rows,child_tf,as_of):
+    """Only confirmed legs of an exact as-of forming prefix, with shared anchors.
+
+    The next ongoing leg has no confirmed parent endpoint and stays untested.
+    Price-outline compatibility never establishes wave degree or certification.
+    """
+    return _assess(candidate,parent_rows,parent_tf,child_rows,child_tf,as_of,forming=True)
