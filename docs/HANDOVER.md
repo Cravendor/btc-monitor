@@ -1,5 +1,31 @@
 # BTC monitor — agent handover
 
+## Current development — exact conflict-window recheck, 27 October 2026
+
+PR94 merged as 257ab33352818b7ea15084f65b44afa94abba0e1 and final-head release
+validation 40563144523 succeeded. First existing history workflow 40563439183
+ran the outcome evaluator and uploaded status artifact 12761577668. At 18:49 UTC
+it reported zero pending, zero written, no evaluation errors and ineligible linked
+source because of the existing 4H conflict. The overall workflow failed on the
+history source check. This verifies that run's blocked state, not a live evaluated
+outcome or a NAS collector failure.
+
+A separate PR prepares a one-off fixed-window public Bitget probe in the existing
+history workflow: one native 4H and four 1H candles for Oct27 12–16 UTC, at most
+two public requests per attempt, immutable raw responses and cached values. It
+preserves comparison and cache revisions without activating changes. A validated
+result stops further probe requests; incomplete runs can retry. See
+ELLIOTT_CONFLICT_WINDOW_PROBE.md. No new schedule, NAS action or paid service. Local validation: 532 Python
+tests, six Node tests, workflow YAML and the 30-chart offline dashboard asset
+gate passed. A cached-data simulation reproduced the prior mismatch; it is not
+a fresh Bitget response. Python 3.9/3.11 CI remains pending.
+
+After review, CI and merge, inspect the first existing workflow's actual raw
+probe and compare to cached values. A separate reviewed correction may follow if
+the evidence supports it; the gate stays in force until then. Other Elliott work
+can proceed independently. No extra manual NAS task is required.
+
+
 ## Current development — fixed-anchor seven-day outcomes, 27 October 2026
 
 PR93 merged as 2cb7da4698b18051384255fdb251285497c6057e and final-head release
