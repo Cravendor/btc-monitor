@@ -15,7 +15,7 @@ class FrozenLedgerTests(unittest.TestCase):
         result=ledger.evaluate(snap,rows+[extra],iso(extra['open_time_ms']+P),'complete')
         target=next(x for x in result['results'] if x['candidate_id']==snap['inventory']['candidates'][-1]['id'])
         self.assertEqual(target['status'],'invalidated')
-        self.assertEqual(target['first_invalid_known_at'],iso(extra['open_time_ms']+P))
+        self.assertEqual(target['first_invalid_candle_closed_at'],iso(extra['open_time_ms']+P))
         self.assertEqual(snap,saved);self.assertIsNone(result['probability'])
 
     def test_source_conflict_stale_gap_and_revision_are_not_silent(self):
@@ -49,3 +49,12 @@ class FrozenLedgerTests(unittest.TestCase):
         extra=dict(rows[-1],open_time_ms=rows[-1]['open_time_ms']+week)
         outcome=ledger.evaluate(snap,rows+[extra],iso(extra['open_time_ms']+week),'complete')
         self.assertEqual(outcome['closed_through'],iso(extra['open_time_ms']+week))
+
+    def test_first_partial_candle_violation_does_not_claim_later_event(self):
+        rows=source(); boundary=rows[-1]['open_time_ms']+P
+        snap=ledger.freeze(rows,'4h',iso(boundary+P//2),'complete')
+        extra=dict(rows[-1],open_time_ms=boundary,low=140,high=160,open=155,close=155)
+        result=ledger.evaluate(snap,rows+[extra],iso(boundary+P),'complete')
+        target=next(x for x in result['results'] if x['candidate_id']==snap['inventory']['candidates'][-1]['id'])
+        self.assertEqual(target['status'],'ambiguous_first_candle')
+        self.assertIsNone(target['first_invalid_candle_closed_at'])
