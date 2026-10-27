@@ -5,7 +5,7 @@ from scripts.market_scenarios import time_ms, iso
 from scripts.native_timeframe_candles import PERIOD_MS
 from scripts.elliott_history import reconcile
 
-MODEL='elliott_anchored_subdivision_v1'
+MODEL='elliott_anchored_subdivision_v2'
 
 
 def same(a,b):
@@ -31,11 +31,34 @@ def zigzag_checks(rows,points,direction):
                                          detail='Vereist nog een lagere gevalideerde golfgraad.')]
 
 
+def expanded_flat_checks(points,direction):
+    """Necessary endpoint geometry only; the 3-3-5 interior is unknown."""
+    sign=1 if direction=='up' else -1
+    p=[x['price']*sign for x in points]
+    conditions=[('ABC_richting',p[1]>p[0] and p[2]<p[1] and p[3]>p[2]),
+                ('B_voorbij_begin_A',p[2]<p[0]),
+                ('C_voorbij_einde_A',p[3]>p[1])]
+    return [dict(rule=k,result='getoetst' if ok else 'geschonden',
+                 detail='Alleen eindpuntgeometrie; geen bevestigde expanded flat.')
+            for k,ok in conditions]+[dict(rule='interne_A_B_C_3_3_5',result='niet toetsbaar',
+                                         detail='Vereist nog een lagere gevalideerde golfgraad.')]
+
+
+def correction_outline(rows,points,direction):
+    zigzag=zigzag_checks(rows,points,direction)
+    if not any(c['result']=='geschonden' for c in zigzag):
+        return 'single_zigzag_outline',zigzag
+    flat=expanded_flat_checks(points,direction)
+    if not any(c['result']=='geschonden' for c in flat):
+        return 'expanded_flat_endpoint_outline',flat
+    return 'single_zigzag_outline',zigzag
+
+
 def _assess(candidate,parent_rows,parent_tf,child_rows,child_tf,as_of,forming=False):
     out=dict(model_version=MODEL,status='unavailable',parent_timeframe=parent_tf,
              child_timeframe=child_tf,legs=[],wave_certification='unproven',probability=None)
     if forming:
-        out.update(model_version='elliott_anchored_prefix_subdivision_v1',
+        out.update(model_version='elliott_anchored_prefix_subdivision_v2',
                    ongoing_leg_status='unconfirmed_parent_endpoint_not_tested')
     if candidate.get('status')=='invalid':
         out.update(status='blocked_invalid_parent',reason='invalid_parent_not_rescued_by_children')
@@ -100,7 +123,10 @@ def _assess(candidate,parent_rows,parent_tf,child_rows,child_tf,as_of,forming=Fa
                            mapped_start_at=iso(left['open_time_ms']),mapped_end_at=iso(right['open_time_ms']))
                 if len(selected)!=expected:
                     raise ValueError('different_or_unresolved_child_degree')
-                tested=price_checks(children,selected,leg_direction) if i%2 else zigzag_checks(children,selected,leg_direction)
+                if i%2:
+                    tested=price_checks(children,selected,leg_direction)
+                else:
+                    leg['family'],tested=correction_outline(children,selected,leg_direction)
                 leg['checks']=tested
                 if any(c['result']=='geschonden' for c in tested):
                     leg['status']='price_rules_violated' if i%2 else 'unsupported_correction_outline'
