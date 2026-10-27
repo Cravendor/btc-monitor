@@ -1,6 +1,11 @@
 # BTC Monitor — current scope and open work
 
 ### PR87 live acceptance and reviewed native-candle correction — 27 October 2026
+PR88: https://github.com/Cravendor/btc-monitor/pull/88 — open, mergeable, not deployed.
+Executable/data commit 27117179d1270e711848f83c1274270f78b60f2b passed both release CI versions:
+Python3.9.14 check122055100803 and Python3.11 check122055100540. Public acceptance
+still waits for reviewed merge and successful exact-commit Pages.
+
 
 Current resume checkpoint; supersedes PR87 awaiting-merge/deploy and permanent
 weekly-conflict wording below. PR87 merged as672c0ddedbaa851e13c5e40b0d499b0e5d6bb1be.
