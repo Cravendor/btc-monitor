@@ -11,6 +11,7 @@ on:
       - scripts/source_revision_audit.py
       - scripts/elliott_observation_runner.py
       - scripts/elliott_outcome_runner.py
+      - scripts/elliott_conflict_probe.py
       - .github/workflows/cycle-history.yml
   workflow_run:
     workflows: [BTC market snapshots, BTC collector health check]
@@ -44,7 +45,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Validate bounded history collector
-        run: python -m unittest tests.test_cycle_history tests.test_elliott_history tests.test_source_revision_audit tests.test_elliott_observation_runner tests.test_elliott_outcome_runner tests.test_elliott_outcome_ledger -v
+        run: python -m unittest tests.test_cycle_history tests.test_elliott_history tests.test_source_revision_audit tests.test_elliott_conflict_probe tests.test_elliott_observation_runner tests.test_elliott_outcome_runner tests.test_elliott_outcome_ledger -v
       - name: Resume history and preserve checkpoints
         run: |
           history_status=0
@@ -53,6 +54,8 @@ jobs:
           python -m scripts.elliott_history --max-pages 12 --seconds 90 || elliott_status=$?
           revision_status=0
           python -m scripts.source_revision_audit --seconds 75 || revision_status=$?
+          conflict_probe_status=0
+          python -m scripts.elliott_conflict_probe || conflict_probe_status=$?
           if [ -f data/history/bitget_btcusdt_daily.json ]; then
             git add -- data/history/bitget_btcusdt_daily.json
             if ! git diff --cached --quiet; then
@@ -71,6 +74,13 @@ jobs:
             git add -- data/history/source-revision-audits
             if ! git diff --cached --quiet; then
               git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Audit closed Bitget candle revisions without activation'
+              git push origin HEAD:main
+            fi
+          fi
+          if [ -d data/history/source-window-audits ]; then
+            git add -- data/history/source-window-audits
+            if ! git diff --cached --quiet; then
+              git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Preserve Bitget conflict-window evidence'
               git push origin HEAD:main
             fi
           fi
@@ -95,6 +105,7 @@ jobs:
           [ "$outcome_status" -eq 0 ] || exit "$outcome_status"
           [ "$observation_status" -eq 0 ] || exit "$observation_status"
           [ "$revision_status" -eq 0 ] || exit "$revision_status"
+          [ "$conflict_probe_status" -eq 0 ] || exit "$conflict_probe_status"
           [ "$elliott_status" -eq 0 ] || exit "$elliott_status"
           exit "$history_status"
       - name: Preserve public revision evidence if publication fails
@@ -119,5 +130,13 @@ jobs:
         with:
           name: elliott-outcomes-current
           path: output/elliott-outcome-current
+          retention-days: 30
+          if-no-files-found: ignore
+      - name: Preserve conflict-window source evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bitget-conflict-window-audit
+          path: output/source-window-audit.json
           retention-days: 30
           if-no-files-found: ignore
