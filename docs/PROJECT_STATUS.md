@@ -29,7 +29,9 @@ report, current-cache candle, tolerance or operational runtime changed by audito
 The proposed3-row source repair from earlier PR88 work remains separately scoped.
 
 501 Python tests,6 Node tests, YAML parse,diff and full OFFLINE dashboard/source
-SVG gate pass (42 charts). New code/CI commit metadata follows publication. Public
+SVG gate pass (42 charts). Executable commit 58ec26cebd83f0ffc19d5b6b5442fe052eeb3af8 passed required release CI:
+Python3.9.14 check122077549000 and Python3.11 check122077549384, including actual
+dashboard staging/assets. The following metadata-only commit records those results. Public
 PR88 correction acceptance still waits for user merge and successful exact-commit
 Pages. Then inspect first existing history workflow's new audit/result/artifact.
 No extra manual run or task is needed. Independent work can begin now:exact
