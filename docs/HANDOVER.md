@@ -2,7 +2,7 @@
 
 ## Current development — experimental frozen Elliott ledger, 27 October 2026
 
-A separate PR proposes opt-in observation and first-invalidation primitives in
+PR #91 (https://github.com/Cravendor/btc-monitor/pull/91) proposes opt-in observation and first-invalidation primitives in
 scripts/elliott_outcome_ledger.py; see ELLIOTT_OUTCOME_LEDGER.md. Fixed original
 candles and inventory are checked against later data and remain immutable; gaps,
 changes to old inputs and caller-declared conflict are rejected. This is NOT a
