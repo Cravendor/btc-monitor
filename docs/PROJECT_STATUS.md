@@ -1,5 +1,24 @@
 # BTC Monitor — current scope and open work
 
+## Current development — experimental frozen Elliott ledger, 27 October 2026
+
+A separate PR proposes opt-in observation and first-invalidation primitives in
+scripts/elliott_outcome_ledger.py; see ELLIOTT_OUTCOME_LEDGER.md. Fixed original
+candles and inventory are checked against later data and remain immutable; gaps,
+changes to old inputs and caller-declared conflict are rejected. This is NOT a
+running archive, backfill, valid success rate, calibrated probability, deployed
+change or a trustworthy source gate by itself. It needs a separate reviewed
+integration with actual timestamps, validated source eligibility, revision policy,
+retention and concurrency. No schedule, market data or NAS change. Local validation: 513 Python tests,
+six Node tests and offline dashboard asset gate (30 charts) passed. Required
+Python 3.9/3.11 CI and post-merge deployment acceptance remain pending.
+
+Next: after review/merge and executable CI, implement the source-validated live
+runner and availability capture in a new PR. Further independent Elliott family
+work can start now. The 4H source discrepancy remains blocked pending fresh exact
+source evidence, separately documented in ELLIOTT_20261027_SOURCE_CONFLICT.md.
+
+
 ## Current checkpoint — PR89 merged; 4H source conflict investigated, 27 October 2026
 
 PR #89 merged as 67a2bcda0e69679a5ef1ee423006521219a6248f. Release CI
