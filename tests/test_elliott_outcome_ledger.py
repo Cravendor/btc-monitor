@@ -39,3 +39,13 @@ class FrozenLedgerTests(unittest.TestCase):
             with self.assertRaises(ValueError):ledger.save_immutable(folder,{'value':1})
             self.assertEqual(p.read_text(),'changed')
             self.assertEqual(len(list(Path(folder).iterdir())),1)
+
+    def test_weekly_closed_boundaries_align_to_monday(self):
+        from scripts.elliott_history import floor_time
+        week=7*24*3600000
+        rows=source();start=floor_time(rows[0]['open_time_ms'],'1w')
+        rows=[dict(r,open_time_ms=start+i*week) for i,r in enumerate(rows)]
+        snap=ledger.freeze(rows,'1w',iso(rows[-1]['open_time_ms']+week),'complete')
+        extra=dict(rows[-1],open_time_ms=rows[-1]['open_time_ms']+week)
+        outcome=ledger.evaluate(snap,rows+[extra],iso(extra['open_time_ms']+week),'complete')
+        self.assertEqual(outcome['closed_through'],iso(extra['open_time_ms']+week))

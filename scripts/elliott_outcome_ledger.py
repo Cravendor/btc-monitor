@@ -6,6 +6,7 @@ from pathlib import Path
 import tempfile
 from scripts.elliott_candidates import build, hypothesis
 from scripts.elliott_completion import closed_rows
+from scripts.elliott_history import floor_time
 from scripts.market_scenarios import iso, time_ms
 from scripts.native_timeframe_candles import PERIOD_MS
 
@@ -56,7 +57,7 @@ def evaluate(snapshot, later_rows, evaluated_at, source_state):
     old = snapshot['rows']
     if rows[:len(old)] != old:
         raise ValueError('original_source_revision_or_missing_history')
-    if not rows or rows[-1]['open_time_ms'] + PERIOD_MS[tf] != time_ms(evaluated_at)//PERIOD_MS[tf]*PERIOD_MS[tf]:
+    if not rows or rows[-1]['open_time_ms'] + PERIOD_MS[tf] != floor_time(time_ms(evaluated_at),tf):
         raise ValueError('later_source_not_current')
     # Rebuild the original candidate inventory; caller-edited anchors cannot be trusted.
     original = build(old, tf, snapshot['observed_at'])
