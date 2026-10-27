@@ -10,6 +10,7 @@ on:
       - scripts/elliott_history.py
       - scripts/source_revision_audit.py
       - scripts/elliott_observation_runner.py
+      - scripts/elliott_outcome_runner.py
       - .github/workflows/cycle-history.yml
   workflow_run:
     workflows: [BTC market snapshots, BTC collector health check]
@@ -37,11 +38,13 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ${{ github.event.repository.default_branch }}
+          # Older observation manifests point to earlier source commits.
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - name: Validate bounded history collector
-        run: python -m unittest tests.test_cycle_history tests.test_elliott_history tests.test_source_revision_audit tests.test_elliott_observation_runner -v
+        run: python -m unittest tests.test_cycle_history tests.test_elliott_history tests.test_source_revision_audit tests.test_elliott_observation_runner tests.test_elliott_outcome_runner tests.test_elliott_outcome_ledger -v
       - name: Resume history and preserve checkpoints
         run: |
           history_status=0
@@ -80,6 +83,16 @@ jobs:
               git push origin HEAD:main
             fi
           fi
+          outcome_status=0
+          python -m scripts.elliott_outcome_runner || outcome_status=$?
+          if [ -d data/history/elliott-outcomes ]; then
+            git add -- data/history/elliott-outcomes
+            if ! git diff --cached --quiet; then
+              git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Preserve Elliott seven-day outcomes'
+              git push origin HEAD:main
+            fi
+          fi
+          [ "$outcome_status" -eq 0 ] || exit "$outcome_status"
           [ "$observation_status" -eq 0 ] || exit "$observation_status"
           [ "$revision_status" -eq 0 ] || exit "$revision_status"
           [ "$elliott_status" -eq 0 ] || exit "$elliott_status"
@@ -98,5 +111,13 @@ jobs:
         with:
           name: elliott-observation-manifests
           path: output/elliott-observation-current
+          retention-days: 30
+          if-no-files-found: ignore
+      - name: Preserve current Elliott outcomes and status
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: elliott-outcomes-current
+          path: output/elliott-outcome-current
           retention-days: 30
           if-no-files-found: ignore
