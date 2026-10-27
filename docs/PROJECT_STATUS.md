@@ -1,5 +1,30 @@
 # BTC Monitor — current scope and open work
 
+## Current development — reconstruct captured Elliott inputs, 27 October 2026
+
+PR92 merged as 78ce59fe4c8c923673b2473c2bdc89247a1d854d; final-head release
+validation 40557123420 succeeded. The first existing history workflow 40557287573
+finished with failure from the existing 4H source conflict, but successfully
+committed four unavailable manifests in be2cb82a505a097f3aba8bf8461fa316565cd865
+and uploaded artifact 12758056673. Original evidence and audit were preserved.
+This is not a successful available-scenario capture, and no NAS failure follows.
+
+A separate PR prepares read-only reconstruction from manifest-pinned Git sources,
+byte hashes, bounded audit and original inventory. It fails closed on unavailable,
+missing, revised, inconsistent or changed-model inputs; see
+ELLIOTT_OBSERVATION_RESTORE.md. Also fix the prior weekly evaluator boundary to
+Monday UTC. No workflow, NAS, data or schedule changes. Fixture-based reconstruction
+is verified, not a live available manifest. Local validation: 522 Python tests,
+six Node tests and the offline 30-chart dashboard asset gate passed. Python
+3.9/3.11 CI remains pending. No automated outcome or probability.
+
+Next: after review/merge and passing CI, build bounded revision-aware later-data
+and outcome persistence independently. This can start now on a separate branch;
+actual live reconstruction must wait for an eligible available observation.
+The source conflict still needs fresh exact-window source evidence. No additional
+manual NAS task is required.
+
+
 ## Current development — source-validated Elliott observation capture, 27 October 2026
 
 PR91 merged as 6adee4875b9400e10972ba9765c89c5e74f08178; release validation
