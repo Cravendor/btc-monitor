@@ -1,5 +1,46 @@
 # BTC monitor — agent handover
 
+### Forming-candidate inventory added to open PR 87 — 27 October 2026
+
+Current resume checkpoint; supersedes awaiting-new-work wording below. PR87 is
+still OPEN, not merged or deployed, at this check. Its previous documentation
+head 1a802f217fc047f05d959a831ed653660aed242a passed release CI on Python3.9.14
+(check121885057946) and3.11 (121885058217). This task extends that SAME reviewed
+PR with scripts/elliott_candidates.py, per-timeframe disclosure and focused charts;
+visual model now elliott_visual_forming_inventory_v6. Read docs/ELLIOTT_CANDIDATES.md.
+
+Every 2..5-pivot suffix ending at the latest confirmed pivot becomes a fixed
+standard-impulse-prefix hypothesis, regardless of validity. Next live leg and
+assumed whole-impulse direction are separate. Recheck formed rules, every wick,
+fixed anchor extension and live second/fourth/shortest-third constraints. IDs
+remain repeatable for unchanged anchors; no frozen forecast ledger is claimed.
+Unsupported pattern families, actual degree, substructure and parent linkage
+remain unproven; no preferred/current wave or invented percentages. PR87's
+completed-parent subdivision layer remains separately scoped and tested.
+
+Combined local validation: 490 Python tests, six Node tests, whitespace and full
+OFFLINE dashboard + real SVG content/count gate passed (10 charts on this input).
+External ATH/sentiment preview invocation was rejected by automatic approval
+review over a possible paid CoinMarketCap Pro API; offline generation was used
+as the safer alternative, with no need for external reference data for this task.
+No runtime/NAS task, original archive, tolerance or credentials changed. No live
+or phone QA claim. Updated executable commit and CI metadata follow publication.
+
+Real-data check pinned to main81702449f631b26374871ca4eedd4d20f36b3f79 at as-of
+2026-10-27T05:10:00Z: weekly conflict remains Oct19; daily-vs4H now conflicts on
+Oct26 and4H-vs1H on Oct26 20UTC. Missing lower history starts Oct27 00UTC. All
+conflicted scales block proposals; only historical 1H prefix is eligible (four
+hypotheses: three invalid, one unresolved downward impulse prefix proposing third
+leg down). This is NOT a current/preferred count. Do not claim this resolves the
+weekly source issue or re-label missing history as neutral. Source repair/extension
+remains independent work. Latest original NAS snapshot at05:02:17UTC/06:02:17CET
+is collection_source nas,status ok; normal publication recovery stays closed.
+
+Next user action can start immediately: review/merge updated PR87 after its NEW
+CI passes. Public acceptance waits for that merge and successful exact-commit
+Pages. Agent can independently investigate same-market source revisions and
+anchor-linked prefix validation; no extra manual NAS repair or task needed.
+
 ### Anchored pattern/subdivision validation prepared — 26 October 2026
 
 Current resume checkpoint. Added scripts/elliott_subwaves.py and rule disclosures

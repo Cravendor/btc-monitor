@@ -5,11 +5,12 @@ from scripts.elliott_rules import assess_candidates, confirmed_pivots
 from scripts.swing_scenarios import valid_market, native_rows, current_price
 from scripts.market_scenarios import time_ms, iso
 from scripts.native_timeframe_candles import PERIOD_MS
+from scripts.elliott_candidates import build as candidate_inventory
 from scripts.elliott_completion import assess as completion_evidence, lower_evidence, LABELS
 from scripts.elliott_subwaves import assess as subdivision_evidence
 
 TIMEFRAMES = ('1w', '1d', '4h', '1h')
-MODEL = 'elliott_visual_subdivision_evidence_v5'
+MODEL = 'elliott_visual_forming_inventory_v6'
 
 
 def zones(rows, tf):
@@ -97,6 +98,7 @@ def build(feed, as_of, history=None):
         out['horizons'].append(h)
     for h in out['horizons']:
         if h['status'] == 'available':
+            h['forming_candidates'] = candidate_inventory(h['rows'],h['timeframe'],as_of)
             h['endpoint_evidence'] = completion_evidence(h['rows'],h['timeframe'],as_of)
             pivots = confirmed_pivots(h['rows'])
             h['focus_start'] = pivots[-1]['open_time_ms'] if pivots else h['rows'][-min(32,len(h['rows']))]['open_time_ms']
@@ -273,6 +275,32 @@ def render_subdivision(evidence):
     return ''.join(parts)
 
 
+def render_forming_candidates(inventory, horizon=None):
+    if inventory.get('status')!='assessed':
+        return '<p>Geen toetsbare inventaris van lopende impulsvoorstellen.</p>'
+    parts=['<div class="ew-forming"><h3>Lopende impulsvoorstellen · nog onbeslist</h3><p>Elke reeks van twee tot vijf opeenvolgende bevestigde pivots die eindigt bij de laatste pivot wordt getoetst. Geen punten overgeslagen om een telling passend te maken. Dit is een beperkte verzameling standaardimpulsen; correctieve patronen, andere graden en diagonalen ontbreken. Geen voorkeur of kanspercentage.</p>']
+    parts.append('<p>'+('Gesloten bronvenster actueel bij opbouw' if inventory['scope']=='current_closed_window' else 'HISTORISCH bronvenster; geen actuele scenarioselectie')+' · data tot '+escape(inventory['closed_through'])+'.</p>')
+    if not inventory['candidates']:
+        return ''.join(parts)+'<p>Te weinig bevestigde pivots voor een voorstel.</p></div>'
+    parts.append('<div class="ew-chart-scroll"><table><thead><tr><th>Veronderstelde impuls</th><th>Gevormde pivotbenen</th><th>Lopend been?</th><th>Regeltoets</th></tr></thead><tbody>')
+    for c in inventory['candidates']:
+        parts.append('<tr><td>'+('Opwaarts' if c['direction']=='up' else 'Neerwaarts')+'</td><td>'+str(c['completed_pivot_legs'])+'</td><td>'+str(c['proposed_live_leg'])+'? · '+('omhoog' if c['proposed_live_direction']=='up' else 'omlaag')+'</td><td>'+('ONGELDIG' if c['status']=='invalid' else 'Prijsregels nog niet geschonden; telling onbeslist')+'</td></tr>')
+    parts.append('</tbody></table></div>')
+    for c in inventory['candidates']:
+        parts.append('<details><summary>Ankers en regels · '+('opwaarts' if c['direction']=='up' else 'neerwaarts')+' · '+str(c['completed_pivot_legs'])+' pivotbenen</summary><p>Variant '+escape(c['id'])+' · alle ankers bekend vanaf '+escape(c['anchors_known_at'])+'. Nummers zijn hypothesen, geen bevestigde Elliott-labels.</p><ol>')
+        parts.extend('<li>'+escape(iso(p['open_time_ms']))+' · '+price(p['price'])+' USDT · pivot bekend '+escape(iso(p['confirmed_at_ms']))+'</li>' for p in c['points'])
+        parts.append('</ol><p>Extreem van het nog onbevestigde been: '+price(c['live_extreme']['price'])+' USDT · candle '+escape(iso(c['live_extreme']['open_time_ms']))+'. Geen koersdoel of bevestigd eindpunt.</p><ul>')
+        parts.extend('<li>'+escape(x['rule'])+': <b>'+escape(x['result'])+'</b> — '+escape(x['detail'])+'</li>' for x in c['checks'])
+        parts.append('</ul>')
+        if horizon is not None:
+            start=c['points'][0]['open_time_ms']
+            end=horizon['rows'][-1]['open_time_ms']+PERIOD_MS[horizon['timeframe']]
+            parts.append('<div class="ew-chart-scroll">'+chart(horizon,c,'forming-'+c['id'],(start,end))+'</div>')
+        parts.append('</details>')
+    parts.append('<p>Een regelbreuk verwerpt alleen deze vaste variant. Niet geschonden betekent geen bewezen patroon. Nog geen gecontroleerde koppeling van deze voorstellen aan een hogere telling of aan spot-/futuresvolume. De bestaande eindpunt- en actuele 4H-momentumcontrole blijven afzonderlijk zichtbaar. Variant-ID is herleidbaar tot de ankers; uitkomsten worden nog niet als vaste historie opgeslagen.</p></div>')
+    return ''.join(parts)
+
+
 def render(bundle):
     parts=['<section class="panel" id="elliott-scenarios"><h2>Elliott: van week naar uur</h2><p>Begin bij de grote structuur en zoom in. Bull en bear zijn mogelijke prijspatronen. Een steunzone helpt een draaipunt duiden; zij bewijst geen golfnummer of toekomstige afwijzing.</p>']
     if bundle['status']=='unavailable':
@@ -323,6 +351,7 @@ def render(bundle):
             parts.append('<p>Grote prijsstructuur: hoogste high binnen deze bronperiode '+price(top['high'])+' USDT ('+escape(iso(top['open_time_ms']))+'); '+('laagste low op een latere candle '+price(low['low'])+' USDT ('+escape(iso(low['open_time_ms']))+').' if low else 'nog geen latere candle voor een low.')+' Dit zijn referentiepunten voor een grotere bull-/bearanalyse, geen automatisch bewezen golfnummers of lifetime-ATH.</p>')
         parts.append(zoom_panel(h))
         parts.append(render_completion(h))
+        parts.append(render_forming_candidates(h.get('forming_candidates',{}),h))
         parts.append('<details class="ew-historical-counts"><summary>Historische telkandidaten · geen actuele scenarioselectie</summary>')
         for direction,label in (('up','Bull'),('down','Bear')):
             candidate=next((c for c in h['candidates'] if c['direction']==direction),None)
