@@ -553,6 +553,54 @@
       "monitor": "4h-warning",
       "path": "reports/2026/10/27/4h-warning-110200.json",
       "reported_at": "2026-10-27T11:02:00Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "30D/macro: **ONVOLDOENDE DATA** — geen nieuwe geïntegreerde macro-, ETF- en on-chainbeoordeling; cyclusbodem en distributiefase zijn niet vast te stellen.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: **0 NEUTRAAL/GEMENGD** — hoger 4H-slot en latere prijs boven de candlehigh tegenover een lagere candlelow, beperkt herstelvolume en dagzwakte. Eén Bitget-bronfamilie; onafhankelijke vraagbevestiging ontbreekt.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: **-1 ZWAK BEARISH** — laatste gesloten dagslot **80.117,1** ligt **2,19%** onder zeven dagen eerder. Het lokale herstel is tegenbewijs; ETF-/aanbodbevestiging is in deze korte controle niet vernieuwd.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "9d3e37d43f0caf1d7b098b046f8e435cfd5fd6fa156d6f63c4e3169bd30d94ab",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/10/27/4h-warning-150020.json",
+      "reported_at": "2026-10-27T15:00:20Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "30D/macro: **ONVOLDOENDE DATA** — dertigdaagse koersdaling is meetbaar, maar bevestigde accumulatie/distributie, cohort-/flowdata en voldoende onafhankelijke cyclusevidentie ontbreken.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: **0 NEUTRAAL/GEMENGD** — prijsherstel en ETF-instroom tegenover bescheiden futuresvolume, dalend OI en dagzwakte. Eén beursfamilie plus vertraagde onafhankelijke vraagcontext; onafhankelijke orderflow ontbreekt.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: **-1 ZWAK BEARISH** — dagkoers −2,54% over zeven dagen en nog geen overtuigende herovering. Positief vijfdaags ETF-saldo en intacte recente low zijn tegenbewijs; de lichte volumetoename heeft geen zelfstandige richting.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "daa646f981d0a5f1839cae6dbf60cc054f022ee4e3d15f6ba30a4ff9b77e67f2",
+      "has_report_text": true,
+      "monitor": "daily",
+      "path": "reports/2026/10/28/daily-072118.json",
+      "reported_at": "2026-10-28T07:21:18Z"
     }
   ],
   "schema_version": 2
