@@ -625,6 +625,30 @@
       "monitor": "daily",
       "path": "reports/2026/10/28/daily-072118.json",
       "reported_at": "2026-10-28T07:21:18Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "30D/macro: ONVOLDOENDE DATA — de Canadese stap ondersteunt het risico van langer hoge rentes, maar het Fed-besluit, de Amerikaanse inflatie- en banendata, olieontwikkeling en duurzame BTC-spotvraag zijn nog doorslaggevender.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: -1 ZWAK BEARISH — het hogere rente- en inflatiesignaal, positieve funding en de na het besluit licht negatieve premieproxy wegen bearish. Tegensignalen zijn de vrijwel vlakke eerste prijsreactie en lagere open interest. Betrouwbaarheid: middelmatig voor deze beperkte scope; event-periodedelta en onafhankelijke BTC-marktbevestiging ontbreken.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: ONVOLDOENDE DATA — er is geen volledige, onafhankelijk bevestigde zevendaagse combinatie van orderflow, ETF-flows, liquidaties en rentegevoelige marktdata.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        }
+      },
+      "content_sha256": "06c288fb7cd6e780c9f993b0f211eec54ce4cb5ca7d43575c0460aba2c888f9e",
+      "has_report_text": true,
+      "monitor": "market-risk",
+      "path": "reports/2026/10/28/market-risk-144548.json",
+      "reported_at": "2026-10-28T14:45:48Z"
     }
   ],
   "schema_version": 2
