@@ -673,6 +673,30 @@
       "monitor": "market-risk",
       "path": "reports/2026/10/28/market-risk-144548.json",
       "reported_at": "2026-10-28T14:45:48Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "- **30D/macro: −1 ZWAK BEARISH** — de Fed-splitsing en de eerder vandaag bevestigde Canadese renteverhoging ondersteunen “higher for longer”. Tegensignaal is dat de Fed nu niet verhoogde en BTC aanvankelijk opliep. Betrouwbaarheid: laag tot middelmatig; Warsh’ persconferentie, komende Amerikaanse inflatie- en banendata en duurzame olie- en rentereacties blijven doorslaggevend.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "4h_1d": {
+          "reason": "- **4H–1D: 0 NEUTRAAL/GEMENGD** — de eerste prijsreactie en het uitblijven van een onmiddellijke hike zijn positief; twee havikachtige dissidenten, stijgend open interest, positieve funding en een negatievere premieproxy zijn duidelijke tegensignalen. Betrouwbaarheid: middelmatig voor de beperkte event-scope; de persconferentie en post-event orderflow ontbreken.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "- **7D: ONVOLDOENDE DATA** — de openbare opslag dekt 43 van 48 halfuurvakken in de laatste 24 uur, maar er is geen complete onafhankelijke zevendaagse combinatie van ETF-flows, liquidaties en orderflow.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        }
+      },
+      "content_sha256": "ff4395fd396b6bb1f49cca5addc26e27c304c2f2440bd5cc4aee1cf893fd225f",
+      "has_report_text": true,
+      "monitor": "market-risk",
+      "path": "reports/2026/10/28/market-risk-181900.json",
+      "reported_at": "2026-10-28T18:19:00Z"
     }
   ],
   "schema_version": 2
