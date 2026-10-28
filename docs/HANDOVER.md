@@ -10,7 +10,7 @@ source because of the existing 4H conflict. The overall workflow failed on the
 history source check. This verifies that run's blocked state, not a live evaluated
 outcome or a NAS collector failure.
 
-A separate PR prepares a one-off fixed-window public Bitget probe in the existing
+PR #95 (https://github.com/Cravendor/btc-monitor/pull/95) prepares a one-off fixed-window public Bitget probe in the existing
 history workflow: one native 4H and four 1H candles for Oct27 12–16 UTC, at most
 two public requests per attempt, immutable raw responses and cached values. It
 preserves comparison and cache revisions without activating changes. A validated
@@ -18,7 +18,7 @@ result stops further probe requests; incomplete runs can retry. See
 ELLIOTT_CONFLICT_WINDOW_PROBE.md. No new schedule, NAS action or paid service. Local validation: 532 Python
 tests, six Node tests, workflow YAML and the 30-chart offline dashboard asset
 gate passed. A cached-data simulation reproduced the prior mismatch; it is not
-a fresh Bitget response. Python 3.9/3.11 CI remains pending.
+a fresh Bitget response. Python 3.9/3.11 release CI succeeded at executable head 5df30e39d440809e11ad487fd1282e45b0c761f2 (run 40564036418).
 
 After review, CI and merge, inspect the first existing workflow's actual raw
 probe and compare to cached values. A separate reviewed correction may follow if
