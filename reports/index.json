@@ -581,6 +581,30 @@
     {
       "bias": {
         "30d_macro": {
+          "reason": "30D/macro: **ONVOLDOENDE DATA** — geen nieuwe geïntegreerde macro-, ETF- en on-chainbeoordeling; macro-bodem en distributiefase zijn niet vast te stellen.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: **0 NEUTRAAL/GEMENGD** — latere koers boven lokale weerstand en stijgend OI tegenover ontbrekende 4H-slotbevestiging, zeer laag laatste volume en negatieve providerdelta’s. Eén Bitget-bronfamilie; onafhankelijke actuele vraagbevestiging ontbreekt.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: **-1 ZWAK BEARISH** — het opnieuw gecontroleerde dagslot van **80.873,3** ligt **2,54%** onder zeven dagen eerder. Lokaal herstel en de intacte grotere low zijn tegenbewijs; ETF-/aanbodbevestiging is in deze korte controle niet vernieuwd.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "b9ea8c553b40ca9b14fea20f14ac9cbc258048d1aada61cda70de440cbbcbdc3",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/10/28/4h-warning-110007.json",
+      "reported_at": "2026-10-28T11:00:07Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
           "reason": "30D/macro: **ONVOLDOENDE DATA** — dertigdaagse koersdaling is meetbaar, maar bevestigde accumulatie/distributie, cohort-/flowdata en voldoende onafhankelijke cyclusevidentie ontbreken.",
           "score": null,
           "status": "ONVOLDOENDE DATA"
