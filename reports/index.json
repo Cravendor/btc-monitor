@@ -629,6 +629,30 @@
     {
       "bias": {
         "30d_macro": {
+          "reason": "30D/macro: **ONVOLDOENDE DATA** — het nieuwe Fed-besluit alleen draagt geen cyclusoordeel; geïntegreerde actuele vraag-, cohort- en macrobevestiging ontbreekt.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: **-1 ZWAK BEARISH** — lager gesloten slot, lagere high/low en verhoogd dalingsvolume. De latere opleving is tegenbewijs. Eén Bitget-bronfamilie; onafhankelijke actuele vraag- en liquidatiebevestiging ontbreken.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: **-1 ZWAK BEARISH** — het opnieuw gecontroleerde dagslot van **80.873,3** ligt **2,54%** onder zeven dagen eerder. De grotere recente bodem houdt; ETF-/aanbodbevestiging is in deze korte controle niet vernieuwd.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "609113f0179b27e0a0c49bd2fb17c64c689c50b785fac27a1a4db6c67ad09888",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/10/28/4h-warning-190454.json",
+      "reported_at": "2026-10-28T19:04:54Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
           "reason": "30D/macro: **ONVOLDOENDE DATA** — dertigdaagse koersdaling is meetbaar, maar bevestigde accumulatie/distributie, cohort-/flowdata en voldoende onafhankelijke cyclusevidentie ontbreken.",
           "score": null,
           "status": "ONVOLDOENDE DATA"
