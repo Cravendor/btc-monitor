@@ -653,6 +653,30 @@
     {
       "bias": {
         "30d_macro": {
+          "reason": "**30D/macro: ONVOLDOENDE DATA** — vrijwel vlak futuresvolume bepaalt geen cyclusrichting; actuele macro-, on-chain- en vraaggegevens ontbreken.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "**4H–1D: 0 NEUTRAAL/GEMENGD** — sterke terugname tegenover een lagere bodem en afnemend open interest; één beurscomplex, beperkte betrouwbaarheid. Onafhankelijke vraagbevestiging ontbreekt.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "**7D: -1 ZWAK BEARISH** — afgesloten dagsloten tonen −2,54%, met 3,64% minder futuresvolume dan de voorgaande zeven dagen. Het laatste sterke 4H-herstel is het tegensignaal; externe bevestiging ontbreekt.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "bf2dab15ac9e7daeace3b1098e8aac9000861b0aa2b00adc6ec5b412ea5c1688",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/10/28/4h-warning-230553.json",
+      "reported_at": "2026-10-28T23:05:53Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
           "reason": "30D/macro: **ONVOLDOENDE DATA** — dertigdaagse koersdaling is meetbaar, maar bevestigde accumulatie/distributie, cohort-/flowdata en voldoende onafhankelijke cyclusevidentie ontbreken.",
           "score": null,
           "status": "ONVOLDOENDE DATA"
@@ -769,6 +793,30 @@
       "monitor": "market-risk",
       "path": "reports/2026/10/28/market-risk-212929.json",
       "reported_at": "2026-10-28T21:29:29Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "- **30D/macro: ONVOLDOENDE DATA** — Microsofts kasstroomkracht vermindert één acute AI-financieringszorg, maar Fed-beleid, hoge rentes, olie, kredietspreads en duurzame BTC-spotvraag blijven bepalend. De macro-cyclus is niet vast te stellen.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "- **4H–1D: 0 NEUTRAAL/GEMENGD** — Microsofts bovengemiddelde omzet- en Azure-guidance en sterke vrije kasstroom ondersteunen risk-on. Daartegenover staan de kleine BTC-reactie, de licht negatieve premieproxy en het nog altijd grote AI-investeringsbudget. Lagere open interest en funding zonder prijsbreuk zijn het belangrijkste positieve tegensignaal. Betrouwbaarheid: middelmatig voor deze beperkte event-scope; post-eventdelta en onafhankelijke marktbrede bevestiging ontbreken.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "- **7D: ONVOLDOENDE DATA** — de openbare opslag dekt 45 van 48 halfuurvakken in de laatste 24 uur, maar geen volledige onafhankelijke zevendaagse combinatie van ETF-flows, liquidaties, orderflow en kredietmarkten.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        }
+      },
+      "content_sha256": "d0522000ae07e11d58f5f980d1ce5b69da41e7979e9cc293b6dcf990a96f3be7",
+      "has_report_text": true,
+      "monitor": "market-risk",
+      "path": "reports/2026/10/28/market-risk-234050.json",
+      "reported_at": "2026-10-28T23:40:50Z"
     }
   ],
   "schema_version": 2
