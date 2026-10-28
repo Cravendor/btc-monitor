@@ -745,6 +745,30 @@
       "monitor": "market-risk",
       "path": "reports/2026/10/28/market-risk-204342.json",
       "reported_at": "2026-10-28T20:43:42Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "- **30D/macro: ONVOLDOENDE DATA** — de financieringsintensiteit van AI neemt toe, maar één nabeurssessie bepaalt geen kredietcyclus of BTC-macrobodem. Duurzame rentereactie, bedrijfsbrede kredietspreads, ETF-vraag en on-chain aanbod ontbreken.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "- **4H–1D: 0 NEUTRAAL/GEMENGD** — Alphabets omzetmisser, verslechterde vrije kasstroom en circa 8% nabeursdaling zijn bearish voor risk appetite. Daartegenover hield BTC stand, daalde open interest en normaliseerde de beperkte premieproxy. Betrouwbaarheid: middelmatig voor deze event-scope; schone post-eventorderflow en de afgeronde Microsoft-call ontbreken.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "- **7D: ONVOLDOENDE DATA** — de openbare opslag dekt 45 van 48 halfuurvakken in de laatste 24 uur, maar er is geen volledige onafhankelijke zevendaagse combinatie van ETF-flows, liquidaties, orderflow en aandelenreacties.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        }
+      },
+      "content_sha256": "6d066b3c51586fb1d093fbce7ccb0b8d60fb4aa04afff0f339d027de5f546a35",
+      "has_report_text": true,
+      "monitor": "market-risk",
+      "path": "reports/2026/10/28/market-risk-212929.json",
+      "reported_at": "2026-10-28T21:29:29Z"
     }
   ],
   "schema_version": 2
