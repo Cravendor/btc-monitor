@@ -1,5 +1,32 @@
 # BTC monitor — agent handover
 
+## Current development — correct 27 October 4H source revision, 29 October 2026
+
+PR95 merged as 4ce61fd9dc52ffbd6c172ab973f197330d3bba33. The existing history
+run 40726386585 captured and committed the raw audit
+[data/history/source-window-audits/20261028T162912Z-c18f44b73c6c12bcec714d6050d52a0b1cc52f28883971c0e088951613be2c56.json](../data/history/source-window-audits/20261028T162912Z-c18f44b73c6c12bcec714d6050d52a0b1cc52f28883971c0e088951613be2c56.json).
+The fresh native 4H and four hourly rows agree exactly across OHLC/base/quote.
+Native 4H close changed 80459.3 to 80523.4, base volume 6965.3543 to
+7626.8427 BTC and quote volume 558935730.34727 to 612233906.03218 USDT.
+Provider timing/cause remains unknown. The audit preserves prior row and hash.
+
+A separate PR replaces only those three fields in that one cached 4H row,
+retains original provenance and records original archive SHA256
+5d7bfbc8c66f34ac180f756fd3017d11681bf61d1d988e9fd15cc3779401e466 and
+source-audit link. It does not rewrite original snapshots, observations or reports.
+Local strict comparison now has zero cross-timeframe mismatches, but data remain
+partial: first missing 4H 27 Oct 16 UTC; daily 28 Oct 00 UTC; hourly 29 Oct 02 UTC,
+at this checkout/cutoff. This is not current completeness. Existing workflow
+must resume after merge; do not claim live deployment or valid complete outcomes.
+Calibration is separately in progress; no calibrated percentages are claimed.
+No new NAS task, schedule or paid source. See audit above for raw evidence.
+
+Next: review, CI and user merge; then inspect first existing history workflow and
+Pages for actual catch-up, conflicts and graph availability. Independent work:
+reproducible historical price-volume signal validation can proceed now. No manual
+NAS task required.
+
+
 ## Current development — exact conflict-window recheck, 27 October 2026
 
 PR94 merged as 257ab33352818b7ea15084f65b44afa94abba0e1 and final-head release
