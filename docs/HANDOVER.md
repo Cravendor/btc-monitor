@@ -6,11 +6,11 @@ PR96 merged as 13d5e57f506562d0abe21f089548c6b731734ffc. Release CI
 40818923537 and exact-merge Pages 40818967802 succeeded. History catch-up after
 merge has not yet been observed; gaps must not be assumed filled.
 
-A separate PR adds an offline, retrospective 1D Bitget price/volume diagnostic of
+PR #97 (https://github.com/Cravendor/btc-monitor/pull/97) adds an offline, retrospective 1D Bitget price/volume diagnostic of
 existing multi_tf_evidence_v0.2 using 24 closed candles, non-overlapping 1-day and
 7-day outcomes and a 2026 chronological holdout. Input archive SHA and results
 are in DAILY_SIGNAL_VALIDATION.md; source revisions may be backdated and no CVD,
-other timeframe, fee or point-in-time trading claims are included. No parameter
+other timeframe, fee or point-in-time trading claims are included. Local validation passed 536 Python and six Node tests; release CI is pending. No parameter
 was tuned or activated; small groups preclude reliable calibration. Earlier quick
 exploration used an extra one-day gap; this documented implementation supersedes
 its counts and uses exactly non-overlapping periods.
