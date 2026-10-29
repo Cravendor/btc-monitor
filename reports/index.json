@@ -817,6 +817,30 @@
       "monitor": "market-risk",
       "path": "reports/2026/10/28/market-risk-234050.json",
       "reported_at": "2026-10-28T23:40:50Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "- **30D/macro: ONVOLDOENDE DATA** — de AI-financieringszorg en hoge rente zijn relevante tegenwind, maar één nabeurssessie plus één Bitget-instrument volstaan niet voor een macro-cyclusoordeel. Duurzame kredietspread-, olie-, ETF- en on-chainbevestiging ontbreken.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "- **4H–1D: −1 ZWAK BEARISH** — brede risk-off-follow-through, een BTC-daling van 1,12%, hoger open interest en oplopende positieve funding wegen bearish. Tegensignalen zijn het ontbreken van stablecoinstress en het feit dat de bevestigingsgrens van 79.246,8 USDT nog niet op 4H-basis is gebroken. Betrouwbaarheid: middelmatig voor deze beperkte scope; de prijs- en positioneringsmetingen zijn vers, maar post-eventdelta en marktbrede liquidaties ontbreken.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "- **7D: ONVOLDOENDE DATA** — de opslag dekt 44 van 48 halfuurvakken in de laatste 24 uur en bevat vier mogelijke meetgaten; een volledige onafhankelijke combinatie van ETF-flows, liquidaties, orderflow en aandelenreacties over zeven dagen ontbreekt.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        }
+      },
+      "content_sha256": "b231e0742e35a2ab37bf4f4c7df5701af3771262ac853b4ddbd059fedfbf1ee8",
+      "has_report_text": true,
+      "monitor": "market-risk",
+      "path": "reports/2026/10/29/market-risk-024854.json",
+      "reported_at": "2026-10-29T02:48:54Z"
     }
   ],
   "schema_version": 2
