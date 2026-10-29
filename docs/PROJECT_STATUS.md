@@ -1,5 +1,21 @@
 # BTC Monitor — current scope and open work
 
+## Current development — intraday signal phase sensitivity, 29 October 2026
+
+PR98 merged as 4e21e52016847e17820234e673105d083bd3326a; release validation
+40819622732 passed. First history catch-up after PR96 is not yet observed.
+PR #99 (https://github.com/Cravendor/btc-monitor/pull/99) computes 2026 phase sensitivity on native 1H/4H price-volume data
+for 24h and 7d outcomes, over the same validated historical prefix. Every sampling
+phase is shown, with a minimum of ten observations for displayed rates and
+approximate iid Wilson intervals. Phases overlap, markets are dependent and data
+may be revised; intervals/ranges are descriptive, not calibrated probabilities.
+Local validation passed 545 Python and six Node tests; release CI pending. See SIGNAL_PHASE_SENSITIVITY.md. No thresholds, schedules, source or NAS changes.
+
+Next: CI and review/merge; independently inspect the next existing history run,
+then evaluate phase-stable approaches and block-based uncertainty on a truly
+untouched forward period. No additional NAS task required.
+
+
 ## Current development — retrospective 1H/4H signal validation, 29 October 2026
 
 PR97 merged as 37a481df0af49e0b3746c0499fe452c0994885c9; release validation
