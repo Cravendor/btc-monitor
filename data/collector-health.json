@@ -1,8 +1,8 @@
 {
   "schema_version": 3,
   "coverage_24h": {
-    "window_start": "2026-10-28T14:32:44.822896+00:00",
-    "window_end": "2026-10-29T14:32:44.822896+00:00",
+    "window_start": "2026-10-28T15:02:47.579798+00:00",
+    "window_end": "2026-10-29T15:02:47.579798+00:00",
     "first_retained_at": "2026-10-22T15:34:27.047744+00:00",
     "interval_seconds": 1800,
     "expected_snapshots": 48,
@@ -15,16 +15,16 @@
     "max_window_gap_seconds": 3528,
     "status": "gaps_detected"
   },
-  "checked_at": "2026-10-29T14:32:44.822896+00:00",
-  "last_snapshot_at": "2026-10-29T14:32:43.027356+00:00",
+  "checked_at": "2026-10-29T15:02:47.579798+00:00",
+  "last_snapshot_at": "2026-10-29T15:02:45.779321+00:00",
   "age_seconds": 2,
   "max_age_seconds": 3600,
   "status": "current",
   "analysis_quality": {
     "current": {
       "schema_version": 1,
-      "checked_at": "2026-10-29T14:32:44.822896+00:00",
-      "measurement_at": "2026-10-29T14:32:09.300589+00:00",
+      "checked_at": "2026-10-29T15:02:47.579798+00:00",
+      "measurement_at": "2026-10-29T15:02:11.997690+00:00",
       "valid_until": "2026-10-29T16:00:00+00:00",
       "scenario_processing": "consistent",
       "status": "ready_for_scoped_report",
