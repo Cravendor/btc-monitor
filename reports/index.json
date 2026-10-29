@@ -937,6 +937,30 @@
       "monitor": "market-risk",
       "path": "reports/2026/10/29/market-risk-024854.json",
       "reported_at": "2026-10-29T02:48:54Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "30D/macro: -1 ZWAK BEARISH — ECB, Fed en Bank of Canada leveren samen een geverifieerd risico van langer hoge rentes, terwijl AI-financiering steeds kapitaalintensiever wordt. Tegensignalen zijn dalende olie- en obligatierentes en het uitblijven van zichtbare stablecoin- of bancaire stress. Betrouwbaarheid: laag tot middelmatig; komende inflatie-, banen-, olie- en kredietdata blijven doorslaggevend.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: 0 NEUTRAAL/GEMENGD — de daling van open interest, normalisatie van de premieproxy en het BTC-herstel tegen een zwakke Nasdaq-opening in zijn positief. Daartegenover staan de nog ongebroken range, positieve funding en een ECB die een decemberverhoging openhoudt. Betrouwbaarheid: middelmatig voor deze beperkte event-scope; post-eventorderflow ontbreekt.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: ONVOLDOENDE DATA — de openbare opslag dekt 45 van 48 halfuurvakken in de laatste 24 uur, maar een onafhankelijke zevendaagse combinatie van ETF-flows, liquidaties, orderflow en kredietmarkten ontbreekt.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        }
+      },
+      "content_sha256": "b13e6f85eddfa7cd6980ca5cd7cf2ad20d455a703d353f3ebf35034c18962d5f",
+      "has_report_text": true,
+      "monitor": "market-risk",
+      "path": "reports/2026/10/29/market-risk-150905.json",
+      "reported_at": "2026-10-29T15:09:05Z"
     }
   ],
   "schema_version": 2
