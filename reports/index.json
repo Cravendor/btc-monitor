@@ -893,6 +893,30 @@
     {
       "bias": {
         "30d_macro": {
+          "reason": "**30D/macro: ONVOLDOENDE DATA** — de volumereeks alleen draagt geen cyclusoordeel; geïntegreerde macro- en on-chaincontext is niet opnieuw beoordeeld.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "**4H–1D: 0 NEUTRAAL/GEMENGD** — krachtige gesloten reclaim en positieve delta tegenover duidelijke terugval op uurhorizon. Eén beursfamilie; beperkt vertrouwen in duurzame voortzetting.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "**7D: -1 ZWAK BEARISH** — afgesloten dagsloten −3,27% en vergelijkbaar futuresvolume −4,09%; de nieuwste reclaim en intacte dagpivots zijn tegenbewijs. Externe vraagbevestiging is niet vernieuwd.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "90a7bbf6145fad8bd35e39e855571f586b5d972f9408e69969214fc952b6235d",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/10/29/4h-warning-190207.json",
+      "reported_at": "2026-10-29T19:02:07Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
           "reason": "**30D/macro: 0 NEUTRAAL/GEMENGD** — werkelijk tegengesteld bewijs: dagprijs over 30 dagen **−2,58%** en stablecoin-aanbod lager, tegenover positieve uitgelezen meerweekse ETF-stromen en de behouden grotere herstelstructuur. Dit is een gemengd 30-daags oordeel, geen bevestiging van een macro-cyclusbodem; cohort-/wereldliquiditeitsdekking blijft beperkt.",
           "score": 0,
           "status": "REPORTED"
