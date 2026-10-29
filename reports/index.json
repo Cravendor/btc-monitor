@@ -1,6 +1,11 @@
 {
-  "rejected": [],
-  "rejected_count": 0,
+  "rejected": [
+    {
+      "path": "reports/inbox/market-risk/20261029T235439Z.json",
+      "reason": "Submission rejected; existing history preserved."
+    }
+  ],
+  "rejected_count": 1,
   "reports": [
     {
       "bias": {
