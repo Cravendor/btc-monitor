@@ -985,6 +985,30 @@
       "monitor": "market-risk",
       "path": "reports/2026/10/29/market-risk-150905.json",
       "reported_at": "2026-10-29T15:09:05Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "Geen expliciete vijfpuntsscore voor deze horizon aangetroffen.",
+          "score": null,
+          "status": "NOT_REPORTED"
+        },
+        "4h_1d": {
+          "reason": "Geen expliciete vijfpuntsscore voor deze horizon aangetroffen.",
+          "score": null,
+          "status": "NOT_REPORTED"
+        },
+        "7d": {
+          "reason": "Geen expliciete vijfpuntsscore voor deze horizon aangetroffen.",
+          "score": null,
+          "status": "NOT_REPORTED"
+        }
+      },
+      "content_sha256": "36ec25bd0f39366b80688e8c96167ba683500e2ad18f0c94a31e200ce6fcc6c5",
+      "has_report_text": true,
+      "monitor": "market-risk",
+      "path": "reports/2026/10/29/market-risk-205754.json",
+      "reported_at": "2026-10-29T20:57:54Z"
     }
   ],
   "schema_version": 2
