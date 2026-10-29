@@ -4,7 +4,7 @@ Scope: existing `multi_tf_evidence_v0.2` price/volume-only 1D signal on Bitget B
 
 Input SHA256: `4ca1a5e51cdd259221e7439fad8a1506d18e359468cd6464d86b8274e7086a01`; closed through 2026-10-28T00:00:00+00:00; generated as of 2026-10-29T04:40:14.896966+00:00.
 
-Use 24 closed candles for each signal; compare the following one or seven complete daily closes. Consecutive evaluation intervals do not overlap. Outcomes spanning the 2026-01-01 UTC split are excluded; 2021–2025 is descriptive development history and 2026 is an untouched chronological evaluation period. Same-close entry is a measurement convention, not an executable price. Current archive versions may reflect later exchange revisions. No trading costs, confidence intervals or probability claims.
+Use 24 closed candles for each signal; compare the following one or seven complete daily closes. Consecutive evaluation intervals do not overlap. Outcomes spanning the 2026-01-01 UTC split are excluded; 2021–2025 is descriptive development history and 2026 is a chronological evaluation period, but it has already been inspected in an earlier exploratory probe and is not an independent untouched holdout. Same-close entry is a measurement convention, not an executable price. Current archive versions may reflect later exchange revisions. No trading costs, confidence intervals or probability claims.
 
 ## Horizon: 1 days
 
@@ -44,4 +44,4 @@ Baseline across all sampled labels:
 - development_2021_2025: 257 observations, 133 positive, average 0.6939%.
 - holdout_2026: 42 observations, 20 positive, average 0.0830%.
 
-Results depend on start-date sampling and observed regime; small groups, residual dependence and revised data preclude confident ranking. In particular the seven-day 2026 strong-label samples contain only four observations each. Results do not validate other timeframes or derivative data. Do not activate new thresholds based on this report. Next compare competing candidates with a fixed development procedure and separate later untouched out-of-sample data, uncertainty and regime-aware tests.
+Results depend on start-date sampling and observed regime; small groups, residual dependence and revised data preclude confident ranking. In particular the seven-day 2026 strong-label samples contain only four observations each. Results do not validate other timeframes or derivative data. Do not activate new thresholds based on this report. Next compare competing candidates with a fixed development procedure and a genuinely untouched later out-of-sample period, uncertainty and regime-aware tests.
