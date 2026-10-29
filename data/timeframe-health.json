@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T17:38:10.245146+00:00",
+  "updated_at": "2026-10-29T18:08:09.406948+00:00",
   "exchange": "bitget",
   "market": "USDT-FUTURES",
   "symbol": "BTCUSDT",
@@ -13,9 +13,9 @@
       "confidence": "low",
       "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 81049.1,
+      "candle_close_price": 80859.2,
       "closed_candles": 99,
-      "observed_at": "2026-10-29T17:30:00+00:00",
+      "observed_at": "2026-10-29T18:00:00+00:00",
       "error": null
     },
     "15m": {
@@ -25,33 +25,33 @@
       "confidence": "low",
       "evidence_state": "partial_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 81049.1,
+      "candle_close_price": 80859.2,
       "closed_candles": 99,
-      "observed_at": "2026-10-29T17:30:00+00:00",
+      "observed_at": "2026-10-29T18:00:00+00:00",
       "error": null
     },
     "30m": {
       "status": "ok",
       "signal_status": "provisional",
-      "grade": "slightly_bullish",
+      "grade": "neutral",
       "confidence": "low",
-      "evidence_state": "aligned",
+      "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 81049.1,
+      "candle_close_price": 80859.2,
       "closed_candles": 99,
-      "observed_at": "2026-10-29T17:30:00+00:00",
+      "observed_at": "2026-10-29T18:00:00+00:00",
       "error": null
     },
     "1h": {
       "status": "ok",
       "signal_status": "provisional",
-      "grade": "slightly_bullish",
+      "grade": "neutral",
       "confidence": "low",
-      "evidence_state": "aligned",
+      "evidence_state": "partial_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 81223.7,
+      "candle_close_price": 80859.2,
       "closed_candles": 99,
-      "observed_at": "2026-10-29T17:00:00+00:00",
+      "observed_at": "2026-10-29T18:00:00+00:00",
       "error": null
     },
     "4h": {
