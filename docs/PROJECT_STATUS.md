@@ -6,7 +6,7 @@ PR97 merged as 37a481df0af49e0b3746c0499fe452c0994885c9; release validation
 40819223942 succeeded. PR96 exact-merge Pages 40818967802 succeeded. The next
 actual history catch-up has not yet been observed; do not claim the gaps filled.
 
-A separate PR adds native 1H/4H price-volume-only signal diagnostics using 24
+PR #98 (https://github.com/Cravendor/btc-monitor/pull/98) adds native 1H/4H price-volume-only signal diagnostics using 24
 closed candles, non-overlapping 24h/7d outcomes, a 2025/2026 split and baselines.
 Only the common contiguous source prefix before the first 4H/1H gap is used;
 4H/1H source conflicts block the run. Current cutoff 27 October 16 UTC. See
