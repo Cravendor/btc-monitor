@@ -845,6 +845,30 @@
     {
       "bias": {
         "30d_macro": {
+          "reason": "**30D/macro: 0 NEUTRAAL/GEMENGD** — werkelijk tegengesteld bewijs: dagprijs over 30 dagen **−2,58%** en stablecoin-aanbod lager, tegenover positieve uitgelezen meerweekse ETF-stromen en de behouden grotere herstelstructuur. Dit is een gemengd 30-daags oordeel, geen bevestiging van een macro-cyclusbodem; cohort-/wereldliquiditeitsdekking blijft beperkt.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "4h_1d": {
+          "reason": "**4H–1D: -1 ZWAK BEARISH** — gesloten steunverlies, verhoogd dalingsvolume en negatieve Bitget-delta’s; één beursfamilie, met intacte dagsteun als tegenbewijs. Liquidatie-/agressorbevestiging ontbreekt.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "**7D: -1 ZWAK BEARISH** — afgesloten dagsloten **−3,27%**, vijf ETF-handelsdagen netto negatief en lager zevendaags futuresvolume. Drie recente ETF-instroomdagen en intacte grotere bodems begrenzen het vertrouwen.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "7e3a067751f78c893c61241aa54a7357efaf0ca8422962aaf921fc9eb94f3925",
+      "has_report_text": true,
+      "monitor": "daily",
+      "path": "reports/2026/10/29/daily-070958.json",
+      "reported_at": "2026-10-29T07:09:58Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
           "reason": "- **30D/macro: ONVOLDOENDE DATA** — de AI-financieringszorg en hoge rente zijn relevante tegenwind, maar één nabeurssessie plus één Bitget-instrument volstaan niet voor een macro-cyclusoordeel. Duurzame kredietspread-, olie-, ETF- en on-chainbevestiging ontbreken.",
           "score": null,
           "status": "ONVOLDOENDE DATA"
