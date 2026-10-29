@@ -1,5 +1,26 @@
 # BTC Monitor — current scope and open work
 
+## Current development — retrospective 1H/4H signal validation, 29 October 2026
+
+PR97 merged as 37a481df0af49e0b3746c0499fe452c0994885c9; release validation
+40819223942 succeeded. PR96 exact-merge Pages 40818967802 succeeded. The next
+actual history catch-up has not yet been observed; do not claim the gaps filled.
+
+A separate PR adds native 1H/4H price-volume-only signal diagnostics using 24
+closed candles, non-overlapping 24h/7d outcomes, a 2025/2026 split and baselines.
+Only the common contiguous source prefix before the first 4H/1H gap is used;
+4H/1H source conflicts block the run. Current cutoff 27 October 16 UTC. See
+INTRADAY_SIGNAL_VALIDATION.md for checksums, counts and explicit limitations.
+2026 is not an independent holdout; archives may contain later source revisions,
+CVD is not included and small samples do not establish calibrated probabilities.
+Local validation passed 541 Python and six Node tests; Python 3.9/3.11 CI
+remains pending. No signal thresholds, NAS tasks or schedules are changed.
+
+Next: CI and user review/merge. Independent work can inspect the first existing
+history run after PR96 and add phase sensitivity and a truly untouched forward
+period; no extra NAS task needed.
+
+
 ## Current development — first reproducible daily signal validation, 29 October 2026
 
 PR96 merged as 13d5e57f506562d0abe21f089548c6b731734ffc. Release CI
