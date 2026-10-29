@@ -1,49 +1,41 @@
 {
   "schema_version": 3,
   "coverage_24h": {
-    "window_start": "2026-10-28T04:04:42.461052+00:00",
-    "window_end": "2026-10-29T04:04:42.461052+00:00",
+    "window_start": "2026-10-28T04:37:16.696293+00:00",
+    "window_end": "2026-10-29T04:37:16.696293+00:00",
     "first_retained_at": "2026-10-22T15:34:27.047744+00:00",
     "interval_seconds": 1800,
     "expected_snapshots": 48,
     "observed_snapshots": 47,
-    "observed_intervals": 45,
+    "observed_intervals": 46,
     "history_unavailable_intervals": 0,
-    "missing_measurement_intervals": 3,
-    "coverage_percent": 93.8,
+    "missing_measurement_intervals": 2,
+    "coverage_percent": 95.8,
     "max_observed_gap_seconds": 3528,
     "max_window_gap_seconds": 3528,
     "status": "gaps_detected"
   },
-  "checked_at": "2026-10-29T04:04:42.461052+00:00",
-  "last_snapshot_at": "2026-10-29T04:04:40.654237+00:00",
+  "checked_at": "2026-10-29T04:37:16.696293+00:00",
+  "last_snapshot_at": "2026-10-29T04:37:14.890462+00:00",
   "age_seconds": 2,
   "max_age_seconds": 3600,
   "status": "current",
   "analysis_quality": {
     "current": {
       "schema_version": 1,
-      "checked_at": "2026-10-29T04:04:42.461052+00:00",
-      "measurement_at": "2026-10-29T04:04:33.795104+00:00",
+      "checked_at": "2026-10-29T04:37:16.696293+00:00",
+      "measurement_at": "2026-10-29T04:35:49.133342+00:00",
       "valid_until": "2026-10-29T08:00:00+00:00",
       "scenario_processing": "consistent",
-      "status": "degraded",
+      "status": "ready_for_scoped_report",
       "price_structure": "available",
-      "bitget_interval_delta": "unavailable",
-      "verified_delta_markets": [],
-      "macro_cycle_verdict": "requires_separate_macro_evidence",
-      "issues": [
-        {
-          "code": "cvd_spot",
-          "detail": "candle_volume_mismatch",
-          "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
-        },
-        {
-          "code": "cvd_usdt_futures",
-          "detail": "candle_volume_mismatch",
-          "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
-        }
+      "bitget_interval_delta": "available",
+      "verified_delta_markets": [
+        "spot",
+        "usdt_futures"
       ],
+      "macro_cycle_verdict": "requires_separate_macro_evidence",
+      "issues": [],
       "interpretation": "Gebruik geldige onderdelen met hun eigen scope; ontbrekend is geen neutraal oordeel."
     },
     "recurring_blockers": [],
