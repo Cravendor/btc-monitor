@@ -10,11 +10,11 @@ Native 4H close changed 80459.3 to 80523.4, base volume 6965.3543 to
 7626.8427 BTC and quote volume 558935730.34727 to 612233906.03218 USDT.
 Provider timing/cause remains unknown. The audit preserves prior row and hash.
 
-A separate PR replaces only those three fields in that one cached 4H row,
+PR #96 (https://github.com/Cravendor/btc-monitor/pull/96) replaces only those three fields in that one cached 4H row,
 retains original provenance and records original archive SHA256
 5d7bfbc8c66f34ac180f756fd3017d11681bf61d1d988e9fd15cc3779401e466 and
 source-audit link. It does not rewrite original snapshots, observations or reports.
-Local strict comparison now has zero cross-timeframe mismatches, but data remain
+Local validation passed 532 Python tests, six Node tests and the 41-chart offline asset gate; CI is pending. Local strict comparison now has zero cross-timeframe mismatches, but data remain
 partial: first missing 4H 27 Oct 16 UTC; daily 28 Oct 00 UTC; hourly 29 Oct 02 UTC,
 at this checkout/cutoff. This is not current completeness. Existing workflow
 must resume after merge; do not claim live deployment or valid complete outcomes.
