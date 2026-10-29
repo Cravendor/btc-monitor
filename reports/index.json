@@ -821,6 +821,30 @@
     {
       "bias": {
         "30d_macro": {
+          "reason": "**30D/macro: ONVOLDOENDE DATA** — vrijwel vlak futuresvolume draagt geen cyclusoordeel; actuele geïntegreerde macro-, on-chain- en vraagbevestiging ontbreken.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "**4H–1D: -1 ZWAK BEARISH** — lokale steun verloren op uurhorizon en actuele prijs onder de eerdere 4H-low; laatste gesloten 4H-candle had nog een hogere low en geen hoog volume. Eén beursfamilie, beperkte bevestiging.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "**7D: -1 ZWAK BEARISH** — dagslot 3,27% lager dan zeven dagen eerder, met 3,72% lager vergelijkbaar futuresvolume. De grotere recente dagbodems houden nog; externe vraagbevestiging ontbreekt.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "ee173382780adc5c5b1b243cb1128a1f60c41c5915262bfef2ee44afd897e571",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/10/29/4h-warning-030611.json",
+      "reported_at": "2026-10-29T03:06:11Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
           "reason": "- **30D/macro: ONVOLDOENDE DATA** — de AI-financieringszorg en hoge rente zijn relevante tegenwind, maar één nabeurssessie plus één Bitget-instrument volstaan niet voor een macro-cyclusoordeel. Duurzame kredietspread-, olie-, ETF- en on-chainbevestiging ontbreken.",
           "score": null,
           "status": "ONVOLDOENDE DATA"
