@@ -1,5 +1,10 @@
 # BTC monitor — agent handover
 
+## Current diagnosis — 29 October daily-source revision
+
+PR99 merged as 32ea6846aa309c45fad28f0c654bc3a8f2cddde3. Existing history run 40916519014 was actually read: hourly and 4H coverage reached 29 October 16 UTC; daily history remains blocked. Audit data/history/source-revision-audits/20261029T165657Z-8fbadc3b9e6d5b67735a0bf90c58c3070e781e22d1ded5f9b9a112fb6b53062b.json preserves fresh provider revisions for 27 October daily candle: close 80234.6 -> 80873.3, high 80292.2 -> 81278.8, low 80102 -> 79480, base volume 363.9212 -> 25758.0731 BTC, quote volume 29182065.69363 -> 2066554038.04055 USDT. No correction has been applied in this diagnostic task. This supersedes the earlier statement that history catch-up was unobserved. Do not claim all sources complete. Next compare the revised daily row with six native 4H children and prepare a reviewed one-row correction preserving originals; then inspect actual workflow catch-up. Historical validation based on the earlier archive needs rerunning after verified corrections. No NAS task or schedule change is needed.
+
+
 ## Current development — intraday signal phase sensitivity, 29 October 2026
 
 PR98 merged as 4e21e52016847e17820234e673105d083bd3326a; release validation
