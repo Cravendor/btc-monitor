@@ -3,9 +3,13 @@
     {
       "path": "reports/inbox/market-risk/20261029T235439Z.json",
       "reason": "Submission rejected; existing history preserved."
+    },
+    {
+      "path": "reports/inbox/market-risk/20261030T011808Z.json",
+      "reason": "Submission rejected; existing history preserved."
     }
   ],
-  "rejected_count": 1,
+  "rejected_count": 2,
   "reports": [
     {
       "bias": {
