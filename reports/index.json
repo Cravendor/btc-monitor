@@ -1070,6 +1070,30 @@
     {
       "bias": {
         "30d_macro": {
+          "reason": "**30D/macro: ONVOLDOENDE DATA** — geïntegreerde macro-, ETF- en on-chaincontext is in deze korte uitvoering niet vernieuwd; geen nieuwe numerieke cyclusbeoordeling.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "**4H–1D: 0 NEUTRAAL/GEMENGD** — herstel houdt stand, maar doorbraak nog niet op slot bevestigd; beide beursdelta’s negatief. Eén beursfamilie, beperkte betrouwbaarheid; onafhankelijke vraag-/liquidatiebevestiging ontbreekt.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "**7D: -1 ZWAK BEARISH** — native dagsloten van **28 oktober 00:00 tot 4 november 00:00 UTC** blijven **4,26% lager**, terwijl het gecontroleerde zevendaagse futuresvolume hoger ligt. Het lokale herstel is tegenbewijs. Beperkt technisch oordeel uit één beursfamilie, zonder vernieuwde externe vraaggegevens.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "1a5dd5db305b9e18f704043f94d2684a079629e1ebbc69cfd0f9de19a9815514",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/11/04/4h-warning-150030.json",
+      "reported_at": "2026-11-04T15:00:30Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
           "reason": "**30D/macro: −1 ZWAK BEARISH** — het lagere afgesloten maandslot, krimpend stablecoinaanbod over dertig dagen en een restrictieve rente-/inflatieomgeving geven voorzichtige neerwaartse voorkeur. Tegensignalen zijn de hogere oktober-maandlow en herstel boven de juli-low. Dit is een maand-/macro-risicobias; **de macro-cyclusbodem en passieve accumulatie blijven ONVOLDOENDE DATA**. Betrouwbaarheid laag tot middelmatig; actuele HODL-bandverdeling en volledige vraag-/flowhistorie ontbreken.",
           "score": -1,
           "status": "REPORTED"
