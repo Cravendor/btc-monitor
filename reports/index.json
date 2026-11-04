@@ -1042,6 +1042,30 @@
       "monitor": "market-risk",
       "path": "reports/2026/10/29/market-risk-205754.json",
       "reported_at": "2026-10-29T20:57:54Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "**30D/macro: −1 ZWAK BEARISH** — het lagere afgesloten maandslot, krimpend stablecoinaanbod over dertig dagen en een restrictieve rente-/inflatieomgeving geven voorzichtige neerwaartse voorkeur. Tegensignalen zijn de hogere oktober-maandlow en herstel boven de juli-low. Dit is een maand-/macro-risicobias; **de macro-cyclusbodem en passieve accumulatie blijven ONVOLDOENDE DATA**. Betrouwbaarheid laag tot middelmatig; actuele HODL-bandverdeling en volledige vraag-/flowhistorie ontbreken.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "4h_1d": {
+          "reason": "**4H–1D: −1 ZWAK BEARISH** — de gesloten verkoopcandle met verhoogd volume en de onafhankelijk gepubliceerde ETF-uitstroom wegen zwaarder dan de nog onvoltooide rebound. Tegensignaal: herstel boven 76.253 en lager OI. Betrouwbaarheid beperkt tot middelmatig; post-rebounddelta en liquidaties ontbreken.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "**7D: −1 ZWAK BEARISH** — dalende dagstructuur, vijfdaagse ETF-uitstroom en een weekkrimp van stablecoins ondersteunen elkaar als drie bewijsfamilies. Tegensignaal: afnemende dagelijkse ETF-uitstroom en de actuele opleving. Betrouwbaarheid middelmatig voor dit voorlopige risicobeeld; duurzame spotvraag is niet bevestigd.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "92ad178b5383c2c82a05706c6d0fcdbe788dbbc68a13f5432396e72a0a6e6794",
+      "has_report_text": true,
+      "monitor": "daily",
+      "path": "reports/2026/11/04/daily-071901.json",
+      "reported_at": "2026-11-04T07:19:01Z"
     }
   ],
   "schema_version": 2
