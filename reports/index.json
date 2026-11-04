@@ -1046,6 +1046,30 @@
     {
       "bias": {
         "30d_macro": {
+          "reason": "**30D/macro: ONVOLDOENDE DATA** — geïntegreerde macro-, ETF- en on-chaincontext is in deze korte uitvoering niet vernieuwd. Geen numerieke score of nieuwe cyclusconclusie.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "**4H–1D: 0 NEUTRAAL/GEMENGD** — geverifieerd 4H-herstel tegenover een zwakke dagtrend en onbevestigde weerstandsdoorbraak. Eén beursfamilie; betrouwbaarheid beperkt tot middelmatig, geen onafhankelijke flowbevestiging.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "**7D: -1 ZWAK BEARISH** — native dagsloten daalden **4,26%**, van 80.873,3 op **28 oktober 00:00 UTC** naar 77.429 op **4 november 00:00 UTC**. Het vergelijkbare zevendaagse futuresvolume ligt hoger. Het recente 4H-herstel is tegenbewijs; dit blijft een beperkt technisch oordeel uit één beursfamilie, zonder vernieuwde externe vraaggegevens.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "bd31168437902b7718a3d20f2d16dc28d6c280665f904bb3dccb152a481f0f2c",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/11/04/4h-warning-110639.json",
+      "reported_at": "2026-11-04T11:06:39Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
           "reason": "**30D/macro: −1 ZWAK BEARISH** — het lagere afgesloten maandslot, krimpend stablecoinaanbod over dertig dagen en een restrictieve rente-/inflatieomgeving geven voorzichtige neerwaartse voorkeur. Tegensignalen zijn de hogere oktober-maandlow en herstel boven de juli-low. Dit is een maand-/macro-risicobias; **de macro-cyclusbodem en passieve accumulatie blijven ONVOLDOENDE DATA**. Betrouwbaarheid laag tot middelmatig; actuele HODL-bandverdeling en volledige vraag-/flowhistorie ontbreken.",
           "score": -1,
           "status": "REPORTED"
@@ -1066,6 +1090,54 @@
       "monitor": "daily",
       "path": "reports/2026/11/04/daily-071901.json",
       "reported_at": "2026-11-04T07:19:01Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "30D/macro: ONVOLDOENDE DATA — de bevestigde aanval is te geïsoleerd en er ontbreken voldoende onafhankelijke macro-, krediet-, on-chain- en langere prijsgegevens om de macrocyclus hierdoor te herclassificeren.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: 0 NEUTRAAL/GEMENGD — de afgesloten 4H-candle herstelde sterk vanaf 76,4 duizend naar 78,1 duizend USDT, terwijl de gecontroleerde futures buy−sell-delta negatief bleef. Tegensignaal: spotdelta was positief. Onafhankelijke post-event prijs- en liquidatiebevestiging ontbreekt; betrouwbaarheid laag.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: -1 ZWAK BEARISH — Farside meldt drie opeenvolgende definitieve Amerikaanse spot-BTC-ETF-uitstroomdagen: $643,2 miljoen, $398,6 miljoen en $115,6 miljoen, samen $1,1574 miljard. Het Bitget-weekbeeld bleef tegelijk onder druk. Tegensignaal is het recente intraday herstel; betrouwbaarheid middelmatig omdat ETF-flow en één futuresbeurs slechts delen van de markt tonen. [Farside](https://farside.co.uk/btc/) genui{\"citation\":{\"ref\":\"turn496search0\"}}",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "d524b61fbdd0162615d3ce4153c6efe8a0379c54f903fd115e13aaf661f2d915",
+      "has_report_text": true,
+      "monitor": "market-risk",
+      "path": "reports/2026/11/04/market-risk-105818.json",
+      "reported_at": "2026-11-04T10:58:18Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "Geen expliciete vijfpuntsscore voor deze horizon aangetroffen.",
+          "score": null,
+          "status": "NOT_REPORTED"
+        },
+        "4h_1d": {
+          "reason": "Geen expliciete vijfpuntsscore voor deze horizon aangetroffen.",
+          "score": null,
+          "status": "NOT_REPORTED"
+        },
+        "7d": {
+          "reason": "Geen expliciete vijfpuntsscore voor deze horizon aangetroffen.",
+          "score": null,
+          "status": "NOT_REPORTED"
+        }
+      },
+      "content_sha256": "6c1a63eae26f238924a81d4eef187e45db6806f2228d1fb07edc98b6ec45a437",
+      "has_report_text": true,
+      "monitor": "market-risk",
+      "path": "reports/2026/11/04/market-risk-133723.json",
+      "reported_at": "2026-11-04T13:37:23Z"
     }
   ],
   "schema_version": 2
