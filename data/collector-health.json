@@ -1,31 +1,31 @@
 {
   "schema_version": 3,
   "coverage_24h": {
-    "window_start": "2026-11-03T11:36:50.523243+00:00",
-    "window_end": "2026-11-04T11:36:50.523243+00:00",
+    "window_start": "2026-11-03T12:03:51.234145+00:00",
+    "window_end": "2026-11-04T12:03:51.234145+00:00",
     "first_retained_at": "2026-10-22T15:34:27.047744+00:00",
     "interval_seconds": 1800,
     "expected_snapshots": 48,
-    "observed_snapshots": 43,
+    "observed_snapshots": 45,
     "observed_intervals": 40,
     "history_unavailable_intervals": 0,
     "missing_measurement_intervals": 8,
     "coverage_percent": 83.3,
-    "max_observed_gap_seconds": 9022,
-    "max_window_gap_seconds": 9022,
+    "max_observed_gap_seconds": 7266,
+    "max_window_gap_seconds": 7266,
     "status": "gaps_detected"
   },
-  "checked_at": "2026-11-04T11:36:50.523243+00:00",
-  "last_snapshot_at": "2026-11-04T11:36:50.462765+00:00",
-  "age_seconds": 0,
+  "checked_at": "2026-11-04T12:03:51.234145+00:00",
+  "last_snapshot_at": "2026-11-04T12:03:49.366618+00:00",
+  "age_seconds": 2,
   "max_age_seconds": 3600,
   "status": "current",
   "analysis_quality": {
     "current": {
       "schema_version": 1,
-      "checked_at": "2026-11-04T11:36:50.523243+00:00",
-      "measurement_at": "2026-11-04T11:36:50.385322+00:00",
-      "valid_until": "2026-11-04T12:00:00+00:00",
+      "checked_at": "2026-11-04T12:03:51.234145+00:00",
+      "measurement_at": "2026-11-04T12:03:44.534831+00:00",
+      "valid_until": "2026-11-04T16:00:00+00:00",
       "scenario_processing": "consistent",
       "status": "degraded",
       "price_structure": "available",
@@ -35,12 +35,12 @@
       "issues": [
         {
           "code": "cvd_spot",
-          "detail": "no_verified_history",
+          "detail": "candle_volume_mismatch",
           "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
         },
         {
           "code": "cvd_usdt_futures",
-          "detail": "no_verified_history",
+          "detail": "candle_volume_mismatch",
           "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
         }
       ],
@@ -49,15 +49,5 @@
     "recurring_blockers": [],
     "report_findings": [],
     "scope": "Engineering en rapportconsistentie; geen bewijs van voorspellende kwaliteit."
-  },
-  "recovery": {
-    "attempted": true,
-    "event": "schedule",
-    "before_status": "stale",
-    "scope": "periodic_market_snapshot_only",
-    "outcome": "uploaded",
-    "collection_exit_code": 0,
-    "snapshot_status": "ok",
-    "after_status": "current"
   }
 }
