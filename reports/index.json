@@ -1238,6 +1238,30 @@
     {
       "bias": {
         "30d_macro": {
+          "reason": "30D/macro: -1 ZWAK BEARISH — dertigdaagse prijsdaling, negatieve oktobermaand en krimpende stablecoin-marktwaarde wegen zwaarder dan het lokale herstel. Hogere oktoberbodem en gunstiger risicosentiment zijn tegenbewijs. Dit is een voorzichtige richtingweging voor weken/maanden; voor het vaststellen van een macro-cyclusbodem en passieve accumulatie blijft ONVOLDOENDE DATA.",
+          "score": -1,
+          "status": "REPORTED"
+        },
+        "4h_1d": {
+          "reason": "4H–1D: 0 NEUTRAAL/GEMENGD — sterke hersteldag en rustiger sentiment tegenover weerstand, laag laatste 4H-volume en tegengestelde spot-/futuresdelta. Onafhankelijke ETF-daginstroom helpt, maar de meerdaagse uitstroom spreekt tegen. Vertrouwen beperkt tot de lokale balans.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "7D: -1 ZWAK BEARISH — gesloten dagprijs −1,03%, negatieve vijf-/tiendaagse ETF-stromen en kleinere stablecoin-marktwaarde; de hersteldag is het belangrijkste tegensignaal. Meerdere bronfamilies, maar geen bewezen distributie of positie-identiteit.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "57087abb192af127fef386977e8a7c59e21c7667f1e186573cc41d4888f457a7",
+      "has_report_text": true,
+      "monitor": "daily",
+      "path": "reports/2026/11/05/daily-073631.json",
+      "reported_at": "2026-11-05T07:36:31Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
           "reason": "**30D/macro: ONVOLDOENDE DATA** — de meetbare maanddaling van 6,12% en zwakke vraagcontext ondersteunen voorzichtigheid, maar leveren geen getoetste cyclusfase of macro-bodem; cohort-/flowgegevens en complete onafhankelijke cyclusevidentie ontbreken.",
           "score": null,
           "status": "ONVOLDOENDE DATA"
