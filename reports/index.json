@@ -1094,6 +1094,54 @@
     {
       "bias": {
         "30d_macro": {
+          "reason": "**30D/macro: ONVOLDOENDE DATA** — geïntegreerde macro-, ETF- en on-chaincontext is in deze korte uitvoering niet vernieuwd; geen nieuwe numerieke cyclusbeoordeling.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "**4H–1D: +1 ZWAK BULLISH** — bevestigde lokale uitbraak met sterk futuresvolume; hogere weerstand en negatieve spotdelta beperken de conclusie. Eén beursfamilie, beperkte betrouwbaarheid; geen onafhankelijke spotvraag-/liquidatiebevestiging.",
+          "score": 1,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "**7D: -1 ZWAK BEARISH** — de native dagsloten van **28 oktober 00:00 tot 4 november 00:00 UTC** blijven **4,26% lager**. Het krachtige intradagherstel is serieus tegenbewijs, maar nog geen nieuw dagslot. Beperkt technisch oordeel uit één beursfamilie; externe vraaggegevens zijn niet vernieuwd.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "32ed870b72e1bef8756e2febc3ab8116f4d89143cc8577d486da725a332a987f",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/11/04/4h-warning-190222.json",
+      "reported_at": "2026-11-04T19:02:22Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "**30D/macro: ONVOLDOENDE DATA** — geen vernieuwde geïntegreerde macro-, ETF- en on-chainbeoordeling; het licht hogere maandvolume alleen rechtvaardigt geen cyclusbias.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "**4H–1D: 0 NEUTRAAL/GEMENGD** — steunbehoud tegenover afwijzing en negatieve intervaldelta; de actuele opleving is nog niet gesloten bevestigd. Eén beursfamilie, beperkte betrouwbaarheid; onafhankelijke vraag- en liquidatiebevestiging ontbreken.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "**7D: -1 ZWAK BEARISH** — native dagsloten blijven **4,26% lager**, van **80.873,3 op 28 oktober 00:00 UTC** naar **77.429 op 4 november 00:00 UTC**. Het krachtige intradagherstel en hogere weekvolume vormen tegenbewijs, maar het nieuwe dagslot ontbreekt nog. Beperkt technisch oordeel uit één beursfamilie; externe vraagcontext is niet vernieuwd.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "c0e7749cf38279cbbf4b07133b1006145eee9ca69a15a3283c798ec52b4a84f7",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/11/04/4h-warning-230953.json",
+      "reported_at": "2026-11-04T23:09:53Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
           "reason": "**30D/macro: −1 ZWAK BEARISH** — het lagere afgesloten maandslot, krimpend stablecoinaanbod over dertig dagen en een restrictieve rente-/inflatieomgeving geven voorzichtige neerwaartse voorkeur. Tegensignalen zijn de hogere oktober-maandlow en herstel boven de juli-low. Dit is een maand-/macro-risicobias; **de macro-cyclusbodem en passieve accumulatie blijven ONVOLDOENDE DATA**. Betrouwbaarheid laag tot middelmatig; actuele HODL-bandverdeling en volledige vraag-/flowhistorie ontbreken.",
           "score": -1,
           "status": "REPORTED"
@@ -1162,6 +1210,30 @@
       "monitor": "market-risk",
       "path": "reports/2026/11/04/market-risk-133723.json",
       "reported_at": "2026-11-04T13:37:23Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "**30D/macro: ONVOLDOENDE DATA** — geen vernieuwde geïntegreerde macro-, ETF- en on-chainbeoordeling; hoger maandvolume alleen rechtvaardigt geen cyclusbias.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "**4H–1D: +1 ZWAK BULLISH** — gesloten herstel en positieve delta in beide markten; volume onder baseline en hogere weerstand zijn tegenbewijs. Eén beursfamilie, beperkte betrouwbaarheid; onafhankelijke vraag- en liquidatiebevestiging ontbreken.",
+          "score": 1,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "**7D: 0 NEUTRAAL/GEMENGD** — het nieuwe dagslot en hogere weekvolume verbeteren het beeld, maar het rollende zevendaagse slotrendement blijft **−1,03%**, van **81.305,3 op 29 oktober 00:00 UTC** naar **80.469 op 5 november 00:00 UTC**. Dit is een nieuw rollend venster. Eén beursfamilie; externe vraagcontext ontbreekt voor sterkere bevestiging.",
+          "score": 0,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "68d66e33d63d3b7df961a4f94ed6360deeb0695b45187f40252febc78e44f3d9",
+      "has_report_text": true,
+      "monitor": "4h-warning",
+      "path": "reports/2026/11/05/4h-warning-030741.json",
+      "reported_at": "2026-11-05T03:07:41Z"
     }
   ],
   "schema_version": 2
