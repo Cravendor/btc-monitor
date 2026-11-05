@@ -1234,6 +1234,30 @@
       "monitor": "4h-warning",
       "path": "reports/2026/11/05/4h-warning-030741.json",
       "reported_at": "2026-11-05T03:07:41Z"
+    },
+    {
+      "bias": {
+        "30d_macro": {
+          "reason": "**30D/macro: ONVOLDOENDE DATA** — de meetbare maanddaling van 6,12% en zwakke vraagcontext ondersteunen voorzichtigheid, maar leveren geen getoetste cyclusfase of macro-bodem; cohort-/flowgegevens en complete onafhankelijke cyclusevidentie ontbreken.",
+          "score": null,
+          "status": "ONVOLDOENDE DATA"
+        },
+        "4h_1d": {
+          "reason": "**4H–1D: 0 NEUTRAAL/GEMENGD** — sterk voorafgaand dagslot en positieve spotdelta tegenover vrijwel vlakke 4H-vervolgprijs, 0,57× volume en negatieve futuresdelta. Onafhankelijke ETF-vraag is per dag positief, meerdaags zwak; vertrouwen beperkt.",
+          "score": 0,
+          "status": "REPORTED"
+        },
+        "7d": {
+          "reason": "**7D: -1 ZWAK BEARISH** — koers over zeven afgesloten dagen **−1,03%** (81.305,3 bij het slot op 29 oktober 00:00 UTC → 80.469 op 5 november 00:00 UTC) en vijf handelsdagen ETF-uitstroom overheersen. Het nieuwe dagslot en afnemende angst zijn serieus tegenbewijs; twee gegevensfamilies ondersteunen slechts een beperkte bearish voorkeur.",
+          "score": -1,
+          "status": "REPORTED"
+        }
+      },
+      "content_sha256": "82d2c63165739011f4afd69b8a8b412a382eec8983359dbd0da8881334243c40",
+      "has_report_text": true,
+      "monitor": "psychology",
+      "path": "reports/2026/11/05/psychology-071122.json",
+      "reported_at": "2026-11-05T07:11:22Z"
     }
   ],
   "schema_version": 2
