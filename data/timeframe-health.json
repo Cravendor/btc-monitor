@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-06T00:39:35.455897+00:00",
+  "updated_at": "2026-11-06T01:34:18.729584+00:00",
   "exchange": "bitget",
   "market": "USDT-FUTURES",
   "symbol": "BTCUSDT",
@@ -11,11 +11,11 @@
       "signal_status": "provisional",
       "grade": "neutral",
       "confidence": "low",
-      "evidence_state": "partial_direction",
+      "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 76269.4,
+      "candle_close_price": 76124.1,
       "closed_candles": 99,
-      "observed_at": "2026-11-06T00:35:00+00:00",
+      "observed_at": "2026-11-06T01:20:00+00:00",
       "error": null
     },
     "15m": {
@@ -23,11 +23,11 @@
       "signal_status": "provisional",
       "grade": "neutral",
       "confidence": "low",
-      "evidence_state": "partial_direction",
+      "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 76140.4,
+      "candle_close_price": 76282.5,
       "closed_candles": 99,
-      "observed_at": "2026-11-06T00:30:00+00:00",
+      "observed_at": "2026-11-06T01:15:00+00:00",
       "error": null
     },
     "30m": {
@@ -35,11 +35,11 @@
       "signal_status": "provisional",
       "grade": "neutral",
       "confidence": "low",
-      "evidence_state": "no_direction",
+      "evidence_state": "partial_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 76140.4,
+      "candle_close_price": 76298.9,
       "closed_candles": 99,
-      "observed_at": "2026-11-06T00:30:00+00:00",
+      "observed_at": "2026-11-06T01:00:00+00:00",
       "error": null
     },
     "1h": {
@@ -49,9 +49,9 @@
       "confidence": "low",
       "evidence_state": "partial_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 76043.0,
+      "candle_close_price": 76298.9,
       "closed_candles": 99,
-      "observed_at": "2026-11-06T00:00:00+00:00",
+      "observed_at": "2026-11-06T01:00:00+00:00",
       "error": null
     },
     "4h": {
