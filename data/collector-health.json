@@ -1,46 +1,41 @@
 {
   "schema_version": 3,
   "coverage_24h": {
-    "window_start": "2026-11-05T16:43:48.628576+00:00",
-    "window_end": "2026-11-06T16:43:48.628576+00:00",
+    "window_start": "2026-11-05T17:14:34.827700+00:00",
+    "window_end": "2026-11-06T17:14:34.827700+00:00",
     "first_retained_at": "2026-10-22T15:34:27.047744+00:00",
     "interval_seconds": 1800,
     "expected_snapshots": 48,
-    "observed_snapshots": 47,
-    "observed_intervals": 45,
+    "observed_snapshots": 48,
+    "observed_intervals": 47,
     "history_unavailable_intervals": 0,
-    "missing_measurement_intervals": 3,
-    "coverage_percent": 93.8,
+    "missing_measurement_intervals": 1,
+    "coverage_percent": 97.9,
     "max_observed_gap_seconds": 3283,
     "max_window_gap_seconds": 3283,
     "status": "gaps_detected"
   },
-  "checked_at": "2026-11-06T16:43:48.628576+00:00",
-  "last_snapshot_at": "2026-11-06T16:43:46.667566+00:00",
+  "checked_at": "2026-11-06T17:14:34.827700+00:00",
+  "last_snapshot_at": "2026-11-06T17:14:32.793038+00:00",
   "age_seconds": 2,
   "max_age_seconds": 3600,
   "status": "current",
   "analysis_quality": {
     "current": {
       "schema_version": 1,
-      "checked_at": "2026-11-06T16:43:48.628576+00:00",
-      "measurement_at": "2026-11-06T16:39:55.577085+00:00",
+      "checked_at": "2026-11-06T17:14:34.827700+00:00",
+      "measurement_at": "2026-11-06T17:10:16.074365+00:00",
       "valid_until": "2026-11-06T20:00:00+00:00",
       "scenario_processing": "consistent",
-      "status": "degraded",
+      "status": "ready_for_scoped_report",
       "price_structure": "available",
-      "bitget_interval_delta": "unavailable",
+      "bitget_interval_delta": "available",
       "verified_delta_markets": [
+        "spot",
         "usdt_futures"
       ],
       "macro_cycle_verdict": "requires_separate_macro_evidence",
-      "issues": [
-        {
-          "code": "cvd_spot",
-          "detail": "network_error",
-          "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
-        }
-      ],
+      "issues": [],
       "interpretation": "Gebruik geldige onderdelen met hun eigen scope; ontbrekend is geen neutraal oordeel."
     },
     "recurring_blockers": [],
