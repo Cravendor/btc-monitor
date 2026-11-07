@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-06T23:33:45.610162+00:00",
+  "updated_at": "2026-11-07T00:02:45.038173+00:00",
   "exchange": "bitget",
   "market": "USDT-FUTURES",
   "symbol": "BTCUSDT",
@@ -13,9 +13,9 @@
       "confidence": "low",
       "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 75896.6,
+      "candle_close_price": 75810.6,
       "closed_candles": 99,
-      "observed_at": "2026-11-06T23:30:00+00:00",
+      "observed_at": "2026-11-07T00:00:00+00:00",
       "error": null
     },
     "15m": {
@@ -25,9 +25,9 @@
       "confidence": "low",
       "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 75896.6,
+      "candle_close_price": 75810.6,
       "closed_candles": 99,
-      "observed_at": "2026-11-06T23:30:00+00:00",
+      "observed_at": "2026-11-07T00:00:00+00:00",
       "error": null
     },
     "30m": {
@@ -37,9 +37,9 @@
       "confidence": "low",
       "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 75896.6,
+      "candle_close_price": 75810.6,
       "closed_candles": 99,
-      "observed_at": "2026-11-06T23:30:00+00:00",
+      "observed_at": "2026-11-07T00:00:00+00:00",
       "error": null
     },
     "1h": {
@@ -49,33 +49,33 @@
       "confidence": "low",
       "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 75864.6,
+      "candle_close_price": 75810.6,
       "closed_candles": 99,
-      "observed_at": "2026-11-06T23:00:00+00:00",
+      "observed_at": "2026-11-07T00:00:00+00:00",
       "error": null
     },
     "4h": {
+      "status": "ok",
+      "signal_status": "provisional",
+      "grade": "neutral",
+      "confidence": "low",
+      "evidence_state": "partial_direction",
+      "model_version": "multi_tf_evidence_v0.2",
+      "candle_close_price": 75810.6,
+      "closed_candles": 99,
+      "observed_at": "2026-11-07T00:00:00+00:00",
+      "error": null
+    },
+    "1d": {
       "status": "ok",
       "signal_status": "provisional",
       "grade": "slightly_bearish",
       "confidence": "low",
       "evidence_state": "aligned",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 75862.5,
-      "closed_candles": 99,
-      "observed_at": "2026-11-06T20:00:00+00:00",
-      "error": null
-    },
-    "1d": {
-      "status": "ok",
-      "signal_status": "provisional",
-      "grade": "bearish",
-      "confidence": "low",
-      "evidence_state": "aligned",
-      "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 76043.0,
+      "candle_close_price": 75810.6,
       "closed_candles": 89,
-      "observed_at": "2026-11-06T00:00:00+00:00",
+      "observed_at": "2026-11-07T00:00:00+00:00",
       "error": null
     },
     "1w": {
