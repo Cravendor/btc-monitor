@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-09T23:33:50.049165+00:00",
+  "updated_at": "2026-11-10T00:03:12.348735+00:00",
   "exchange": "bitget",
   "market": "USDT-FUTURES",
   "symbol": "BTCUSDT",
@@ -13,9 +13,9 @@
       "confidence": "low",
       "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 75246.2,
+      "candle_close_price": 75322.0,
       "closed_candles": 99,
-      "observed_at": "2026-11-09T23:30:00+00:00",
+      "observed_at": "2026-11-10T00:00:00+00:00",
       "error": null
     },
     "15m": {
@@ -23,11 +23,11 @@
       "signal_status": "provisional",
       "grade": "neutral",
       "confidence": "low",
-      "evidence_state": "no_direction",
+      "evidence_state": "partial_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 75246.2,
+      "candle_close_price": 75322.0,
       "closed_candles": 99,
-      "observed_at": "2026-11-09T23:30:00+00:00",
+      "observed_at": "2026-11-10T00:00:00+00:00",
       "error": null
     },
     "30m": {
@@ -37,33 +37,33 @@
       "confidence": "low",
       "evidence_state": "aligned",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 75246.2,
+      "candle_close_price": 75322.0,
       "closed_candles": 99,
-      "observed_at": "2026-11-09T23:30:00+00:00",
+      "observed_at": "2026-11-10T00:00:00+00:00",
       "error": null
     },
     "1h": {
+      "status": "ok",
+      "signal_status": "provisional",
+      "grade": "slightly_bullish",
+      "confidence": "low",
+      "evidence_state": "aligned",
+      "model_version": "multi_tf_evidence_v0.2",
+      "candle_close_price": 75322.0,
+      "closed_candles": 99,
+      "observed_at": "2026-11-10T00:00:00+00:00",
+      "error": null
+    },
+    "4h": {
       "status": "ok",
       "signal_status": "provisional",
       "grade": "neutral",
       "confidence": "low",
       "evidence_state": "partial_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 75250.2,
+      "candle_close_price": 75322.0,
       "closed_candles": 99,
-      "observed_at": "2026-11-09T23:00:00+00:00",
-      "error": null
-    },
-    "4h": {
-      "status": "ok",
-      "signal_status": "provisional",
-      "grade": "slightly_bearish",
-      "confidence": "low",
-      "evidence_state": "aligned",
-      "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 74849.0,
-      "closed_candles": 99,
-      "observed_at": "2026-11-09T20:00:00+00:00",
+      "observed_at": "2026-11-10T00:00:00+00:00",
       "error": null
     },
     "1d": {
@@ -73,9 +73,9 @@
       "confidence": "low",
       "evidence_state": "aligned",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 74820.9,
+      "candle_close_price": 75322.0,
       "closed_candles": 89,
-      "observed_at": "2026-11-09T00:00:00+00:00",
+      "observed_at": "2026-11-10T00:00:00+00:00",
       "error": null
     },
     "1w": {
@@ -85,7 +85,7 @@
       "confidence": "low",
       "evidence_state": "conflicting",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 74820.8,
+      "candle_close_price": 74820.9,
       "closed_candles": 36,
       "observed_at": "2026-11-09T00:00:00+00:00",
       "error": null
