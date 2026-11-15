@@ -1,40 +1,43 @@
 {
   "schema_version": 3,
   "coverage_24h": {
-    "window_start": "2026-11-14T03:41:24.330110+00:00",
-    "window_end": "2026-11-15T03:41:24.330110+00:00",
+    "window_start": "2026-11-14T04:08:11.549888+00:00",
+    "window_end": "2026-11-15T04:08:11.549888+00:00",
     "first_retained_at": "2026-10-22T15:34:27.047744+00:00",
     "interval_seconds": 1800,
     "expected_snapshots": 48,
     "observed_snapshots": 46,
-    "observed_intervals": 42,
+    "observed_intervals": 40,
     "history_unavailable_intervals": 0,
-    "missing_measurement_intervals": 6,
-    "coverage_percent": 87.5,
+    "missing_measurement_intervals": 8,
+    "coverage_percent": 83.3,
     "max_observed_gap_seconds": 5897,
     "max_window_gap_seconds": 5897,
     "status": "gaps_detected"
   },
-  "checked_at": "2026-11-15T03:41:24.330110+00:00",
-  "last_snapshot_at": "2026-11-15T03:41:22.049270+00:00",
+  "checked_at": "2026-11-15T04:08:11.549888+00:00",
+  "last_snapshot_at": "2026-11-15T04:08:09.354174+00:00",
   "age_seconds": 2,
   "max_age_seconds": 3600,
   "status": "current",
   "analysis_quality": {
     "current": {
       "schema_version": 1,
-      "checked_at": "2026-11-15T03:41:24.330110+00:00",
-      "measurement_at": "2026-11-15T03:39:50.105646+00:00",
-      "valid_until": "2026-11-15T04:00:00+00:00",
+      "checked_at": "2026-11-15T04:08:11.549888+00:00",
+      "measurement_at": "2026-11-15T04:07:38.218529+00:00",
+      "valid_until": "2026-11-15T08:00:00+00:00",
       "scenario_processing": "consistent",
       "status": "degraded",
       "price_structure": "available",
       "bitget_interval_delta": "unavailable",
-      "verified_delta_markets": [
-        "spot"
-      ],
+      "verified_delta_markets": [],
       "macro_cycle_verdict": "requires_separate_macro_evidence",
       "issues": [
+        {
+          "code": "cvd_spot",
+          "detail": "candle_volume_mismatch",
+          "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
+        },
         {
           "code": "cvd_usdt_futures",
           "detail": "time_budget_exhausted",
@@ -43,7 +46,13 @@
       ],
       "interpretation": "Gebruik geldige onderdelen met hun eigen scope; ontbrekend is geen neutraal oordeel."
     },
-    "recurring_blockers": [],
+    "recurring_blockers": [
+      {
+        "code": "cvd_usdt_futures",
+        "affected_closed_intervals": 2,
+        "action": "Terugkerende blokkade: onderzoek en volg herstel; niet alleen ONTBREEKT herhalen."
+      }
+    ],
     "report_findings": [],
     "scope": "Engineering en rapportconsistentie; geen bewijs van voorspellende kwaliteit."
   }
