@@ -1,44 +1,63 @@
 {
   "schema_version": 3,
   "coverage_24h": {
-    "window_start": "2026-11-16T11:34:34.625376+00:00",
-    "window_end": "2026-11-17T11:34:34.625376+00:00",
+    "window_start": "2026-11-16T12:05:07.483317+00:00",
+    "window_end": "2026-11-17T12:05:07.483317+00:00",
     "first_retained_at": "2026-10-22T15:34:27.047744+00:00",
     "interval_seconds": 1800,
     "expected_snapshots": 48,
     "observed_snapshots": 48,
-    "observed_intervals": 45,
+    "observed_intervals": 44,
     "history_unavailable_intervals": 0,
-    "missing_measurement_intervals": 3,
-    "coverage_percent": 93.8,
+    "missing_measurement_intervals": 4,
+    "coverage_percent": 91.7,
     "max_observed_gap_seconds": 3720,
     "max_window_gap_seconds": 3720,
     "status": "gaps_detected"
   },
-  "checked_at": "2026-11-17T11:34:34.625376+00:00",
-  "last_snapshot_at": "2026-11-17T11:34:32.459041+00:00",
+  "checked_at": "2026-11-17T12:05:07.483317+00:00",
+  "last_snapshot_at": "2026-11-17T12:05:05.516808+00:00",
   "age_seconds": 2,
   "max_age_seconds": 3600,
   "status": "current",
   "analysis_quality": {
     "current": {
       "schema_version": 1,
-      "checked_at": "2026-11-17T11:34:34.625376+00:00",
-      "measurement_at": "2026-11-17T11:33:37.085806+00:00",
-      "valid_until": "2026-11-17T12:00:00+00:00",
+      "checked_at": "2026-11-17T12:05:07.483317+00:00",
+      "measurement_at": "2026-11-17T12:04:58.572390+00:00",
+      "valid_until": "2026-11-17T16:00:00+00:00",
       "scenario_processing": "consistent",
-      "status": "ready_for_scoped_report",
+      "status": "degraded",
       "price_structure": "available",
-      "bitget_interval_delta": "available",
-      "verified_delta_markets": [
-        "spot",
-        "usdt_futures"
-      ],
+      "bitget_interval_delta": "unavailable",
+      "verified_delta_markets": [],
       "macro_cycle_verdict": "requires_separate_macro_evidence",
-      "issues": [],
+      "issues": [
+        {
+          "code": "cvd_spot",
+          "detail": "candle_volume_mismatch",
+          "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
+        },
+        {
+          "code": "cvd_usdt_futures",
+          "detail": "candle_volume_mismatch",
+          "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
+        }
+      ],
       "interpretation": "Gebruik geldige onderdelen met hun eigen scope; ontbrekend is geen neutraal oordeel."
     },
-    "recurring_blockers": [],
+    "recurring_blockers": [
+      {
+        "code": "cvd_spot",
+        "affected_closed_intervals": 2,
+        "action": "Terugkerende blokkade: onderzoek en volg herstel; niet alleen ONTBREEKT herhalen."
+      },
+      {
+        "code": "cvd_usdt_futures",
+        "affected_closed_intervals": 2,
+        "action": "Terugkerende blokkade: onderzoek en volg herstel; niet alleen ONTBREEKT herhalen."
+      }
+    ],
     "report_findings": [],
     "scope": "Engineering en rapportconsistentie; geen bewijs van voorspellende kwaliteit."
   }
