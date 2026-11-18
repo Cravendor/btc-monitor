@@ -49,10 +49,28 @@ function decideCard(s, p, now) {
 
 function mountCard(root, snapshot) {
   const field = id => root.querySelector('#oc-'+id);
+  function applyPreset() {
+    const choice = field('preset').value;
+    if (choice === 'custom') {
+      field('settings').open = true;
+      return;
+    }
+    const equity = Number(choice);
+    field('equity').value = equity;
+    field('risk').value = equity * 0.02;
+    field('margin').value = equity * 0.40;
+  }
   function update() {
     const params = {position: Number(field('position').value)};
     for (const key of ['equity','risk','margin','fee','slip','funding'])
       params[key] = field(key).valueAsNumber;
+    const usd = value => value.toLocaleString('nl-NL', {style:'currency',currency:'USD'});
+    const basis = field('preset').value === 'custom' ? 'Eigen berekening' : 'Rekenvoorbeeld';
+    field('budget').textContent = [params.equity,params.risk,params.margin].every(v => Number.isFinite(v) && v > 0)
+      && params.risk <= params.equity && params.margin <= params.equity
+      ? basis+' · Risicobudget per setup '+usd(params.risk*0.25)+' tot '+usd(params.risk*0.5)+
+        ' · Margeplafond '+usd(params.margin)
+      : 'Controleer je eigen bedragen bij de instellingen.';
     params.activeStop = field('active-stop').valueAsNumber;
     field('stop-row').hidden = !params.position;
     const advice = decideCard(snapshot, params, Date.now());
@@ -61,7 +79,13 @@ function mountCard(root, snapshot) {
   }
   field('time').textContent = snapshot.at ? 'Bitget BTCUSDT · afrekening USDT · USD per USDT '+snapshot.rate+
     ' · Meting '+new Date(snapshot.at).toLocaleString('nl-NL',{timeZone:'Europe/Amsterdam'})+' Amsterdam' : 'Bitget BTCUSDT';
-  root.addEventListener('input', update);
+  root.addEventListener('input', event => {
+    if (event.target === field('preset')) applyPreset();
+    if (['equity','risk','margin'].some(key => event.target === field(key)))
+      field('preset').value = 'custom';
+    update();
+  });
+  applyPreset();
   update();
   if (snapshot.expires > Date.now()) setTimeout(update, snapshot.expires-Date.now()+1);
 }
