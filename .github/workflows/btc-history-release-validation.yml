@@ -44,7 +44,7 @@ jobs:
         with:
           node-version: '22'
       - name: Verify task status transitions
-        run: node --test tests/test_operational_status.mjs tests/test_elliott_zoom.mjs
+        run: node --test tests/test_operational_status.mjs tests/test_elliott_zoom.mjs tests/test_swing_order.mjs
       - name: Generate read-only HTML from existing archive
         run: |
           mkdir -p output
