@@ -1,0 +1,27 @@
+<section class="panel" id="swing-order" aria-labelledby="order-heading">
+<style>
+#swing-order{margin:1em 0 2em;border-top:3px solid #83d5af}
+#swing-order label{display:grid;gap:.3em;font-size:.9rem}
+#swing-order input,#swing-order select{background:#182334;color:#edf4ff;border:1px solid #71809a;border-radius:7px;padding:.6em;width:100%;box-sizing:border-box;font:inherit}
+#swing-order .order-settings{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:1em}
+#swing-order output{display:block;white-space:pre-line;line-height:1.6}
+</style>
+<h2 id="order-heading">BTC swing · orderkaart in USD</h2>
+<label>Mijn positie<select id="oc-position"><option value="0">Geen positie</option><option value="1">Long</option><option value="-1">Short</option></select></label>
+<label id="oc-stop-row" hidden>Huidige beschermende stop ($)<input type="number" min="0" step="any" id="oc-active-stop"></label>
+<div aria-live="polite"><h3 id="oc-action">WACHT</h3><output id="oc-result">Berekening laden…</output></div>
+<details><summary>Risico en rekenaannames</summary>
+<p>Alle invoer blijft op deze pagina. Deze eerste 4H-regel is nog niet voorwaarts gevalideerd. De voorlopige regel gebruikt 25% van je verliesplafond, of 50% bij gelijkgerichte gecontroleerde spot- en futuresdelta en bovengemiddeld volume. Kosten zijn instelbare ramingen.</p>
+<div class="order-settings">
+<label>Futureskapitaal ($)<input id="oc-equity" type="number" min="0" step="any"></label>
+<label>Verliesplafond ($)<input id="oc-risk" type="number" min="0" step="any"></label>
+<label>Beschikbare isolated marge ($)<input id="oc-margin" type="number" min="0" step="any"></label>
+<label>Kosten per uitvoering (basispunten)<input id="oc-fee" type="number" value="6" min="0" step="any"></label>
+<label>Slippage per uitvoering (basispunten)<input id="oc-slip" type="number" value="5" min="0" step="any"></label>
+<label>Fundingreserve hele trade (basispunten)<input id="oc-funding" type="number" value="5" min="0" step="any"></label>
+</div><p>1 basispunt = 0,01%. Eén koersdoel voor de hele positie. Leveragekeuze 1× of 2× isolated. Controleer contractstap, minimumorder en liquidatieprijs bij de beurs. Een stop kan slechter worden uitgevoerd.</p></details>
+<small id="oc-time"></small>
+<script>(()=>{const snapshot=/*SNAPSHOT*/;
+/*LOGIC*/
+mountCard(document.getElementById('swing-order'),snapshot);
+})();</script></section>

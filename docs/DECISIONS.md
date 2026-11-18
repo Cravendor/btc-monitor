@@ -1,5 +1,19 @@
 # Accepted project decisions
 
+## USD swing order card · 18 November 2026
+
+The homepage includes a local-only position selector and a USD order worksheet for
+Bitget BTCUSDT. A closed 4H breakout and retest, a previously traded target and
+a minimum modeled net reward/risk of three are required for a new limit plan.
+The risk budget is variable. Exposure uses user-entered limits and a provisional
+25%/50% budget rule; leverage is the lowest of 1x/2x that fits the margin budget.
+USD conversion uses the measured USDT/USD source timestamp. Snapshot expiry,
+costs and incomplete data block new plans. No account input leaves the browser.
+This initial rule has no forward performance record. Exchange liquidation and
+lot sizing, partial exits, daily regime gating and forward evaluation remain open.
+Local homepage generation, Python and Node checks precede review. Deployment
+requires merge and a successful Pages run. No NAS or scheduler change.
+
 ## Multi-source momentum switch required — 26 October 2026
 
 User clarification: daily candles alone are insufficient for the stronger

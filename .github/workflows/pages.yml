@@ -36,6 +36,7 @@ on:
       - data/history/bitget_btcusdt_daily.json
       - scripts/market_gauges.py
       - scripts/sentiment_reference.py
+      - scripts/swing_order_card.py
       - scripts/home_dashboard.py
       - scripts/market_scenarios.py
       - scripts/price_roadmap.py

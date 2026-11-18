@@ -6,6 +6,7 @@ from pathlib import Path
 from scripts.market_scenarios import build_scenarios
 from scripts.cycle_history import render_reference as render_cycle_history
 from scripts.cycle_context import render as render_cycle_review
+from scripts import swing_order_card
 from scripts import market_gauges, swing_dashboard, report_context, shb_dashboard
 from scripts.swing_scenarios import build_swing_scenarios
 from scripts.price_roadmap import build_roadmap
@@ -131,7 +132,7 @@ table{width:100%;border-collapse:collapse}th,td{padding:8px;text-align:left;bord
 ''' + market_gauges.CSS + swing_dashboard.CSS + shb_dashboard.CSS + elliott_dashboard.CSS + '''
 </style></head><body><main>
 <header class="hero"><div><div class="eyebrow">BTC Monitor / overzicht</div><h1>Eén plek voor je marktbeeld.</h1><p>Metingen, marktrichting en scenario’s met controleerbare prijsniveaus.</p><p><a href="btc-status.html">Taakstatus en laatste uitvoeringen →</a></p></div>
-<div class="quote" data-expires="''' + escape(quote_expiry) + '''"><small>Bitget futures · laatste momentopname</small><strong>''' + escape(price_line) + '''</strong></div></header>''' + render_quality(feed,as_of) + market_gauges.render_all(feed, as_of, sentiment) + '''
+<div class="quote" data-expires="''' + escape(quote_expiry) + '''"><small>Bitget futures · laatste momentopname</small><strong>''' + escape(price_line) + '''</strong></div></header>''' + swing_order_card.render(feed, result, as_of) + render_quality(feed,as_of) + market_gauges.render_all(feed, as_of, sentiment) + '''
 ''' + swing_dashboard.render(swing_bundle) + momentum_confirmation.render(momentum_confirmation.build(feed, as_of, previous_momentum)) + elliott_dashboard.render(elliott_dashboard.build(feed, as_of, elliott_history)) + render_cycle_history(feed) + render_cycle_review(feed) + report_context.render(context) + '''
 <nav class="links" aria-label="BTC-pagina’s">
 <a class="link-card" href="btc-dashboard.html"><span>01 / METINGEN →</span><h2>Dashboard</h2><p>Prijs, funding, open interest, orderboek en gecontroleerde tradedelta.</p></a>
