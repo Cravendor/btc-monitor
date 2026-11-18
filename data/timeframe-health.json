@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-18T09:34:12.481821+00:00",
+  "updated_at": "2026-11-18T10:04:34.474372+00:00",
   "exchange": "bitget",
   "market": "USDT-FUTURES",
   "symbol": "BTCUSDT",
@@ -13,9 +13,9 @@
       "confidence": "low",
       "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 64661.3,
+      "candle_close_price": 64617.5,
       "closed_candles": 99,
-      "observed_at": "2026-11-18T09:30:00+00:00",
+      "observed_at": "2026-11-18T10:00:00+00:00",
       "error": null
     },
     "15m": {
@@ -25,9 +25,9 @@
       "confidence": "low",
       "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 64661.3,
+      "candle_close_price": 64617.5,
       "closed_candles": 99,
-      "observed_at": "2026-11-18T09:30:00+00:00",
+      "observed_at": "2026-11-18T10:00:00+00:00",
       "error": null
     },
     "30m": {
@@ -37,9 +37,9 @@
       "confidence": "low",
       "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 64661.3,
+      "candle_close_price": 64617.5,
       "closed_candles": 99,
-      "observed_at": "2026-11-18T09:30:00+00:00",
+      "observed_at": "2026-11-18T10:00:00+00:00",
       "error": null
     },
     "1h": {
@@ -47,11 +47,11 @@
       "signal_status": "provisional",
       "grade": "neutral",
       "confidence": "low",
-      "evidence_state": "partial_direction",
+      "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 64653.0,
+      "candle_close_price": 64617.5,
       "closed_candles": 99,
-      "observed_at": "2026-11-18T09:00:00+00:00",
+      "observed_at": "2026-11-18T10:00:00+00:00",
       "error": null
     },
     "4h": {
