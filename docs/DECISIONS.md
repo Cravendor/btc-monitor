@@ -1,5 +1,9 @@
 # Accepted project decisions
 
+## Suggested USD capital · 18 November 2026
+
+PR #100 was merged and the Pages order card verified. The follow-up supplies an illustrative $1,000 preset, selectable alternatives and optional manual overrides. Presets assume a 2% loss ceiling and 40% available margin. The existing 25%/50% fractions produce 0.5%/1% setup budgets. These illustrative amounts are local to the page. Live activation requires merge and Pages publication.
+
 ## USD swing order card · 18 November 2026
 
 The homepage includes a local-only position selector and a USD order worksheet for

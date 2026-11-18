@@ -10,7 +10,12 @@
 <label>Mijn positie<select id="oc-position"><option value="0">Geen positie</option><option value="1">Long</option><option value="-1">Short</option></select></label>
 <label id="oc-stop-row" hidden>Huidige beschermende stop ($)<input type="number" min="0" step="any" id="oc-active-stop"></label>
 <div aria-live="polite"><h3 id="oc-action">WACHT</h3><output id="oc-result">Berekening laden…</output></div>
-<details><summary>Risico en rekenaannames</summary>
+<label>Reken met voorbeeldkapitaal<select id="oc-preset">
+<option value="500">$500</option><option value="1000" selected>$1.000</option>
+<option value="2500">$2.500</option><option value="5000">$5.000</option>
+<option value="custom">Eigen bedragen</option></select></label>
+<p id="oc-budget" aria-live="polite"></p>
+<details id="oc-settings"><summary>Bedragen en kosten aanpassen</summary>
 <p>Alle invoer blijft op deze pagina. Deze eerste 4H-regel is nog niet voorwaarts gevalideerd. De voorlopige regel gebruikt 25% van je verliesplafond, of 50% bij gelijkgerichte gecontroleerde spot- en futuresdelta en bovengemiddeld volume. Kosten zijn instelbare ramingen.</p>
 <div class="order-settings">
 <label>Futureskapitaal ($)<input id="oc-equity" type="number" min="0" step="any"></label>

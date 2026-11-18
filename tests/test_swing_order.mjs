@@ -26,3 +26,28 @@ test('position handling and independently qualifying reversal',()=>{
   assert.equal(plan({target:105},{position:-1,activeStop:110}).action,'CONTROLEER / SLUIT');
   assert.equal(plan({side:-1,entry:100,stop:102,target:90,price:99}).action,'LIMIET SHORT');
 });
+
+test('initial proposal, one-tap resizing and manual override',()=>{
+  const fields = new Map();
+  const root = {
+    querySelector(id) {
+      if (!fields.has(id)) fields.set(id, {get valueAsNumber(){return Number(this.value)}});
+      return fields.get(id);
+    },
+    addEventListener(type,listener){this.change = listener}
+  };
+  const field = key => root.querySelector('#oc-'+key);
+  field('preset').value='1000';
+  field('position').value='0';
+  ctx.mountCard(root,{});
+  assert.equal(field('risk').value,20);
+  assert.equal(field('margin').value,400);
+  assert.equal(field('action').textContent,'WACHT');
+  field('preset').value='2500';
+  root.change({target:field('preset')});
+  assert.equal(field('risk').value,50);
+  field('risk').value='15';
+  root.change({target:field('risk')});
+  assert.equal(field('preset').value,'custom');
+  assert.equal(field('risk').value,'15');
+});
