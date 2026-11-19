@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-19T16:38:32.757980+00:00",
+  "updated_at": "2026-11-19T17:07:38.349217+00:00",
   "exchange": "bitget",
   "market": "USDT-FUTURES",
   "symbol": "BTCUSDT",
@@ -9,13 +9,13 @@
     "5m": {
       "status": "ok",
       "signal_status": "provisional",
-      "grade": "neutral",
+      "grade": "slightly_bearish",
       "confidence": "low",
-      "evidence_state": "no_direction",
+      "evidence_state": "aligned",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 63048.8,
+      "candle_close_price": 62474.2,
       "closed_candles": 99,
-      "observed_at": "2026-11-19T16:35:00+00:00",
+      "observed_at": "2026-11-19T17:05:00+00:00",
       "error": null
     },
     "15m": {
@@ -25,9 +25,9 @@
       "confidence": "low",
       "evidence_state": "aligned",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 63070.7,
+      "candle_close_price": 62742.2,
       "closed_candles": 99,
-      "observed_at": "2026-11-19T16:30:00+00:00",
+      "observed_at": "2026-11-19T17:00:00+00:00",
       "error": null
     },
     "30m": {
@@ -37,21 +37,21 @@
       "confidence": "low",
       "evidence_state": "aligned",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 63070.7,
+      "candle_close_price": 62742.2,
       "closed_candles": 99,
-      "observed_at": "2026-11-19T16:30:00+00:00",
+      "observed_at": "2026-11-19T17:00:00+00:00",
       "error": null
     },
     "1h": {
       "status": "ok",
       "signal_status": "provisional",
-      "grade": "neutral",
+      "grade": "slightly_bearish",
       "confidence": "low",
-      "evidence_state": "partial_direction",
+      "evidence_state": "aligned",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 63073.9,
+      "candle_close_price": 62742.2,
       "closed_candles": 99,
-      "observed_at": "2026-11-19T16:00:00+00:00",
+      "observed_at": "2026-11-19T17:00:00+00:00",
       "error": null
     },
     "4h": {
