@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-19T21:37:17.014092+00:00",
+  "updated_at": "2026-11-19T22:21:32.474654+00:00",
   "exchange": "bitget",
   "market": "USDT-FUTURES",
   "symbol": "BTCUSDT",
@@ -9,49 +9,49 @@
     "5m": {
       "status": "ok",
       "signal_status": "provisional",
-      "grade": "slightly_bearish",
+      "grade": "neutral",
       "confidence": "low",
-      "evidence_state": "aligned",
+      "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 61494.1,
+      "candle_close_price": 61814.0,
       "closed_candles": 99,
-      "observed_at": "2026-11-19T21:35:00+00:00",
+      "observed_at": "2026-11-19T22:15:00+00:00",
       "error": null
     },
     "15m": {
+      "status": "ok",
+      "signal_status": "provisional",
+      "grade": "neutral",
+      "confidence": "low",
+      "evidence_state": "partial_direction",
+      "model_version": "multi_tf_evidence_v0.2",
+      "candle_close_price": 61814.0,
+      "closed_candles": 99,
+      "observed_at": "2026-11-19T22:15:00+00:00",
+      "error": null
+    },
+    "30m": {
       "status": "ok",
       "signal_status": "provisional",
       "grade": "slightly_bearish",
       "confidence": "low",
       "evidence_state": "aligned",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 61499.1,
+      "candle_close_price": 61517.3,
       "closed_candles": 99,
-      "observed_at": "2026-11-19T21:30:00+00:00",
+      "observed_at": "2026-11-19T22:00:00+00:00",
       "error": null
     },
-    "30m": {
+    "1h": {
       "status": "ok",
       "signal_status": "provisional",
       "grade": "bearish",
       "confidence": "low",
       "evidence_state": "aligned",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 61499.1,
+      "candle_close_price": 61517.3,
       "closed_candles": 99,
-      "observed_at": "2026-11-19T21:30:00+00:00",
-      "error": null
-    },
-    "1h": {
-      "status": "ok",
-      "signal_status": "provisional",
-      "grade": "slightly_bearish",
-      "confidence": "low",
-      "evidence_state": "aligned",
-      "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 62100.1,
-      "closed_candles": 99,
-      "observed_at": "2026-11-19T21:00:00+00:00",
+      "observed_at": "2026-11-19T22:00:00+00:00",
       "error": null
     },
     "4h": {
