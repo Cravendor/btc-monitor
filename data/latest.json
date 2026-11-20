@@ -1,19 +1,19 @@
 {
   "feed_schema_version": 1,
-  "updated_at": "2026-11-20T23:11:58.596268+00:00",
+  "updated_at": "2026-11-20T22:50:29.364307+00:00",
   "exchange": "bitget",
   "market": "USDT-FUTURES",
   "symbol": "BTCUSDT",
   "order": "newest_first",
   "measurements": [
     {
-      "collection_source": "nas",
+      "collection_source": "github_fallback",
       "schema_version": 2,
       "exchange": "bitget",
       "market": "USDT-FUTURES",
       "symbol": "BTCUSDT",
-      "started_at": "2026-11-20T22:46:35.200840+00:00",
-      "finished_at": "2026-11-20T22:46:40.359079+00:00",
+      "started_at": "2026-11-20T22:50:26.091130+00:00",
+      "finished_at": "2026-11-20T22:50:29.254007+00:00",
       "status": "ok",
       "metrics": {
         "futures_price": {
@@ -21,96 +21,96 @@
           "status": "ok",
           "data": {
             "symbol": "BTCUSDT",
-            "lastPr": "59118.8",
-            "askPr": "59118.9",
-            "bidPr": "59118.8",
-            "bidSz": "0.1968",
-            "askSz": "0.9018",
+            "lastPr": "59012.2",
+            "askPr": "59012.3",
+            "bidPr": "59012.2",
+            "bidSz": "8.2549",
+            "askSz": "0.3632",
             "high24h": "62612.1",
             "low24h": "57712.1",
-            "ts": "1795214795541",
-            "change24h": "-0.05029",
-            "baseVolume": "77014.5638",
-            "quoteVolume": "4640546612.13001",
-            "usdtVolume": "4640546612.13001",
+            "ts": "1795215026278",
+            "change24h": "-0.05176",
+            "baseVolume": "77078.7626",
+            "quoteVolume": "4644194908.42956",
+            "usdtVolume": "4644194908.42956",
             "openUtc": "61957.3",
-            "changeUtc24h": "-0.04581",
-            "indexPrice": "59159.0889130434782608",
-            "fundingRate": "-0.000041",
-            "holdingAmount": "35104.7307999999895",
+            "changeUtc24h": "-0.04753",
+            "indexPrice": "59047.382826086956522",
+            "fundingRate": "-0.000042",
+            "holdingAmount": "35090.0554999999903",
             "deliveryStartTime": null,
             "deliveryTime": null,
             "deliveryStatus": "",
-            "open24h": "62249.5",
-            "markPrice": "59118.8"
+            "open24h": "62233.4",
+            "markPrice": "59014.3"
           },
           "error": null,
           "attempts": 1,
-          "observed_at": "2026-11-20T22:46:35.200878+00:00"
+          "observed_at": "2026-11-20T22:50:26.091144+00:00"
         },
         "open_interest": {
           "url": "https://api.bitget.com/api/v2/mix/market/ticker?symbol=BTCUSDT&productType=USDT-FUTURES",
           "status": "ok",
           "data": {
             "symbol": "BTCUSDT",
-            "lastPr": "59118.9",
-            "askPr": "59118.9",
-            "bidPr": "59118.8",
-            "bidSz": "0.1929",
-            "askSz": "0.9034",
+            "lastPr": "59012.2",
+            "askPr": "59012.3",
+            "bidPr": "59012.2",
+            "bidSz": "8.2549",
+            "askSz": "0.3632",
             "high24h": "62612.1",
             "low24h": "57712.1",
-            "ts": "1795214795850",
-            "change24h": "-0.05029",
-            "baseVolume": "77014.5638",
-            "quoteVolume": "4640546612.13001",
-            "usdtVolume": "4640546612.13001",
+            "ts": "1795215026460",
+            "change24h": "-0.05176",
+            "baseVolume": "77078.7626",
+            "quoteVolume": "4644194908.42956",
+            "usdtVolume": "4644194908.42956",
             "openUtc": "61957.3",
-            "changeUtc24h": "-0.04581",
-            "indexPrice": "59159.1030434782608695",
-            "fundingRate": "-0.000041",
-            "holdingAmount": "35104.7307999999895",
+            "changeUtc24h": "-0.04753",
+            "indexPrice": "59047.382826086956522",
+            "fundingRate": "-0.000042",
+            "holdingAmount": "35090.0554999999903",
             "deliveryStartTime": null,
             "deliveryTime": null,
             "deliveryStatus": "",
-            "open24h": "62249.5",
-            "markPrice": "59118.9"
+            "open24h": "62233.4",
+            "markPrice": "59014.3"
           },
           "error": null,
           "attempts": 1,
-          "observed_at": "2026-11-20T22:46:35.659873+00:00"
+          "observed_at": "2026-11-20T22:50:26.362066+00:00"
         },
         "funding": {
           "url": "https://api.bitget.com/api/v2/mix/market/ticker?symbol=BTCUSDT&productType=USDT-FUTURES",
           "status": "ok",
           "data": {
             "symbol": "BTCUSDT",
-            "lastPr": "59118.8",
-            "askPr": "59118.9",
-            "bidPr": "59118.8",
-            "bidSz": "0.1968",
-            "askSz": "0.9018",
+            "lastPr": "59012.2",
+            "askPr": "59012.3",
+            "bidPr": "59012.2",
+            "bidSz": "11.2801",
+            "askSz": "0.3632",
             "high24h": "62612.1",
             "low24h": "57712.1",
-            "ts": "1795214796119",
-            "change24h": "-0.05029",
-            "baseVolume": "77014.5638",
-            "quoteVolume": "4640546612.13001",
-            "usdtVolume": "4640546612.13001",
+            "ts": "1795215026637",
+            "change24h": "-0.05176",
+            "baseVolume": "77078.7626",
+            "quoteVolume": "4644194908.42956",
+            "usdtVolume": "4644194908.42956",
             "openUtc": "61957.3",
-            "changeUtc24h": "-0.04581",
-            "indexPrice": "59159.0889130434782608",
-            "fundingRate": "-0.000041",
-            "holdingAmount": "35104.7307999999895",
+            "changeUtc24h": "-0.04753",
+            "indexPrice": "59047.5306521739130437",
+            "fundingRate": "-0.000042",
+            "holdingAmount": "35090.0554999999903",
             "deliveryStartTime": null,
             "deliveryTime": null,
             "deliveryStatus": "",
-            "open24h": "62249.5",
-            "markPrice": "59118.8"
+            "open24h": "62233.4",
+            "markPrice": "59014.2"
           },
           "error": null,
           "attempts": 1,
-          "observed_at": "2026-11-20T22:46:35.969490+00:00"
+          "observed_at": "2026-11-20T22:50:26.541788+00:00"
         },
         "candles_4h": {
           "url": "https://api.bitget.com/api/v2/mix/market/candles?symbol=BTCUSDT&productType=USDT-FUTURES&granularity=4H&limit=100",
@@ -1014,34 +1014,34 @@
             "interval": "4H"
           },
           "attempts": 1,
-          "observed_at": "2026-11-20T22:46:36.236773+00:00"
+          "observed_at": "2026-11-20T22:50:26.716721+00:00"
         },
         "orderbook_depth": {
           "url": "https://api.bitget.com/api/v2/mix/market/merge-depth?symbol=BTCUSDT&productType=USDT-FUTURES&precision=scale0&limit=100",
           "status": "ok",
           "data": {
-            "source_ts_ms": 1795214796684,
-            "mid_usdt": 59118.850000000006,
-            "spread_bps": 0.0169150786929287,
+            "source_ts_ms": 1795215027008,
+            "mid_usdt": 59012.55,
+            "spread_bps": 0.016945548023012867,
             "bands_pct": {
               "0.1": {
-                "bid_notional_usdt": 5653208.68373,
-                "ask_notional_usdt": 3741718.6433700006,
-                "imbalance": 0.20345980057197868,
+                "bid_notional_usdt": 4977640.60887,
+                "ask_notional_usdt": 4667714.0189499995,
+                "imbalance": 0.0321322130578882,
                 "bid_band_covered": false,
                 "ask_band_covered": false
               },
               "0.5": {
-                "bid_notional_usdt": 5653208.68373,
-                "ask_notional_usdt": 3741718.6433700006,
-                "imbalance": 0.20345980057197868,
+                "bid_notional_usdt": 4977640.60887,
+                "ask_notional_usdt": 4667714.0189499995,
+                "imbalance": 0.0321322130578882,
                 "bid_band_covered": false,
                 "ask_band_covered": false
               },
               "1.0": {
-                "bid_notional_usdt": 5653208.68373,
-                "ask_notional_usdt": 3741718.6433700006,
-                "imbalance": 0.20345980057197868,
+                "bid_notional_usdt": 4977640.60887,
+                "ask_notional_usdt": 4667714.0189499995,
+                "imbalance": 0.0321322130578882,
                 "bid_band_covered": false,
                 "ask_band_covered": false
               }
@@ -1051,17 +1051,17 @@
             "scope": "Returned levels only; incomplete bands are lower bounds, not full market depth."
           },
           "attempts": 1,
-          "observed_at": "2026-11-20T22:46:36.529957+00:00"
+          "observed_at": "2026-11-20T22:50:26.902030+00:00"
         },
         "spot_price": {
           "url": "https://api.bitget.com/api/v2/spot/market/tickers?symbol=BTCUSDT",
           "status": "ok",
           "data": {
-            "price_usdt": 59157.01,
-            "source_ts_ms": 1795214795875
+            "price_usdt": 59045.82,
+            "source_ts_ms": 1795215026206
           },
           "attempts": 1,
-          "observed_at": "2026-11-20T22:46:36.802580+00:00"
+          "observed_at": "2026-11-20T22:50:27.103626+00:00"
         },
         "stablecoins": {
           "status": "ok",
@@ -1072,16 +1072,16 @@
               "data": {
                 "price_usd": 0.99785,
                 "depeg_pct": -0.21499999999999853,
-                "source_time": "2026-11-20T22:46:35.839108119Z"
+                "source_time": "2026-11-20T22:50:26.785927504Z"
               },
               "attempts": 1,
-              "observed_at": "2026-11-20T22:46:37.346261+00:00"
+              "observed_at": "2026-11-20T22:50:27.308822+00:00"
             },
             "USDC": {
               "status": "ok",
               "data": {
-                "price_usd": 0.9998856140000001,
-                "depeg_pct": -0.011438599999991084,
+                "price_usd": 0.9999554635000001,
+                "depeg_pct": -0.004453649999991427,
                 "method": "Bitget USDC-USDT times Coinbase USDT-USD"
               },
               "sources": {
@@ -1089,11 +1089,11 @@
                   "url": "https://api.bitget.com/api/v2/spot/market/tickers?symbol=USDCUSDT",
                   "status": "ok",
                   "data": {
-                    "price_usdt": 1.00204,
-                    "source_ts_ms": 1795214796186
+                    "price_usdt": 1.00211,
+                    "source_ts_ms": 1795215026206
                   },
                   "attempts": 1,
-                  "observed_at": "2026-11-20T22:46:37.413112+00:00"
+                  "observed_at": "2026-11-20T22:50:27.325117+00:00"
                 },
                 "usdt": {
                   "url": "https://api.exchange.coinbase.com/products/USDT-USD/ticker",
@@ -1101,10 +1101,10 @@
                   "data": {
                     "price_usd": 0.99785,
                     "depeg_pct": -0.21499999999999853,
-                    "source_time": "2026-11-20T22:46:35.839108119Z"
+                    "source_time": "2026-11-20T22:50:26.785927504Z"
                   },
                   "attempts": 1,
-                  "observed_at": "2026-11-20T22:46:37.346261+00:00"
+                  "observed_at": "2026-11-20T22:50:27.308822+00:00"
                 }
               }
             }
@@ -1114,30 +1114,30 @@
         "coinbase_premium_proxy": {
           "status": "ok",
           "data": {
-            "premium_pct": 0.0036550533463186596,
+            "premium_pct": 0.007448399620080259,
             "method": "Coinbase BTC-USD versus Bitget BTC-USDT converted using Coinbase USDT-USD; proxy, not standard Coinbase/Binance index.",
-            "max_source_skew_seconds": 0.6913149356842041
+            "max_source_skew_seconds": 1.6565370559692383
           },
           "sources": {
             "spot": {
               "url": "https://api.bitget.com/api/v2/spot/market/tickers?symbol=BTCUSDT",
               "status": "ok",
               "data": {
-                "price_usdt": 59157.01,
-                "source_ts_ms": 1795214795875
+                "price_usdt": 59045.82,
+                "source_ts_ms": 1795215026206
               },
               "attempts": 1,
-              "observed_at": "2026-11-20T22:46:36.802580+00:00"
+              "observed_at": "2026-11-20T22:50:27.103626+00:00"
             },
             "coinbase": {
               "url": "https://api.exchange.coinbase.com/products/BTC-USD/ticker",
               "status": "ok",
               "data": {
-                "price_usd": 59031.98,
-                "source_time": "2026-11-20T22:46:36.530423392Z"
+                "price_usd": 58923.26,
+                "source_time": "2026-11-20T22:50:25.129390491Z"
               },
               "attempts": 1,
-              "observed_at": "2026-11-20T22:46:37.093167+00:00"
+              "observed_at": "2026-11-20T22:50:27.283561+00:00"
             },
             "usdt": {
               "url": "https://api.exchange.coinbase.com/products/USDT-USD/ticker",
@@ -1145,20 +1145,20 @@
               "data": {
                 "price_usd": 0.99785,
                 "depeg_pct": -0.21499999999999853,
-                "source_time": "2026-11-20T22:46:35.839108119Z"
+                "source_time": "2026-11-20T22:50:26.785927504Z"
               },
               "attempts": 1,
-              "observed_at": "2026-11-20T22:46:37.346261+00:00"
+              "observed_at": "2026-11-20T22:50:27.308822+00:00"
             }
           }
         },
         "futures_basis": {
           "status": "ok",
           "data": {
-            "basis_pct": -0.06810265976661123,
-            "mark_price_usdt": 59118.8,
-            "index_price_usdt": 59159.08891304348,
-            "source_ts_ms": 1795214795541,
+            "basis_pct": -0.056027590899998536,
+            "mark_price_usdt": 59014.3,
+            "index_price_usdt": 59047.382826086956,
+            "source_ts_ms": 1795215026278,
             "method": "Bitget perpetual mark/index premium; not dated futures annualised basis."
           },
           "sources": {
@@ -1167,32 +1167,32 @@
               "status": "ok",
               "data": {
                 "symbol": "BTCUSDT",
-                "lastPr": "59118.8",
-                "askPr": "59118.9",
-                "bidPr": "59118.8",
-                "bidSz": "0.1968",
-                "askSz": "0.9018",
+                "lastPr": "59012.2",
+                "askPr": "59012.3",
+                "bidPr": "59012.2",
+                "bidSz": "8.2549",
+                "askSz": "0.3632",
                 "high24h": "62612.1",
                 "low24h": "57712.1",
-                "ts": "1795214795541",
-                "change24h": "-0.05029",
-                "baseVolume": "77014.5638",
-                "quoteVolume": "4640546612.13001",
-                "usdtVolume": "4640546612.13001",
+                "ts": "1795215026278",
+                "change24h": "-0.05176",
+                "baseVolume": "77078.7626",
+                "quoteVolume": "4644194908.42956",
+                "usdtVolume": "4644194908.42956",
                 "openUtc": "61957.3",
-                "changeUtc24h": "-0.04581",
-                "indexPrice": "59159.0889130434782608",
-                "fundingRate": "-0.000041",
-                "holdingAmount": "35104.7307999999895",
+                "changeUtc24h": "-0.04753",
+                "indexPrice": "59047.382826086956522",
+                "fundingRate": "-0.000042",
+                "holdingAmount": "35090.0554999999903",
                 "deliveryStartTime": null,
                 "deliveryTime": null,
                 "deliveryStatus": "",
-                "open24h": "62249.5",
-                "markPrice": "59118.8"
+                "open24h": "62233.4",
+                "markPrice": "59014.3"
               },
               "error": null,
               "attempts": 1,
-              "observed_at": "2026-11-20T22:46:35.200878+00:00"
+              "observed_at": "2026-11-20T22:50:26.091144+00:00"
             }
           }
         },
@@ -1204,15 +1204,6 @@
               "status": "ok",
               "data": {
                 "candles": [
-                  {
-                    "open_time_ms": 1795185000000,
-                    "open": 62068.5,
-                    "high": 62109.0,
-                    "low": 61754.9,
-                    "close": 61758.1,
-                    "base_volume_btc": 476.7783,
-                    "quote_volume_usdt": 29549475.797
-                  },
                   {
                     "open_time_ms": 1795185300000,
                     "open": 61758.1,
@@ -2094,6 +2085,15 @@
                     "close": 59192.4,
                     "base_volume_btc": 59.9311,
                     "quote_volume_usdt": 3546151.16012
+                  },
+                  {
+                    "open_time_ms": 1795214700000,
+                    "open": 59192.4,
+                    "high": 59198.3,
+                    "low": 58874.0,
+                    "close": 58964.7,
+                    "base_volume_btc": 115.1707,
+                    "quote_volume_usdt": 6794934.45308
                   }
                 ],
                 "interval": "5m",
@@ -2101,21 +2101,21 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-11-20T22:46:37.776406+00:00",
+              "observed_at": "2026-11-20T22:50:27.513398+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "5m",
                 "grade": "neutral",
                 "score": 0,
-                "observed_at": "2026-11-20T22:45:00+00:00",
-                "price_vs_20_prior_pct": 0.5416,
-                "momentum_6_pct": 0.0243,
-                "volume_ratio": 0.2512,
+                "observed_at": "2026-11-20T22:50:00+00:00",
+                "price_vs_20_prior_pct": 0.0835,
+                "momentum_6_pct": -0.4028,
+                "volume_ratio": 0.496,
                 "evidence": {
-                  "trend_vote": 1,
+                  "trend_vote": 0,
                   "momentum_vote": 0,
                   "directional_agreement": false,
-                  "state": "partial_direction",
+                  "state": "no_direction",
                   "elevated_volume": false
                 },
                 "confidence": "low",
@@ -3027,7 +3027,7 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-11-20T22:46:38.084707+00:00",
+              "observed_at": "2026-11-20T22:50:27.711299+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "15m",
@@ -3953,7 +3953,7 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-11-20T22:46:38.360273+00:00",
+              "observed_at": "2026-11-20T22:50:27.901670+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "30m",
@@ -4879,7 +4879,7 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-11-20T22:46:38.661552+00:00",
+              "observed_at": "2026-11-20T22:50:28.096338+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "1h",
@@ -5805,7 +5805,7 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-11-20T22:46:38.961964+00:00",
+              "observed_at": "2026-11-20T22:50:28.285634+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "4h",
@@ -6641,7 +6641,7 @@
                 "gap_count": 0
               },
               "attempts": 1,
-              "observed_at": "2026-11-20T22:46:39.251368+00:00",
+              "observed_at": "2026-11-20T22:50:28.471567+00:00",
               "signal": {
                 "status": "provisional",
                 "timeframe": "1d",
@@ -7025,172 +7025,28 @@
                 "https://api.bitget.com/api/v2/mix/market/history-candles?symbol=BTCUSDT&productType=USDT-FUTURES&granularity=1Wutc&startTime=1780272000000&endTime=1787529600000&limit=100",
                 "https://api.bitget.com/api/v2/mix/market/history-candles?symbol=BTCUSDT&productType=USDT-FUTURES&granularity=1Wutc&startTime=1773014400000&endTime=1780272000000&limit=100"
               ],
-              "observed_at": "2026-11-20T22:46:37.776226+00:00"
+              "observed_at": "2026-11-20T22:50:27.513364+00:00"
             }
           },
-          "observed_at": "2026-11-20T22:46:40.359006+00:00",
+          "observed_at": "2026-11-20T22:50:29.253985+00:00",
           "scope": "Individual timeframe statuses are authoritative."
         }
       },
       "cvd_4h": {
-        "status": "ok",
+        "status": "not_collected",
         "value": null,
-        "coverage_verified": true,
-        "reason": "Both Bitget markets passed stored history coverage checks; deltas use the provider buy/sell convention.",
-        "schema_version": 2,
+        "coverage_verified": false,
+        "reason": "Local CVD journal is not configured.",
+        "schema_version": 1,
         "exchange": "bitget",
         "symbol": "BTCUSDT",
         "unit": "BTC",
-        "method": "provider_reported_buy_minus_sell",
+        "method": "observed_buy_minus_sell",
         "interval_start": "2026-11-20T16:00:00+00:00",
         "interval_end": "2026-11-20T20:00:00+00:00",
         "interval_convention": "[start,end)",
-        "observed_at": "2026-11-20T22:46:35.200840+00:00",
-        "markets": {
-          "spot": {
-            "status": "ok",
-            "value": "469.710823",
-            "coverage_verified": true,
-            "reason": "Provider history exhausted and exact BTC/quote volumes reconciled; not independent proof of all exchange delivery or taker attribution.",
-            "unit": "BTC",
-            "observed_delta_btc": "482.752076",
-            "observed_buy_btc": "1629.253562",
-            "observed_sell_btc": "1146.501486",
-            "trade_count": 110869,
-            "first_trade_at": "2026-11-20T16:00:00.045000+00:00",
-            "last_trade_at": "2026-11-20T19:59:59.998000+00:00",
-            "unresolved_overlapping_gaps": 51,
-            "open_overlapping_gaps": 49,
-            "latest_journal_trade_at": "2026-11-20T22:46:37.160000+00:00",
-            "latest_journal_trade_age_seconds": 0,
-            "journal_trade_status": "recent",
-            "recovery": {
-              "status": "unverified_recovery_diagnostics",
-              "reason": "candidate_requires_coverage_validation",
-              "interval_start_ms": 1795190400000,
-              "interval_end_ms": 1795204800000,
-              "pagination_exhausted": true,
-              "candle_rechecked": false,
-              "pages": 112,
-              "recovered_trades": 110869,
-              "journal_missing": 1133,
-              "journal_extra": 0,
-              "journal_conflicts": 0,
-              "volume_reconciliation": {
-                "rule": "exact_decimal_equality",
-                "base_btc": {
-                  "trades": "2799.005427",
-                  "candle": "2799.005427",
-                  "difference": "0.000000",
-                  "difference_pct": "0",
-                  "exact": true
-                },
-                "quote_usdt": {
-                  "trades": "164903946.28511304",
-                  "candle": "164903946.28511304",
-                  "difference": "0E-8",
-                  "difference_pct": "0",
-                  "exact": true
-                }
-              }
-            },
-            "observed_trade_count": 109736,
-            "validated_delta_btc": "469.710823",
-            "coverage_scope": "bitget_public_history_only",
-            "coverage_method": "bitget_history_exhaustion_and_exact_volume_v1",
-            "exchange": "bitget",
-            "symbol": "BTCUSDT",
-            "market": "spot",
-            "interval_start_ms": 1795190400000,
-            "interval_end_ms": 1795204800000,
-            "validated_buy_btc": "1634.358125",
-            "validated_sell_btc": "1164.647302",
-            "first_trade_ms": 1795190400045,
-            "last_trade_ms": 1795204799998,
-            "recovered_missing_trades": 1133,
-            "timestamp_rounding_matches": 0,
-            "pagination_pages": 112,
-            "evidence_sha256": "5bbc17d1aeb5e72aa5a3f113efc8d2f1e2622e5f974851008084273ca1ca60b5",
-            "source_run_id": "6e357be4233e4da7a5abc5dcd8038d01",
-            "history_response_at": "2026-11-20T20:34:32.907000+00:00",
-            "validated_at": "2026-11-20T22:46:35.200000+00:00",
-            "side_semantics": "provider_reported_buy_sell",
-            "taker_side_verified": false
-          },
-          "usdt_futures": {
-            "status": "ok",
-            "value": "-1671.3242",
-            "coverage_verified": true,
-            "reason": "Provider history exhausted and exact BTC/quote volumes reconciled; not independent proof of all exchange delivery or taker attribution.",
-            "unit": "BTC",
-            "observed_delta_btc": "-1671.3242",
-            "observed_buy_btc": "11424.9482",
-            "observed_sell_btc": "13096.2724",
-            "trade_count": 843858,
-            "first_trade_at": "2026-11-20T16:00:00.009000+00:00",
-            "last_trade_at": "2026-11-20T19:59:59.999000+00:00",
-            "unresolved_overlapping_gaps": 84,
-            "open_overlapping_gaps": 84,
-            "latest_journal_trade_at": "2026-11-20T22:46:39.604000+00:00",
-            "latest_journal_trade_age_seconds": 0,
-            "journal_trade_status": "recent",
-            "recovery": {
-              "status": "unverified_recovery_diagnostics",
-              "reason": "candidate_requires_coverage_validation",
-              "interval_start_ms": 1795190400000,
-              "interval_end_ms": 1795204800000,
-              "pagination_exhausted": true,
-              "candle_rechecked": false,
-              "pages": 845,
-              "recovered_trades": 843858,
-              "journal_missing": 0,
-              "journal_extra": 0,
-              "journal_conflicts": 0,
-              "volume_reconciliation": {
-                "rule": "exact_decimal_equality",
-                "base_btc": {
-                  "trades": "24521.2206",
-                  "candle": "24521.2206",
-                  "difference": "0.0000",
-                  "difference_pct": "0",
-                  "exact": true
-                },
-                "quote_usdt": {
-                  "trades": "1442505541.89688",
-                  "candle": "1442505541.89688",
-                  "difference": "0.00000",
-                  "difference_pct": "0",
-                  "exact": true
-                }
-              }
-            },
-            "observed_trade_count": 843858,
-            "validated_delta_btc": "-1671.3242",
-            "coverage_scope": "bitget_public_history_only",
-            "coverage_method": "bitget_history_exhaustion_and_exact_volume_v1",
-            "exchange": "bitget",
-            "symbol": "BTCUSDT",
-            "market": "usdt_futures",
-            "interval_start_ms": 1795190400000,
-            "interval_end_ms": 1795204800000,
-            "validated_buy_btc": "11424.9482",
-            "validated_sell_btc": "13096.2724",
-            "first_trade_ms": 1795190400009,
-            "last_trade_ms": 1795204799999,
-            "recovered_missing_trades": 0,
-            "timestamp_rounding_matches": 0,
-            "pagination_pages": 845,
-            "evidence_sha256": "96c098766b6df4f983e00a82551ef7c9b2e274e667c2accd63b1a136944ca80e",
-            "source_run_id": "f6c80d07feff41278fcc4a6bed2316c8",
-            "history_response_at": "2026-11-20T22:18:01.757000+00:00",
-            "validated_at": "2026-11-20T22:46:35.200000+00:00",
-            "side_semantics": "provider_reported_buy_sell",
-            "taker_side_verified": false
-          }
-        },
-        "coverage_scope": "bitget_public_history_only",
-        "side_semantics": "provider_reported_buy_sell",
-        "taker_side_verified": false
+        "observed_at": "2026-11-20T22:50:26.091130+00:00",
+        "markets": {}
       },
       "cycle_history_reference": {
         "schema_version": 1,
@@ -7203,7 +7059,7 @@
         "status": "partial",
         "requested_from": "2021-01-01T00:00:00+00:00",
         "required_through": "2026-11-20T00:00:00+00:00",
-        "checked_at": "2026-11-20T22:46:40.359079+00:00",
+        "checked_at": "2026-11-20T22:50:29.254007+00:00",
         "candle_count": 2126,
         "required_days": 2149,
         "missing_days": 23,
@@ -7216,7 +7072,7 @@
       "cycle_anchor_review": {
         "status": "unavailable",
         "model_version": "archive_cycle_context_v1",
-        "checked_at": "2026-11-20T22:46:40.359079+00:00",
+        "checked_at": "2026-11-20T22:50:29.254007+00:00",
         "activation": "draft",
         "reason": "Onvolledige daghistorie vanaf de gekozen vorige cyclustop.",
         "missing_days": 23,
@@ -7225,7 +7081,7 @@
       "scenario_snapshot": {
         "schema_version": 1,
         "model_version": "two_routes_daily_weekly_v4_anchors",
-        "as_of": "2026-11-20T22:46:40.359079+00:00",
+        "as_of": "2026-11-20T22:50:29.254007+00:00",
         "horizons": {
           "swing": {
             "schema_version": 1,
@@ -7234,12 +7090,12 @@
             "timeframe": "1d",
             "label": "Swing \u00b7 dagen tot weken",
             "status": "ready",
-            "recorded_at": "2026-11-20T22:46:40.359079+00:00",
-            "source_observed_at": "2026-11-20T22:46:39.251368+00:00",
-            "reference_price": 59118.8,
+            "recorded_at": "2026-11-20T22:50:29.254007+00:00",
+            "source_observed_at": "2026-11-20T22:50:28.471567+00:00",
+            "reference_price": 59012.2,
             "reference": "bitget/BTCUSDT/USDT-FUTURES",
             "unit": "USDT",
-            "valid_until": "2026-11-20T23:46:35.200000+00:00",
+            "valid_until": "2026-11-20T23:50:26.091000+00:00",
             "candle_closed_at": "2026-11-20T00:00:00+00:00",
             "last_close": 61957.3,
             "previous_close": 63031.0,
@@ -7544,7 +7400,7 @@
               "zone_timeframe": "1d",
               "confirmation_timeframe": "4h",
               "confirmation_closed_at": "2026-11-20T20:00:00+00:00",
-              "confirmation_source_at": "2026-11-20T22:46:38.961964+00:00",
+              "confirmation_source_at": "2026-11-20T22:50:28.285634+00:00",
               "confirmation_bar": {
                 "open": 59446.5,
                 "high": 59810.1,
@@ -7558,24 +7414,24 @@
                 {
                   "price": 61957.4,
                   "role": "Eindpunt van de oorspronkelijke beweging",
-                  "from_reference_pct": 4.801518298747598
+                  "from_reference_pct": 4.99083240414695
                 },
                 {
                   "price": 66491.3848,
                   "role": "Ondiepe terugname",
-                  "from_reference_pct": 12.470795753635056
+                  "from_reference_pct": 12.673963688864331
                 }
               ],
               "next_lower": [
                 {
                   "price": 58798.04285714,
                   "role": "ATR-projectie",
-                  "from_zone_pct": -0.5425636901628672
+                  "from_zone_pct": -0.3629031672433891
                 },
                 {
                   "price": 56731.7904,
                   "role": "Tweepunts-extensie; extrapolatie",
-                  "from_zone_pct": -4.037648937393867
+                  "from_zone_pct": -3.864301957900229
                 }
               ],
               "all_levels": [
@@ -7716,7 +7572,7 @@
                   {
                     "price": 58798.042857142864,
                     "kind": "atr_projection",
-                    "from_reference_pct": -0.5425636901580155,
+                    "from_reference_pct": -0.36290316723852634,
                     "rejection_to": [
                       {
                         "price": 56731.7904,
@@ -7733,7 +7589,7 @@
                   {
                     "price": 55925.90000000001,
                     "kind": "atr_projection",
-                    "from_reference_pct": -5.400820043708587,
+                    "from_reference_pct": -5.2299355048616825,
                     "rejection_to": [
                       {
                         "price": 50084.5076,
@@ -7754,21 +7610,21 @@
                     "price": 56731.7904,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": -4.037648937393867
+                    "distance_pct": -3.864301957900229
                   },
                   {
                     "ratio": 1.618,
                     "price": 50084.5076,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": -15.281589612779701
+                    "distance_pct": -15.128553756680818
                   },
                   {
                     "ratio": 2.618,
                     "price": 30872.70760000001,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": -47.778527980946826
+                    "distance_pct": -47.68419479361893
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -7839,7 +7695,7 @@
                   {
                     "price": 61957.4,
                     "kind": "range_boundary",
-                    "from_reference_pct": 4.801518298747598,
+                    "from_reference_pct": 4.99083240414695,
                     "rejection_to": [
                       {
                         "price": 56731.7904,
@@ -7856,7 +7712,7 @@
                   {
                     "price": 58798.042857142864,
                     "kind": "atr_projection",
-                    "from_reference_pct": -0.5425636901580155,
+                    "from_reference_pct": -0.36290316723852634,
                     "rejection_to": [
                       {
                         "price": 56731.7904,
@@ -7877,28 +7733,28 @@
                     "price": 69296.3076,
                     "role": "Gematigde terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": 17.21534875538746
+                    "distance_pct": 17.427087280257304
                   },
                   {
                     "ratio": 0.236,
                     "price": 66491.3848,
                     "role": "Ondiepe terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": 12.470795753635056
+                    "distance_pct": 12.673963688864331
                   },
                   {
                     "ratio": 0.0,
                     "price": 61957.4,
                     "role": "Eindpunt van de oorspronkelijke beweging",
                     "kind": "fib_retracement",
-                    "distance_pct": 4.801518298747598
+                    "distance_pct": 4.99083240414695
                   },
                   {
                     "ratio": 1.272,
                     "price": 56731.7904,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": -4.037648937393867
+                    "distance_pct": -3.864301957900229
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -7969,7 +7825,7 @@
                   {
                     "price": 81169.2,
                     "kind": "range_boundary",
-                    "from_reference_pct": 37.29845666691474,
+                    "from_reference_pct": 37.54647344108506,
                     "rejection_to": [
                       {
                         "price": 77057.87479999999,
@@ -7986,7 +7842,7 @@
                   {
                     "price": 84328.55714285714,
                     "kind": "atr_projection",
-                    "from_reference_pct": 42.642538655820374,
+                    "from_reference_pct": 42.900209012470555,
                     "rejection_to": [
                       {
                         "price": 81169.2,
@@ -8007,21 +7863,21 @@
                     "price": 73830.2924,
                     "role": "Diepe terugname; golden-ratio-zone",
                     "kind": "fib_retracement",
-                    "distance_pct": 24.884626210274917
+                    "distance_pct": 25.11021856497471
                   },
                   {
                     "ratio": 0.786,
                     "price": 77057.87479999999,
                     "role": "Verdere diepe terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": 30.344111856126954
+                    "distance_pct": 30.579566259180304
                   },
                   {
                     "ratio": 1.0,
                     "price": 81169.2,
                     "role": "Volledige terugname naar het beginpunt",
                     "kind": "fib_retracement",
-                    "distance_pct": 37.29845666691474
+                    "distance_pct": 37.54647344108506
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -8096,7 +7952,7 @@
                   {
                     "price": 84328.55714285714,
                     "kind": "atr_projection",
-                    "from_reference_pct": 42.642538655820374,
+                    "from_reference_pct": 42.900209012470555,
                     "rejection_to": [
                       {
                         "price": 81169.2,
@@ -8113,7 +7969,7 @@
                   {
                     "price": 87200.7,
                     "kind": "atr_projection",
-                    "from_reference_pct": 47.50079500937095,
+                    "from_reference_pct": 47.76724135009371,
                     "rejection_to": [
                       {
                         "price": 81169.2,
@@ -8231,7 +8087,7 @@
                   {
                     "price": 58798.042857142864,
                     "kind": "atr_projection",
-                    "from_reference_pct": -0.5425636901580155,
+                    "from_reference_pct": -0.36290316723852634,
                     "rejection_to": [
                       {
                         "price": 56731.7904,
@@ -8248,7 +8104,7 @@
                   {
                     "price": 55925.90000000001,
                     "kind": "atr_projection",
-                    "from_reference_pct": -5.400820043708587,
+                    "from_reference_pct": -5.2299355048616825,
                     "rejection_to": [
                       {
                         "price": 50084.5076,
@@ -8296,7 +8152,7 @@
                   {
                     "price": 61957.4,
                     "kind": "range_boundary",
-                    "from_reference_pct": 4.801518298747598,
+                    "from_reference_pct": 4.99083240414695,
                     "rejection_to": [
                       {
                         "price": 56731.7904,
@@ -8313,7 +8169,7 @@
                   {
                     "price": 58798.042857142864,
                     "kind": "atr_projection",
-                    "from_reference_pct": -0.5425636901580155,
+                    "from_reference_pct": -0.36290316723852634,
                     "rejection_to": [
                       {
                         "price": 56731.7904,
@@ -8361,7 +8217,7 @@
                   {
                     "price": 81169.2,
                     "kind": "range_boundary",
-                    "from_reference_pct": 37.29845666691474,
+                    "from_reference_pct": 37.54647344108506,
                     "rejection_to": [
                       {
                         "price": 77057.87479999999,
@@ -8378,7 +8234,7 @@
                   {
                     "price": 84328.55714285714,
                     "kind": "atr_projection",
-                    "from_reference_pct": 42.642538655820374,
+                    "from_reference_pct": 42.900209012470555,
                     "rejection_to": [
                       {
                         "price": 81169.2,
@@ -8426,7 +8282,7 @@
                   {
                     "price": 84328.55714285714,
                     "kind": "atr_projection",
-                    "from_reference_pct": 42.642538655820374,
+                    "from_reference_pct": 42.900209012470555,
                     "rejection_to": [
                       {
                         "price": 81169.2,
@@ -8443,7 +8299,7 @@
                   {
                     "price": 87200.7,
                     "kind": "atr_projection",
-                    "from_reference_pct": 47.50079500937095,
+                    "from_reference_pct": 47.76724135009371,
                     "rejection_to": [
                       {
                         "price": 81169.2,
@@ -9579,7 +9435,7 @@
               "position_tracked": false,
               "probability": null
             },
-            "scenario_set_id": "62881b917ef53e8adf65586e"
+            "scenario_set_id": "4e3ef593454ad9fe7bb898b1"
           },
           "position": {
             "schema_version": 1,
@@ -9588,12 +9444,12 @@
             "timeframe": "1w",
             "label": "Positietrade \u00b7 weken tot maanden of langer",
             "status": "ready",
-            "recorded_at": "2026-11-20T22:46:40.359079+00:00",
-            "source_observed_at": "2026-11-20T22:46:37.776226+00:00",
-            "reference_price": 59118.8,
+            "recorded_at": "2026-11-20T22:50:29.254007+00:00",
+            "source_observed_at": "2026-11-20T22:50:27.513364+00:00",
+            "reference_price": 59012.2,
             "reference": "bitget/BTCUSDT/USDT-FUTURES",
             "unit": "USDT",
-            "valid_until": "2026-11-20T23:46:35.200000+00:00",
+            "valid_until": "2026-11-20T23:50:26.091000+00:00",
             "candle_closed_at": "2026-11-16T00:00:00+00:00",
             "last_close": 65309.5,
             "previous_close": 74820.9,
@@ -9822,7 +9678,7 @@
               "zone_timeframe": "1w",
               "confirmation_timeframe": "4h",
               "confirmation_closed_at": "2026-11-20T20:00:00+00:00",
-              "confirmation_source_at": "2026-11-20T22:46:38.961964+00:00",
+              "confirmation_source_at": "2026-11-20T22:50:28.285634+00:00",
               "confirmation_bar": {
                 "open": 59446.5,
                 "high": 59810.1,
@@ -9836,12 +9692,12 @@
                 {
                   "price": 64105.042,
                   "role": "Verdere diepe terugname",
-                  "from_reference_pct": 8.434274714642376
+                  "from_reference_pct": 8.630151053510971
                 },
                 {
                   "price": 69078.346,
                   "role": "Diepe terugname; golden-ratio-zone",
-                  "from_reference_pct": 16.84666468196243
+                  "from_reference_pct": 17.05773721366093
                 }
               ],
               "next_lower": [
@@ -10005,13 +9861,13 @@
                   {
                     "price": 50949.34785714286,
                     "kind": "atr_projection",
-                    "from_reference_pct": -13.818704274878968,
+                    "from_reference_pct": -13.663025853733867,
                     "rejection_to": []
                   },
                   {
                     "price": 44748.755000000005,
                     "kind": "atr_projection",
-                    "from_reference_pct": -24.307064757742037,
+                    "from_reference_pct": -24.17033257529798,
                     "rejection_to": []
                   }
                 ],
@@ -10084,13 +9940,13 @@
                   {
                     "price": 57770.0,
                     "kind": "range_boundary",
-                    "from_reference_pct": -2.2815077437295828,
+                    "from_reference_pct": -2.104988460013346,
                     "rejection_to": []
                   },
                   {
                     "price": 50949.34785714286,
                     "kind": "atr_projection",
-                    "from_reference_pct": -13.818704274878968,
+                    "from_reference_pct": -13.663025853733867,
                     "rejection_to": []
                   }
                 ],
@@ -10100,21 +9956,21 @@
                     "price": 69078.346,
                     "role": "Diepe terugname; golden-ratio-zone",
                     "kind": "fib_retracement",
-                    "distance_pct": 16.84666468196243
+                    "distance_pct": 17.05773721366093
                   },
                   {
                     "ratio": 0.786,
                     "price": 64105.042,
                     "role": "Verdere diepe terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": 8.434274714642376
+                    "distance_pct": 8.630151053510971
                   },
                   {
                     "ratio": 1.0,
                     "price": 57770.0,
                     "role": "Volledige terugname naar het beginpunt",
                     "kind": "fib_retracement",
-                    "distance_pct": -2.2815077437295828
+                    "distance_pct": -2.104988460013346
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -10185,7 +10041,7 @@
                   {
                     "price": 87373.0,
                     "kind": "range_boundary",
-                    "from_reference_pct": 47.79224206174686,
+                    "from_reference_pct": 48.05921487421245,
                     "rejection_to": [
                       {
                         "price": 80386.692,
@@ -10202,7 +10058,7 @@
                   {
                     "price": 94193.65214285714,
                     "kind": "atr_projection",
-                    "from_reference_pct": 59.32943859289623,
+                    "from_reference_pct": 59.617252267932976,
                     "rejection_to": [
                       {
                         "price": 87373.0,
@@ -10223,28 +10079,28 @@
                     "price": 76064.654,
                     "role": "Gematigde terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": 28.664069636054833
+                    "distance_pct": 28.8964892005382
                   },
                   {
                     "ratio": 0.236,
                     "price": 80386.692,
                     "role": "Ondiepe terugname",
                     "kind": "fib_retracement",
-                    "distance_pct": 35.97483710765441
+                    "distance_pct": 36.22046288733516
                   },
                   {
                     "ratio": 0.0,
                     "price": 87373.0,
                     "role": "Eindpunt van de oorspronkelijke beweging",
                     "kind": "fib_retracement",
-                    "distance_pct": 47.79224206174686
+                    "distance_pct": 48.05921487421245
                   },
                   {
                     "ratio": 1.272,
                     "price": 95425.016,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": 61.41230200883645
+                    "distance_pct": 61.70387818112189
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -10319,7 +10175,7 @@
                   {
                     "price": 94193.65214285714,
                     "kind": "atr_projection",
-                    "from_reference_pct": 59.32943859289623,
+                    "from_reference_pct": 59.617252267932976,
                     "rejection_to": [
                       {
                         "price": 87373.0,
@@ -10336,7 +10192,7 @@
                   {
                     "price": 100394.245,
                     "kind": "atr_projection",
-                    "from_reference_pct": 69.81779907575931,
+                    "from_reference_pct": 70.12455898949707,
                     "rejection_to": [
                       {
                         "price": 95425.016,
@@ -10357,28 +10213,28 @@
                     "price": 95425.016,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": 61.41230200883645
+                    "distance_pct": 61.70387818112189
                   },
                   {
                     "ratio": 1.618,
                     "price": 105667.65400000001,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": 78.73781944153129
+                    "distance_pct": 79.06069253476402
                   },
                   {
                     "ratio": 2.618,
                     "price": 135270.65399999998,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": 128.81156924700767
+                    "distance_pct": 129.2248958689898
                   },
                   {
                     "ratio": 4.236,
                     "price": 183168.308,
                     "kind": "fib_extension",
                     "role": "Tweepunts-extensie; extrapolatie",
-                    "distance_pct": 209.83089643226856
+                    "distance_pct": 210.39057686376714
                   }
                 ],
                 "source_family": "bitget_price_volume",
@@ -10483,13 +10339,13 @@
                   {
                     "price": 50949.34785714286,
                     "kind": "atr_projection",
-                    "from_reference_pct": -13.818704274878968,
+                    "from_reference_pct": -13.663025853733867,
                     "rejection_to": []
                   },
                   {
                     "price": 44748.755000000005,
                     "kind": "atr_projection",
-                    "from_reference_pct": -24.307064757742037,
+                    "from_reference_pct": -24.17033257529798,
                     "rejection_to": []
                   }
                 ],
@@ -10526,13 +10382,13 @@
                   {
                     "price": 57770.0,
                     "kind": "range_boundary",
-                    "from_reference_pct": -2.2815077437295828,
+                    "from_reference_pct": -2.104988460013346,
                     "rejection_to": []
                   },
                   {
                     "price": 50949.34785714286,
                     "kind": "atr_projection",
-                    "from_reference_pct": -13.818704274878968,
+                    "from_reference_pct": -13.663025853733867,
                     "rejection_to": []
                   }
                 ],
@@ -10569,7 +10425,7 @@
                   {
                     "price": 87373.0,
                     "kind": "range_boundary",
-                    "from_reference_pct": 47.79224206174686,
+                    "from_reference_pct": 48.05921487421245,
                     "rejection_to": [
                       {
                         "price": 80386.692,
@@ -10586,7 +10442,7 @@
                   {
                     "price": 94193.65214285714,
                     "kind": "atr_projection",
-                    "from_reference_pct": 59.32943859289623,
+                    "from_reference_pct": 59.617252267932976,
                     "rejection_to": [
                       {
                         "price": 87373.0,
@@ -10634,7 +10490,7 @@
                   {
                     "price": 94193.65214285714,
                     "kind": "atr_projection",
-                    "from_reference_pct": 59.32943859289623,
+                    "from_reference_pct": 59.617252267932976,
                     "rejection_to": [
                       {
                         "price": 87373.0,
@@ -10651,7 +10507,7 @@
                   {
                     "price": 100394.245,
                     "kind": "atr_projection",
-                    "from_reference_pct": 69.81779907575931,
+                    "from_reference_pct": 70.12455898949707,
                     "rejection_to": [
                       {
                         "price": 95425.016,
@@ -11257,25 +11113,33 @@
               "position_tracked": false,
               "probability": null
             },
-            "scenario_set_id": "f786b4f515e3435f5ab25f82"
+            "scenario_set_id": "a02009e9ec7122b180fa3db6"
           }
         }
       },
       "analysis_quality": {
         "schema_version": 1,
-        "checked_at": "2026-11-20T22:46:40.359079+00:00",
-        "measurement_at": "2026-11-20T22:46:40.359079+00:00",
+        "checked_at": "2026-11-20T22:50:29.254007+00:00",
+        "measurement_at": "2026-11-20T22:50:29.254007+00:00",
         "valid_until": "2026-11-21T00:00:00+00:00",
         "scenario_processing": "consistent",
-        "status": "ready_for_scoped_report",
+        "status": "degraded",
         "price_structure": "available",
-        "bitget_interval_delta": "available",
-        "verified_delta_markets": [
-          "spot",
-          "usdt_futures"
-        ],
+        "bitget_interval_delta": "unavailable",
+        "verified_delta_markets": [],
         "macro_cycle_verdict": "requires_separate_macro_evidence",
-        "issues": [],
+        "issues": [
+          {
+            "code": "cvd_spot",
+            "detail": "no_verified_history",
+            "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
+          },
+          {
+            "code": "cvd_usdt_futures",
+            "detail": "no_verified_history",
+            "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
+          }
+        ],
         "interpretation": "Gebruik geldige onderdelen met hun eigen scope; ontbrekend is geen neutraal oordeel."
       }
     },
