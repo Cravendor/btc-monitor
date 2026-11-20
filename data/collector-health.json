@@ -1,43 +1,46 @@
 {
   "schema_version": 3,
   "coverage_24h": {
-    "window_start": "2026-11-19T21:44:42.763573+00:00",
-    "window_end": "2026-11-20T21:44:42.763573+00:00",
+    "window_start": "2026-11-19T22:50:29.457317+00:00",
+    "window_end": "2026-11-20T22:50:29.457317+00:00",
     "first_retained_at": "2026-10-22T15:34:27.047744+00:00",
     "interval_seconds": 1800,
     "expected_snapshots": 48,
-    "observed_snapshots": 43,
-    "observed_intervals": 40,
+    "observed_snapshots": 42,
+    "observed_intervals": 41,
     "history_unavailable_intervals": 0,
-    "missing_measurement_intervals": 8,
-    "coverage_percent": 83.3,
+    "missing_measurement_intervals": 7,
+    "coverage_percent": 85.4,
     "max_observed_gap_seconds": 5336,
     "max_window_gap_seconds": 5336,
     "status": "gaps_detected"
   },
-  "checked_at": "2026-11-20T21:44:42.763573+00:00",
-  "last_snapshot_at": "2026-11-20T21:44:39.475910+00:00",
-  "age_seconds": 3,
+  "checked_at": "2026-11-20T22:50:29.457317+00:00",
+  "last_snapshot_at": "2026-11-20T22:50:29.364307+00:00",
+  "age_seconds": 0,
   "max_age_seconds": 3600,
   "status": "current",
   "analysis_quality": {
     "current": {
       "schema_version": 1,
-      "checked_at": "2026-11-20T21:44:42.763573+00:00",
-      "measurement_at": "2026-11-20T21:43:18.953404+00:00",
+      "checked_at": "2026-11-20T22:50:29.457317+00:00",
+      "measurement_at": "2026-11-20T22:50:29.254007+00:00",
       "valid_until": "2026-11-21T00:00:00+00:00",
       "scenario_processing": "consistent",
       "status": "degraded",
       "price_structure": "available",
       "bitget_interval_delta": "unavailable",
-      "verified_delta_markets": [
-        "spot"
-      ],
+      "verified_delta_markets": [],
       "macro_cycle_verdict": "requires_separate_macro_evidence",
       "issues": [
         {
+          "code": "cvd_spot",
+          "detail": "no_verified_history",
+          "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
+        },
+        {
           "code": "cvd_usdt_futures",
-          "detail": "time_budget_exhausted",
+          "detail": "no_verified_history",
           "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
         }
       ],
@@ -46,5 +49,15 @@
     "recurring_blockers": [],
     "report_findings": [],
     "scope": "Engineering en rapportconsistentie; geen bewijs van voorspellende kwaliteit."
+  },
+  "recovery": {
+    "attempted": true,
+    "event": "schedule",
+    "before_status": "stale",
+    "scope": "periodic_market_snapshot_only",
+    "outcome": "uploaded",
+    "collection_exit_code": 0,
+    "snapshot_status": "ok",
+    "after_status": "current"
   }
 }
