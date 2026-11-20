@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 const ctx = vm.createContext({});
 vm.runInContext(readFileSync(new URL('../web/swing-order.js', import.meta.url),'utf8'),ctx);
-const quote = {side:1, entry:100, stop:98, target:110, price:101, expires:1000};
+const quote = {side:1, entry:100, retest_buffer:0.4, stop:98, target:110, price:101, expires:1000};
 const inputs = {position:0, equity:1000, margin:300, risk:40, fee:5, slip:3, funding:2};
 const plan = (s={},p={}) => ctx.decideCard({...quote,...s},{...inputs,...p},1);
 test('net gate includes costs, and staleness invalidates every position',()=>{
@@ -50,4 +50,15 @@ test('initial proposal, one-tap resizing and manual override',()=>{
   root.change({target:field('risk')});
   assert.equal(field('preset').value,'custom');
   assert.equal(field('risk').value,'15');
+});
+
+test('both entry-band edges qualify; trades outside and expired references are distinguished',()=>{
+  for (const price of [99.6,100,101]) assert.equal(plan({price}).action,'LIMIET LONG');
+  assert.equal(plan({price:99.59}).action,'WACHT');
+  assert.match(plan().reason,/99,60/);
+  const short = {side:-1, stop:102,target:90};
+  for (const price of [99,100,100.4]) assert.equal(plan({...short,price}).action,'LIMIET SHORT');
+  assert.equal(plan({...short,price:100.41}).action,'WACHT');
+  assert.equal(plan({...short,price:90}).action,'WACHT');
+  assert.equal(plan({retest_buffer:NaN}).action,'WACHT');
 });

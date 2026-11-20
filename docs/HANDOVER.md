@@ -1,5 +1,9 @@
 # BTC monitor — agent handover
 
+## USD entry zone · 18 November 2026
+
+PR #101 presets are live. The entry-zone follow-up uses up to the existing retest buffer (0.1 ATR), capped at half the entry-to-stop distance on the favourable side. Bounds round inward to USD cents. Net 3R and size use the least favourable entry, margin uses the upper price. Compare the exchange quote with the displayed band, stop, target and Amsterdam expiry; the snapshot cannot observe intervening fills. Publication follows merge and Pages.
+
 ## Suggested USD capital · 18 November 2026
 
 PR #100 was merged and the Pages order card verified. The follow-up supplies an illustrative $1,000 preset, selectable alternatives and optional manual overrides. Presets assume a 2% loss ceiling and 40% available margin. The existing 25%/50% fractions produce 0.5%/1% setup budgets. These illustrative amounts are local to the page. Live activation requires merge and Pages publication.

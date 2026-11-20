@@ -56,7 +56,7 @@ def snapshot(feed, result, now):
                 card['reason'] = 'Terugtest bevestigd. Een eerder verhandeld doel ontbreekt.'
                 continue
             target = min(levels, key=lambda p: abs(p-level))
-            card.update(side=direction, entry=level*rate, stop=stop*rate, target=target*rate)
+            card.update(side=direction, entry=level*rate, retest_buffer=buffer*rate, stop=stop*rate, target=target*rate)
         return card
     except (KeyError, TypeError, ValueError, IndexError, OverflowError):
         return missing

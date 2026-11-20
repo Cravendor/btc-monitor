@@ -12,10 +12,19 @@ function decideCard(s, p, now) {
       'Geen tegengestelde 4H-terugtest. Houd je bestaande beschermende stop actief.'} : wait(s.reason + (s.support && s.resistance ?
         '\nRecente 4H-steun '+usd(s.support)+' · Weerstand '+usd(s.resistance) : ''));
   if (!s.side || p.position === s.side || stopPassed) return base;
-  const {entry, stop, target, side} = s;
+  const {stop, target, side} = s;
   const explain = reason => existing ? {...base, reason: base.reason + ' ' + reason} : wait(reason);
-  if (side * (s.price-entry) <= 0 || side * (target-s.price) <= 0)
-    return explain('De gemeten koers is voorbij de instap of het doel. Wacht op een nieuwe terugtest.');
+  // Keep the band on the favourable side of the retest, clear of the stop.
+  const width = Math.min(s.retest_buffer, Math.abs(s.entry-stop)/2);
+  const inner = s.entry - side*width;
+  const low = Math.ceil(Math.min(s.entry,inner)*100)/100;
+  const high = Math.floor(Math.max(s.entry,inner)*100)/100;
+  if (!(width > 0 && low < high)) return explain('Geen bruikbare instapzone in USD.');
+  const entry = side === 1 ? high : low;
+  if (side*(s.price-stop) <= 0 || side*(target-s.price) <= 0)
+    return explain('Setup verlopen: stop of doel bereikt op de meetkoers. Geen nieuwe order.');
+  if ((side === 1 && s.price < low) || (side === -1 && s.price > high))
+    return explain('De meetkoers is door de instapzone heen. Wacht op een nieuwe bevestiging.');
   if (![p.fee,p.slip,p.funding].every(v => Number.isFinite(v) && v >= 0))
     return explain('Vul de kostenraming in.');
   const cost = exit => (entry+exit)*(p.fee+p.slip)/10000 + entry*p.funding/10000;
@@ -32,17 +41,23 @@ function decideCard(s, p, now) {
     side*spot > 0 && side*futures > 0 && s.volume_ratio >= 1;
   const budgetFraction = aligned ? 0.5 : 0.25;
   const quantity = Math.floor(p.risk*budgetFraction/risk*1e6)/1e6;
-  const value = quantity*entry;
-  const leverage = [1,2].find(l => value/l + quantity*cost(stop) <= p.margin);
+  const value = quantity*high;
+  const leverage = [1,2].find(l => value/l + quantity*(cost(stop)+(high-entry)*(p.fee+p.slip+p.funding)/10000) <= p.margin);
   if (!Number.isFinite(value) || !quantity || !leverage) return explain('De berekende omvang past niet binnen de marge of precisie.');
   if (quantity*risk > 0.25*value/leverage)
     return explain('Het geplande verlies is groter dan 25% van de isolated marge.');
   const direction = side === 1 ? 'LONG' : 'SHORT';
   return {action: existing ? 'SLUIT, DAN LIMIET '+direction : 'LIMIET '+direction,
     reason: (existing ? 'Controleer eerst dat de oude positie gesloten is. ' : '') +
-    (aligned ? 'Spot- en futuresdelta bevestigen de richting. ' : 'Beperkte volumebevestiging. ') +
-    'Na bevestigde terugtest. Annuleer een onvervulde limiet bij het volgende 4H-slot of bij invalidatie.\n' +
-    'Limiet '+usd(entry)+' · Stop '+usd(stop)+' · Doel '+usd(target)+'\n'+
+    (side === 1 ? 'Kooplimiet ' : 'Shortlimiet ')+usd(low)+' – '+usd(high)+'\n'+
+    'Vergelijk met je actuele beurskoers in USD. Binnen de zone: limiet binnen deze grenzen. '+
+    (side === 1 ? 'Boven '+usd(high)+': wacht op terugtest. Onder '+usd(low) :
+      'Onder '+usd(low)+': wacht op terugtest. Boven '+usd(high))+
+    ': wacht op nieuwe bevestiging.\n'+
+    'Stop '+usd(stop)+' · Doel '+usd(target)+' · Doel al geraakt vóór instap? Trade gemist. Stop al geraakt? Plan vervallen.\n'+
+    'Geldig tot '+new Date(s.expires).toLocaleString('nl-NL',{timeZone:'Europe/Amsterdam'})+
+    ' Amsterdam. Annuleer daarna een openstaande limiet.\n'+
+    'Meetkoers '+usd(s.price)+' · Berekening bij minst gunstige instap '+usd(entry)+'\n'+
     quantity.toFixed(6)+' BTC · '+leverage+'× isolated · Marge '+usd(value/leverage)+'\n'+
     'Gepland verlies '+usd(quantity*risk)+' · Nettowinst bij doel '+usd(quantity*reward)+' · 1:'+ratio.toFixed(2)};
 }
