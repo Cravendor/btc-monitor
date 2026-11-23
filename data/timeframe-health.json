@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-23T06:43:28.853233+00:00",
+  "updated_at": "2026-11-23T07:13:41.566739+00:00",
   "exchange": "bitget",
   "market": "USDT-FUTURES",
   "symbol": "BTCUSDT",
@@ -13,21 +13,21 @@
       "confidence": "low",
       "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 61406.7,
+      "candle_close_price": 61500.0,
       "closed_candles": 99,
-      "observed_at": "2026-11-23T06:35:00+00:00",
+      "observed_at": "2026-11-23T07:05:00+00:00",
       "error": null
     },
     "15m": {
       "status": "ok",
       "signal_status": "provisional",
-      "grade": "slightly_bullish",
+      "grade": "neutral",
       "confidence": "low",
-      "evidence_state": "aligned",
+      "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 61536.8,
+      "candle_close_price": 61438.6,
       "closed_candles": 99,
-      "observed_at": "2026-11-23T06:30:00+00:00",
+      "observed_at": "2026-11-23T07:00:00+00:00",
       "error": null
     },
     "30m": {
@@ -37,21 +37,21 @@
       "confidence": "low",
       "evidence_state": "partial_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 61536.8,
+      "candle_close_price": 61438.6,
       "closed_candles": 99,
-      "observed_at": "2026-11-23T06:30:00+00:00",
+      "observed_at": "2026-11-23T07:00:00+00:00",
       "error": null
     },
     "1h": {
       "status": "ok",
       "signal_status": "provisional",
-      "grade": "slightly_bullish",
+      "grade": "neutral",
       "confidence": "low",
-      "evidence_state": "aligned",
+      "evidence_state": "partial_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 61652.4,
+      "candle_close_price": 61438.6,
       "closed_candles": 99,
-      "observed_at": "2026-11-23T06:00:00+00:00",
+      "observed_at": "2026-11-23T07:00:00+00:00",
       "error": null
     },
     "4h": {
