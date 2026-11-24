@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-11-24T03:36:16.989817+00:00",
+  "updated_at": "2026-11-24T04:07:20.266349+00:00",
   "exchange": "bitget",
   "market": "USDT-FUTURES",
   "symbol": "BTCUSDT",
@@ -13,9 +13,9 @@
       "confidence": "low",
       "evidence_state": "no_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 60178.9,
+      "candle_close_price": 60297.4,
       "closed_candles": 99,
-      "observed_at": "2026-11-24T03:30:00+00:00",
+      "observed_at": "2026-11-24T04:05:00+00:00",
       "error": null
     },
     "15m": {
@@ -25,9 +25,9 @@
       "confidence": "low",
       "evidence_state": "aligned",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 60178.9,
+      "candle_close_price": 60300.6,
       "closed_candles": 99,
-      "observed_at": "2026-11-24T03:30:00+00:00",
+      "observed_at": "2026-11-24T04:00:00+00:00",
       "error": null
     },
     "30m": {
@@ -37,9 +37,9 @@
       "confidence": "low",
       "evidence_state": "aligned",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 60178.9,
+      "candle_close_price": 60300.6,
       "closed_candles": 99,
-      "observed_at": "2026-11-24T03:30:00+00:00",
+      "observed_at": "2026-11-24T04:00:00+00:00",
       "error": null
     },
     "1h": {
@@ -49,9 +49,9 @@
       "confidence": "low",
       "evidence_state": "aligned",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 60042.3,
+      "candle_close_price": 60300.6,
       "closed_candles": 99,
-      "observed_at": "2026-11-24T03:00:00+00:00",
+      "observed_at": "2026-11-24T04:00:00+00:00",
       "error": null
     },
     "4h": {
@@ -61,9 +61,9 @@
       "confidence": "low",
       "evidence_state": "partial_direction",
       "model_version": "multi_tf_evidence_v0.2",
-      "candle_close_price": 61238.4,
+      "candle_close_price": 60300.6,
       "closed_candles": 99,
-      "observed_at": "2026-11-24T00:00:00+00:00",
+      "observed_at": "2026-11-24T04:00:00+00:00",
       "error": null
     },
     "1d": {
