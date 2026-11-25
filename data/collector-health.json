@@ -1,12 +1,12 @@
 {
   "schema_version": 3,
   "coverage_24h": {
-    "window_start": "2026-11-24T18:31:38.868833+00:00",
-    "window_end": "2026-11-25T18:31:38.868833+00:00",
+    "window_start": "2026-11-24T19:01:09.439037+00:00",
+    "window_end": "2026-11-25T19:01:09.439037+00:00",
     "first_retained_at": "2026-10-22T15:34:27.047744+00:00",
     "interval_seconds": 1800,
     "expected_snapshots": 48,
-    "observed_snapshots": 37,
+    "observed_snapshots": 38,
     "observed_intervals": 37,
     "history_unavailable_intervals": 0,
     "missing_measurement_intervals": 11,
@@ -15,16 +15,16 @@
     "max_window_gap_seconds": 12556,
     "status": "gaps_detected"
   },
-  "checked_at": "2026-11-25T18:31:38.868833+00:00",
-  "last_snapshot_at": "2026-11-25T18:31:35.328543+00:00",
-  "age_seconds": 4,
+  "checked_at": "2026-11-25T19:01:09.439037+00:00",
+  "last_snapshot_at": "2026-11-25T19:01:06.817547+00:00",
+  "age_seconds": 3,
   "max_age_seconds": 3600,
   "status": "current",
   "analysis_quality": {
     "current": {
       "schema_version": 1,
-      "checked_at": "2026-11-25T18:31:38.868833+00:00",
-      "measurement_at": "2026-11-25T18:15:21.414055+00:00",
+      "checked_at": "2026-11-25T19:01:09.439037+00:00",
+      "measurement_at": "2026-11-25T18:46:46.667819+00:00",
       "valid_until": "2026-11-25T20:00:00+00:00",
       "scenario_processing": "consistent",
       "status": "ready_for_scoped_report",
