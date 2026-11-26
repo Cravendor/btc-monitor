@@ -1,12 +1,12 @@
 {
   "schema_version": 3,
   "coverage_24h": {
-    "window_start": "2026-11-25T04:26:07.734114+00:00",
-    "window_end": "2026-11-26T04:26:07.734114+00:00",
+    "window_start": "2026-11-25T04:41:57.258096+00:00",
+    "window_end": "2026-11-26T04:41:57.258096+00:00",
     "first_retained_at": "2026-10-22T15:34:27.047744+00:00",
     "interval_seconds": 1800,
     "expected_snapshots": 48,
-    "observed_snapshots": 44,
+    "observed_snapshots": 45,
     "observed_intervals": 42,
     "history_unavailable_intervals": 0,
     "missing_measurement_intervals": 6,
@@ -15,47 +15,31 @@
     "max_window_gap_seconds": 5207,
     "status": "gaps_detected"
   },
-  "checked_at": "2026-11-26T04:26:07.734114+00:00",
-  "last_snapshot_at": "2026-11-26T04:06:56.572434+00:00",
-  "age_seconds": 1151,
+  "checked_at": "2026-11-26T04:41:57.258096+00:00",
+  "last_snapshot_at": "2026-11-26T04:41:54.751008+00:00",
+  "age_seconds": 3,
   "max_age_seconds": 3600,
   "status": "current",
   "analysis_quality": {
     "current": {
       "schema_version": 1,
-      "checked_at": "2026-11-26T04:26:07.734114+00:00",
-      "measurement_at": "2026-11-26T04:06:42.832151+00:00",
+      "checked_at": "2026-11-26T04:41:57.258096+00:00",
+      "measurement_at": "2026-11-26T04:39:15.077743+00:00",
       "valid_until": "2026-11-26T08:00:00+00:00",
       "scenario_processing": "consistent",
-      "status": "degraded",
+      "status": "ready_for_scoped_report",
       "price_structure": "available",
-      "bitget_interval_delta": "unavailable",
-      "verified_delta_markets": [],
-      "macro_cycle_verdict": "requires_separate_macro_evidence",
-      "issues": [
-        {
-          "code": "cvd_spot",
-          "detail": "candle_volume_mismatch",
-          "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
-        },
-        {
-          "code": "cvd_usdt_futures",
-          "detail": "time_budget_exhausted",
-          "action": "Controleer historische pagina\u2019s en volumeverschil; herprobeer via bestaande NAS-upload."
-        }
+      "bitget_interval_delta": "available",
+      "verified_delta_markets": [
+        "spot",
+        "usdt_futures"
       ],
+      "macro_cycle_verdict": "requires_separate_macro_evidence",
+      "issues": [],
       "interpretation": "Gebruik geldige onderdelen met hun eigen scope; ontbrekend is geen neutraal oordeel."
     },
     "recurring_blockers": [],
     "report_findings": [],
     "scope": "Engineering en rapportconsistentie; geen bewijs van voorspellende kwaliteit."
-  },
-  "recovery": {
-    "attempted": false,
-    "event": "schedule",
-    "before_status": "current",
-    "scope": "periodic_market_snapshot_only",
-    "outcome": "not_needed",
-    "after_status": "current"
   }
 }
